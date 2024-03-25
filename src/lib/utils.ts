@@ -35,3 +35,21 @@ export async function getAllAccountsFromDatabase() {
   const data: Account[] = await res.json();
   return data;
 }
+
+/**
+ * Get the current role of an account.
+ *
+ * @param {Account} account The account to get the role of.
+ * @returns {string} The current role of the account.
+ */
+export function getRole(account: Account) {
+  if (account.isAdmin) {
+    return "Admin";
+  } else if (account.isManager) {
+    return "Manager";
+  } else if (account.isEmployee) {
+    return "Employee";
+  } else {
+    return "Customer";
+  }
+}

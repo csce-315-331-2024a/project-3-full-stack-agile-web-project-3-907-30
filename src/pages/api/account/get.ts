@@ -36,7 +36,8 @@ export default async function handler(
       picture: rows[0][3],
       isEmployee: rows[0][4],
       isManager: rows[0][5],
-      points: rows[0][6],
+      isAdmin: rows[0][6],
+      points: rows[0][7],
     };
 
     res.status(200).json(account);

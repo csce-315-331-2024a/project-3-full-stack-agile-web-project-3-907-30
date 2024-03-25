@@ -31,7 +31,8 @@ export default async function handler(
       picture: row[3],
       isEmployee: row[4],
       isManager: row[5],
-      points: row[6],
+      isAdmin: row[6],
+      points: row[7],
     }));
 
     res.status(200).json(accounts);

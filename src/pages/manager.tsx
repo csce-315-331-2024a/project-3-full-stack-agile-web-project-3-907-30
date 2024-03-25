@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
  */
 const Manager = () => {
   const { account } = useAuth() as AuthHookType;
+  
   const [fullAccount, setFullAccount] = useState<Account>();
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +30,9 @@ const Manager = () => {
     <main className="flex w-full h-full items-start justify-start p-4">
       {fullAccount?.isManager ? (
         <section className="flex w-full">
-          <UserManagement />
+          {fullAccount?.isAdmin && (
+            <UserManagement />
+          )}
         </section>
       ) : (loading ? (
         <h1 className="text-xl">Loading...</h1>
