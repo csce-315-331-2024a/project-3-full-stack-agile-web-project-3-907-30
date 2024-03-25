@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Badge } from "../components/ui/badge";
 import { useState, useEffect, ReactNode } from "react";
-import { getAccountFromDatabase } from "@/lib/utils";
+import { getAccountFromDatabase, getRole } from "@/lib/utils";
 import { TbLogout2 } from "react-icons/tb";
 import { useRouter } from "next/router";
 import revLogo from "../../public/rev-logo.png";
@@ -14,6 +14,7 @@ import { FcGoogle } from "react-icons/fc";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import Link from "next/link"
 import { Toaster } from "@/components/ui/toaster";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface LayoutProps {
   children: ReactNode;
@@ -29,27 +30,19 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const { login, logout, account } = useAuth() as AuthHookType;
+
   const [fullAccount, setFullAccount] = useState<Account>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (account) {
+      setLoading(true);
       getAccountFromDatabase(account.email).then((data) => {
         setFullAccount(data);
+        setLoading(false);
       });
     }
   }, [account]);
-
-  const getRole = (account: Account) => {
-    if (account.isAdmin) {
-      return 'Admin';
-    } else if (account.isManager) {
-      return 'Manager';
-    } else if (account.isEmployee) {
-      return 'Employee';
-    } else {
-      return 'Customer';
-    }
-  }
 
   return (
     <main className="flex flex-col w-full h-dvh">
@@ -115,11 +108,14 @@ const Layout = ({ children }: LayoutProps) => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+          ) : (loading ? (
+            <Skeleton className="w-10 h-10 rounded-full" />
           ) : (
             <Button variant="outline" onClick={async () => await login(router)}>
               <FcGoogle className="w-6 h-6 mr-2" />
-              Sign-in with Google
+              Sign -in with Google
             </Button>
+          )
           )}
         </div>
       </div>

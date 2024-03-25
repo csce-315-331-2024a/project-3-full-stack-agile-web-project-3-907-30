@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { getAllAccountsFromDatabase } from "@/lib/utils";
+import { getAllAccountsFromDatabase, getRole } from "@/lib/utils";
 import { Account } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
@@ -30,24 +30,6 @@ const UserManagement = () => {
     });
     setLoading(false);
   }, [loading]);
-
-  /**
-   * Gets the current role of an account. Can be 'Manager', 'Employee', or 'Customer'.
-   * 
-   * @param {Account} account The account to get the role of.
-   * @returns {string} The current role of the account.
-   */
-  const getCurrentRole = (account: Account) => {
-    if (account.isAdmin) {
-      return 'Admin';
-    } else if (account.isManager) {
-      return 'Manager';
-    } else if (account.isEmployee) {
-      return 'Employee';
-    } else {
-      return 'Customer';
-    }
-  }
 
   /**
    * Updates the role of an account.
@@ -106,9 +88,9 @@ const UserManagement = () => {
                   <p className="text-xs font-light">{account.email}</p>
                 </div>
               </div>
-              <Select disabled={isSubmitting} onValueChange={(value) => updateRole(account.email, value)} defaultValue={getCurrentRole(account)}>
+              <Select disabled={isSubmitting} onValueChange={(value) => updateRole(account.email, value)} defaultValue={getRole(account)}>
                 <SelectTrigger className="w-32">
-                  <SelectValue placeholder={getCurrentRole(account)} />
+                  <SelectValue placeholder={getRole(account)} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>

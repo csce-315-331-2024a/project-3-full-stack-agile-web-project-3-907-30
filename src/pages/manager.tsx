@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
  */
 const Manager = () => {
   const { account } = useAuth() as AuthHookType;
+  
   const [fullAccount, setFullAccount] = useState<Account>();
   const [loading, setLoading] = useState(false);
 
