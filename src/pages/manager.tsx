@@ -29,7 +29,9 @@ const Manager = () => {
     <main className="flex w-full h-full items-start justify-start p-4">
       {fullAccount?.isManager ? (
         <section className="flex w-full">
-          <UserManagement />
+          {fullAccount?.isAdmin && (
+            <UserManagement />
+          )}
         </section>
       ) : (loading ? (
         <h1 className="text-xl">Loading...</h1>

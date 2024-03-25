@@ -5,7 +5,6 @@ import { Account } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { useToast } from "../ui/use-toast";
-import { Skeleton } from "../ui/skeleton";
 
 /**
  * A user management component that allows managers to view and update user roles.
@@ -18,8 +17,7 @@ import { Skeleton } from "../ui/skeleton";
  * <UserManagement />
  */
 const UserManagement = () => {
-  const roles = ['Customer', 'Employee', 'Manager'];
-  const numAccounts = 3;
+  const roles = ['Customer', 'Employee', 'Manager', 'Admin'];
 
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,7 +38,9 @@ const UserManagement = () => {
    * @returns {string} The current role of the account.
    */
   const getCurrentRole = (account: Account) => {
-    if (account.isManager) {
+    if (account.isAdmin) {
+      return 'Admin';
+    } else if (account.isManager) {
       return 'Manager';
     } else if (account.isEmployee) {
       return 'Employee';
@@ -58,15 +58,16 @@ const UserManagement = () => {
   const updateRole = async (email: string, role: string) => {
     setIsSubmitting(true);
 
-    let isManager = role === 'Manager';
-    let isEmployee = role === 'Employee' || role === 'Manager';
+    let isAdmin = role === 'Admin';
+    let isManager = role === 'Manager' || role === 'Admin';
+    let isEmployee = role === 'Employee' || role === 'Manager' || role === 'Admin';
 
     const res = await fetch('/api/account/set', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, isEmployee, isManager }),
+      body: JSON.stringify({ email, isEmployee, isManager, isAdmin }),
     });
 
     if (res.status === 200) {
@@ -92,17 +93,7 @@ const UserManagement = () => {
         <CardDescription>Manage your users at a glance.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
-        {loading ? (
-          Array.from({ length: numAccounts }).map((_, index) => (
-            <div className="flex items-center space-x-4" key={index}>
-              <Skeleton className="h-12 w-12 rounded-full" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-[250px]" />
-                <Skeleton className="h-4 w-[200px]" />
-              </div>
-            </div>
-          ))
-        ) : (
+        {
           accounts.map((account) => (
             <div key={account.email} className="flex justify-between gap-16 items-center">
               <div className="flex items-center gap-3">
@@ -129,7 +120,7 @@ const UserManagement = () => {
               </Select>
             </div>
           ))
-        )}
+        }
       </CardContent>
     </Card>
   );

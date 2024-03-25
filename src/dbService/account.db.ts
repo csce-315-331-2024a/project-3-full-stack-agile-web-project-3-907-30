@@ -77,7 +77,7 @@ async function addNewAccount(data: GoogleAccount) {
   const nextId = await getNextId();
 
   const insertStatement = await db.prepare(
-    'INSERT INTO account("id", "name", "email", "picture", "is_employee", "is_manager", "points") VALUES($1, $2, $3, $4, $5, $6, $7)',
+    'INSERT INTO account("id", "name", "email", "picture", "is_employee", "is_manager", "is_admin", "points") VALUES($1, $2, $3, $4, $5, $6, $7, $8)',
     {
       paramTypes: [
         DataTypeOIDs.int4,
@@ -86,13 +86,23 @@ async function addNewAccount(data: GoogleAccount) {
         DataTypeOIDs.varchar,
         DataTypeOIDs.bool,
         DataTypeOIDs.bool,
+        DataTypeOIDs.bool,
         DataTypeOIDs.int4,
       ],
     }
   );
 
   await insertStatement.execute({
-    params: [nextId, data.name, data.email, data.picture, false, false, 0],
+    params: [
+      nextId,
+      data.name,
+      data.email,
+      data.picture,
+      false,
+      false,
+      false,
+      0,
+    ],
   });
 
   await insertStatement.close();

@@ -13,16 +13,24 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const getStatement = await db.prepare(
-    'UPDATE account SET "is_employee" = $1, "is_manager" = $2 WHERE "email" = $3',
-    { paramTypes: [DataTypeOIDs.bool, DataTypeOIDs.bool, DataTypeOIDs.varchar] }
+    'UPDATE account SET "is_employee" = $1, "is_manager" = $2, "is_admin" = $3 WHERE "email" = $4',
+    {
+      paramTypes: [
+        DataTypeOIDs.bool,
+        DataTypeOIDs.bool,
+        DataTypeOIDs.bool,
+        DataTypeOIDs.varchar,
+      ],
+    }
   );
 
   const isEmployee = req.body.isEmployee;
   const isManager = req.body.isManager;
+  const isAdmin = req.body.isAdmin;
   const email = req.body.email;
 
   const account = await getStatement.execute({
-    params: [isEmployee, isManager, email],
+    params: [isEmployee, isManager, isAdmin, email],
   });
 
   await getStatement.close();

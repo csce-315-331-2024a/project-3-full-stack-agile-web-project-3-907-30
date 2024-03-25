@@ -40,7 +40,9 @@ const Layout = ({ children }: LayoutProps) => {
   }, [account]);
 
   const getRole = (account: Account) => {
-    if (account.isManager) {
+    if (account.isAdmin) {
+      return 'Admin';
+    } else if (account.isManager) {
       return 'Manager';
     } else if (account.isEmployee) {
       return 'Employee';
