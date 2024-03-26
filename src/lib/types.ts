@@ -32,3 +32,49 @@ export interface AuthHookType {
   logout: () => Promise<void>;
   account: Account | null;
 }
+
+export type Customer = {
+    id: number,
+    name: string,
+    phone: string,
+    num_orders: number,
+    total_spent: number
+};
+
+export type Employee = {
+    id: number,
+    name: string,
+    password: string,
+    is_manager: boolean
+};
+
+export type InventoryItem = {
+    id: number,
+    name: string,
+    price: number,
+    fill_level: number,
+    curr_level: number,
+    times_refilled: number,
+    date_refilled: Date,
+    has_dairy: boolean,
+    has_nuts: boolean,
+    has_eggs: boolean,
+    is_vegan: boolean,
+    is_halal: boolean
+};
+
+export type MenuItem = {
+    id: number,
+    name: string,
+    price: number,
+    times_ordered: number
+;}
+
+export type Order = {
+    id: number,
+    date: Date,
+    time: Date,
+    total: number,
+    cust_id: number,
+    emp_id: number
+};
