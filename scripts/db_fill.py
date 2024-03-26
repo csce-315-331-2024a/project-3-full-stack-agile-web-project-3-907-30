@@ -1,5 +1,6 @@
 import csv
 import random
+import string
 from datetime import datetime, timedelta
 import hashlib
 
@@ -92,23 +93,23 @@ menuMap = {
     26: ["Tuna Melt", 7.99, 20000]
 }
 
-# employees : [ employeeId, employeeName, password, isManager]
+# employees : [ employeeId, employeeName, email, isManager, isAdmin]
 
 employeeMap = {
-    0: ["LeBron James", "83b281c0ce60e5ed7ecc7fb93ddedbe8cd9c934dc2494a037121950802e1a01b", True],
-    1: ["Lionel Messi", "c54d29008c95b6c234062f197b3b9d6fd14f0d0a3cd9bd188f75fd30792252f0", True],
-    2: ["Michael Jordan", "091d5c0fd2eb924e15ccc2472a3bf2a8ac9fe92053a0b33ada7c6bf412cfc68a", False],
-    3: ["Jon Doe", "22262d17a277433f1787e458429f5c8d58a7fd7dd5337760ce62e0dadcc01a00", False],
-    4: ["Jane Doe", "9bb479bf851f960529b319507201aed62f1e0fc044f773d5c05bed3faa3b0c05", False],
-    5: ["Zendaya Coleman", "7856cf797cc963ff985cb70f924a03e61879e4aa9d869938e626aa69c91efb90", True],
-    6: ["Tom Hanks", "a57d651965c260432aa0c7db2c3fc1721cff9597598a13320caf4b58d45ad7c5", False],
-    7: ["Zinadine Zidane", "90a29fcd1a03013f9aecdefb692bd2d1018922ec056de895e8a826674b173276", False],
-    8: ["Guy Fieri", "73475b8d813be68df73cc2fcc649b8c593876d994df9b6cc658a792471b16b12", False],
-    9: ["Aubrey Graham", "2c0af00bdeda6f51ed0db8d045a8447fabad6823c896122457f8d019c60e0050", False],
-    10: ["Jordan Carter", "58e63d5a26777ac925ba9ff33a4478a6b5b2aa7528b979eb5626cfc7def5b258", False],
-    11: ["Jimmy Neutron", "8b5121371333198880722f04a35148877aa85eecd79f2b31cea63ad1ffda4058", False],
-    12: ["Beyonce Knowles", "675dd504215d8485c2f8e81615810b484d6072c982f774a444378fb763f19e80", True],
-    13: ["Guy Guy", "819cc9e3cc8f45f9815ee1ed6a81e66696b6aab4e16fd5d00ed2d9eba2270e09", False]
+    0: ["Gabriel Floreslovo", "gabr13lenstation@tamu.edu", True, True],
+    1: ["Akshay Belhe", "abelhe8900@tamu.edu", True, True],
+    2: ["Aaron Mathews", "aaronmathews@tamu.edu", True, True],
+    3: ["Chris Avila", "cristopavila@tamu.edu", True, True],
+    4: ["Margo Gongora", "ngongora@tamu.edu", True, True],
+    5: ["Adam Teo", "adamt321@tamu.edu", True, True],
+    # 6: ["Tom Hanks", "a57d651965c260432aa0c7db2c3fc1721cff9597598a13320caf4b58d45ad7c5", False],
+    # 7: ["Zinadine Zidane", "90a29fcd1a03013f9aecdefb692bd2d1018922ec056de895e8a826674b173276", False],
+    # 8: ["Guy Fieri", "73475b8d813be68df73cc2fcc649b8c593876d994df9b6cc658a792471b16b12", False],
+    # 9: ["Aubrey Graham", "2c0af00bdeda6f51ed0db8d045a8447fabad6823c896122457f8d019c60e0050", False],
+    # 10: ["Jordan Carter", "58e63d5a26777ac925ba9ff33a4478a6b5b2aa7528b979eb5626cfc7def5b258", False],
+    # 11: ["Jimmy Neutron", "8b5121371333198880722f04a35148877aa85eecd79f2b31cea63ad1ffda4058", False],
+    # 12: ["Beyonce Knowles", "675dd504215d8485c2f8e81615810b484d6072c982f774a444378fb763f19e80", True],
+    # 13: ["Guy Guy", "819cc9e3cc8f45f9815ee1ed6a81e66696b6aab4e16fd5d00ed2d9eba2270e09", False]
 }
 
 # inv_menu : [ menuID, inventoryItemID, amount]
@@ -155,7 +156,7 @@ lastNames = ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller'
 random.seed(78)
 
 # populate menu items table
-with open("menu_items.sql", "w", newline = '') as writeFile :
+with open("scripts/menu_items.sql", "w", newline = '') as writeFile :
     # write header 
     writeFile.write("INSERT INTO menu_items\n")
     writeFile.write("VALUES\n")
@@ -166,7 +167,7 @@ with open("menu_items.sql", "w", newline = '') as writeFile :
         else : writeFile.write("("+str(ID)+","+"'"+row[0]+"'"+","+str(row[1])+","+str(row[2])+");\n")
 
 # populate menu_pairs table
-with open("menu_pairs.sql", "w", newline = '') as writeFile :
+with open("scripts/menu_pairs.sql", "w", newline = '') as writeFile :
     # write header
     writeFile.write("INSERT INTO menu_pairs\n")
     writeFile.write("VALUES\n")
@@ -183,7 +184,7 @@ with open("menu_pairs.sql", "w", newline = '') as writeFile :
             pairId = pairId + 1
 
 # populate employees table
-with open("employees.sql", "w", newline ='') as writeFile :
+with open("scripts/employees.sql", "w", newline ='') as writeFile :
     writeFile.write("INSERT INTO employees\n")
     writeFile.write("VALUES\n")
 
@@ -192,7 +193,7 @@ with open("employees.sql", "w", newline ='') as writeFile :
         else : writeFile.write("("+str(ID)+","+"'"+row[0]+"'"+","+"'"+row[1]+"'"+","+str(row[2])+");\n")
 
 # populate inventory table
-with open("inventory.sql", "w", newline = '') as writeFile :
+with open("scripts/inventory.sql", "w", newline = '') as writeFile :
     writeFile.write("INSERT INTO inventory\n")
     writeFile.write("VALUES\n")
 
@@ -201,27 +202,31 @@ with open("inventory.sql", "w", newline = '') as writeFile :
         else : timesFilled = random.randint(100,200)
 
         if(i < len(inventoryMap) - 1) : writeFile.write("("+str(ID)+","+"'"+row[0]+"'"+","+str(row[1])+
-            ","+str(row[2])+","+str(row[3])+","+str(timesFilled)+","+"'"+row[4]+"'"+","+str(row[5])+","+str(row[6])+","+str(row[7])+
+            ","+str(row[2])+","+str(row[3])+","+str(timesFilled)+","+"'"+str(row[4])+"'"+","+row[5]+","+str(row[6])+","+str(row[7])+
             ","+str(row[8])+","+str(row[9])+"),\n")
         else : writeFile.write("("+str(ID)+","+"'"+row[0]+"'"+","+str(row[1])+
-            ","+str(row[2])+","+str(row[3])+","+str(timesFilled)+","+"'"+row[4]+"'"+","+str(row[5])+","+str(row[6])+","+str(row[7])+
+            ","+str(row[2])+","+str(row[3])+","+str(timesFilled)+","+"'"+str(row[4])+"'"+","+row[5]+","+str(row[6])+","+str(row[7])+
             ","+str(row[8])+","+str(row[9])+");\n")
 
 
 # populate customers table
-with open("customers.sql", "w", newline='')as writeFile :
+with open("scripts/customers.sql", "w", newline='')as writeFile :
     writeFile.write("INSERT INTO customers\n")
     writeFile.write("VALUES\n")
 
     for i in range(0,400):
         # make a name
         customerName = random.choice(firstNames) + " " + random.choice(lastNames)
-        phoneNumber = str(random.randint(111,999)) + "-" + str(random.randint(111,999)) + "-" + str(random.randint(1111,9999))
-        if(i < 399) : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneNumber+"'"+"),\n")
-        else : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneNumber+"'"+");\n")
+        phoneNumber = str(random.randint(111,999)) + str(random.randint(111,999)) + str(random.randint(1111,9999))
+        phoneBytes = phoneNumber.encode('utf-8') #get string in bits
+        sha256 = hashlib.sha256() 
+        sha256.update(phoneBytes)
+        phoneHash = sha256.hexdigest()
+        if(i < 399) : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneHash+"'"+"),\n")
+        else : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneHash+"'"+");\n")
 
 # populate inv_menu_items join table
-with open("inv_menu.sql", "w", newline='')as writeFile :
+with open("scripts/inv_menu.sql", "w", newline='')as writeFile :
     writeFile.write("INSERT INTO inv_menu\n")
     writeFile.write("VALUES\n")
 

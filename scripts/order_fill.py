@@ -53,15 +53,20 @@ peakDays = [peakOne, peakTwo, peakThree, peakFour] # make sure you're comparing 
 
 # used to write the metadata for order
 # orders : [ orderId, orderDate, orderTime, orderTotal, customerId, employeeId]
-metaOrders = open("orders.sql","w",newline='')
+metaOrders = open("scripts/orders.sql","w",newline='')
 metaOrders.write("INSERT INTO orders\n")
 metaOrders.write("VALUES\n")
 
 # used to make the order up as menu items
 # orders_menu : [ orderId, menuId]
-buildOrders = open("orders_menu.sql","w",newline='')
+buildOrders = open("scripts/orders_menu.sql","w",newline='')
 buildOrders.write("INSERT INTO orders_menu\n")
 buildOrders.write("VALUES\n")
+
+# # update the customers' number of orders and total spent
+# customerData = open("scripts/update_customers.sql","w",newline='')
+# # make a map to hold all customer data tuple(num_orders, total_spent)
+# customerMap = {i:(0,0) for i in range(0,400)}
 
 # initialize order ID
 orderId = 0

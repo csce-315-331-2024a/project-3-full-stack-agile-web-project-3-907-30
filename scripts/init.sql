@@ -9,8 +9,10 @@ total_spent MONEY
 CREATE TABLE IF NOT EXISTS Employees (
 emp_id SERIAL PRIMARY KEY,
 emp_name varchar,
-emp_password varchar,
-is_manager boolean DEFAULT FALSE
+emp_email varchar,
+emp_picture varchar,
+is_manager boolean DEFAULT FALSE,
+is_admin boolean DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS Inventory (
