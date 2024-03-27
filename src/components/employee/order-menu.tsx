@@ -3,10 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { clear } from 'console';
+import { InventoryItem, MenuItem } from '@/lib/types';
+import { toast } from '../ui/use-toast';
 
-export interface OrderItem {
-    name: string;
-    price: number;
+export interface OrderItem extends MenuItem {
     quantity: number;
 }
 
@@ -35,7 +35,7 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
         setInputValues({}); // Reset the input values
         clearOrder(); // Call the clearOrder prop
     };
-      
+
 
     const categories = ["Burgers & Wraps", "Meals", "Tenders", "Sides", "Drinks", "Desserts"];
 
@@ -63,20 +63,32 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     const fetchPriceAndAddToOrder = async (itemName: string) => {
         try {
             const quantity = inputValues[itemName] ?? 1;
-    
+
             if (quantity <= 0) {
                 return; // Do not add items with a quantity of 0 or less to the order
             }
-            const response = await fetch(`/api/menu/menu_items/get-item-price?itemName=${itemName}`);
-        
+            const response = await fetch(`/api/menu/${itemName}`);
+
             if (!response.ok) {
                 throw new Error('Item not found or error fetching item price');
             }
             const data = await response.json();
-            const price = parseFloat(data.price.replace('$', '')); // remove the $ sign from the price
-        
+            const id = data.id;
+            const times_ordered = data.times_ordered;
+            const price = data.price;
+
             if (!isNaN(price)) { // Check if the parsed price is a valid number
-                addToOrder(String(itemName), price, quantity);
+                await checkLowStock(id).then(rows => {
+                    if (!(rows === undefined || rows.length === 0)) {
+                        toast({
+                            title: 'Low Stock Notification',
+                            description: (rows!.map(row => {
+                                return row.name.toUpperCase();
+                            }).join(', '))
+                        });
+                    }
+                });
+                addToOrder(id, String(itemName), price, times_ordered, quantity);
             } else {
                 throw new Error('Invalid price received');
             }
@@ -86,13 +98,31 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
         }
     };
 
-    const addToOrder = (itemName: string, price: number, quantity: number) => {
+    const checkLowStock = async (id: number) => {
+        try {
+            const res = await fetch(`/api/menu/check-stock/${id}`);
+
+            if (!res.ok) {
+                throw new Error('Item not found');
+            }
+
+            const data = await res.json() as InventoryItem[];
+            return data;
+
+        } catch (error) {
+            console.error('Error fetching item price:', error);
+        }
+    }
+
+    const addToOrder = (id: number, itemName: string, price: number, times_ordered: number, quantity: number) => {
         setOrder((prevOrder) => {
-            const existingItem = prevOrder[itemName] || { name: itemName, price, quantity: 0 };
+            const existingItem = prevOrder[itemName] || { id, name: itemName, price, times_ordered, quantity: 0 };
             const updatedQuantity = existingItem.quantity + quantity;
             const updatedItem = {
+                id,
                 name: itemName,
                 price,
+                times_ordered,
                 quantity: updatedQuantity
             };
             const newOrder = { ...prevOrder, [itemName]: updatedItem };
@@ -101,7 +131,7 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
         });
     };
 
-    
+
 
     return (
         <Card>
@@ -121,14 +151,14 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                                     <div key={item} className="flex justify-between items-center">
                                         <span>{item}</span>
                                         <div className="flex items-center gap-2">
-                                        <Button onClick={() => fetchPriceAndAddToOrder(item)}>+</Button>
-                                        <Input
-                                            type="number"
-                                            value={inputValues[item] ?? order[item]?.quantity ?? 0}
-                                            onChange={(e) => setInputValues({ ...inputValues, [item]: parseInt(e.target.value) })}
-                                            min={0}
-                                            className="w-16"
-                                        />
+                                            <Button onClick={() => fetchPriceAndAddToOrder(item)}>+</Button>
+                                            <Input
+                                                type="number"
+                                                value={inputValues[item] ?? order[item]?.quantity ?? 0}
+                                                onChange={(e) => setInputValues({ ...inputValues, [item]: parseInt(e.target.value) })}
+                                                min={0}
+                                                className="w-16"
+                                            />
                                         </div>
                                     </div>
                                 ))}
