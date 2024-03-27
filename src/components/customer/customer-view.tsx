@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -35,6 +35,20 @@ const item_category = [
     ]
   }
 ];
+
+
+// Fetch item descriptions from the database ex: halal, vegan, etc.
+// useEffect(() => {
+//   fetch('src/pages/api/menu/ingredients/[id].ts')
+//   .then(respone => {
+//     if (!response.ok) {
+//       throw new Error('Network response was not ok');
+//     }
+//     return response.json();
+//   })
+//   .then(data => setItemCategories(data))
+//   .catch(error => console.error('Error when fetching:', error));
+// }) [];
 
 
 const CustomerView = () => {
