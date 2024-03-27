@@ -67,8 +67,8 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
             </div>
         </div>
         <div className="flex justify-end mt-6">
-            <Button onClick={clearOrder} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-            Clear Order
+            <Button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            Submit Order
             </Button>
         </div>
       </CardContent>
