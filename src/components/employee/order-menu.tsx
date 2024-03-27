@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { clear } from 'console';
+import { ScrollArea } from '../ui/scroll-area';
 
 export interface OrderItem {
     name: string;
@@ -35,7 +36,7 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
         setInputValues({}); // Reset the input values
         clearOrder(); // Call the clearOrder prop
     };
-      
+
 
     const categories = ["Burgers & Wraps", "Meals", "Tenders", "Sides", "Drinks", "Desserts"];
 
@@ -63,18 +64,18 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     const fetchPriceAndAddToOrder = async (itemName: string) => {
         try {
             const quantity = inputValues[itemName] ?? 1;
-    
+
             if (quantity <= 0) {
                 return; // Do not add items with a quantity of 0 or less to the order
             }
             const response = await fetch(`/api/menu/menu_items/get-item-price?itemName=${itemName}`);
-        
+
             if (!response.ok) {
                 throw new Error('Item not found or error fetching item price');
             }
             const data = await response.json();
             const price = parseFloat(data.price.replace('$', '')); // remove the $ sign from the price
-        
+
             if (!isNaN(price)) { // Check if the parsed price is a valid number
                 addToOrder(String(itemName), price, quantity);
             } else {
@@ -101,7 +102,7 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
         });
     };
 
-    
+
 
     return (
         <Card>
@@ -113,28 +114,32 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                 {loading ? (
                     <div>Loading menu items...</div>
                 ) : (
-                    categories.map((category) => (
-                        <div key={category}>
-                            <h3 className="text-lg font-bold">{category}</h3>
-                            <div className="flex flex-col gap-2">
-                                {menuItems.filter(item => itemBelongsToCategory(item, category)).map((item) => (
-                                    <div key={item} className="flex justify-between items-center">
-                                        <span>{item}</span>
-                                        <div className="flex items-center gap-2">
-                                        <Button onClick={() => fetchPriceAndAddToOrder(item)}>+</Button>
-                                        <Input
-                                            type="number"
-                                            value={inputValues[item] ?? order[item]?.quantity ?? 0}
-                                            onChange={(e) => setInputValues({ ...inputValues, [item]: parseInt(e.target.value) })}
-                                            min={0}
-                                            className="w-16"
-                                        />
-                                        </div>
+                    <ScrollArea className="h-[500px] pr-4">
+                        {
+                            categories.map((category) => (
+                                <div key={category}>
+                                    <h3 className="text-lg font-bold">{category}</h3>
+                                    <div className="flex flex-col gap-2">
+                                        {menuItems.filter(item => itemBelongsToCategory(item, category)).map((item) => (
+                                            <div key={item} className="flex justify-between items-center">
+                                                <span>{item}</span>
+                                                <div className="flex items-center gap-2">
+                                                    <Button onClick={() => fetchPriceAndAddToOrder(item)}>+</Button>
+                                                    <Input
+                                                        type="number"
+                                                        value={inputValues[item] ?? order[item]?.quantity ?? 0}
+                                                        onChange={(e) => setInputValues({ ...inputValues, [item]: parseInt(e.target.value) })}
+                                                        min={0}
+                                                        className="w-16"
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
-                        </div>
-                    ))
+                                </div>
+                            ))
+                        }
+                    </ScrollArea>
                 )}
             </CardContent>
         </Card>
