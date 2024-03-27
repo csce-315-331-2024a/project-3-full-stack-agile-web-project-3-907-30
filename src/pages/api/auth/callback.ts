@@ -1,6 +1,6 @@
 import { google } from "googleapis";
 import { withIronSessionApiRoute } from "iron-session/next";
-import { loginGoogleAccount } from "../../../dbService/account.db";
+import { loginGoogleAccount } from "../../../dbService/employee.db";
 import { ironOptions } from "../../../lib/session";
 
 export default withIronSessionApiRoute(GoogleCallback, ironOptions);
@@ -40,7 +40,7 @@ async function GoogleCallback(req: any, res: any) {
   await req.session.save();
 
   res.writeHead(302, {
-    Location: "/",
+    Location: "/employee/order",
   });
   res.end();
 }

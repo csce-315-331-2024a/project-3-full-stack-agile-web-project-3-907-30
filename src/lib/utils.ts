@@ -1,19 +1,19 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Account } from "./types";
+import { Employee } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 /**
- * Get a single account from the database.
+ * Get a single employee from the database.
  *
- * @param {string} email The email of the account to get.
- * @returns {Promise<Account>} The account from the database.
+ * @param {string} email The email of the employee to get.
+ * @returns {Promise<Employee>} The employee from the database.
  */
-export async function getAccountFromDatabase(email: string) {
-  const res = await fetch("/api/account/get", {
+export async function getEmployeeFromDatabase(email: string) {
+  const res = await fetch("/api/employee/get", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -21,35 +21,33 @@ export async function getAccountFromDatabase(email: string) {
     body: JSON.stringify({ email }),
   });
 
-  const data: Account = await res.json();
+  const data: Employee = await res.json();
   return data;
 }
 
 /**
- * Get all accounts from the database.
+ * Get all employees from the database.
  *
- * @returns {Promise<Account[]>} All accounts from the database.
+ * @returns {Promise<Employee[]>} All employees from the database.
  */
-export async function getAllAccountsFromDatabase() {
-  const res = await fetch("/api/account/get-all");
-  const data: Account[] = await res.json();
+export async function getAllEmployeesFromDatabase() {
+  const res = await fetch("/api/employee/get-all");
+  const data: Employee[] = await res.json();
   return data;
 }
 
 /**
- * Get the current role of an account.
+ * Get the current role of an employee.
  *
- * @param {Account} account The account to get the role of.
- * @returns {string} The current role of the account.
+ * @param {Employee} employee The employee to get the role of.
+ * @returns {string} The current role of the employee.
  */
-export function getRole(account: Account) {
-  if (account.isAdmin) {
+export function getRole(employee: Employee) {
+  if (employee.isAdmin) {
     return "Admin";
-  } else if (account.isManager) {
+  } else if (employee.isManager) {
     return "Manager";
-  } else if (account.isEmployee) {
-    return "Employee";
   } else {
-    return "Customer";
+    return "Employee";
   }
 }

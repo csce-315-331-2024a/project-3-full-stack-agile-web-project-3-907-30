@@ -3,7 +3,7 @@ import db from "../../../lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 
 /**
- * Set an account as an employee or manager
+ * Set an employee as a manager or admin
  *
  * @param {NextApiRequest} req Request object
  * @param {NextApiResponse} res Response object
@@ -13,32 +13,26 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const getStatement = await db.prepare(
-    'UPDATE account SET "is_employee" = $1, "is_manager" = $2, "is_admin" = $3 WHERE "email" = $4',
+    'UPDATE employees SET "is_manager" = $1, "is_admin" = $2 WHERE "emp_email" = $3',
     {
-      paramTypes: [
-        DataTypeOIDs.bool,
-        DataTypeOIDs.bool,
-        DataTypeOIDs.bool,
-        DataTypeOIDs.varchar,
-      ],
+      paramTypes: [DataTypeOIDs.bool, DataTypeOIDs.bool, DataTypeOIDs.varchar],
     }
   );
 
-  const isEmployee = req.body.isEmployee;
   const isManager = req.body.isManager;
   const isAdmin = req.body.isAdmin;
   const email = req.body.email;
 
-  const account = await getStatement.execute({
-    params: [isEmployee, isManager, isAdmin, email],
+  const employee = await getStatement.execute({
+    params: [isManager, isAdmin, email],
   });
 
   await getStatement.close();
 
-  // return success message if the account was updated
-  if (account.rowsAffected === 1) {
+  // return success message if the employee was updated
+  if (employee.rowsAffected === 1) {
     res.status(200).json({ status: "success" });
   } else {
-    res.status(404).json({ error: "Account not found" });
+    res.status(404).json({ error: "Employee not found" });
   }
 }

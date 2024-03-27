@@ -10,7 +10,7 @@ import { DataTypeOIDs } from "postgresql-client";
  */
 async function checkIfEmailExists(email: string) {
   const checkEmailStatement = await db.prepare(
-    'SELECT * FROM account WHERE "email" = $1',
+    "SELECT * FROM employees WHERE emp_email=$1",
     {
       paramTypes: [DataTypeOIDs.varchar],
     }
@@ -27,14 +27,17 @@ async function checkIfEmailExists(email: string) {
 }
 
 /**
- * Get the next ID for the account
+ * Get the next ID for the employee
  *
- * @returns {Promise<number>} The next ID for the account
+ * @returns {Promise<number>} The next ID for the employee
  */
 async function getNextId() {
-  const latestIdStatement = await db.prepare('SELECT MAX("id") FROM account', {
-    paramTypes: [],
-  });
+  const latestIdStatement = await db.prepare(
+    "SELECT MAX(emp_id) FROM employees",
+    {
+      paramTypes: [],
+    }
+  );
 
   const latestId = await latestIdStatement.execute();
   const latestIdString = latestId.rows![0][0] || "0";
@@ -45,13 +48,13 @@ async function getNextId() {
 }
 
 /**
- * Update the name and picture of an account
+ * Update the name and picture of an employee
  *
- * @param {GoogleAccount} data The data to update the account with
+ * @param {GoogleAccount} data The data to update the employee with
  */
-async function updateAccountNameAndPicture(data: GoogleAccount) {
+async function updateEmployeeNameAndPicture(data: GoogleAccount) {
   const updateStatement = await db.prepare(
-    'UPDATE account SET "name" = $1, "picture" = $2 WHERE "email" = $3',
+    "UPDATE employees SET emp_name=$1, emp_picture=$2 WHERE emp_email=$3",
     {
       paramTypes: [
         DataTypeOIDs.varchar,
@@ -69,15 +72,15 @@ async function updateAccountNameAndPicture(data: GoogleAccount) {
 }
 
 /**
- * Add a new account to the database
+ * Add a new employee to the database
  *
- * @param {GoogleAccount} data The data to add to the database
+ * @param {GoogleAccount} data The Google account to add to the database
  */
-async function addNewAccount(data: GoogleAccount) {
+async function addNewEmployee(data: GoogleAccount) {
   const nextId = await getNextId();
 
   const insertStatement = await db.prepare(
-    'INSERT INTO account("id", "name", "email", "picture", "is_employee", "is_manager", "is_admin", "points") VALUES($1, $2, $3, $4, $5, $6, $7, $8)',
+    "INSERT INTO employees(emp_id, emp_name, emp_email, emp_picture, is_manager, is_admin) VALUES($1, $2, $3, $4, $5, $6)",
     {
       paramTypes: [
         DataTypeOIDs.int4,
@@ -86,23 +89,12 @@ async function addNewAccount(data: GoogleAccount) {
         DataTypeOIDs.varchar,
         DataTypeOIDs.bool,
         DataTypeOIDs.bool,
-        DataTypeOIDs.bool,
-        DataTypeOIDs.int4,
       ],
     }
   );
 
   await insertStatement.execute({
-    params: [
-      nextId,
-      data.name,
-      data.email,
-      data.picture,
-      false,
-      false,
-      false,
-      0,
-    ],
+    params: [nextId, data.name, data.email, data.picture, false, false],
   });
 
   await insertStatement.close();
@@ -118,9 +110,9 @@ export async function loginGoogleAccount(data: GoogleAccount) {
     const doesEmailExist = await checkIfEmailExists(data.email);
 
     if (doesEmailExist) {
-      await updateAccountNameAndPicture(data);
+      await updateEmployeeNameAndPicture(data);
     } else {
-      await addNewAccount(data);
+      await addNewEmployee(data);
     }
   } catch (error) {
     console.log(error);
