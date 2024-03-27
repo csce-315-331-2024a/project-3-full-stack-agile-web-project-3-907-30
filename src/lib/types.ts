@@ -31,7 +31,7 @@ export interface AuthHookType {
   account: GoogleAccount | null;
 }
 
-export type Customer = {
+export interface Customer {
     id: number,
     name: string,
     phone: string,
@@ -39,14 +39,7 @@ export type Customer = {
     total_spent: number
 };
 
-export type Employee = {
-    id: number,
-    name: string,
-    password: string,
-    is_manager: boolean
-};
-
-export type InventoryItem = {
+export interface InventoryItem {
     id: number,
     name: string,
     price: number,
@@ -61,14 +54,14 @@ export type InventoryItem = {
     is_halal: boolean
 };
 
-export type MenuItem = {
+export interface MenuItem {
     id: number,
     name: string,
     price: number,
     times_ordered: number
 ;}
 
-export type Order = {
+export interface Order {
     id: number,
     date: Date,
     time: Date,
