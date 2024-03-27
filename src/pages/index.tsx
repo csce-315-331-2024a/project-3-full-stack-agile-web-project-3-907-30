@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { Employee, AuthHookType } from "@/lib/types";
 import { getEmployeeFromDatabase } from "@/lib/utils";
-
+import CustomerView from "@/components/customer/customer-view";
 /**
  * Fetch data and render the contents of a page at request time.
  * 

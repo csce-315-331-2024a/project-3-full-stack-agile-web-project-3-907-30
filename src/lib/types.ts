@@ -39,12 +39,12 @@ export type Customer = {
     total_spent: number
 };
 
-export type Employee = {
-    id: number,
-    name: string,
-    password: string,
-    is_manager: boolean
-};
+// export type Employee = {
+//     id: number,
+//     name: string,
+//     password: string,
+//     is_manager: boolean
+// };
 
 export type InventoryItem = {
     id: number,
