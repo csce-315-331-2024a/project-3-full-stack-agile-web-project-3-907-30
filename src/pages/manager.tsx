@@ -1,4 +1,5 @@
 import UserManagement from "@/components/manager/user-management";
+import ViewEmployees from "@/components/manager/view-employees";
 import useAuth from "@/hooks/useAuth";
 import { Account, AuthHookType } from "@/lib/types";
 import { getAccountFromDatabase } from "@/lib/utils";
@@ -30,6 +31,7 @@ const Manager = () => {
       {fullAccount?.isManager ? (
         <section className="flex w-full">
           <UserManagement />
+          <ViewEmployees />
         </section>
       ) : (loading ? (
         <h1 className="text-xl">Loading...</h1>

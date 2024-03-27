@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Account } from "./types";
+import { Account, Employee } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -35,3 +35,15 @@ export async function getAllAccountsFromDatabase() {
   const data: Account[] = await res.json();
   return data;
 }
+
+/**
+ * Get employee accounts from the database.
+ *
+ * @returns {Promise<Employee[]>} Employee accounts from the database.
+ */
+export async function getEmployeeAccountsFromDatabase() {
+  const res = await fetch("/api/account/get-employees");
+  const data: Employee[] = await res.json();
+  return data;
+}
+

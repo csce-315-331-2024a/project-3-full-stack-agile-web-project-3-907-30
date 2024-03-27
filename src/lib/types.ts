@@ -1,5 +1,12 @@
 import { NextRouter } from "next/router";
 
+export interface Employee {
+  id: string;
+  email: string;
+  name: string;
+  picture: string;
+}
+
 export interface Account {
   id: string;
   email: string;
