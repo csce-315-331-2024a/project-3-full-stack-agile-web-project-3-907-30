@@ -31,3 +31,5 @@ export interface AuthHookType {
   logout: () => Promise<void>;
   account: Account | null;
 }
+
+
