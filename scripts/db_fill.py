@@ -222,7 +222,7 @@ with open("scripts/customers.sql", "w", newline='')as writeFile :
         sha256 = hashlib.sha256() 
         sha256.update(phoneBytes)
         phoneHash = sha256.hexdigest()
-        if(i < 399) : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneHash+"'"+"),\n")
+        if(i < 399) : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneNumber+"'"+"),\n")
         else : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneHash+"'"+");\n")
 
 # populate inv_menu_items join table

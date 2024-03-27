@@ -1,6 +1,6 @@
-### Sprint 1 Stand-up 2 for CSCE 331 Project 3
+### Sprint 1 Stand-up 1 for CSCE 331 Project 3
 ### Prepared by: Gabriel Floreslovo
-### Meeting Date: 3/26/2024
+### Meeting Date: 3/25/2024
 
 ## Meeting Attendees
 - Adam Teo
@@ -16,7 +16,7 @@
 - [ ] Share any roadblocks that are interrupting progress 
 
 ## What we have completed
-- Finished login system - Adam
+- Implemented login and logout route and hooks - Adam
 - Employee POS system almost done, mising create - Akshay 
 - Clear order button - Akshay
 - Updated Oauth to match schema - Adam

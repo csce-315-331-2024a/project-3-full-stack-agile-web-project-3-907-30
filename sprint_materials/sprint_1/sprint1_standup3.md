@@ -1,6 +1,6 @@
-### Sprint 1 Stand-up 2 for CSCE 331 Project 3
+### Sprint 1 Stand-up 3 for CSCE 331 Project 3
 ### Prepared by: Gabriel Floreslovo
-### Meeting Date: 3/26/2024
+### Meeting Date: 3/27/2024
 
 ## Meeting Attendees
 - Adam Teo
@@ -16,7 +16,7 @@
 - [ ] Share any roadblocks that are interrupting progress 
 
 ## What we have completed
-- Finished login system - Adam
+- Made functions to query stock information and menu item information - Margo
 - Employee POS system almost done, mising create - Akshay 
 - Clear order button - Akshay
 - Updated Oauth to match schema - Adam
@@ -36,3 +36,5 @@
 
 ## Summary
 Overall, up to today, we are making good progress. Our main roadblocks are still just setup bottlenecks; we are waiting for each other while we all figure out basics. However, our communication is strong and everybody is on the same page. Aaron will be taking on some other teammembers tasks to lighten their load because some of his tasks overlapped with others and were already completed. We are adding a new task to add a customer managing view to the manager page. Everyone will be completing their remaining tasks and begin adding tests as they develop. 
+
+## Minutes from Previous Meeting
