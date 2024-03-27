@@ -7,6 +7,7 @@ export interface Account {
   picture: string;
   isEmployee: boolean;
   isManager: boolean;
+  isAdmin: boolean;
   points: number;
 }
 
