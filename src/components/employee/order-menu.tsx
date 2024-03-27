@@ -60,32 +60,31 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
         }
     };
 
-    const fetchPriceAndAddToOrder = async (itemName: string, clearOrderAndSetOrderItems: () => void) => {
+    const fetchPriceAndAddToOrder = async (itemName: string) => {
         try {
-          const quantity = inputValues[itemName] ?? 1;
-
-          if (quantity <= 0) {
-            return; // Do not add items with a quantity of 0 or less to the order
-          }
-          const response = await fetch(`/api/menu/menu_items/get-item-price?itemName=${itemName}`);
-      
-          if (!response.ok) {
-            throw new Error('Item not found or error fetching item price');
-          }
-          const data = await response.json();
-          const price = parseFloat(data.price.replace('$', '')); // remove the $ sign from the price
-      
-          if (!isNaN(price)) { // Check if the parsed price is a valid number
-            clearOrderAndSetOrderItems(); // Call the clearOrderAndSetOrderItems function first
-            addToOrder(String(itemName), price, quantity);
-          } else {
-            throw new Error('Invalid price received');
-          }
+            const quantity = inputValues[itemName] ?? 1;
+    
+            if (quantity <= 0) {
+                return; // Do not add items with a quantity of 0 or less to the order
+            }
+            const response = await fetch(`/api/menu/menu_items/get-item-price?itemName=${itemName}`);
+        
+            if (!response.ok) {
+                throw new Error('Item not found or error fetching item price');
+            }
+            const data = await response.json();
+            const price = parseFloat(data.price.replace('$', '')); // remove the $ sign from the price
+        
+            if (!isNaN(price)) { // Check if the parsed price is a valid number
+                addToOrder(String(itemName), price, quantity);
+            } else {
+                throw new Error('Invalid price received');
+            }
         } catch (error) {
-          console.error('Error fetching item price:', error);
-          // Handle error (e.g., show a notification to the user)
+            console.error('Error fetching item price:', error);
+            // Handle error (e.g., show a notification to the user)
         }
-      };
+    };
 
     const addToOrder = (itemName: string, price: number, quantity: number) => {
         setOrder((prevOrder) => {
@@ -122,7 +121,7 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                                     <div key={item} className="flex justify-between items-center">
                                         <span>{item}</span>
                                         <div className="flex items-center gap-2">
-                                        <Button onClick={() => fetchPriceAndAddToOrder(item, clearOrderAndSetOrderItems)}>+</Button>
+                                        <Button onClick={() => fetchPriceAndAddToOrder(item)}>+</Button>
                                         <Input
                                             type="number"
                                             value={inputValues[item] ?? order[item]?.quantity ?? 0}
