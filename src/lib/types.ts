@@ -30,3 +30,5 @@ export interface AuthHookType {
   logout: () => Promise<void>;
   account: GoogleAccount | null;
 }
+
+
