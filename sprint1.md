@@ -13,7 +13,7 @@ A product where a customer, manager, or employee can securely login and access t
 - Implement login and logout routes and corresponding hooks E1 S0 T0 - Adam
 - Managers can view all employee accounts that have logged into the POS system E2 S0 T0 - Aaron
 - Managers can make accounts "employees" through a button click in the manager view E1  S0 T0 - Adam
-- Restrict access of manager page from employees E1  S0 T0 - Gabe
+- Restrict access of manager page from employees E1 S0 T1 - Gabe
 - Make Employee GUI POS system that allows employees to create, delete,  customize, and see the information contained within an order E1  S0 T0 - Akshay
 - Make functions that can create, delete, view, and modify the orders in the database E1  S0 T0 - Akshay
 - Have GUI at POS give the option of selecting the number of items that will be added to an order when creating it  E1  S0 T0 - Aaron
@@ -30,4 +30,4 @@ A product where a customer, manager, or employee can securely login and access t
 - Have GUI call and display the results of that function when a customer is selecting a given item E1  S0 T0 - Chris
 - Make sure GUI has obvious design that clearly shows what an item looks like, and shows the item’s information obviously when selected E2  S0 T0- Chris
 - Add screen reader functionality to all GUI items in sprint 1 E1  S0 T0 - Chris
-- Make sure that all views have high color contrast and easily legible font in sprint 1 E1  S0 T0 - Gabe
+- Make sure that all views have high color contrast and easily legible font in sprint 1 E1 S0 T0 - Gabe

@@ -1,6 +1,7 @@
 import { NextRouter } from "next/router";
 
 export interface Employee {
+<<<<<<< HEAD
   id: string;
   email: string;
   name: string;
@@ -13,8 +14,14 @@ export interface Account {
   name: string;
   picture: string;
   isEmployee: boolean;
+=======
+  empId: string;
+  empName: string;
+  empEmail: string;
+  empPicture: string;
+>>>>>>> 28beefa2517e10b4f18ae02d85e29656a5264869
   isManager: boolean;
-  points: number;
+  isAdmin: boolean;
 }
 
 export interface GoogleAccount {
@@ -36,5 +43,5 @@ export interface GoogleAccount {
 export interface AuthHookType {
   login: (router: NextRouter) => Promise<void>;
   logout: () => Promise<void>;
-  account: Account | null;
+  account: GoogleAccount | null;
 }
