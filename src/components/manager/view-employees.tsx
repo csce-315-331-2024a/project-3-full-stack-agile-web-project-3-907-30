@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { getEmployeeAccountsFromDatabase } from "@/lib/utils";
+import { getAllEmployeesFromDatabase } from "@/lib/utils";
 import { Employee } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
@@ -25,7 +25,7 @@ const ViewEmployees = () => {
     const [loading, setLoading] = useState(true);
     
     useEffect(() => {
-        getEmployeeAccountsFromDatabase().then((data) => {
+      getAllEmployeesFromDatabase().then((data) => {
             setEmployees(data);
         });
         setLoading(false);
@@ -36,7 +36,7 @@ const ViewEmployees = () => {
       <Card>
         <CardHeader>
           <CardTitle>Employees</CardTitle>
-          <CardDescription>Manage your employees at a glance.</CardDescription>
+          <CardDescription>The following employees have logged into the system.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-6">
         {loading ? (
@@ -51,15 +51,15 @@ const ViewEmployees = () => {
           ))
         ) : (
             employees.map((employee) => (
-                <div key={employee.email} className="flex justify-between gap-16 items-center">
+                <div key={employee.empEmail} className="flex justify-between gap-16 items-center">
                   <div className="flex items-center gap-3">
                     <Avatar>
-                      <AvatarImage src={employee.picture} alt="profile" />
-                      <AvatarFallback>{employee.name[0]}</AvatarFallback>
+                      <AvatarImage src={employee.empPicture} alt="profile" />
+                      <AvatarFallback>{employee.empName[0]}</AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col">
-                      <p className="text-sm font-semibold">{employee.name}</p>
-                      <p className="text-xs font-light">{employee.email}</p>
+                      <p className="text-sm font-semibold">{employee.empName}</p>
+                      <p className="text-xs font-light">{employee.empEmail}</p>
                     </div>
                   </div>
                 </div>

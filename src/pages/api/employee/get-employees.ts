@@ -25,10 +25,12 @@ export default async function handler(
   } else {
     // convert the rows to an array of Employee objects
     const employees: Employee[] = rows.map((row) => ({
-      id: row[0],
-      name: row[1],
-      email: row[2],
-      picture: row[3],
+      empId: row[0],
+      empName: row[1],
+      empEmail: row[2],
+      empPicture: row[3],
+      isManager: row[4],
+      isAdmin: row[5]
     }));
 
     res.status(200).json(employees);

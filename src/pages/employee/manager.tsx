@@ -1,9 +1,5 @@
-<<<<<<< HEAD:src/pages/manager.tsx
-import UserManagement from "@/components/manager/user-management";
 import ViewEmployees from "@/components/manager/view-employees";
-=======
 import EmployeeManagement from "@/components/manager/employee-management";
->>>>>>> 28beefa2517e10b4f18ae02d85e29656a5264869:src/pages/employee/manager.tsx
 import useAuth from "@/hooks/useAuth";
 import { Employee, AuthHookType } from "@/lib/types";
 import { getEmployeeFromDatabase } from "@/lib/utils";
@@ -35,14 +31,10 @@ const Manager = () => {
     <main className="flex w-full h-full items-start justify-start p-4">
       {employee?.isManager ? (
         <section className="flex w-full">
-<<<<<<< HEAD:src/pages/manager.tsx
-          <UserManagement />
-          <ViewEmployees />
-=======
           {employee?.isAdmin && (
             <EmployeeManagement />
           )}
->>>>>>> 28beefa2517e10b4f18ae02d85e29656a5264869:src/pages/employee/manager.tsx
+        <ViewEmployees />
         </section>
       ) : (loading ? (
         <h1 className="text-xl">Loading...</h1>

@@ -1,10 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-<<<<<<< HEAD
-import { Account, Employee } from "./types";
-=======
 import { Employee } from "./types";
->>>>>>> 28beefa2517e10b4f18ae02d85e29656a5264869
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -41,18 +37,6 @@ export async function getAllEmployeesFromDatabase() {
 }
 
 /**
-<<<<<<< HEAD
- * Get employee accounts from the database.
- *
- * @returns {Promise<Employee[]>} Employee accounts from the database.
- */
-export async function getEmployeeAccountsFromDatabase() {
-  const res = await fetch("/api/account/get-employees");
-  const data: Employee[] = await res.json();
-  return data;
-}
-
-=======
  * Get the current role of an employee.
  *
  * @param {Employee} employee The employee to get the role of.
@@ -67,4 +51,3 @@ export function getRole(employee: Employee) {
     return "Employee";
   }
 }
->>>>>>> 28beefa2517e10b4f18ae02d85e29656a5264869

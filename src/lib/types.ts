@@ -1,25 +1,10 @@
 import { NextRouter } from "next/router";
 
 export interface Employee {
-<<<<<<< HEAD
-  id: string;
-  email: string;
-  name: string;
-  picture: string;
-}
-
-export interface Account {
-  id: string;
-  email: string;
-  name: string;
-  picture: string;
-  isEmployee: boolean;
-=======
   empId: string;
   empName: string;
   empEmail: string;
   empPicture: string;
->>>>>>> 28beefa2517e10b4f18ae02d85e29656a5264869
   isManager: boolean;
   isAdmin: boolean;
 }
