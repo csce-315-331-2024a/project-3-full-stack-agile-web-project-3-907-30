@@ -47,7 +47,7 @@ export function AuthProvider({ children, ssrAccount, ...props }: AuthProviderPro
     const res = await fetch("/api/auth/logout");
     const data = await res.json();
     if (data.status === 200) {
-      window.location.href = '/';
+      window.location.href = '/employee/login';
     }
   }
 
