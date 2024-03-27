@@ -81,10 +81,12 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                 await checkLowStock(id).then(rows => {
                     if (!(rows === undefined || rows.length === 0)) {
                         toast({
-                            title: 'Low Stock Notification',
-                            description: (rows!.map(row => {
-                                return row.name.toUpperCase();
-                            }).join(', '))
+                            title: 'Low Stock Notification ⓘ',
+                            description: (<pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                                <code className="text-white">{(rows!.map(row => {
+                                    return row.name.toUpperCase() + `\n\t- Current: ${row.curr_level}\n\t- Required: ${row.fill_level}`;
+                                }).join('\n\n'))}</code>
+                            </pre>)
                         });
                     }
                 });
