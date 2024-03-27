@@ -1,22 +1,7 @@
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
-import { Account, AuthHookType } from "@/lib/types";
-import { getAccountFromDatabase } from "@/lib/utils";
-import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Menu } from "lucide-react";
-// import customerView from "@/components/customer/customer-view";
-import CustomerView from "@/components/customer/customer-view";
+import { Employee, AuthHookType } from "@/lib/types";
+import { getEmployeeFromDatabase } from "@/lib/utils";
 
 /**
  * Fetch data and render the contents of a page at request time.
@@ -47,13 +32,13 @@ export async function getServerSideProps(context: any) {
 export default function Home() {
   const { account } = useAuth() as AuthHookType;
 
-  const [fullAccount, setFullAccount] = useState<Account>();
+  const [employee, setEmployee] = useState<Employee>();
 
   useEffect(() => {
     console.log(account);
     if (account) {
-      getAccountFromDatabase(account.email).then((data) => {
-        setFullAccount(data);
+      getEmployeeFromDatabase(account.email).then((data) => {
+        setEmployee(data);
       });
     }
   }, [account]);
