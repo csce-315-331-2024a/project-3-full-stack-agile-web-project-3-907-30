@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
+import { submitOrder } from "@/lib/utils";
+import { useToast } from "../ui/use-toast";
 
 export interface OrderItem {
   name: string;
@@ -18,6 +20,9 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
   const [tax, setTax] = useState(0);
   const [total, setTotal] = useState(0);
 
+  const { toast } = useToast();
+
+
   // Effect to calculate totals
   useEffect(() => {
     const calculatedSubTotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -28,6 +33,25 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     setTax(calculatedTax);
     setTotal(calculatedTotal);
   }, [items]); // Dependency array ensures calculateTotals is called when items change
+
+  const employeeSubmitOrder = async () => {
+
+    
+    const res = await submitOrder(100000, total, 1, 1);
+
+    if (res.status === 200) {
+      toast({
+        title: 'Success!',
+        description: 'Your order has been placed!',
+      });
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request: ' + JSON.stringify(res.body),
+      });
+    }
+  }
 
   return (
     <Card>
@@ -67,7 +91,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
             </div>
         </div>
         <div className="flex justify-end mt-6">
-            <Button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <Button onClick={employeeSubmitOrder} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Submit Order
             </Button>
         </div>

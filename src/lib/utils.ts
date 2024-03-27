@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Employee } from "./types";
+import { ListOrderedIcon } from "lucide-react";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -50,4 +51,24 @@ export function getRole(employee: Employee) {
   } else {
     return "Employee";
   }
+}
+
+/**
+ * Submit an order.
+ *
+ * @param {orderId}  The ID of the new order
+ * @param {orderTotal}  The order total
+ * @param {custId}  The ID of the customer making the order
+ * @param {empId}  The ID of the employee creating the order
+ * @returns {string} The current role of the employee.
+ */
+export async function submitOrder(orderId: number, orderTotal: number, custId: number, empId: number) {
+  const res = await fetch("/api/employee/submit-order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ orderId, orderTotal, custId, empId }),
+  });
+  return res;
 }
