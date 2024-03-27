@@ -1,26 +1,26 @@
-import UserManagement from "@/components/manager/user-management";
+import EmployeeManagement from "@/components/manager/employee-management";
 import useAuth from "@/hooks/useAuth";
-import { Account, AuthHookType } from "@/lib/types";
-import { getAccountFromDatabase } from "@/lib/utils";
+import { Employee, AuthHookType } from "@/lib/types";
+import { getEmployeeFromDatabase } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
 /**
- * The manager view page. This page is only accessible to users that are managers.
+ * The manager view page. This page is only accessible to users that are managers or admins.
  * 
  * @component
  * @returns {JSX.Element} The manager view page.
  */
 const Manager = () => {
   const { account } = useAuth() as AuthHookType;
-  
-  const [fullAccount, setFullAccount] = useState<Account>();
+
+  const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (account) {
       setLoading(true);
-      getAccountFromDatabase(account.email).then((data) => {
-        setFullAccount(data);
+      getEmployeeFromDatabase(account.email).then((data) => {
+        setEmployee(data);
         setLoading(false);
       });
     }
@@ -28,10 +28,10 @@ const Manager = () => {
 
   return (
     <main className="flex w-full h-full items-start justify-start p-4">
-      {fullAccount?.isManager ? (
+      {employee?.isManager ? (
         <section className="flex w-full">
-          {fullAccount?.isAdmin && (
-            <UserManagement />
+          {employee?.isAdmin && (
+            <EmployeeManagement />
           )}
         </section>
       ) : (loading ? (

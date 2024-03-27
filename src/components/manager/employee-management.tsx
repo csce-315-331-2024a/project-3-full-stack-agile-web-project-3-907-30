@@ -1,41 +1,41 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { getAllAccountsFromDatabase, getRole } from "@/lib/utils";
-import { Account } from "@/lib/types";
+import { getAllEmployeesFromDatabase, getRole } from "@/lib/utils";
+import { Employee } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { useToast } from "../ui/use-toast";
 
 /**
- * A user management component that allows managers to view and update user roles.
+ * An employee management component that allows admins to manage their employees and managers. 
  * 
  * @component
- * @returns {JSX.Element} The user management component.
+ * @returns {JSX.Element} The employee management component.
  * 
  * @example
- * // Render a user management component.
- * <UserManagement />
+ * // Render a employee management component.
+ * <EmployeeManagement />
  */
-const UserManagement = () => {
-  const roles = ['Customer', 'Employee', 'Manager', 'Admin'];
+const EmployeeManagement = () => {
+  const roles = ['Employee', 'Manager', 'Admin'];
 
-  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
-    getAllAccountsFromDatabase().then((data) => {
-      setAccounts(data);
+    getAllEmployeesFromDatabase().then((data) => {
+      setEmployees(data);
     });
     setLoading(false);
   }, [loading]);
 
   /**
-   * Updates the role of an account.
+   * Updates the role of an employee.
    * 
-   * @param {string} email The email of the account to update.
-   * @param {string} role The new role of the account.
+   * @param {string} email The email of the employee to update.
+   * @param {string} role The new role of the employee.
    */
   const updateRole = async (email: string, role: string) => {
     setIsSubmitting(true);
@@ -44,7 +44,7 @@ const UserManagement = () => {
     let isManager = role === 'Manager' || role === 'Admin';
     let isEmployee = role === 'Employee' || role === 'Manager' || role === 'Admin';
 
-    const res = await fetch('/api/account/set', {
+    const res = await fetch('/api/employee/set', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,26 +71,26 @@ const UserManagement = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Users</CardTitle>
-        <CardDescription>Manage your users at a glance.</CardDescription>
+        <CardTitle>Employees</CardTitle>
+        <CardDescription>Manage your employees at a glance.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
         {
-          accounts.map((account) => (
-            <div key={account.email} className="flex justify-between gap-16 items-center">
+          employees.map((employee) => (
+            <div key={employee.empEmail} className="flex justify-between gap-16 items-center">
               <div className="flex items-center gap-3">
                 <Avatar>
-                  <AvatarImage src={account.picture} alt="profile" />
-                  <AvatarFallback>{account.name[0]}</AvatarFallback>
+                  <AvatarImage src={employee.empPicture} alt="profile" />
+                  <AvatarFallback>{employee.empName[0]}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <p className="text-sm font-semibold">{account.name}</p>
-                  <p className="text-xs font-light">{account.email}</p>
+                  <p className="text-sm font-semibold">{employee.empName}</p>
+                  <p className="text-xs font-light">{employee.empEmail}</p>
                 </div>
               </div>
-              <Select disabled={isSubmitting} onValueChange={(value) => updateRole(account.email, value)} defaultValue={getRole(account)}>
+              <Select disabled={isSubmitting} onValueChange={(value) => updateRole(employee.empEmail, value)} defaultValue={getRole(employee)}>
                 <SelectTrigger className="w-32">
-                  <SelectValue placeholder={getRole(account)} />
+                  <SelectValue placeholder={getRole(employee)} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -108,4 +108,4 @@ const UserManagement = () => {
   );
 };
 
-export default UserManagement;
+export default EmployeeManagement;

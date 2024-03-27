@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react';
 import useAuth from '@/hooks/useAuth';
-import { Account, AuthHookType } from '@/lib/types';
-import { getAccountFromDatabase } from '@/lib/utils';
+import { Employee, AuthHookType } from '@/lib/types';
+import { getEmployeeFromDatabase } from '@/lib/utils';
 
 /**
- * The menu page. This page is only accessible to users that are employees or managers.
+ * The employee view page. This page is only accessible to users that are employees or managers.
  * 
- * @returns {JSX.Element} The menu page.
+ * @returns {JSX.Element} The employee view page.
  */
-const Menu = () => {
+const EmployeeOrderPage = () => {
   const { account } = useAuth() as AuthHookType;
 
-  const [fullAccount, setFullAccount] = useState<Account>();
+  const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (account) {
       setLoading(true);
-      getAccountFromDatabase(account.email).then((data) => {
-        setFullAccount(data);
+      getEmployeeFromDatabase(account.email).then((data) => {
+        setEmployee(data);
         setLoading(false);
       });
     }
@@ -26,8 +26,8 @@ const Menu = () => {
 
   return (
     <main className="flex w-full h-full items-start justify-start p-4">
-      {fullAccount?.isEmployee ? (
-        <h1 className="text-xl">Menu View</h1>
+      {employee ? (
+        <h1 className="text-xl">Employee View</h1>
       ) : (loading ? (
         <h1 className="text-xl">Loading...</h1>
       ) : (
@@ -40,4 +40,4 @@ const Menu = () => {
   );
 }
 
-export default Menu;
+export default EmployeeOrderPage;
