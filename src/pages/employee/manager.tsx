@@ -1,3 +1,4 @@
+import ViewEmployees from "@/components/manager/view-employees";
 import EmployeeManagement from "@/components/manager/employee-management";
 import useAuth from "@/hooks/useAuth";
 import { Employee, AuthHookType } from "@/lib/types";
@@ -33,6 +34,7 @@ const Manager = () => {
           {employee?.isAdmin && (
             <EmployeeManagement />
           )}
+        <ViewEmployees />
         </section>
       ) : (loading ? (
         <h1 className="text-xl">Loading...</h1>

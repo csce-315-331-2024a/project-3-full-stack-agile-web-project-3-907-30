@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
+import { submitOrder } from "@/lib/utils";
+import { getNextOrderId } from "@/lib/utils";
+import { useToast } from "../ui/use-toast";
+
 
 export interface OrderItem {
   name: string;
@@ -18,6 +22,9 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
   const [tax, setTax] = useState(0);
   const [total, setTotal] = useState(0);
 
+  const { toast } = useToast();
+
+
   // Effect to calculate totals
   useEffect(() => {
     const calculatedSubTotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -28,6 +35,34 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     setTax(calculatedTax);
     setTotal(calculatedTotal);
   }, [items]); // Dependency array ensures calculateTotals is called when items change
+
+ 
+
+
+  const employeeSubmitOrder = async () => {
+
+    const nextOrderId = await getNextOrderId();
+
+    toast({
+      title: 'Order ID',
+      description: nextOrderId,
+    });
+
+    const res = await submitOrder(nextOrderId, total, 1, 1);
+
+    if (res.status === 200) {
+      toast({
+        title: 'Success!',
+        description: 'Your order has been placed!',
+      });
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+      });
+    }
+  }
 
   return (
     <Card>
@@ -41,7 +76,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
         <div className="mb-4 border-b pb-4">
             <h2 className="text-xl font-semibold mb-2">Order Details</h2>
             <div className="text-gray-700">
-            <span className="block">Order Number: 78990</span> {/* Placeholder number */}
+            <span className="block">Order Number: </span> {/* Placeholder number */}
             </div>
         </div>
         <ul className="divide-y divide-gray-200">
@@ -67,7 +102,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
             </div>
         </div>
         <div className="flex justify-end mt-6">
-            <Button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <Button onClick={employeeSubmitOrder} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Submit Order
             </Button>
         </div>
