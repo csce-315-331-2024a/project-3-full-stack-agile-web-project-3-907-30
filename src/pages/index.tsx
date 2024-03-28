@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import { Employee, AuthHookType } from "@/lib/types";
 import { getEmployeeFromDatabase } from "@/lib/utils";
-
+import CustomerView from "@/components/customer/customer-view";
 /**
  * Fetch data and render the contents of a page at request time.
  * 
@@ -35,6 +35,7 @@ export default function Home() {
   const [employee, setEmployee] = useState<Employee>();
 
   useEffect(() => {
+    console.log(account);
     if (account) {
       getEmployeeFromDatabase(account.email).then((data) => {
         setEmployee(data);
@@ -42,9 +43,13 @@ export default function Home() {
     }
   }, [account]);
 
+  
+  // Return something else for now
   return (
-    <div className="w-full h-full flex justify-start items-start p-4">
-      <h1 className="text-xl">Customer Order View</h1>
+    <div>
+      <h1></h1>
+      < CustomerView />
     </div>
   );
+   
 }

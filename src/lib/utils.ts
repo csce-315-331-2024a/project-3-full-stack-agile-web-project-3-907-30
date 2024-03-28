@@ -96,6 +96,7 @@ export async function executeStatement(
   await statement.close();
   return res;
 }
+import { ListOrderedIcon } from "lucide-react";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -168,4 +169,37 @@ export async function getCustomerFromDatabase(phone: string) {
     const data: Customer = await res.json();
     return data;
   }
+}
+
+/**
+ * Submit an order.
+ *
+ * @param {orderId}  The ID of the new order
+ * @param {orderTotal}  The order total
+ * @param {custId}  The ID of the customer making the order
+ * @param {empId}  The ID of the employee creating the order
+ * @returns {string} The current role of the employee.
+ */
+export async function submitOrder(orderId: number, orderTotal: number, custId: number, empId: number) {
+  //orderId = 1000001;
+  const res = await fetch("/api/employee/submit-order", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ orderId, orderTotal, custId, empId }),
+  });
+  return res;
+}
+
+/**
+ * Get the next available order ID.
+ *
+ * @returns {number} The next available order ID in the orders table.
+ */
+export async function getNextOrderId() {
+  const res = await fetch("/api/order/get-next-order-id");
+  const returnedData = await res.json();
+  const nextOrderId = parseInt(returnedData.nextOrderId, 10);
+  return nextOrderId;
 }
