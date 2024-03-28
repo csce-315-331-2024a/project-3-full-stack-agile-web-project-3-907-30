@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { submitOrder } from "@/lib/utils";
+import { getNextOrderId } from "@/lib/utils";
 import { useToast } from "../ui/use-toast";
+
 
 export interface OrderItem {
   name: string;
@@ -34,10 +36,19 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     setTotal(calculatedTotal);
   }, [items]); // Dependency array ensures calculateTotals is called when items change
 
+ 
+
+
   const employeeSubmitOrder = async () => {
 
-    
-    const res = await submitOrder(100000, total, 1, 1);
+    const nextOrderId = await getNextOrderId();
+
+    toast({
+      title: 'Order ID',
+      description: nextOrderId,
+    });
+
+    const res = await submitOrder(nextOrderId, total, 1, 1);
 
     if (res.status === 200) {
       toast({
@@ -48,7 +59,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
       toast({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request: ' + JSON.stringify(res.body),
+        description: 'There was a problem with your request.',
       });
     }
   }
@@ -65,7 +76,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
         <div className="mb-4 border-b pb-4">
             <h2 className="text-xl font-semibold mb-2">Order Details</h2>
             <div className="text-gray-700">
-            <span className="block">Order Number: 78990</span> {/* Placeholder number */}
+            <span className="block">Order Number: </span> {/* Placeholder number */}
             </div>
         </div>
         <ul className="divide-y divide-gray-200">

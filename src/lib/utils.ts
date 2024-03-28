@@ -63,6 +63,7 @@ export function getRole(employee: Employee) {
  * @returns {string} The current role of the employee.
  */
 export async function submitOrder(orderId: number, orderTotal: number, custId: number, empId: number) {
+  //orderId = 1000001;
   const res = await fetch("/api/employee/submit-order", {
     method: "POST",
     headers: {
@@ -71,4 +72,16 @@ export async function submitOrder(orderId: number, orderTotal: number, custId: n
     body: JSON.stringify({ orderId, orderTotal, custId, empId }),
   });
   return res;
+}
+
+/**
+ * Get the next available order ID.
+ *
+ * @returns {number} The next available order ID in the orders table.
+ */
+export async function getNextOrderId() {
+  const res = await fetch("/api/order/get-next-order-id");
+  const returnedData = await res.json();
+  const nextOrderId = parseInt(returnedData.nextOrderId, 10);
+  return nextOrderId;
 }
