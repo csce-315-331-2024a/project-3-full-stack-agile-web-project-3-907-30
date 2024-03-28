@@ -15,180 +15,133 @@ import { useState } from 'react';
 import { set } from 'zod';
 
 
+
+// Order Item types
 export interface OrderItem {
   name: string;
   price: number;
   quantity: number;
 }
 
-interface MenuOrderProps {
-  setOrderItems: (items: OrderItem[]) => void;
- 
-}
 
 const CustomerView = () => {
 
-  
-    const [inputValues, setInputValues] = useState<{ [key: string]: number }>({});
+// State for the Menu Items
+const [menuItems, setMenuItems] = useState<any[]>([]);
+// State for the Ingredients
+const [ingredients, setIngredients] = useState<any[]>([]);
 
-  // This gets the menu item names I need
+
+// State for when an Item is Clicked
+const [selectedItem, setSelectedItem] = useState<any>(null);
+
+const itemClicked = (item: any) => {
+  setSelectedItem(item);
+};
+
+
+// Getting the Ingredient names using the ItemID
+const getIngredientsUsingItemID = async (itemID: number) =>  {
+  const res = await fetch(`/api/menu/ingredients/${itemID}`)
+    const data = await res.json();
+    const ingredientNames = data.map((ingredient: any) => ingredient.name);
+    console.log(ingredientNames);
+    return ingredientNames;
+};
+
+// Fetching the Menu Items and their prices
 useEffect(() => {
-  fetch('/api/menu/menu_items/get-all-items')
+  fetch('/api/menu/menu_items/get-all-items-and-price')
       .then((res) => res.json())
-      .then((data) => {
-          setMenuItems(data);
-          
+      .then(async (data) => {
+          const newMenuItems = [];
+          for (const item of data) {
+              const ingredients = await getIngredientsUsingItemID(item.id);
+              newMenuItems.push({name: item.name, price: item.price, ingredients: ingredients});
+          }
+          setMenuItems(newMenuItems);
       });
 }, []);
 
-
+// Retrieve the image for the the menu Item
 const getImageForMenuItem = (itemName: string) => {
-  // Retrieve the image for the the menu Item
   return `/menu-item-pics/${itemName}.jpeg`;
 };
 
 
-
-
 // Seperate the items to their own categories
-  const itemBelongsToCategory = (item: string | string[], category: string) => {
+  const itemBelongsToCategory = (item: any, category: string) => {
     switch (category) {
         case "Burgers & Wraps":
-            return item.includes("Burger") || item.includes("Sandwich") || item.includes("Cheeseburger")
-                || item.includes("Hamburger") || item.includes("Melt") || item.includes("Club")
-                || item.includes("Wrap");
+            return item.name.includes("Burger") || item.name.includes("Sandwich") || item.name.includes("Cheeseburger")
+                || item.name.includes("Hamburger") || item.name.includes("Melt") || item.name.includes("Club")
+                || item.name.includes("Wrap");
         case "Meals":
-            return item.includes("Meal");
+            return item.name.includes("Meal");
         case "Tenders":
-            return item.includes("Tender");
+            return item.name.includes("Tender");
         case "Sides":
-            return item === "French Fries";
+            return item.name === "French Fries";
         case "Drinks":
-            return item.includes("Shake") || item.includes("Water") || item.includes("Drink");
+            return item.name.includes("Shake") || item.name.includes("Water") || item.name.includes("Drink");
         case "Desserts":
-            return item.includes("Sundae") || item.includes("Ice Cream") || item.includes("Float");
+            return item.name.includes("Sundae") || item.name.includes("Ice Cream") || item.name.includes("Float");
         default:
             return false;
     }
 };
-// This 
-// const fetchPriceAndAddToOrder = async (itemName: string) => {
-//   try {
-//       const quantity = inputValues[itemName] ?? 1;
 
-//       if (quantity <= 0) {
-//           return; // Do not add items with a quantity of 0 or less to the order
-//       }
-//       const response = await fetch(`/api/menu/menu_items/get-item-price?itemName=${itemName}`);
-  
-//       if (!response.ok) {
-//           throw new Error('Item not found or error fetching item price');
-//       }
-//       const data = await response.json();
-//       const price = parseFloat(data.price.replace('$', '')); // remove the $ sign from the price
-  
-      
-//   } catch (error) {
-//       console.error('Error fetching item price:', error);
-//       // Handle error (e.g., show a notification to the user)
-//   }
-// };
-
-
-const [menuItems, setMenuItems] = useState([]);
-
-const fetchMenuItemData = async (id: string) => {
-  try {
-      const response = await fetch(`/api/menu/ingredients/${id}`);
-      if (!response.ok) {
-          throw new Error('Error fetching menu item data');
-      }
-      return await response.json();
-      setMenuItems(data);
-  } catch (error) {
-      console.error('Error fetching menu item data:', error);
-      // Handle error (e.g., show a notification to the user)
-  }
-
-};
-
-useEffect(() => {
-  fetchMenuItemData('/api/menu/ingredients/[id].ts');
-}, []);
-
-
+// Placing all the items in their respective categories
 const categories = ["Burgers & Wraps", "Meals", "Tenders", "Sides", "Drinks", "Desserts"];
-
-
-// categories.map((category) => (
-//   <div key={category}>
-//       <h3 className="text-lg font-bold">{category}</h3>
-//       <div className="flex flex-col gap-2">
-//           {menuItems.filter(item => itemBelongsToCategory(item, category)).map((item) => (
-//               <div key={item} className="flex justify-between items-center">
-//                   <span>{item}</span>
-//                   <div className="flex items-center gap-2">
-//                   <Button onClick={() => fetchPriceAndAddToOrder(item)}>+</Button>
-//                   <Input
-//                       type="number"
-//                       value={inputValues[item] ?? order[item]?.quantity ?? 0}
-//                       onChange={(e) => setInputValues({ ...inputValues, [item]: parseInt(e.target.value) })}
-//                       min={0}
-//                       className="w-16"
-//                   />
-//                   </div>
-//               </div>
-//           ))}
-//       </div>
-//   </div>
-// )
-
-
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start p-4">
-      {/* This is the main container for the menu items */}
-      {categories.map((category) => (
-        <div key={category}>
+      <h1 className="text-2xl flex-col items-center"> Ordering Menu</h1>
+      {categories.map((category, index) => (
+        <div className="flex flex-col items-center">
           <h2 className="text-lg">{category}</h2>
           <div className="bg-white p-4 rounded-md border-black">
-            <div className="grid grid-cols-6 gap-x-12 gap-y-80">
+            <div style={{marginTop: '100px' }} className="grid grid-cols-6 gap-x-12 gap-y-16">
+              
               {menuItems
                 .filter((item) => itemBelongsToCategory(item, category))
-                .map((item) => (
-                  <div key={item} className="flex flex-col items-center gap-4">
-
-
-            
+                .map((item: any) => {
+                  return (
+                  <div key={item.name} className="flex flex-col items-center gap-4">
                     <Dialog>
                       <DialogTrigger asChild>
-
-                      <Button variant="outline">
-                      <img src={getImageForMenuItem(item)} alt={item} className="w-48 h-48 rounded-md" />
-                    </Button>
-
-
+                        <Button variant="outline" style={{backgroundColor: 'transparent', border: 'none'}} onClick={() => itemClicked(item)}>
+                          <img src={getImageForMenuItem(item.name)} alt={item.name} className="w-48 h-42 rounded-md" />
+                        </Button>
                       </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogContent style={{width: '600px', height: '600px'}}>
                         <DialogHeader></DialogHeader>
                         <div className="grid gap-4 py-4">
-                          <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="name" className="text-right">
-                              Quantity
-                            </Label>
-                            <Input id="name" defaultValue="1" className="col-span-3" />
+                          <div className="flex items-center justify-center gap-4">
+                          {selectedItem &&
+                          <img src={getImageForMenuItem(selectedItem.name)} alt={selectedItem.name} className="w-96 h-96 rounded-md" />
+                          }
                           </div>
                           <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="username" className="text-right">
-                              Add Ingredients
+                            <Label htmlFor="name" className="text-right mr-4">
+                              Ingredients:
                             </Label>
-                            <Input id="username" defaultValue="" className="col-span-3" />
+                            <div id="name" className="col-span-3">
+                              {/* {item.ingredients.join(', ')} */}
+                              <ul className="flex flex-row gap-1 mr-3">
+                                {item.ingredients.map((ingredient: string) => (
+                                  <li key={ingredient} className="text-sm">{ingredient}</li>
+                                ))}
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </DialogContent>
                     </Dialog>
-                  </div>
-                ))}
+                    <p style={{marginTop: '40px'}}>{item.name}</p>
+                    <p style={{marginBottom: '50px'}}> {item.price}</p>
+                  </div>)
+                })}
             </div>
           </div>
         </div>

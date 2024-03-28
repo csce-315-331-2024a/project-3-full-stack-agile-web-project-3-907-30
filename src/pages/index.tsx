@@ -47,7 +47,7 @@ export default function Home() {
   // Return something else for now
   return (
     <div>
-      <h1>Home</h1>
+      <h1></h1>
       < CustomerView />
     </div>
   );
