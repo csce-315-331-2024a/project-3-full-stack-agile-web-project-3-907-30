@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
-import { submitOrder } from "@/lib/utils";
+import { getEmployeeFromDatabase, submitOrder } from "@/lib/utils";
 import { getNextOrderId } from "@/lib/utils";
 import { useToast } from "../ui/use-toast";
+import useAuth from "@/hooks/useAuth";
+import { AuthHookType } from "@/lib/types";
 
 
 export interface OrderItem {
@@ -22,6 +24,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
   const [subTotal, setSubTotal] = useState(0);
   const [tax, setTax] = useState(0);
   const [total, setTotal] = useState(0);
+  const { account } = useAuth() as AuthHookType;
 
   const { toast } = useToast();
 
@@ -42,6 +45,8 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
 
   const employeeSubmitOrder = async () => {
 
+    const { email } = account!;
+    const employee = await getEmployeeFromDatabase(email);
     const nextOrderId = await getNextOrderId();
 
     toast({
@@ -49,7 +54,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
       description: nextOrderId,
     });
 
-    const res = await submitOrder(nextOrderId, total, 1, 1);
+    const res = await submitOrder(nextOrderId, total, 1, parseInt(employee.empId));
 
     if (res.status === 200) {
       toast({
@@ -105,7 +110,9 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
           </div>
         </div>
         <div className="flex justify-end mt-6">
-          <Button onClick={employeeSubmitOrder} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+          <Button onClick={async () => {
+            employeeSubmitOrder();
+          }} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Submit Order
           </Button>
         </div>
