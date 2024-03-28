@@ -35,7 +35,7 @@ export default function Home() {
   const [employee, setEmployee] = useState<Employee>();
 
   useEffect(() => {
-    console.log(account);
+    // console.log(account);
     if (account) {
       getEmployeeFromDatabase(account.email).then((data) => {
         setEmployee(data);
