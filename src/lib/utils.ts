@@ -3,6 +3,8 @@ import { twMerge } from "tailwind-merge";
 import { Customer, Employee } from "./types";
 import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
+import { useToast } from "../components/ui/use-toast";
+
 import db from "./db";
 
 // export async function getMenuItem(id: number) : Promise<MenuItem> {
@@ -180,8 +182,16 @@ export async function getCustomerFromDatabase(phone: string) {
  * @param {empId}  The ID of the employee creating the order
  * @returns {string} The current role of the employee.
  */
-export async function submitOrder(orderId: number, orderTotal: number, custId: number, empId: number) {
-  //orderId = 1000001;
+export async function submitOrder(orderId: number, orderTotal: number, custId: number, empId: number, toast: any) {
+  if (orderTotal <= 0) {
+    toast({
+      variant: 'destructive',
+      title: 'Cart is empty',
+      description: 'Please add items to your cart before submitting.',
+    });
+    return;
+  }
+
   const res = await fetch("/api/employee/submit-order", {
     method: "POST",
     headers: {

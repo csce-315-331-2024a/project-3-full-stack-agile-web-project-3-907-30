@@ -54,13 +54,14 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
       description: nextOrderId,
     });
 
-    const res = await submitOrder(nextOrderId, total, 1, parseInt(employee.empId));
+    const res = await submitOrder(nextOrderId, total, 1, parseInt(employee.empId), toast);
 
-    if (res.status === 200) {
-      toast({
-        title: 'Success!',
-        description: 'Your order has been placed!',
-      });
+    if (res) {
+      if (res.status === 200) {
+        toast({
+          title: 'Success!',
+          description: 'Your order has been placed!',
+        });
     } else {
       toast({
         variant: 'destructive',
@@ -68,6 +69,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
         description: 'There was a problem with your request.',
       });
     }
+  }
   }
 
   return (
