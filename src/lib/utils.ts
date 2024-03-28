@@ -172,29 +172,6 @@ export async function getCustomerFromDatabase(phone: string) {
 }
 
 /**
- * Get a customer from the database by phone number.
- *
- * @param {string} phone The phone number of the customer.
- * @returns {Customer} The customer from the database.
- */
-export async function getCustomerFromDatabase(phone: string) {
-  const res = await fetch("/api/customer/get", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ phone }),
-  });
-
-  if (res.status === 404) {
-    return null;
-  } else {
-    const data: Customer = await res.json();
-    return data;
-  }
-}
-
-/**
  * Submit an order.
  *
  * @param {orderId}  The ID of the new order
