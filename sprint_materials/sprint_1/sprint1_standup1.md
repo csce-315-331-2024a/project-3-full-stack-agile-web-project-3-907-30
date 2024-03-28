@@ -11,28 +11,26 @@
 - Gabriel Floreslovo
 
 ## Agenda
-- [ ] What we have finished, what we have left, and how we will do it
-- [ ] Conduct "fist of five" vote on the confidence in acheiving the sprint goal
-- [ ] Share any roadblocks that are interrupting progress 
+- [x] What we have finished, what we have left, and how we will do it
+- [x] Conduct "fist of five" vote on the confidence in acheiving the sprint goal
+- [x] Share any roadblocks that are interrupting progress 
 
 ## What we have completed
 - Implemented login and logout route and hooks - Adam
-- Employee POS system almost done, mising create - Akshay 
-- Clear order button - Akshay
-- Updated Oauth to match schema - Adam
+- Set up repository and have Next.js running - Margo
+- Have deployable site using Vercel - Margo
 
 ## Roadblocks
-- Figuring out how to use state in React
-- Configuring the database
+- Need to understand Next.js basics
 
 ## The plan for the rest of the sprint
-- Add customer managing view - Aaron
-- Hold off on update and delete functionality on employee POS view, should probably push to next sprint, should be with order viewing story - Akshay
-- For next sprints, assign stories rather than tasks, so there is less overlap
-- Start writing tests for our completed features - All
+- Have everyone begin on their deliverables - All
+- Investigate requirments and gather questions to ask Ritchey - Gabe
 
 ## Fist of five result 
-- average of ~4 -> high confidence
+- average of 3.5 -> decent confidence
 
 ## Summary
-Overall, up to today, we are making good progress. Our main roadblocks are still just setup bottlenecks; we are waiting for each other while we all figure out basics. However, our communication is strong and everybody is on the same page. Aaron will be taking on some other teammembers tasks to lighten their load because some of his tasks overlapped with others and were already completed. We are adding a new task to add a customer managing view to the manager page. Everyone will be completing their remaining tasks and begin adding tests as they develop. 
+Overall, we are getting started without too much issue. Of course, many of us are completely new to Next.js, and have not used neither Node or React, so it will take a little bit of time to learn. However, we do have some expertise in the group and they are taking a leaderhip role in steering us in the right direction coding-wise. The group does believe that it is very possible to finish all in a timely manner, but we do not have great confidence yet with this new framework. 
+
+## NO PREVIOUS STAND-UP MEETING

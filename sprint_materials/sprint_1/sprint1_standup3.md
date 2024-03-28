@@ -11,24 +11,24 @@
 - Gabriel Floreslovo
 
 ## Agenda
-- [ ] What we have finished, what we have left, and how we will do it
-- [ ] Conduct "fist of five" vote on the confidence in acheiving the sprint goal
-- [ ] Share any roadblocks that are interrupting progress 
+- [x] What we have finished, what we have left, and how we will do it
+- [x] Conduct "fist of five" vote on the confidence in acheiving the sprint goal
+- [x] Share any roadblocks that are interrupting progress 
 
 ## What we have completed
 - Made functions to query stock information and menu item information - Margo
 - Employee POS system almost done, mising create - Akshay 
 - Clear order button - Akshay
 - Updated Oauth to match schema - Adam
+- Updated schema and scripts - Gabe
 
 ## Roadblocks
 - Figuring out how to use state in React
-- Configuring the database
 
 ## The plan for the rest of the sprint
 - Add customer managing view - Aaron
 - Hold off on update and delete functionality on employee POS view, should probably push to next sprint, should be with order viewing story - Akshay
-- For next sprints, assign stories rather than tasks, so there is less overlap
+- For next sprints, assign stories rather than tasks, so there is less overlap - All
 - Start writing tests for our completed features - All
 
 ## Fist of five result 
