@@ -32,40 +32,41 @@ export interface AuthHookType {
 }
 
 export interface Customer {
-    id: number,
-    name: string,
-    phone: string,
-    num_orders: number,
-    total_spent: number
-};
+  cust_id: number;
+  cust_name: string;
+  phone_number: string;
+  num_orders: number;
+  total_spent: number;
+  points: number;
+}
 
 export interface InventoryItem {
-    id: number,
-    name: string,
-    price: number,
-    fill_level: number,
-    curr_level: number,
-    times_refilled: number,
-    date_refilled: Date,
-    has_dairy: boolean,
-    has_nuts: boolean,
-    has_eggs: boolean,
-    is_vegan: boolean,
-    is_halal: boolean
-};
+  id: number;
+  name: string;
+  price: number;
+  fill_level: number;
+  curr_level: number;
+  times_refilled: number;
+  date_refilled: Date;
+  has_dairy: boolean;
+  has_nuts: boolean;
+  has_eggs: boolean;
+  is_vegan: boolean;
+  is_halal: boolean;
+}
 
 export interface MenuItem {
-    id: number,
-    name: string,
-    price: number,
-    times_ordered: number
-;}
+  id: number;
+  name: string;
+  price: number;
+  times_ordered: number;
+}
 
 export interface Order {
-    id: number,
-    date: Date,
-    time: Date,
-    total: number,
-    cust_id: number,
-    emp_id: number
-};
+  id: number;
+  date: Date;
+  time: Date;
+  total: number;
+  cust_id: number;
+  emp_id: number;
+}

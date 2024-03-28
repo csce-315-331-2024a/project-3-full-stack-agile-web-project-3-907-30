@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { clear } from 'console';
+import { ScrollArea } from '../ui/scroll-area';
 import { InventoryItem, MenuItem } from '@/lib/types';
 import { toast } from '../ui/use-toast';
 
@@ -145,28 +146,32 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                 {loading ? (
                     <div>Loading menu items...</div>
                 ) : (
-                    categories.map((category) => (
-                        <div key={category}>
-                            <h3 className="text-lg font-bold">{category}</h3>
-                            <div className="flex flex-col gap-2">
-                                {menuItems.filter(item => itemBelongsToCategory(item, category)).map((item) => (
-                                    <div key={item} className="flex justify-between items-center">
-                                        <span>{item}</span>
-                                        <div className="flex items-center gap-2">
-                                            <Button onClick={() => fetchPriceAndAddToOrder(item)}>+</Button>
-                                            <Input
-                                                type="number"
-                                                value={inputValues[item] ?? order[item]?.quantity ?? 0}
-                                                onChange={(e) => setInputValues({ ...inputValues, [item]: parseInt(e.target.value) })}
-                                                min={0}
-                                                className="w-16"
-                                            />
-                                        </div>
+                    <ScrollArea className="h-[500px] pr-4">
+                        {
+                            categories.map((category) => (
+                                <div key={category}>
+                                    <h3 className="text-lg font-bold">{category}</h3>
+                                    <div className="flex flex-col gap-2">
+                                        {menuItems.filter(item => itemBelongsToCategory(item, category)).map((item) => (
+                                            <div key={item} className="flex justify-between items-center">
+                                                <span>{item}</span>
+                                                <div className="flex items-center gap-2">
+                                                    <Button onClick={() => fetchPriceAndAddToOrder(item)}>+</Button>
+                                                    <Input
+                                                        type="number"
+                                                        value={inputValues[item] ?? order[item]?.quantity ?? 0}
+                                                        onChange={(e) => setInputValues({ ...inputValues, [item]: parseInt(e.target.value) })}
+                                                        min={0}
+                                                        className="w-16"
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
-                        </div>
-                    ))
+                                </div>
+                            ))
+                        }
+                    </ScrollArea>
                 )}
             </CardContent>
         </Card>

@@ -1,5 +1,5 @@
 import useAuth from "@/hooks/useAuth";
-import { Employee, AuthHookType } from "@/lib/types";
+import { Employee, AuthHookType, Customer } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +34,7 @@ const Layout = ({ children }: LayoutProps) => {
 
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
+  const [customer, setCustomer] = useState<Customer>();
 
   useEffect(() => {
     if (account) {
@@ -45,6 +46,12 @@ const Layout = ({ children }: LayoutProps) => {
     }
   }, [account]);
 
+  useEffect(() => {
+    if (customer) {
+      console.log(customer);
+    }
+  }, [customer]);
+
   return (
     <>
       {router.asPath === '/' ? (
@@ -52,7 +59,7 @@ const Layout = ({ children }: LayoutProps) => {
           <div className="border-b">
             <div className="flex h-16 items-center justify-between px-4">
               <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm" priority />
-              <RewardsButton />
+              <RewardsButton setCustomer={setCustomer} />
             </div>
           </div>
           {children}

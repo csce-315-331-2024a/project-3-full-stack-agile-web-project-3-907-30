@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Employee } from "./types";
+import { Customer, Employee } from "./types";
 import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
 import db from "./db";
@@ -26,8 +26,8 @@ import db from "./db";
 // }
 
 // export async function getItemIngredients(id: number) : Promise<InventoryItem[]> {
-//     const sql = `SELECT inv_menu.inv_id, inv_name, inv_price::numeric, fill_level, current_level, times_refilled, date_refilled, has_dairy, has_nuts, has_eggs, is_vegan, is_halal 
-//     FROM inv_menu 
+//     const sql = `SELECT inv_menu.inv_id, inv_name, inv_price::numeric, fill_level, current_level, times_refilled, date_refilled, has_dairy, has_nuts, has_eggs, is_vegan, is_halal
+//     FROM inv_menu
 //     INNER JOIN inventory AT inventory.inv_id = inv_menu.inv_id
 //     WHERE inv_menu.menu_id = $1`;
 //     const types = [
@@ -54,47 +54,47 @@ import db from "./db";
 //     return res;
 // }
 
-export function isLowStock(curr: number, reqd: number) : boolean {
-    return curr < reqd;
+export function isLowStock(curr: number, reqd: number): boolean {
+  return curr < reqd;
 }
 
-export function rowToMenuItem(array: any[]) : MenuItem {
-    return {
-        id: array.at(0),
-        name: array.at(1),
-        price: array.at(2),
-        times_ordered: array.at(3)
-    } as MenuItem;
+export function rowToMenuItem(array: any[]): MenuItem {
+  return {
+    id: array.at(0),
+    name: array.at(1),
+    price: array.at(2),
+    times_ordered: array.at(3),
+  } as MenuItem;
 }
 
-export function rowToInventoryItem(array: any[]) : InventoryItem {
-    return {
-        id: array.at(0),
-        name: array.at(1),
-        price: array.at(2),
-        fill_level: array.at(3),
-        curr_level: array.at(4),
-        times_refilled: array.at(5),
-        date_refilled: array.at(6),
-        has_dairy: array.at(7),
-        has_nuts: array.at(8),
-        has_eggs: array.at(9),
-        is_vegan: array.at(10),
-        is_halal: array.at(11)
-    }
+export function rowToInventoryItem(array: any[]): InventoryItem {
+  return {
+    id: array.at(0),
+    name: array.at(1),
+    price: array.at(2),
+    fill_level: array.at(3),
+    curr_level: array.at(4),
+    times_refilled: array.at(5),
+    date_refilled: array.at(6),
+    has_dairy: array.at(7),
+    has_nuts: array.at(8),
+    has_eggs: array.at(9),
+    is_vegan: array.at(10),
+    is_halal: array.at(11),
+  };
 }
 
 // Prepare and execute statement in one function, use callback to parse values
 export async function executeStatement(
-    db: Pool,
-    sql: string, 
-    paramTypes: number[], 
-    params: any[]
-) : Promise<QueryResult> {
-    const statement = await db.prepare(sql, {paramTypes: paramTypes});
-    const res = await statement.execute({params: params});
-    await statement.close();
-    return res;
+  db: Pool,
+  sql: string,
+  paramTypes: number[],
+  params: any[]
+): Promise<QueryResult> {
+  const statement = await db.prepare(sql, { paramTypes: paramTypes });
+  const res = await statement.execute({ params: params });
+  await statement.close();
+  return res;
 }
 import { ListOrderedIcon } from "lucide-react";
 
@@ -145,6 +145,52 @@ export function getRole(employee: Employee) {
     return "Manager";
   } else {
     return "Employee";
+  }
+}
+
+/**
+ * Get a customer from the database by phone number.
+ *
+ * @param {string} phone The phone number of the customer.
+ * @returns {Customer} The customer from the database.
+ */
+export async function getCustomerFromDatabase(phone: string) {
+  const res = await fetch("/api/customer/get", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ phone }),
+  });
+
+  if (res.status === 404) {
+    return null;
+  } else {
+    const data: Customer = await res.json();
+    return data;
+  }
+}
+
+/**
+ * Get a customer from the database by phone number.
+ *
+ * @param {string} phone The phone number of the customer.
+ * @returns {Customer} The customer from the database.
+ */
+export async function getCustomerFromDatabase(phone: string) {
+  const res = await fetch("/api/customer/get", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ phone }),
+  });
+
+  if (res.status === 404) {
+    return null;
+  } else {
+    const data: Customer = await res.json();
+    return data;
   }
 }
 
