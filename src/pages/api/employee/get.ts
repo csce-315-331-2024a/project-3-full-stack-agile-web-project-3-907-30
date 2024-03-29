@@ -36,6 +36,7 @@ export default async function handler(
       empPicture: rows[0][3],
       isManager: rows[0][4],
       isAdmin: rows[0][5],
+      isVerified: rows[0][6],
     };
 
     res.status(200).json(employee);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { getAllEmployeesFromDatabase } from "@/lib/utils";
+import { getAllEmployeesFromDatabase, getVerifiedEmployeesFromDatabase } from "@/lib/utils";
 import { Employee } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
@@ -18,27 +18,27 @@ import { Skeleton } from "../ui/skeleton";
  * <ViewEmployees />
  */
 const ViewEmployees = () => {
-  
-    const numAccounts = 3;
-    // @ts-ignore
-    const [employees, setEmployees] = useState<Employee[]>([]);
-    const [loading, setLoading] = useState(true);
-    
-    useEffect(() => {
-      getAllEmployeesFromDatabase().then((data) => {
-            setEmployees(data);
-        });
-        setLoading(false);
-    }, [loading]);
+
+  const numAccounts = 3;
+  // @ts-ignore
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getVerifiedEmployeesFromDatabase().then((data) => {
+      setEmployees(data);
+    });
+    setLoading(false);
+  }, [loading]);
 
 
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Employees</CardTitle>
-          <CardDescription>The following employees have logged into the system.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-6">
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Current Employees</CardTitle>
+        <CardDescription>The following employees have logged into the system.</CardDescription>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-6">
         {loading ? (
           Array.from({ length: numAccounts }).map((_, index) => (
             <div className="flex items-center space-x-4" key={index}>
@@ -49,26 +49,27 @@ const ViewEmployees = () => {
               </div>
             </div>
           ))
-        ) : (
-            employees.map((employee) => (
-                <div key={employee.empEmail} className="flex justify-between gap-16 items-center">
-                  <div className="flex items-center gap-3">
-                    <Avatar>
-                      <AvatarImage src={employee.empPicture} alt="profile" />
-                      <AvatarFallback>{employee.empName[0]}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <p className="text-sm font-semibold">{employee.empName}</p>
-                      <p className="text-xs font-light">{employee.empEmail}</p>
-                    </div>
-                  </div>
+        ) : (employees.length > 0 ?
+          employees.map((employee) => (
+            <div key={employee.empEmail} className="flex justify-between gap-16 items-center">
+              <div className="flex items-center gap-3">
+                <Avatar>
+                  <AvatarImage src={employee.empPicture} alt="profile" />
+                  <AvatarFallback>{employee.empName[0]}</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col">
+                  <p className="text-sm font-semibold">{employee.empName}</p>
+                  <p className="text-xs font-light">{employee.empEmail}</p>
                 </div>
-              ))
+              </div>
+            </div>
+          )) : (
+            <p>No employees found.</p>
+          )
         )}
-        </CardContent>
-      </Card>
-    );
-  };
-  
-  export default ViewEmployees;
-  
+      </CardContent>
+    </Card>
+  );
+};
+
+export default ViewEmployees;

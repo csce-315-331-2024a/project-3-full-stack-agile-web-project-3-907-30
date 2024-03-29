@@ -7,17 +7,17 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { useToast } from "../ui/use-toast";
 
 /**
- * An employee management component that allows admins to manage their employees and managers. 
+ * An user management component that allows admins to manage their employees and managers. 
  * 
  * @component
  * @returns {JSX.Element} The employee management component.
  * 
  * @example
  * // Render a employee management component.
- * <EmployeeManagement />
+ * <UserManagement />
  */
-const EmployeeManagement = () => {
-  const roles = ['Employee', 'Manager', 'Admin'];
+const UserManagement = () => {
+  const roles = ['Unverified', 'Employee', 'Manager', 'Admin'];
 
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +32,7 @@ const EmployeeManagement = () => {
   }, [loading]);
 
   /**
-   * Updates the role of an employee.
+   * Updates the role of a user.
    * 
    * @param {string} email The email of the employee to update.
    * @param {string} role The new role of the employee.
@@ -40,16 +40,22 @@ const EmployeeManagement = () => {
   const updateRole = async (email: string, role: string) => {
     setIsSubmitting(true);
 
-    let isAdmin = role === 'Admin';
-    let isManager = role === 'Manager' || role === 'Admin';
-    let isEmployee = role === 'Employee' || role === 'Manager' || role === 'Admin';
+    let bools = {};
+    if (role === 'Unverified') {
+      bools = { email, isAdmin: false, isManager: false, isEmployee: false, isVerified: false };
+    } else {
+      let isAdmin = role === 'Admin';
+      let isManager = role === 'Manager' || role === 'Admin';
+      let isEmployee = role === 'Employee' || role === 'Manager' || role === 'Admin';
 
+      bools = { email, isAdmin, isManager, isEmployee, isVerified: true };
+    }
     const res = await fetch('/api/employee/set', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ email, isEmployee, isManager, isAdmin }),
+      body: JSON.stringify(bools),
     });
 
     if (res.status === 200) {
@@ -71,8 +77,8 @@ const EmployeeManagement = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Employees</CardTitle>
-        <CardDescription>Manage your employees at a glance.</CardDescription>
+        <CardTitle>Manage Users</CardTitle>
+        <CardDescription>Manage your users at a glance.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
         {
@@ -108,4 +114,4 @@ const EmployeeManagement = () => {
   );
 };
 
-export default EmployeeManagement;
+export default UserManagement;

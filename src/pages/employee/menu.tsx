@@ -26,7 +26,7 @@ const Menu = () => {
 
   return (
     <main className="flex w-full h-full items-start justify-start p-4">
-      {employee ? (
+      {employee && employee.isVerified ? (
         <h1 className="text-xl">Menu View</h1>
       ) : (loading ? (
         <h1 className="text-xl">Loading...</h1>
