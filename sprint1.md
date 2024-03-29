@@ -8,12 +8,12 @@ A product where a customer, manager, or employee can securely login and access t
 
 ### Sprint 1 Backlog
 **Legend: En = N hours estimated to complete, Sy = y status (0 not complete, 1 complete), Tn = N hours spent on the task**
-- [ ] Make Manager GUI login view that prompts a username and password and uses google oauth to make a secure login E3 S0 T0 - Adam
+- [x] Make Manager GUI login view that prompts a username and password and uses google oauth to make a secure login E3 S0 T3 - Adam
 - [X] Modify schema to hold Google OAuth necessary information E2 S0 T3 - Adam
 - [X] Implement login and logout routes and corresponding hooks E1 S0 T2 - Adam
 - [X] Managers can view all employee accounts that have logged into the POS system E2 S0 T1 - Aaron
 - [X] Managers can make accounts "employees" through a button click in the manager view E1  S0 T1 - Adam
-- [ ] Restrict access of manager page from employees E1 S0 T1 - Gabe
+- [x] Restrict access of manager page from employees E1 S0 T1 - Gabe
 - [X] Make an interactive Employee GUI POS system that allows employees to create an order E1  S0 T3 - Akshay
 - [X] Make functions that can create and view the orders in the database E1  S0 T1 - Akshay
 - [X] Have GUI at POS give the option of selecting the number of items that will be added to an order when creating it  E1  S0 T1 - Aaron

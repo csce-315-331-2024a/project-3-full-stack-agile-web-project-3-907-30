@@ -118,7 +118,7 @@ inv_menuMap = {
     1: [ [0,13,12,15,16,17,30], [3,2,1,1,2,1,3]],
     2: [ [0,27,12,11,17,29], [3,2,1,1,1,1]],
     3: [ [0,13,12,29,30], [3,2,2,2,2]],
-    4: [ [0,13,22,16,16,17,30], [3,2,1,1,2,1,3]],
+    4: [ [0,13,12,16,16,17,30], [3,2,1,1,2,1,3]],
     5: [ [0,13,12,11,29,30], [3,2,1,1,1,2]],
     6: [ [0,13,31,15,17], [3,2,1,1,1]],
     7: [ [0,13,14,31,32,15], [3,2,2,1,1,1]],
@@ -222,7 +222,7 @@ with open("scripts/customers.sql", "w", newline='')as writeFile :
         sha256 = hashlib.sha256() 
         sha256.update(phoneBytes)
         phoneHash = sha256.hexdigest()
-        if(i < 399) : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneHash+"'"+"),\n")
+        if(i < 399) : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneNumber+"'"+"),\n")
         else : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneHash+"'"+");\n")
 
 # populate inv_menu_items join table

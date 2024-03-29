@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import useAuth from '@/hooks/useAuth';
 import { Employee, AuthHookType } from '@/lib/types';
 import { getEmployeeFromDatabase } from '@/lib/utils';
+import MenuOrder, { OrderItem } from '@/components/employee/order-menu';
+import OrderReceipt from '@/components/employee/order-receipt';
 
 /**
  * The employee view page. This page is only accessible to users that are employees or managers.
@@ -13,6 +15,7 @@ const EmployeeOrderPage = () => {
 
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
 
   useEffect(() => {
     if (account) {
@@ -25,9 +28,17 @@ const EmployeeOrderPage = () => {
   }, [account]);
 
   return (
-    <main className="flex w-full h-full items-start justify-start p-4">
+    <main className="flex flex-col w-full h-full items-start justify-start p-4 gap-8">
+      <h1 className="text-xl">Welcome, {account?.name}</h1>
       {employee ? (
-        <h1 className="text-xl">Employee View</h1>
+        <div className="flex flex-row items-stretch w-full h-full gap-4">
+          <div className="w-1/2 h-full">
+            <MenuOrder setOrderItems={setOrderItems} clearOrder={() => setOrderItems([])} />
+          </div>
+          <div className="w-1/2 h-full">
+            <OrderReceipt items={orderItems} clearOrder={() => setOrderItems([])} />
+          </div>
+        </div>
       ) : (loading ? (
         <h1 className="text-xl">Loading...</h1>
       ) : (
