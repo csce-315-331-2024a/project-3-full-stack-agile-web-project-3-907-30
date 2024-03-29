@@ -62,7 +62,7 @@ const Layout = ({ children }: LayoutProps) => {
               <div className="flex gap-4">
                 <Button variant="outline" asChild>
                   <Link href="/employee/login">
-                    I'm an Employee
+                    I&apos;m an Employee
                   </Link>
                 </Button>
                 <RewardsButton setCustomer={setCustomer} />
