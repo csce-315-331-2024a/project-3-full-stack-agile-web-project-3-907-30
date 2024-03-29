@@ -2,12 +2,12 @@ UPDATE customers AS cus
 SET total_spent = (
     SELECT SUM(order_total)
     FROM orders AS od
-    WHERE od.cust_id = cus.id
+    WHERE od.cust_id = cus.cust_id
 )
 WHERE EXISTS (
     SELECT 1
     FROM orders AS od
-    WHERE od.cust_id = cus.id
+    WHERE od.cust_id = cus.cust_id
 );
 
 --test

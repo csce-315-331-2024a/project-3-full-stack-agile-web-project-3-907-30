@@ -57,17 +57,17 @@ export interface InventoryItem {
 }
 
 export interface MenuItem {
-  id: number;
-  name: string;
-  price: number;
-  times_ordered: number;
-}
+    id: number,
+    name: string,
+    price: number,
+    times_ordered: number
+};
 
 export interface Order {
-  id: number;
-  date: Date;
-  time: Date;
-  total: number;
-  cust_id: number;
-  emp_id: number;
-}
+    id: number,
+    date: Date,
+    time: Date,
+    total: number,
+    cust_id: number,
+    emp_id: number
+};

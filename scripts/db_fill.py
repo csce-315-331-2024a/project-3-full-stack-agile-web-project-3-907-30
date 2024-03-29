@@ -6,7 +6,7 @@ import hashlib
 
 # inventory : [ invId, inventoryName, inventoryPrice, fillLevel, currentLevel, timesRefilled, 
 #             dateRefilled, hasDairy, hasNuts, hasEggs, isVegan, isHalal]
-
+# OMIT inventoryMap i: row[4], it is randomized now
 inventoryMap = {
     # utensils and miscellanious
     0: ["napkin", 0.01, 10000, 5000, 200, "2023-12-25", False, False, False, True, True],
@@ -93,15 +93,15 @@ menuMap = {
     26: ["Tuna Melt", 7.99, 20000]
 }
 
-# employees : [ employeeId, employeeName, email, isManager, isAdmin]
+# employees : [ employeeId, employeeName, email, picutre isManager, isAdmin]
 
 employeeMap = {
-    0: ["Gabriel Floreslovo", "gabr13lenstation@tamu.edu", True, True],
-    1: ["Akshay Belhe", "abelhe8900@tamu.edu", True, True],
-    2: ["Aaron Mathews", "aaronmathews@tamu.edu", True, True],
-    3: ["Chris Avila", "cristopavila@tamu.edu", True, True],
-    4: ["Margo Gongora", "ngongora@tamu.edu", True, True],
-    5: ["Adam Teo", "adamt321@tamu.edu", True, True],
+    0: ["Gabriel Floreslovo", "gabr13lenstation@tamu.edu", "", True, True],
+    1: ["Akshay Belhe", "abelhe8900@tamu.edu", "",True, True],
+    2: ["Aaron Mathews", "aaronmathews@tamu.edu", "", True, True],
+    3: ["Chris Avila", "cristopavila@tamu.edu", "", True, True],
+    4: ["Margo Gongora", "ngongora@tamu.edu", "", True, True],
+    5: ["Adam Teo", "adamt321@tamu.edu", "", True, True],
     # 6: ["Tom Hanks", "a57d651965c260432aa0c7db2c3fc1721cff9597598a13320caf4b58d45ad7c5", False],
     # 7: ["Zinadine Zidane", "90a29fcd1a03013f9aecdefb692bd2d1018922ec056de895e8a826674b173276", False],
     # 8: ["Guy Fieri", "73475b8d813be68df73cc2fcc649b8c593876d994df9b6cc658a792471b16b12", False],
@@ -118,7 +118,7 @@ inv_menuMap = {
     1: [ [0,13,12,15,16,17,30], [3,2,1,1,2,1,3]],
     2: [ [0,27,12,11,17,29], [3,2,1,1,1,1]],
     3: [ [0,13,12,29,30], [3,2,2,2,2]],
-    4: [ [0,13,22,16,16,17,30], [3,2,1,1,2,1,3]],
+    4: [ [0,13,12,16,16,17,30], [3,2,1,1,2,1,3]],
     5: [ [0,13,12,11,29,30], [3,2,1,1,1,2]],
     6: [ [0,13,31,15,17], [3,2,1,1,1]],
     7: [ [0,13,14,31,32,15], [3,2,2,1,1,1]],
@@ -189,8 +189,8 @@ with open("scripts/employees.sql", "w", newline ='') as writeFile :
     writeFile.write("VALUES\n")
 
     for i, (ID, row) in enumerate(employeeMap.items()):
-        if(i < len(employeeMap) - 1) : writeFile.write("("+str(ID)+","+"'"+row[0]+"'"+","+"'"+row[1]+"'"+","+str(row[2])+"),\n")
-        else : writeFile.write("("+str(ID)+","+"'"+row[0]+"'"+","+"'"+row[1]+"'"+","+str(row[2])+");\n")
+        if(i < len(employeeMap) - 1) : writeFile.write("("+str(ID)+","+"'"+row[0]+"'"+","+"'"+row[1]+"'"+","+"'"+row[2]+"'"+","+"'"+str(row[3])+"'"+","+"'"+str(row[4])+"'"+"),\n")
+        else : writeFile.write("("+str(ID)+","+"'"+row[0]+"'"+","+"'"+row[1]+"'"+","+"'"+row[2]+"'"+","+"'"+str(row[3])+"'"+","+"'"+str(row[4])+"'"+");\n")
 
 # populate inventory table
 with open("scripts/inventory.sql", "w", newline = '') as writeFile :
@@ -202,11 +202,11 @@ with open("scripts/inventory.sql", "w", newline = '') as writeFile :
         else : timesFilled = random.randint(100,200)
 
         if(i < len(inventoryMap) - 1) : writeFile.write("("+str(ID)+","+"'"+row[0]+"'"+","+str(row[1])+
-            ","+str(row[2])+","+str(row[3])+","+str(timesFilled)+","+"'"+str(row[4])+"'"+","+row[5]+","+str(row[6])+","+str(row[7])+
-            ","+str(row[8])+","+str(row[9])+"),\n")
+            ","+str(row[2])+","+str(row[3])+","+str(timesFilled)+","+"'"+row[5]+"'"+","+"'"+str(row[6])+"'"+","+"'"+str(row[7])+
+            "'"+","+"'"+str(row[8])+"'"+","+"'"+str(row[9])+"'"+","+"'"+str(row[10])+"'"+"),\n")
         else : writeFile.write("("+str(ID)+","+"'"+row[0]+"'"+","+str(row[1])+
-            ","+str(row[2])+","+str(row[3])+","+str(timesFilled)+","+"'"+str(row[4])+"'"+","+row[5]+","+str(row[6])+","+str(row[7])+
-            ","+str(row[8])+","+str(row[9])+");\n")
+            ","+str(row[2])+","+str(row[3])+","+str(timesFilled)+","+"'"+row[5]+"'"+","+"'"+str(row[6])+"'"+","+"'"+str(row[7])+
+            "'"+","+"'"+str(row[8])+"'"+","+"'"+str(row[9])+"'"+","+"'"+str(row[10])+"'"+");\n")
 
 
 # populate customers table
@@ -222,7 +222,7 @@ with open("scripts/customers.sql", "w", newline='')as writeFile :
         sha256 = hashlib.sha256() 
         sha256.update(phoneBytes)
         phoneHash = sha256.hexdigest()
-        if(i < 399) : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneHash+"'"+"),\n")
+        if(i < 399) : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneNumber+"'"+"),\n")
         else : writeFile.write("("+str(i)+","+"'"+customerName+"'"+","+"'"+phoneHash+"'"+");\n")
 
 # populate inv_menu_items join table

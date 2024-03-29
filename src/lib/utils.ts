@@ -3,8 +3,6 @@ import { twMerge } from "tailwind-merge";
 import { Customer, Employee } from "./types";
 import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
-import { useToast } from "../components/ui/use-toast";
-
 import db from "./db";
 
 // export async function getMenuItem(id: number) : Promise<MenuItem> {
