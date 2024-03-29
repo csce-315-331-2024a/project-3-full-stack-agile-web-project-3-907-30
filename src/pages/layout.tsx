@@ -65,7 +65,7 @@ const Layout = ({ children }: LayoutProps) => {
           {children}
           <Toaster />
         </main >
-      ) : router.asPath === '/employee/login' ? (
+      ) : router.asPath === '/employee/login' || router.asPath === '/employee/menu' ? (
         <>
           {children}
           <Toaster />
