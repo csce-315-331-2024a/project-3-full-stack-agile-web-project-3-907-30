@@ -20,6 +20,19 @@ export interface OrderReceiptProps {
   clearOrder: () => void;
 }
 
+/**
+ * Displays an order receipt with the order details, subtotal, tax, and total cost. Allows for clearing and submitting orders.
+ * @component
+ * @example
+ *   <OrderReceipt items={sample_items} clearOrder={clearOrder} />
+ * @prop {array} items - An array of objects representing the items in the order, each with a name, price, and quantity.
+ * @prop {function} clearOrder - A function to clear the current order.
+ * @description
+ *   - Uses a state variable to track the subtotal, tax, and total cost of the order.
+ *   - Uses the useAuth and useToast hooks to retrieve the current employee's information and display toast notifications.
+ *   - Uses the useEffect hook to calculate the subtotal, tax, and total cost whenever the items array changes.
+ *   - Uses the employeeSubmitOrder function to submit the order with the current employee's email address and display a toast notification with the order ID.
+ */
 const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
   const [subTotal, setSubTotal] = useState(0);
   const [tax, setTax] = useState(0);
@@ -43,6 +56,19 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
 
 
 
+/**
+   * Submits an order for the current employee with the given email address and displays a toast notification with the order ID.
+   * @example
+   * submitOrder('johndoe@example.com', 100)
+   * @param {string} email - The email address of the current employee.
+   * @param {number} total - The total cost of the order.
+   * @returns {boolean} Returns true if the order was successfully submitted, false otherwise.
+   * @description
+   *   - Retrieves the employee's information from the database using their email address.
+   *   - Gets the next available order ID.
+   *   - Displays a toast notification with the order ID.
+   *   - Submits the order with the given order ID, total cost, employee ID, and toast notification function.
+   */
   const employeeSubmitOrder = async () => {
 
     const { email } = account!;
