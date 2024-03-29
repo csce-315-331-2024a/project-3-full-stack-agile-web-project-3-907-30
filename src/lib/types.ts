@@ -7,6 +7,7 @@ export interface Employee {
   empPicture: string;
   isManager: boolean;
   isAdmin: boolean;
+  isVerified: boolean;
 }
 
 export interface GoogleAccount {

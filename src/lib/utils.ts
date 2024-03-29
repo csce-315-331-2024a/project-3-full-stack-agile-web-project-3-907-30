@@ -122,12 +122,27 @@ export async function getEmployeeFromDatabase(email: string) {
 }
 
 /**
- * Get all employees from the database.
+ * Get all employees, including managers and admins from the database.
  *
  * @returns {Promise<Employee[]>} All employees from the database.
  */
 export async function getAllEmployeesFromDatabase() {
   const res = await fetch("/api/employee/get-all");
+  const data: Employee[] = await res.json();
+  return data;
+}
+
+/**
+ * Get verified employees from the database.
+ *
+ * @returns {Promise<Employee[]>} Get verified employees from the database.
+ */
+export async function getVerifiedEmployeesFromDatabase() {
+  const res = await fetch("/api/employee/get-employees");
+
+  if (res.status === 404) {
+    return [];
+  }
   const data: Employee[] = await res.json();
   return data;
 }
@@ -143,8 +158,10 @@ export function getRole(employee: Employee) {
     return "Admin";
   } else if (employee.isManager) {
     return "Manager";
-  } else {
+  } else if (employee.isVerified) {
     return "Employee";
+  } else {
+    return "Unverified";
   }
 }
 
@@ -180,8 +197,22 @@ export async function getCustomerFromDatabase(phone: string) {
  * @param {empId}  The ID of the employee creating the order
  * @returns {string} The current role of the employee.
  */
-export async function submitOrder(orderId: number, orderTotal: number, custId: number, empId: number) {
-  //orderId = 1000001;
+export async function submitOrder(
+  orderId: number,
+  orderTotal: number,
+  custId: number,
+  empId: number,
+  toast: any
+) {
+  if (orderTotal <= 0) {
+    toast({
+      variant: "destructive",
+      title: "Cart is empty",
+      description: "Please add items to your cart before submitting.",
+    });
+    return;
+  }
+
   const res = await fetch("/api/employee/submit-order", {
     method: "POST",
     headers: {

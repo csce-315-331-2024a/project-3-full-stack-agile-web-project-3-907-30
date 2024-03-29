@@ -45,7 +45,6 @@ const CustomerView = () => {
     const res = await fetch(`/api/menu/ingredients/${itemID}`)
     const data = await res.json();
     const ingredientNames = data.map((ingredient: any) => ingredient.name);
-    console.log(ingredientNames);
     return ingredientNames;
   };
 

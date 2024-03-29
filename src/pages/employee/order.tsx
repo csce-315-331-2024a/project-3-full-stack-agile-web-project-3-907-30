@@ -30,7 +30,7 @@ const EmployeeOrderPage = () => {
   return (
     <main className="flex flex-col w-full h-full items-start justify-start p-4 gap-8">
       <h1 className="text-xl">Welcome, {account?.name}</h1>
-      {employee ? (
+      {employee?.isVerified ? (
         <div className="flex flex-row items-stretch w-full h-full gap-4">
           <div className="w-1/2 h-full">
             <MenuOrder setOrderItems={setOrderItems} clearOrder={() => setOrderItems([])} />

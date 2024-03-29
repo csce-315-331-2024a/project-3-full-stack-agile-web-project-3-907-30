@@ -8,7 +8,6 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const { id } = req.query;
-    console.log(id);
     const rows = await executeStatement(
         db,
         `SELECT inv_menu.inv_id, inv_name, inv_price::numeric, fill_level, current_level, times_refilled, date_refilled, has_dairy, has_nuts, has_eggs, is_vegan, is_halal FROM inv_menu INNER JOIN inventory ON inventory.inv_id = inv_menu.inv_id WHERE inv_menu.item_id = ($1)`, 
