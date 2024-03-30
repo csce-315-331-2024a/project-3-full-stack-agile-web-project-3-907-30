@@ -40,12 +40,41 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
+    // Get and store customer information 
     const customer = await getCustomerFromDatabase(data.phone);
-    console.log(customer?.cust_id);
+    if(customer !== null) {
+      localStorage.setItem('customerId', customer!.cust_id.toString());
+      // console.log(localStorage.getItem('customerId'));
+      localStorage.setItem('customerName', customer!.cust_name);
+      console.log(localStorage.getItem('customerName'));
+      localStorage.setItem('customerPhoneNumber', customer!.phone_number);
+      // console.log(localStorage.getItem('customerPhoneNumber'));
+      localStorage.setItem('customerNumOrders', customer!.num_orders.toString());
+      // console.log(localStorage.getItem('customerNumOrders'));
+      localStorage.setItem('customerTotalSpent', customer!.total_spent.toString());
+      // console.log(localStorage.getItem('customerTotalSpent'));
+      localStorage.setItem('customerPoints', customer!.points.toString());
+      console.log(localStorage.getItem('customerPoints'));
+    }
+    else {
+      localStorage.setItem('customerId', 'no customer ID');
+      // console.log(localStorage.getItem('customerId'));
+      localStorage.setItem('customerName', 'no customer');
+      // console.log(localStorage.getItem('customerName'));
+      localStorage.setItem('customerPhoneNumber', 'no customer phone number');
+      // console.log(localStorage.getItem('customerPhoneNumber'));
+      localStorage.setItem('customerNumOrders', 'no customer orders');
+      // console.log(localStorage.getItem('customerNumOrders'));
+      localStorage.setItem('customerTotalSpent', 'no customer total spent');
+      // console.log(localStorage.getItem('customerTotalSpent'));
+      localStorage.setItem('customerPoints', 'no customer points');
+      // console.log(localStorage.getItem('customerPoints'));
+    }
+    let customerName: string = localStorage.getItem('customerName')!;
     if (customer) {
       toast({
         title: "Success!",
-        description: "You have successfully signed in.",
+        description: `Welcome back, ${customerName}`,
       });
 
       // reset the form and close the dialog

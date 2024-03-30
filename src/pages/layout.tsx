@@ -16,6 +16,7 @@ import Link from "next/link"
 import { Toaster } from "@/components/ui/toaster";
 import { Skeleton } from "@/components/ui/skeleton";
 import RewardsButton from "@/components/customer/rewards-button";
+import CustomerInfo from "@/components/customer/customer-info";
 
 interface LayoutProps {
   children: ReactNode;
@@ -31,6 +32,7 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const { login, logout, account } = useAuth() as AuthHookType;
+  // console.log(localStorage.getItem('customerName'));
 
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
@@ -59,6 +61,7 @@ const Layout = ({ children }: LayoutProps) => {
           <div className="border-b">
             <div className="flex h-16 items-center justify-between px-4">
               <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm" priority />
+              <CustomerInfo/>
               <RewardsButton setCustomer={setCustomer} />
             </div>
           </div>
