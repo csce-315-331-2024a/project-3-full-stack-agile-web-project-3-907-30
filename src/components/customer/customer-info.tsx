@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 
+// Make function that periodically checks if localStorage has changed, and re-renders component if it has
 const useLocalStorageChangeListener = () => {
     const [localStorageChange, updateLocalStorageChange] = useState(false);
 
@@ -48,10 +49,9 @@ const CustomerInfo = () => {
     let customerName: string | null;
     let customerPoints: string | null;
 
-    const [hydrated, setHydrated] = useState(false);
-
     // This fixes 'hydration' issue, where the client side has not loaded the component, but on the server side
     // the logic is already working; causing the renders to not match
+    const [hydrated, setHydrated] = useState(false);
     useEffect(() => {
         // When component mounts, set hydrated
         setHydrated(true);
