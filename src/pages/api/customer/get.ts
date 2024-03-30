@@ -5,7 +5,7 @@ import { DataTypeOIDs } from "postgresql-client";
 import { sha256 } from "js-sha256";
 
 /**
- * Get a customer from the database by hashed phone number.
+ * Get a customer from the database by hashed phone number, and save customer information.
  *
  * @param {NextApiRequest} req Request object
  * @param {NextApiResponse} res Response object
