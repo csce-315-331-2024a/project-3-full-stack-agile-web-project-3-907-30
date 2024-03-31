@@ -32,7 +32,6 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
   const { login, logout, account } = useAuth() as AuthHookType;
-  // console.log(localStorage.getItem('customerName'));
 
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
@@ -47,12 +46,6 @@ const Layout = ({ children }: LayoutProps) => {
       });
     }
   }, [account]);
-
-  useEffect(() => {
-    if (customer) {
-      console.log(customer);
-    }
-  }, [customer]);
 
   return (
     <>

@@ -11,17 +11,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   const { orderId, orderTotal, custId, empId, chosenItems, quantities } = req.body;
 
   // Parse the string values to their respective types
-    const orderIdInt = parseInt(orderId, 10);
-    const custIdInt = parseInt(custId, 10);
-    const empIdInt = parseInt(empId, 10);
-    const orderTotalMoney = parseFloat(orderTotal); // might have issues here
+  const orderIdInt = parseInt(orderId, 10);
+  const custIdInt = parseInt(custId, 10);
+  const empIdInt = parseInt(empId, 10);
+  const orderTotalMoney = parseFloat(orderTotal); // might have issues here
 
 
     try {
@@ -47,8 +47,6 @@ await selectStatement.close();
     const rows = selectStatementResult.rows!;
     const menuItemsOrderedById: string[] = rows.map((row) => row[0]);
     
-    console.log(menuItemsOrderedById);
-
     let parametersArray = [];
     
     for (let i = 0; i < chosenItems.length; i++){
@@ -66,8 +64,6 @@ await selectStatement.close();
     }
     updateStatementString =  updateStatementString + ` ($${2*(parametersArray.length/2)-1}, $${2*(parametersArray.length/2)})`;
     
-    console.log(updateStatementString);
-    console.log(parametersArray);
     const updateStatement = await db.prepare(updateStatementString);
 
   await updateStatement.execute({
@@ -77,7 +73,7 @@ await selectStatement.close();
   await updateStatement.close();
     res.status(200).json({ message: 'Order submitted successfully' });
   } catch (error) {
-    console.error('Error submitting order:', error);
-    res.status(500).json({ error: 'Error submitting order' });
+    console.error("Error submitting order:", error);
+    res.status(500).json({ error: "Error submitting order" });
   }
 }
