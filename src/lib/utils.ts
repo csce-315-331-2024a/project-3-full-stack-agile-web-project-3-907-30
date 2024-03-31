@@ -197,13 +197,7 @@ export async function getCustomerFromDatabase(phone: string) {
  * @param {empId}  The ID of the employee creating the order
  * @returns {string} The current role of the employee.
  */
-export async function submitOrder(
-  orderId: number,
-  orderTotal: number,
-  custId: number,
-  empId: number,
-  toast: any
-) {
+export async function submitOrder(orderId: number, orderTotal: number, custId: number, empId: number, toast: any, chosenItems: any, quantities: any) {
   if (orderTotal <= 0) {
     toast({
       variant: "destructive",
@@ -218,7 +212,7 @@ export async function submitOrder(
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ orderId, orderTotal, custId, empId }),
+    body: JSON.stringify({ orderId, orderTotal, custId, empId, chosenItems, quantities }),
   });
   return res;
 }

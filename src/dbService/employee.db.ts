@@ -115,6 +115,6 @@ export async function loginGoogleAccount(data: GoogleAccount) {
       await addNewEmployee(data);
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
