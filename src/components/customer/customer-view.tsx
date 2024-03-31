@@ -16,6 +16,7 @@ import { set } from 'zod';
 
 
 
+
 // Order Item types
 export interface OrderItem {
   name: string;
@@ -40,6 +41,9 @@ const itemClicked = (item: any) => {
 };
 
 
+
+
+
 // Getting the Ingredient names using the ItemID
 const getIngredientsUsingItemID = async (itemID: number) =>  {
   const res = await fetch(`/api/menu/ingredients/${itemID}`)
@@ -51,6 +55,7 @@ const getIngredientsUsingItemID = async (itemID: number) =>  {
 
 // Fetching the Menu Items and their prices
 useEffect(() => {
+  
   fetch('/api/menu/menu_items/get-all-items-and-price')
       .then((res) => res.json())
       .then(async (data) => {
@@ -95,12 +100,12 @@ const getImageForMenuItem = (itemName: string) => {
 const categories = ["Burgers & Wraps", "Meals", "Tenders", "Sides", "Drinks", "Desserts"];
 
   return (
-    <div className="w-full h-full flex flex-col justify-start items-start p-4">
+    <div style={{backgroundColor: "#5a0000 "}} className=" w-full h-full flex flex-col justify-start items-start p-4">
       <h1 className="text-2xl flex-col items-center"> Ordering Menu</h1>
       {categories.map((category, index) => (
         <div className="flex flex-col items-center">
-          <h2 className="text-lg">{category}</h2>
-          <div className="bg-white p-4 rounded-md border-black">
+          <h2 className="text-lg text-white">{category}</h2>
+          <div className="bg-white p-1 rounded-md border-white border-4 ">
             <div style={{marginTop: '100px' }} className="grid grid-cols-6 gap-x-12 gap-y-16">
               
               {menuItems
@@ -138,8 +143,8 @@ const categories = ["Burgers & Wraps", "Meals", "Tenders", "Sides", "Drinks", "D
                         </div>
                       </DialogContent>
                     </Dialog>
-                    <p style={{marginTop: '40px'}}>{item.name}</p>
-                    <p style={{marginBottom: '50px'}}> {item.price}</p>
+                    <p style={{marginTop: '60px'}}>{item.name}</p>
+                    <p style={{marginBottom: '30px'}}> {item.price}</p>
                   </div>)
                 })}
             </div>
