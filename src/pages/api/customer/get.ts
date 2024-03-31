@@ -5,7 +5,7 @@ import { DataTypeOIDs } from "postgresql-client";
 import { sha256 } from "js-sha256";
 
 /**
- * Get a customer from the database by hashed phone number.
+ * Get a customer from the database by hashed phone number, and save customer information.
  *
  * @param {NextApiRequest} req Request object
  * @param {NextApiResponse} res Response object
@@ -37,7 +37,7 @@ export default async function handler(
       phone_number: rows[0][2],
       num_orders: rows[0][3],
       total_spent: rows[0][4],
-      points: rows[0][5],
+      points: rows[0][5]
     };
 
     res.status(200).json(customer);

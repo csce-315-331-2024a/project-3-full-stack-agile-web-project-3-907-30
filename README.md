@@ -2,3 +2,4 @@
 
 # SCRUM Specifications:
  - Daily Stand-ups take place 15 minutes before each class/lab section of the week. 
+   - Monday, Tuesday, Wednesday, Thursday 

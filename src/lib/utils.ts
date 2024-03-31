@@ -3,8 +3,6 @@ import { twMerge } from "tailwind-merge";
 import { Customer, Employee } from "./types";
 import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
-import { useToast } from "../components/ui/use-toast";
-
 import db from "./db";
 
 // export async function getMenuItem(id: number) : Promise<MenuItem> {
@@ -124,12 +122,27 @@ export async function getEmployeeFromDatabase(email: string) {
 }
 
 /**
- * Get all employees from the database.
+ * Get all employees, including managers and admins from the database.
  *
  * @returns {Promise<Employee[]>} All employees from the database.
  */
 export async function getAllEmployeesFromDatabase() {
   const res = await fetch("/api/employee/get-all");
+  const data: Employee[] = await res.json();
+  return data;
+}
+
+/**
+ * Get verified employees from the database.
+ *
+ * @returns {Promise<Employee[]>} Get verified employees from the database.
+ */
+export async function getVerifiedEmployeesFromDatabase() {
+  const res = await fetch("/api/employee/get-employees");
+
+  if (res.status === 404) {
+    return [];
+  }
   const data: Employee[] = await res.json();
   return data;
 }
@@ -145,8 +158,10 @@ export function getRole(employee: Employee) {
     return "Admin";
   } else if (employee.isManager) {
     return "Manager";
-  } else {
+  } else if (employee.isVerified) {
     return "Employee";
+  } else {
+    return "Unverified";
   }
 }
 
@@ -185,9 +200,9 @@ export async function getCustomerFromDatabase(phone: string) {
 export async function submitOrder(orderId: number, orderTotal: number, custId: number, empId: number, toast: any, chosenItems: any, quantities: any) {
   if (orderTotal <= 0) {
     toast({
-      variant: 'destructive',
-      title: 'Cart is empty',
-      description: 'Please add items to your cart before submitting.',
+      variant: "destructive",
+      title: "Cart is empty",
+      description: "Please add items to your cart before submitting.",
     });
     return;
   }

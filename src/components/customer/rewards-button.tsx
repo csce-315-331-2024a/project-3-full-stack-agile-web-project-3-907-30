@@ -41,7 +41,6 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     const customer = await getCustomerFromDatabase(data.phone);
-
     if (customer) {
       toast({
         title: "Success!",
