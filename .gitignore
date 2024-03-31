@@ -45,3 +45,9 @@ next-env.d.ts
 /scripts/menu_pairs.sql
 /scripts/orders.sql
 /scripts/orders_menu.sql
+
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
