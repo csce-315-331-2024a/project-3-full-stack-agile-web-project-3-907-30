@@ -109,7 +109,7 @@ const CustomerView = () => {
                     <div key={item.name} className="flex flex-col items-center gap-4">
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="outline" style={{ backgroundColor: 'transparent', border: 'none' }} onClick={() => itemClicked(item)}>
+                          <Button data-testid={item.name} variant="outline" style={{ backgroundColor: 'transparent', border: 'none' }} onClick={() => itemClicked(item)}>
                             <img src={getImageForMenuItem(item.name)} alt={item.name} className="w-48 h-42 rounded-md" />
                           </Button>
                         </DialogTrigger>

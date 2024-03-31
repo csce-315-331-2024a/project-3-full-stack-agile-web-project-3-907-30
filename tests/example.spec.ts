@@ -19,19 +19,28 @@ import exp from 'constants';
 // });
 
 test('sign in for rewards button', async ({ page }) => {
-  await page.goto('https://project-3-full-stack-agile-web-project-3-907-30-g4abpv4b4.vercel.app/');
+  await page.goto('http://127.0.0.1:3000');
 
   await expect(page.getByRole('button',{name: 'Sign-in for Rewards'})).toBeVisible;
+
+  const rewards_button = page.getByTestId('sign-in');
+
+  await rewards_button.click();
+
 });
 
 test('Ordering Menu is there?', async ({ page }) => {
-  await page.goto('https://project-3-full-stack-agile-web-project-3-907-30-g4abpv4b4.vercel.app/');
+  await page.goto('http://127.0.0.1:3000');
 
   await expect(page.getByRole('heading',{name: 'Ordering Menu'})).toBeVisible;
 });
 
 test('double stack burger button', async ({ page }) => {
-  await page.goto('https://project-3-full-stack-agile-web-project-3-907-30-g4abpv4b4.vercel.app/');
+  await page.goto('http://127.0.0.1:3000');
 
-  await expect(page.getByRole('button',{name: 'Double Stack Burger'})).toBeVisible;
+  await expect(page.getByTestId('Double Stack Burger')).toBeVisible;
+
+  const double_stack_button = page.getByTestId('Double Stack Burger');
+
+  await double_stack_button.click();
 });
