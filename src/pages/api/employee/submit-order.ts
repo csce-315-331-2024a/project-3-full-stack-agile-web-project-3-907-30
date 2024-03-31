@@ -47,8 +47,6 @@ export default async function handler(
     const rows = selectStatementResult.rows!;
     const menuItemsOrderedById: string[] = rows.map((row) => row[0]);
 
-    console.log(menuItemsOrderedById);
-
     let parametersArray = [];
 
     for (let i = 0; i < chosenItems.length; i++) {
@@ -72,8 +70,6 @@ export default async function handler(
         2 * (parametersArray.length / 2)
       })`;
 
-    console.log(updateStatementString);
-    console.log(parametersArray);
     const updateStatement = await db.prepare(updateStatementString);
 
     await updateStatement.execute({
