@@ -4,7 +4,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface MenuItem {
   name: string;
@@ -14,6 +15,7 @@ interface MenuItem {
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const getImageForMenuItem = (itemName: string) => {
     return `/menu-item-pics/${itemName}.jpeg`;
@@ -31,6 +33,7 @@ const Menu = () => {
           return { name: item.name, price: item.price, ingredients };
         }));
         setMenuItems(fetchedMenuItems);
+        setLoading(false);
       } else {
         throw new Error('Failed to fetch menu items');
       }
@@ -75,14 +78,23 @@ const Menu = () => {
             <CardHeader>
               <CardTitle>{category}</CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col gap-[2px]">
-              {menuItems.filter(item => itemBelongsToCategory(item, category)).map((item, index) => (
-                <div key={index} className="flex flex-row justify-between">
-                  {/* <img src={getImageForMenuItem(item.name)} alt={item.name} className="w-32 h-32 rounded-md mb-4" /> */}
-                  <p className="font-medium">{item.name}</p>
-                  <p className="text-gray-600 pl-16">${item.price.toFixed(2)}</p>
-                </div>
-              ))}
+            <CardContent className="flex flex-col gap-1">
+              {loading ? (
+                Array.from({ length: 6 }).map((_, index) => (
+                  <div key={index} className="flex flex-row justify-between my-1">
+                    <Skeleton className="w-1/2 h-5" />
+                    <Skeleton className="w-1/4 h-5" />
+                  </div>
+                ))
+              ) : (
+                menuItems.filter(item => itemBelongsToCategory(item, category)).map((item, index) => (
+                  <div key={index} className="flex flex-row justify-between">
+                    <p className="font-medium">{item.name}</p>
+                    <p className="text-gray-600 pl-16">${item.price.toFixed(2)}</p>
+                  </div>
+                ))
+              )
+              }
             </CardContent>
           </Card>
         ))}

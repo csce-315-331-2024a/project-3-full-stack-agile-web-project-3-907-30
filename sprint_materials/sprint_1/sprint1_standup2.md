@@ -37,4 +37,5 @@
 Overall, we have a solid foundation and are slowly but surely finishing work and building momentum. While we may only have one story really finished, it is a foundational one and will make other feature implementations much easier. We still are not supremely confident with using our new framework, and we don't have much to show for yet, so confidence is still moderate. However, the next day of work will provide great results. 
 
 ## Minutes from Previous Meeting
+FoF - 3.5
 Overall, we are getting started without too much issue. Of course, many of us are completely new to Next.js, and have not used neither Node or React, so it will take a little bit of time to learn. However, we do have some expertise in the group and they are taking a leaderhip role in steering us in the right direction coding-wise. The group does believe that it is very possible to finish all in a timely manner, but we do not have great confidence yet with this new framework. 
