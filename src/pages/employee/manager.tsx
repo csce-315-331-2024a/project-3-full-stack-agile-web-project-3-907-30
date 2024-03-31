@@ -1,4 +1,5 @@
-import EmployeeManagement from "@/components/manager/employee-management";
+import ViewEmployees from "@/components/manager/view-employees";
+import UserManagement from "@/components/manager/user-management";
 import useAuth from "@/hooks/useAuth";
 import { Employee, AuthHookType } from "@/lib/types";
 import { getEmployeeFromDatabase } from "@/lib/utils";
@@ -29,10 +30,11 @@ const Manager = () => {
   return (
     <main className="flex w-full h-full items-start justify-start p-4">
       {employee?.isManager ? (
-        <section className="flex w-full">
+        <section className="flex w-full gap-8">
           {employee?.isAdmin && (
-            <EmployeeManagement />
+            <UserManagement />
           )}
+          <ViewEmployees />
         </section>
       ) : (loading ? (
         <h1 className="text-xl">Loading...</h1>

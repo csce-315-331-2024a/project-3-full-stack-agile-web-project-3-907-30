@@ -12,7 +12,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const getStatement = await db.prepare("SELECT * FROM employees");
+  const getStatement = await db.prepare(
+    "SELECT * FROM employees ORDER BY emp_id ASC"
+  );
 
   const employee = await getStatement.execute();
 
@@ -31,6 +33,7 @@ export default async function handler(
       empPicture: row[3],
       isManager: row[4],
       isAdmin: row[5],
+      isVerified: row[6],
     }));
 
     res.status(200).json(employees);

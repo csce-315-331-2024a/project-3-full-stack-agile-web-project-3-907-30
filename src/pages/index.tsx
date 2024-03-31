@@ -36,8 +36,6 @@ export default function Home() {
   const [employee, setEmployee] = useState<Employee>();
 
   useEffect(() => {
-    document.title = "Ordering Menu";
-    console.log(account);
     if (account) {
       getEmployeeFromDatabase(account.email).then((data) => {
         setEmployee(data);

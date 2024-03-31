@@ -14,6 +14,14 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from '../ui/use-toast';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '../ui/form';
+import { getCustomerFromDatabase } from '@/lib/utils';
+import { useState } from 'react';
+import { Customer } from '@/lib/types';
+import { Dispatch, SetStateAction } from 'react';
+
+interface RewardsButtonProps {
+  setCustomer: Dispatch<SetStateAction<Customer | undefined>>;
+}
 
 const FormSchema = z.object({
   phone: z.string().min(10, {
@@ -21,7 +29,9 @@ const FormSchema = z.object({
   }),
 })
 
-const RewardsButton = () => {
+const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -29,19 +39,29 @@ const RewardsButton = () => {
     },
   })
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const customer = await getCustomerFromDatabase(data.phone);
+    if (customer) {
+      toast({
+        title: "Success!",
+        description: "You have successfully signed in.",
+      });
+
+      // reset the form and close the dialog
+      form.reset();
+      setCustomer(customer);
+      setDialogOpen(false);
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Customer not found.",
+      });
+    }
   }
 
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
           Sign-in for Rewards

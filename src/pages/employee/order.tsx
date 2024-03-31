@@ -16,7 +16,7 @@ const EmployeeOrderPage = () => {
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
-  
+
   useEffect(() => {
     if (account) {
       setLoading(true);
@@ -28,14 +28,14 @@ const EmployeeOrderPage = () => {
   }, [account]);
 
   return (
-    <main className="flex w-full h-full items-start justify-start p-4">
-      {employee ? (
-        <div className="grid grid-cols-2 gap-8">
-          <div>
-            <h1 className="text-xl">Welcome, {account?.name}</h1>
+    <main className="flex flex-col w-full h-full items-start justify-start p-4 gap-8">
+      <h1 className="text-xl">Welcome, {account?.name}</h1>
+      {employee?.isVerified ? (
+        <div className="flex flex-row items-stretch w-full h-full gap-4">
+          <div className="w-1/2 h-full">
             <MenuOrder setOrderItems={setOrderItems} clearOrder={() => setOrderItems([])} />
           </div>
-          <div>
+          <div className="w-1/2 h-full">
             <OrderReceipt items={orderItems} clearOrder={() => setOrderItems([])} />
           </div>
         </div>

@@ -91,7 +91,7 @@ while currentDay < lastDay :
             else : buildOrders.write("("+str(orderId)+","+str(menuId)+"),\n")
 
         # choose a random employee
-        employeeId = random.randint(0,13)
+        employeeId = random.randint(0,5)
 
         # choose a random customer
         customerId = random.randint(0,398)

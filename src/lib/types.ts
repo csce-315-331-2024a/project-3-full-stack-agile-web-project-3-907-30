@@ -7,6 +7,7 @@ export interface Employee {
   empPicture: string;
   isManager: boolean;
   isAdmin: boolean;
+  isVerified: boolean;
 }
 
 export interface GoogleAccount {
@@ -32,27 +33,28 @@ export interface AuthHookType {
 }
 
 export interface Customer {
-    id: number,
-    name: string,
-    phone: string,
-    num_orders: number,
-    total_spent: number
-};
+  cust_id: number;
+  cust_name: string;
+  phone_number: string;
+  num_orders: number;
+  total_spent: number;
+  points: number;
+}
 
 export interface InventoryItem {
-    id: number,
-    name: string,
-    price: number,
-    fill_level: number,
-    curr_level: number,
-    times_refilled: number,
-    date_refilled: Date,
-    has_dairy: boolean,
-    has_nuts: boolean,
-    has_eggs: boolean,
-    is_vegan: boolean,
-    is_halal: boolean
-};
+  id: number;
+  name: string;
+  price: number;
+  fill_level: number;
+  curr_level: number;
+  times_refilled: number;
+  date_refilled: Date;
+  has_dairy: boolean;
+  has_nuts: boolean;
+  has_eggs: boolean;
+  is_vegan: boolean;
+  is_halal: boolean;
+}
 
 export interface MenuItem {
     id: number,
