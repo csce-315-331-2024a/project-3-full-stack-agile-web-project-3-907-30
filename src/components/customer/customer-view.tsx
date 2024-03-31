@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { useState } from 'react';
 import { set } from 'zod';
+import Image from 'next/image';
 
 
 
@@ -115,7 +116,7 @@ useEffect(() => {
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button variant="outline" style={{ backgroundColor: 'transparent', border: 'none' }} onClick={() => itemClicked(item)}>
-                            <img src={getImageForMenuItem(item.name)} alt={item.name} className="w-48 h-42 rounded-md" />
+                            <Image src={getImageForMenuItem(item.name)} alt={item.name} className="rounded-md" width={200} height={200} />
                           </Button>
                         </DialogTrigger>
                         <DialogContent style={{ width: '600px', height: '600px' }}>
@@ -123,7 +124,7 @@ useEffect(() => {
                           <div className="grid gap-4 py-4">
                             <div className="flex items-center justify-center gap-4">
                               {selectedItem &&
-                                <img src={getImageForMenuItem(selectedItem.name)} alt={selectedItem.name} className="w-96 h-96 rounded-md" />
+                                <Image src={getImageForMenuItem(selectedItem.name)} alt={selectedItem.name} className="rounded-md" width={400} height={400} />
                               }
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">

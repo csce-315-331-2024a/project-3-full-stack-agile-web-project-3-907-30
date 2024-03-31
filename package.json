@@ -40,9 +40,9 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.12",
+    "@playwright/test": "^1.42.1",
     "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/react": "^18.2.73",
     "@types/react-dom": "^18",
     "@types/supertest": "^6.0.2",
     "autoprefixer": "^10.0.1",

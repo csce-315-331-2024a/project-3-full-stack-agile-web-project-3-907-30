@@ -23,9 +23,9 @@ A product where a customer, manager, or employee can securely login and access t
 - [X] Have GUI call this function when an employee selects a menu item for an order E1 S0 T1 - Margo
 - [X] Make Employee GUI login view using Google OAuth E2 S0 T1 - Akshay
 - [X] Implement login and logout routes and corresponding hooks E3 S0 T1 - Akshay
-- [ ] Store session information in cookies when logged in E1 S0 T0 - Gabe
+- [x] Store session information in cookies when logged in E1 S0 T5 - Gabe
 - [X] Save current user’s information during their session to be used in their tasks (making an order should assign the currently logged in employee to the order) E1 S0 T1 - Margo
-- [X]  Make function that queries all of a menu item’s relevant information E2 S0 T1 - Margo
+- [X] Make function that queries all of a menu item’s relevant information E2 S0 T1 - Margo
 - [X] Have GUI call and display the results of that function when a customer is selecting a given item E1 S0 T2 - Chris
 - [x] Make sure GUI has obvious design that clearly shows what an item looks like, and shows the item’s information obviously when selected E2 S0 T7- Chris
 - [X] Add screen reader functionality to all GUI items in sprint 1 E1 S0 T1 - Chris

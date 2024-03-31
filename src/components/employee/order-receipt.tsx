@@ -80,7 +80,9 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
       description: nextOrderId,
     });
 
-    const res = await submitOrder(nextOrderId, total, 1, parseInt(employee.empId), toast);
+    const chosenItems = items.map((item) => item.name);
+    const quantities = items.map((item) => item.quantity);
+    const res = await submitOrder(nextOrderId, total, 1, parseInt(employee.empId), toast, chosenItems, quantities);
 
     if (res) {
       if (res.status === 200) {

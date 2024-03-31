@@ -36,10 +36,11 @@
 - Finish local storage - Gabe
 
 ## Fist of five result 
-- 
+- average of 3.5 -> decent confidence
 
 ## Summary
-
+We have finished a very large portion of the tasks that needed to be completed. The remaining tasks are close to done, so we are very close to completing every sprint task. However, writing tests is next, and we do not have much experience with the testing framework we are using. We are going to have to figure out how to write a lot of tests, which is why our confidence has slightly wavered from the last meeting.
 
 ## Minutes from Previous Meeting
+FoF - 4
 Overall, up to today, we are making good progress. Our main roadblocks are still just setup bottlenecks; we are waiting for each other while we all figure out basics. However, our communication is strong and everybody is on the same page. Aaron will be taking on some other teammembers tasks to lighten their load because some of his tasks overlapped with others and were already completed. We are adding a new task to add a customer managing view to the manager page. Everyone will be completing their remaining tasks and begin adding tests as they develop. 
