@@ -15,13 +15,14 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { orderId, orderTotal, custId, empId } = req.body;
+  const { orderId, orderTotal, custId, empId, chosenItems, quantities } = req.body;
 
   // Parse the string values to their respective types
     const orderIdInt = parseInt(orderId, 10);
     const custIdInt = parseInt(custId, 10);
     const empIdInt = parseInt(empId, 10);
     const orderTotalMoney = parseFloat(orderTotal); // might have issues here
+
 
     try {
         const insertStatement = await db.prepare(
@@ -33,7 +34,47 @@ export default async function handler(
         });
 
     await insertStatement.close();
+    
+    // First, Get IDs for each of the menu items
+    const selectStatement = await db.prepare(
+      "SELECT item_name FROM menu_items ORDER BY item_id ASC"
+    );
 
+    const selectStatementResult = await selectStatement.execute();
+
+await selectStatement.close();
+
+    const rows = selectStatementResult.rows!;
+    const menuItemsOrderedById: string[] = rows.map((row) => row[0]);
+    
+    console.log(menuItemsOrderedById);
+
+    let parametersArray = [];
+    
+    for (let i = 0; i < chosenItems.length; i++){
+      const currentId = menuItemsOrderedById.indexOf(chosenItems[i]);
+      for (let j = 0; j < quantities[i]; j++){
+        parametersArray.push(orderIdInt, currentId);
+      }
+    }
+
+    // One insert is much more optimized than multiple insert statements
+    let updateStatementString = "INSERT INTO orders_menu (order_id, item_id) VALUES";
+
+    for (let i = 1; i <= parametersArray.length/2 - 1; i++){
+      updateStatementString =  updateStatementString + ` ($${2*i-1}, $${2*i}),`;
+    }
+    updateStatementString =  updateStatementString + ` ($${2*(parametersArray.length/2)-1}, $${2*(parametersArray.length/2)})`;
+    
+    console.log(updateStatementString);
+    console.log(parametersArray);
+    const updateStatement = await db.prepare(updateStatementString);
+
+  await updateStatement.execute({
+    params: parametersArray,
+  });
+
+  await updateStatement.close();
     res.status(200).json({ message: 'Order submitted successfully' });
   } catch (error) {
     console.error('Error submitting order:', error);
