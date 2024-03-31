@@ -40,11 +40,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@types/jest": "^29.5.12",
-=======
     "@playwright/test": "^1.42.1",
->>>>>>> e14a79f65d3841aa1a2a6964616ba83e72a4460f
     "@types/node": "^20",
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18",
