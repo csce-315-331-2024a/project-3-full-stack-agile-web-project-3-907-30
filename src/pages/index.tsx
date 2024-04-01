@@ -47,7 +47,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Rev&pos;s American Grill</title>
+        <title>Rev&apos;s American Grill</title>
       </Head>
       <div>
         <h1>Rev&apos;s American Grill</h1>
