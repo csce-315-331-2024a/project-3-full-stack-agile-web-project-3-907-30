@@ -53,21 +53,6 @@ const getIngredientsUsingItemID = async (itemID: number) =>  {
     return ingredientNames;
   };
 
-// Fetching the Menu Items and their prices
-// useEffect(() => {
-  
-//   fetch('/api/menu/menu_items/get-all-items-and-price')
-//       .then((res) => res.json())
-//       .then(async (data) => {
-//         const newMenuItems = [];
-//         for (const item of data) {
-//           const ingredients = await getIngredientsUsingItemID(item.id);
-//           newMenuItems.push({ name: item.name, price: item.price, ingredients: ingredients });
-//         }
-//          setMenuItems(newMenuItems);
-        
-//       });
-//   }, []);
 
   useEffect(() => {
     fetch('/api/menu/menu_items/get-all-items-and-price')
@@ -153,7 +138,6 @@ const getIngredientsUsingItemID = async (itemID: number) =>  {
                                 Ingredients:
                               </Label>
                               <div id="name" className="col-span-3">
-                                {/* {item.ingredients.join(', ')} */}
                                 <ul className="flex flex-row gap-1 mr-3">
                                   {item.ingredients.map((ingredient: string) => (
                                     <li key={ingredient} className="text-sm">{ingredient}</li>

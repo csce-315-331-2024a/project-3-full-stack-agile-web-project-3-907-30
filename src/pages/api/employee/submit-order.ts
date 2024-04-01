@@ -24,6 +24,7 @@ export default async function handler(
   const orderTotalMoney = parseFloat(orderTotal); // might have issues here
 
 
+
     try {
         const insertStatement = await db.prepare(
             "INSERT INTO orders (order_id, order_date, order_time, order_total, cust_id, emp_id) VALUES ($1, CURRENT_DATE, date_trunc('second', CURRENT_TIMESTAMP), $2::money, $3, $4)"
