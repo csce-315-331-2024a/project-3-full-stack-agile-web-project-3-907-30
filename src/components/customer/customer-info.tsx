@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react';
 const useLocalStorageChangeListener = () => {
     const [localStorageChange, updateLocalStorageChange] = useState(false);
 
+    // Need to check if client side window is defined before interacting with client-side storage
     if(typeof window !== 'undefined') {
         localStorage.setItem('prevName', localStorage.getItem('customerName')!);
         localStorage.setItem('prevPoints', localStorage.getItem('customerPoints')!);
     }
 
+    // Define checker function and register it with an interval timer when component mounts
     useEffect(() => {
         const checkForChange = () => {
             let currentName: string | null;
@@ -35,6 +37,7 @@ const useLocalStorageChangeListener = () => {
             }
         }
 
+        // Will run checkForChange every 0.1 sec
         const intervalId = setInterval(checkForChange,100);
 
         return () => clearInterval(intervalId);
@@ -56,6 +59,7 @@ const CustomerInfo = () => {
         // When component mounts, set hydrated
         setHydrated(true);
     },[])
+
     if(!hydrated){
         // If component not mounted, return nothing
         return null;
@@ -71,6 +75,7 @@ const CustomerInfo = () => {
     }
 
     return (
+        // Render different html based on what customerName is
         <div>
             { customerName === null &&(
                 <div className="flex flex-row justify-between items-center">

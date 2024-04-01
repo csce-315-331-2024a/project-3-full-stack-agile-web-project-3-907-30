@@ -81,7 +81,7 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" data-testid="sign-in">
           Sign-in for Rewards
         </Button>
       </DialogTrigger>
