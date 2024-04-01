@@ -54,19 +54,41 @@ const getIngredientsUsingItemID = async (itemID: number) =>  {
   };
 
 // Fetching the Menu Items and their prices
-useEffect(() => {
+// useEffect(() => {
   
-  fetch('/api/menu/menu_items/get-all-items-and-price')
+//   fetch('/api/menu/menu_items/get-all-items-and-price')
+//       .then((res) => res.json())
+//       .then(async (data) => {
+//         const newMenuItems = [];
+//         for (const item of data) {
+//           const ingredients = await getIngredientsUsingItemID(item.id);
+//           newMenuItems.push({ name: item.name, price: item.price, ingredients: ingredients });
+//         }
+//          setMenuItems(newMenuItems);
+        
+//       });
+//   }, []);
+
+  useEffect(() => {
+    fetch('/api/menu/menu_items/get-all-items-and-price')
       .then((res) => res.json())
-      .then(async (data) => {
-        const newMenuItems = [];
-        for (const item of data) {
-          const ingredients = await getIngredientsUsingItemID(item.id);
-          newMenuItems.push({ name: item.name, price: item.price, ingredients: ingredients });
-        }
-        setMenuItems(newMenuItems);
+      .then((data) => {
+        // Get the ingredients for each item
+        const ingredientPromises = data.map((item:any) =>
+          getIngredientsUsingItemID(item.id).then((ingredients) => ({
+            name: item.name,
+            price: item.price,
+            ingredients: ingredients,
+          }))
+        );
+        // Wait for all the ingredients to be fetched
+        Promise.all(ingredientPromises).then((items) => {
+          setMenuItems(items);
+        });
       });
   }, []);
+
+
 
   // Retrieve the image for the the menu Item
   const getImageForMenuItem = (itemName: string) => {
@@ -103,11 +125,10 @@ useEffect(() => {
     <div style={{backgroundColor: "#5a0000 "}} className=" w-full h-full flex flex-col justify-start items-start p-4">
       <h1 className="text-2xl flex-col items-center"> Ordering Menu</h1>
       {categories.map((category, index) => (
-        <div className="flex flex-col items-center">
+        <div key={index} className="flex flex-col items-center">
           <h2 className="text-lg text-white">{category}</h2>
           <div className="bg-white p-1 rounded-md border-white border-4 ">
             <div style={{marginTop: '100px' }} className="grid grid-cols-6 gap-x-12 gap-y-16">
-              
               {menuItems
                 .filter((item) => itemBelongsToCategory(item, category))
                 .map((item: any) => {
