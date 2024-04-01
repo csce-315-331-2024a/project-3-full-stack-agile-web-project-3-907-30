@@ -1,32 +1,34 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import db from "../../../lib/db";
 import { DataTypeOIDs } from "postgresql-client";
-import handler from "../customer/get";
+import handler from "../menu/menu_items/get-all-items-and-price";
 
-describe("handler Function", () => {
+describe("handler", () => {
   let req: NextApiRequest;
   let res: NextApiResponse;
 
   beforeEach(() => {
-    req = {
-      body: {
-        phone: "1234567890", // Sample phone number
-      },
-    } as NextApiRequest;
+    req = {} as NextApiRequest;
 
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     } as unknown as NextApiResponse;
+
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
-  it("should return customer details when customer is found", async () => {
+
+  it("should return items when items exist", async () => {
     // Mock database response
-    const rows = [["1", "John Doe", "1234567890", 10, 100.5, 200]];
+    const rows = [
+    ["1", "Bacon Cheeseburger", "8.29"],
+    ["2", "Classic Hamburger", "6.89"],
+    ];
+
 
     const executeMock = jest.fn().mockResolvedValueOnce({ rows });
     const closeMock = jest.fn();
@@ -38,23 +40,20 @@ describe("handler Function", () => {
     await handler(req, res);
 
     expect(prepareMock).toHaveBeenCalledWith(
-      "SELECT cust_id, cust_name, phone_number, num_orders, total_spent::numeric, points FROM customers WHERE phone_number = $1",
-      { paramTypes: [DataTypeOIDs.varchar] }
+      "SELECT item_id, item_name, item_price::numeric FROM menu_items ORDER BY item_id ASC",
     );
-    expect(executeMock).toHaveBeenCalledWith({ params: [expect.any(String)] });
+
+
+    expect(executeMock).toHaveBeenCalled();
     expect(closeMock).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith({
-      cust_id: "1",
-      cust_name: "John Doe",
-      phone_number: "1234567890",
-      num_orders: 10,
-      total_spent: 100.5,
-      points: 200,
+    expect(res.json).toHaveBeenCalledWith([
+    { id: "1", name: "Bacon Cheeseburger", price: "8.29" },
+    { id: "2", name: "Classic Hamburger", price: "6.89" },
+    ]);
     });
-  });
 
-  it("should return 404 error when customer is not found", async () => {
+  it("should return 404 error when no item are not found", async () => {
     // Mock database response
     const rows = [];
 
@@ -68,13 +67,17 @@ describe("handler Function", () => {
     await handler(req, res);
 
     expect(prepareMock).toHaveBeenCalledWith(
-      "SELECT cust_id, cust_name, phone_number, num_orders, total_spent::numeric, points FROM customers WHERE phone_number = $1",
-      { paramTypes: [DataTypeOIDs.varchar] }
+      "SELECT item_id, item_name, item_price::numeric FROM menu_items ORDER BY item_id ASC"
     );
-    expect(executeMock).toHaveBeenCalledWith({ params: [expect.any(String)] });
+    expect(executeMock).toHaveBeenCalled();
     expect(closeMock).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(404);
-    expect(res.json).toHaveBeenCalledWith({ error: "Customer not found" });
+    expect(res.json).toHaveBeenCalledWith({ error: "No menu items found" });
   });
+
+
+
+ 
+
 
 });
