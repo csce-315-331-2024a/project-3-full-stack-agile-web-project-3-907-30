@@ -123,7 +123,7 @@ const getIngredientsUsingItemID = async (itemID: number) =>  {
 
   return (
     <div style={{backgroundColor: "#5a0000 "}} className=" w-full h-full flex flex-col justify-center items-center p-4">
-      <h1 className="text-2xl flex-col items-center text-white"> Ordering Menu</h1>
+      <h1 className="text-2xl flex-col items-center text-white font-bold"> Ordering Menu</h1>
       {categories.map((category, index) => (
         <div key={index} className="flex flex-col items-center">
           <h2 className="text-lg text-white">{category}</h2>
@@ -136,7 +136,7 @@ const getIngredientsUsingItemID = async (itemID: number) =>  {
                     <div key={item.name} className="flex flex-col items-center gap-4">
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="outline" style={{ backgroundColor: 'transparent', border: 'none' }} onClick={() => itemClicked(item)}>
+                          <Button variant="outline" style={{ backgroundColor: 'transparent', border: 'none'}} onClick={() => itemClicked(item)}>
                             <Image src={getImageForMenuItem(item.name)} alt={item.name} className="rounded-md" width={200} height={200} />
                           </Button>
                         </DialogTrigger>

@@ -47,10 +47,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Rev's American Grill</title>
+        <title>Rev&pos;s American Grill</title>
       </Head>
       <div>
-        <h1>Rev's American Grill</h1>
+        <h1>Rev&pos;s American Grill</h1>
         <h2>Ordering Menu</h2>
         <CustomerView />
       </div>
