@@ -3,6 +3,12 @@ import { executeStatement, rowToInventoryItem } from "@/lib/utils";
 import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 
+/**
+ * Get a list of ingredients that are below their required fill level for a given menu item.
+ *
+ * @param {NextApiRequest} req Request object
+ * @param {NextApiResponse} res Response object
+ */
 export default async function handler(
     req: NextApiRequest, res: NextApiResponse
 ) {
