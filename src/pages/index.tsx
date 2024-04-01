@@ -50,8 +50,8 @@ export default function Home() {
         <title>Rev&pos;s American Grill</title>
       </Head>
       <div>
-        <h1>Rev&pos;s American Grill</h1>
-        <h2>Ordering Menu</h2>
+        <h1>Rev&apos;s American Grill</h1>
+        {/* <h2>Customer View</h2> */}
         <CustomerView />
       </div>
     </>
