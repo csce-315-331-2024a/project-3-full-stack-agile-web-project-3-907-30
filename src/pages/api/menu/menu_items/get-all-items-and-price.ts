@@ -25,9 +25,18 @@ export default async function handler(
 
     const rows = menuItemsResult.rows!;
 
+    // If there are any null values in the rows, return an error
+    if (rows.some(row => row.includes(null) || row.length === 0)) {
+      res.status(500).json({ error: "Internal server error" });
+    }
+
+
+    // If there are no menu items, return an error
     if (rows.length === 0) {
       res.status(404).json({ error: "No menu items found" });
-    } else {
+    } 
+    
+    else {
 
       // Convert the rows to an array of objetcs with item name and price
         const menuItems = rows.map((row) => {
