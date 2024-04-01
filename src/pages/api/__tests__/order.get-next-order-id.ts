@@ -8,11 +8,6 @@ describe("handler Function", () => {
   let res: NextApiResponse;
 
   beforeEach(() => {
-    // req = {
-    //   body: {
-    //   },
-    // } as NextApiRequest;
-
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
@@ -36,7 +31,6 @@ describe("handler Function", () => {
 
     await handler(req, res);
 
-    //expect(executeMock).toHaveBeenCalledWith({ params: [expect.any(Number)] });
     expect(closeMock).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(200);
 
@@ -59,11 +53,6 @@ describe("handler Function", () => {
 
     await handler(req, res);
 
-    // expect(prepareMock).toHaveBeenCalledWith(
-    //   "SELECT order_id FROM orders ORDER BY order_id DESC LIMIT $1",
-    //   { paramTypes: [DataTypeOIDs.varchar] }
-    // );
-    //expect(executeMock).toHaveBeenCalledWith({ params: [expect.any(String)] });
     expect(closeMock).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(404);
     expect(res.json).toHaveBeenCalledWith({ error: "Query to get next order ID failed" });
