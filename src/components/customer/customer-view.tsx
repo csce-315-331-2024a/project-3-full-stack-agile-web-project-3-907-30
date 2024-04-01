@@ -122,8 +122,8 @@ const getIngredientsUsingItemID = async (itemID: number) =>  {
   const categories = ["Burgers & Wraps", "Meals", "Tenders", "Sides", "Drinks", "Desserts"];
 
   return (
-    <div style={{backgroundColor: "#5a0000 "}} className=" w-full h-full flex flex-col justify-start items-start p-4">
-      <h1 className="text-2xl flex-col items-center"> Ordering Menu</h1>
+    <div style={{backgroundColor: "#5a0000 "}} className=" w-full h-full flex flex-col justify-center items-center p-4">
+      <h1 className="text-2xl flex-col items-center text-white"> Ordering Menu</h1>
       {categories.map((category, index) => (
         <div key={index} className="flex flex-col items-center">
           <h2 className="text-lg text-white">{category}</h2>
@@ -164,8 +164,8 @@ const getIngredientsUsingItemID = async (itemID: number) =>  {
                           </div>
                         </DialogContent>
                       </Dialog>
-                      <p style={{ marginTop: '40px' }}>{item.name}</p>
-                      <p style={{ marginBottom: '50px' }}> {item.price}</p>
+                      <p style={{ marginTop: '80px' }}>{item.name}</p>
+                      <p style={{ marginBottom: '60px' }}> {item.price}</p>
                     </div>)
                 })}
             </div>
