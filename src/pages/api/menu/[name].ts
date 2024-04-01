@@ -3,6 +3,12 @@ import { executeStatement, rowToMenuItem } from "@/lib/utils";
 import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 
+/**
+ * Get a menu item from the database by its name.
+ *
+ * @param {NextApiRequest} req Request object
+ * @param {NextApiResponse} res Response object
+ */
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse

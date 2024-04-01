@@ -54,10 +54,12 @@ import db from "./db";
 //     return res;
 // }
 
-export function isLowStock(curr: number, reqd: number): boolean {
-  return curr < reqd;
-}
-
+/**
+ * Convert a given array row from a SQL execution result to an InventoryItem object.
+ *
+ * @param {any[]} array The given row array to be converted.
+ * @returns {MenuItem} The menu item from the given row.
+ */
 export function rowToMenuItem(array: any[]): MenuItem {
   return {
     id: array.at(0),
@@ -67,6 +69,12 @@ export function rowToMenuItem(array: any[]): MenuItem {
   } as MenuItem;
 }
 
+/**
+ * Convert a given array row from a SQL execution result to an InventoryItem object.
+ *
+ * @param {any[]} array The given row array to be converted.
+ * @returns {InventoryItem} The inventory item from the given row.
+ */
 export function rowToInventoryItem(array: any[]): InventoryItem {
   return {
     id: array.at(0),
@@ -84,7 +92,15 @@ export function rowToInventoryItem(array: any[]): InventoryItem {
   };
 }
 
-// Prepare and execute statement in one function, use callback to parse values
+/**
+ * Prepare and execute a SQL statement.
+ *
+ * @param {Pool} db The database pool
+ * @param {string} sql The SQL statement to be executed
+ * @param {number[]} paramTypes The types of the parameters, if any.
+ * @param {any[]} params The parameters for the statement to be executed.
+ * @returns {Promise<QueryResult>} The result of the executed SQL statement.
+ */
 export async function executeStatement(
   db: Pool,
   sql: string,
