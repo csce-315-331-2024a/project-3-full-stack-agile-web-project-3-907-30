@@ -1,4 +1,7 @@
-// api/menu/menu_items/get-all-items.ts
+/**
+ * API endpoint to get all menu items and their prices
+ * @module /api/menu/menu_items/get-all-items-and-price
+ */
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import db from "../../../../lib/db";
@@ -8,6 +11,7 @@ import db from "../../../../lib/db";
  *
  * @param {NextApiRequest} req Request object
  * @param {NextApiResponse} res Response object
+ * @returns {Promise<void>} A promise that resolves when the request is complete
  */
 export default async function handler(
   req: NextApiRequest,
