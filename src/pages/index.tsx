@@ -3,6 +3,7 @@ import useAuth from "../hooks/useAuth";
 import { Employee, AuthHookType } from "@/lib/types";
 import { getEmployeeFromDatabase } from "@/lib/utils";
 import CustomerView from "@/components/customer/customer-view";
+import Head from "next/head";
 /**
  * Fetch data and render the contents of a page at request time.
  * 
@@ -35,6 +36,8 @@ export default function Home() {
   const [employee, setEmployee] = useState<Employee>();
 
   useEffect(() => {
+    document.title = "Ordering Menu";
+    console.log(account);
     if (account) {
       getEmployeeFromDatabase(account.email).then((data) => {
         setEmployee(data);
@@ -43,12 +46,16 @@ export default function Home() {
   }, [account]);
 
   
-  // Return something else for now
   return (
-    <div>
-      <h1></h1>
-      < CustomerView />
-    </div>
+    <>
+      <Head>
+        <title>Rev's American Grill</title>
+      </Head>
+      <div>
+        <h1>Rev's American Grill</h1>
+        <h2>Ordering Menu</h2>
+        <CustomerView />
+      </div>
+    </>
   );
-   
 }
