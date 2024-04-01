@@ -3,6 +3,12 @@ import { executeStatement, rowToInventoryItem } from "@/lib/utils";
 import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 
+/**
+ * Get the list of ingredients for a given menu item.
+ *
+ * @param {NextApiRequest} req Request object
+ * @param {NextApiResponse} res Response object
+ */
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
