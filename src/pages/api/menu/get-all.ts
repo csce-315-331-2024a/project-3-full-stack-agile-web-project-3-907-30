@@ -14,7 +14,15 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const items = await executeStatement(db, "SELECT item_id, item_name, item_price::numeric, times_ordered FROM menu_items;", [] , []);
+  const getStatement = await db.prepare(
+    "SELECT item_id, item_name, item_price::numeric, times_ordered FROM menu_items"
+  );
+
+  const items = await getStatement.execute();
+
+  await getStatement.close();
+
+  // const items = await executeStatement(db, "SELECT item_id, item_name, item_price::numeric, times_ordered FROM menu_items;", [] , []);
   const rows = items.rows!;
 
   if (rows.length === 0) {
