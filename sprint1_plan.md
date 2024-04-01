@@ -29,4 +29,4 @@ A product where a customer, manager, or employee can securely login and access t
 - [X] Have GUI call and display the results of that function when a customer is selecting a given item E1 S0 T2 - Chris
 - [x] Make sure GUI has obvious design that clearly shows what an item looks like, and shows the item’s information obviously when selected E2 S0 T7- Chris
 - [X] Add screen reader functionality to all GUI items in sprint 1 E1 S0 T1 - Chris
-- [ ] Make sure that all views have high color contrast and easily legible font in sprint 1 E1 S0 T0 - Gabe
+- [x] Make sure that all views have high color contrast and easily legible font in sprint 1 E1 S0 T1 - Gabe
