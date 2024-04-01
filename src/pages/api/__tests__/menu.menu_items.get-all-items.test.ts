@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import db from '../../../lib/db';
-import handler from "../menu/menu_items/get-all-items-and-price";
+import handler from "../menu/menu_items/get-all-items";
 
 
 describe('handler', () => {
@@ -19,10 +19,10 @@ describe('handler', () => {
    jest.resetAllMocks();
  });
 
- it('should return price of menu_items when menu_items exist', async () => {
+ it('should return name of menu_items when menu_items exist', async () => {
     const mockRows = [
-      [1, 'Burger', 5.55, 1],
-      [2, 'Fries', 2.55, 1],
+      ['Burger'],
+      ['Fries'],
     ];
    const mockExecute = jest.fn().mockResolvedValue({ rows: mockRows });
    const mockClose = jest.fn();
@@ -32,13 +32,13 @@ describe('handler', () => {
 
    await handler(req, res);
 
-   expect(mockPrepare).toHaveBeenCalledWith('SELECT item_id, item_name, item_price::numeric FROM menu_items ORDER BY item_id ASC');
+   expect(mockPrepare).toHaveBeenCalledWith('SELECT item_name FROM menu_items ORDER BY item_id ASC');
    expect(mockExecute).toHaveBeenCalled();
    expect(mockClose).toHaveBeenCalled();
    expect(res.status).toHaveBeenCalledWith(200);
    expect(res.json).toHaveBeenCalledWith([
-    { id: 1, name: 'Burger', price: 5.55 },
-    { id: 2, name: 'Fries', price: 2.55 },
+    "Burger",
+    "Fries",
  ]);
  });
 
@@ -51,7 +51,7 @@ describe('handler', () => {
 
    await handler(req, res);
 
-   expect(mockPrepare).toHaveBeenCalledWith('SELECT item_id, item_name, item_price::numeric FROM menu_items ORDER BY item_id ASC');
+   expect(mockPrepare).toHaveBeenCalledWith('SELECT item_name FROM menu_items ORDER BY item_id ASC');
    expect(mockExecute).toHaveBeenCalled();
    expect(mockClose).toHaveBeenCalled();
    expect(res.status).toHaveBeenCalledWith(404);
