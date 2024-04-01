@@ -27,6 +27,7 @@ test('sign in for rewards button', async ({ page }) => {
 
   await rewards_button.click();
 
+  await page.getByTestId('sign-in').click();
 });
 
 test('Ordering Menu is there?', async ({ page }) => {

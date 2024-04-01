@@ -16,7 +16,7 @@ A product where a customer, manager, or employee can securely login and access t
 - [x] Restrict access of manager page from employees E1 S0 T1 - Gabe
 - [X] Make an interactive Employee GUI POS system that allows employees to create an order E1 S0 T3 - Akshay
 - [X] Make functions that can create and view the orders in the database E1 S0 T1 - Akshay
-- [X] Have GUI at POS give the option of selecting the number of items that will be added to an order when creating it  E1 S0 T1 - Aaron
+- [X] Have GUI at POS give the option of selecting the number of items that will be added to an order when creating it E1 S0 T1 - Aaron
 - [X] Make POS system have a clear order button that removes all of the items in the order list  E1 S0 T1 - Akshay
 - [X] Have GUI at POS show the subtotal, tax, and final total for an order as the order is being built  E1 S0 T1 - Aaron
 - [X] Make a function that quickly queries the stock information of the inventory items that make up a menu item and alerts if there is low / no stock  E1 S0 T1 - Margo
