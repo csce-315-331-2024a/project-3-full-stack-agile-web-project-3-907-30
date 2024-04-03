@@ -11,13 +11,13 @@
 - Gabriel Floreslovo
 
 ## Agenda
-- [ ] What we have finished, what we have left, and how we will do it
-- [ ] Conduct "fist of five" vote on the confidence in acheiving the sprint goal
-- [ ] Share any roadblocks that are interrupting progress 
+- [x] What we have finished, what we have left, and how we will do it
+- [x] Conduct "fist of five" vote on the confidence in acheiving the sprint goal
+- [x] Share any roadblocks that are interrupting progress 
 
 ## What we have completed
 - API call for customer login - Adam
-- Finished employee UI system (all tasks) - Akshay
+- Finished employee UI system - Akshay
 - Made create order button, connected employee order to database - Aaron
 - Finished customer UI functionality - Chris
 - Finished low stock notification - Margo

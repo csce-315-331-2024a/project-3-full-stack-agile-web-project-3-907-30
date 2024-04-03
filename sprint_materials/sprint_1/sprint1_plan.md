@@ -1,4 +1,4 @@
-# SPRINT ONE: 3/22/24 - 3/29/24
+# SPRINT ONE: 3/24/24 - 3/31/24
 
 ## Sprint Goal:
 The main goal of the first sprint of this project is to create and deploy a working product that has the basic features of our previous POS system implemented. Our product will be hosted on a website and accessible by the necessary parties at any time after this sprint's deliverable date has passed. 
