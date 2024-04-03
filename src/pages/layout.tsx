@@ -16,6 +16,7 @@ import Link from "next/link"
 import { Toaster } from "@/components/ui/toaster";
 import { Skeleton } from "@/components/ui/skeleton";
 import RewardsButton from "@/components/customer/rewards-button";
+import CustomerInfo from "@/components/customer/customer-info";
 
 interface LayoutProps {
   children: ReactNode;
@@ -46,12 +47,6 @@ const Layout = ({ children }: LayoutProps) => {
     }
   }, [account]);
 
-  useEffect(() => {
-    if (customer) {
-      console.log(customer);
-    }
-  }, [customer]);
-
   return (
     <>
       {router.asPath === '/' ? (
@@ -59,13 +54,21 @@ const Layout = ({ children }: LayoutProps) => {
           <div className="border-b">
             <div className="flex h-16 items-center justify-between px-4">
               <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm" priority />
-              <RewardsButton setCustomer={setCustomer} />
+              <CustomerInfo/>
+              <div className="flex gap-4">
+                <Button variant="outline" asChild>
+                  <Link href="/employee/login">
+                    I&apos;m an Employee
+                  </Link>
+                </Button>
+                <RewardsButton setCustomer={setCustomer} />
+              </div>
             </div>
           </div>
           {children}
           <Toaster />
         </main >
-      ) : router.asPath === '/employee/login' ? (
+      ) : router.asPath === '/employee/login' || router.asPath === '/employee/menu' ? (
         <>
           {children}
           <Toaster />

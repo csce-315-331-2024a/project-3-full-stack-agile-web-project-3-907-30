@@ -1,4 +1,7 @@
-// api/menu/menu_items/get-all-items.ts
+/**
+ * API endpoint to get all menu items and their prices
+ * @module /api/menu/menu_items/get-all-items-and-price
+ */
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import db from "../../../../lib/db";
@@ -8,6 +11,7 @@ import db from "../../../../lib/db";
  *
  * @param {NextApiRequest} req Request object
  * @param {NextApiResponse} res Response object
+ * @returns {Promise<void>} A promise that resolves when the request is complete
  */
 export default async function handler(
   req: NextApiRequest,
@@ -21,9 +25,18 @@ export default async function handler(
 
     const rows = menuItemsResult.rows!;
 
+    // If there are any null values in the rows, return an error
+    if (rows.some(row => row.includes(null) || row.length === 0)) {
+      res.status(500).json({ error: "Internal server error" });
+    }
+
+
+    // If there are no menu items, return an error
     if (rows.length === 0) {
       res.status(404).json({ error: "No menu items found" });
-    } else {
+    } 
+    
+    else {
 
       // Convert the rows to an array of objetcs with item name and price
         const menuItems = rows.map((row) => {
