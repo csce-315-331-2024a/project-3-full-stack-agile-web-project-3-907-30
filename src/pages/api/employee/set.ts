@@ -3,7 +3,7 @@ import db from "../../../lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 
 /**
- * Set an employee as a manager or admin
+ * Set an employee as verified, a manager or admin
  *
  * @param {NextApiRequest} req Request object
  * @param {NextApiResponse} res Response object
@@ -13,18 +13,24 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const getStatement = await db.prepare(
-    'UPDATE employees SET "is_manager" = $1, "is_admin" = $2 WHERE "emp_email" = $3',
+    'UPDATE employees SET "is_manager" = $1, "is_admin" = $2, "is_verified" = $3 WHERE "emp_email" = $4',
     {
-      paramTypes: [DataTypeOIDs.bool, DataTypeOIDs.bool, DataTypeOIDs.varchar],
+      paramTypes: [
+        DataTypeOIDs.bool,
+        DataTypeOIDs.bool,
+        DataTypeOIDs.bool,
+        DataTypeOIDs.varchar,
+      ],
     }
   );
 
-  const isManager = req.body.isManager;
-  const isAdmin = req.body.isAdmin;
-  const email = req.body.email;
+  const isManager: boolean = req.body.isManager;
+  const isAdmin: boolean = req.body.isAdmin;
+  const isVerified: boolean = req.body.isVerified;
+  const email: string = req.body.email;
 
   const employee = await getStatement.execute({
-    params: [isManager, isAdmin, email],
+    params: [isManager, isAdmin, isVerified, email],
   });
 
   await getStatement.close();

@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/dialog"
 import { useState } from 'react';
 import { set } from 'zod';
+import Image from 'next/image';
+
 
 
 
@@ -40,28 +42,38 @@ const CustomerView = () => {
   };
 
 
-  // Getting the Ingredient names using the ItemID
-  const getIngredientsUsingItemID = async (itemID: number) => {
-    const res = await fetch(`/api/menu/ingredients/${itemID}`)
+
+
+
+// Getting the Ingredient names using the ItemID
+const getIngredientsUsingItemID = async (itemID: number) =>  {
+  const res = await fetch(`/api/menu/ingredients/${itemID}`)
     const data = await res.json();
     const ingredientNames = data.map((ingredient: any) => ingredient.name);
-    console.log(ingredientNames);
     return ingredientNames;
   };
 
-  // Fetching the Menu Items and their prices
+
   useEffect(() => {
     fetch('/api/menu/menu_items/get-all-items-and-price')
       .then((res) => res.json())
-      .then(async (data) => {
-        const newMenuItems = [];
-        for (const item of data) {
-          const ingredients = await getIngredientsUsingItemID(item.id);
-          newMenuItems.push({ name: item.name, price: item.price, ingredients: ingredients });
-        }
-        setMenuItems(newMenuItems);
+      .then((data) => {
+        // Get the ingredients for each item
+        const ingredientPromises = data.map((item:any) =>
+          getIngredientsUsingItemID(item.id).then((ingredients) => ({
+            name: item.name,
+            price: item.price,
+            ingredients: ingredients,
+          }))
+        );
+        // Wait for all the ingredients to be fetched
+        Promise.all(ingredientPromises).then((items) => {
+          setMenuItems(items);
+        });
       });
   }, []);
+
+
 
   // Retrieve the image for the the menu Item
   const getImageForMenuItem = (itemName: string) => {
@@ -95,14 +107,13 @@ const CustomerView = () => {
   const categories = ["Burgers & Wraps", "Meals", "Tenders", "Sides", "Drinks", "Desserts"];
 
   return (
-    <div className="w-full h-full flex flex-col justify-start items-start p-4">
-      <h1 className="text-2xl flex-col items-center"> Ordering Menu</h1>
+    <div style={{backgroundColor: "#5a0000 "}} className=" w-full h-full flex flex-col justify-center items-center p-4">
+      <h1 className="text-2xl flex-col items-center text-white font-bold"> Ordering Menu</h1>
       {categories.map((category, index) => (
         <div key={index} className="flex flex-col items-center">
-          <h2 className="text-lg">{category}</h2>
-          <div className="bg-white p-4 rounded-md border-black">
-            <div style={{ marginTop: '100px' }} className="grid grid-cols-6 gap-x-12 gap-y-16">
-
+          <h2 className="text-lg text-white">{category}</h2>
+          <div className="bg-white p-1 rounded-md border-white border-4 ">
+            <div style={{marginTop: '100px' }} className="grid grid-cols-6 gap-x-12 gap-y-16">
               {menuItems
                 .filter((item) => itemBelongsToCategory(item, category))
                 .map((item: any) => {
@@ -110,8 +121,8 @@ const CustomerView = () => {
                     <div key={item.name} className="flex flex-col items-center gap-4">
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="outline" style={{ backgroundColor: 'transparent', border: 'none' }} onClick={() => itemClicked(item)}>
-                            <img src={getImageForMenuItem(item.name)} alt={item.name} className="w-48 h-42 rounded-md" />
+                          <Button variant="outline" style={{ backgroundColor: 'transparent', border: 'none'}} onClick={() => itemClicked(item)}>
+                            <Image src={getImageForMenuItem(item.name)} alt={item.name} className="rounded-md" width={200} height={200} />
                           </Button>
                         </DialogTrigger>
                         <DialogContent style={{ width: '600px', height: '600px' }}>
@@ -119,7 +130,7 @@ const CustomerView = () => {
                           <div className="grid gap-4 py-4">
                             <div className="flex items-center justify-center gap-4">
                               {selectedItem &&
-                                <img src={getImageForMenuItem(selectedItem.name)} alt={selectedItem.name} className="w-96 h-96 rounded-md" />
+                                <Image src={getImageForMenuItem(selectedItem.name)} alt={selectedItem.name} className="rounded-md" width={400} height={400} />
                               }
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
@@ -127,7 +138,6 @@ const CustomerView = () => {
                                 Ingredients:
                               </Label>
                               <div id="name" className="col-span-3">
-                                {/* {item.ingredients.join(', ')} */}
                                 <ul className="flex flex-row gap-1 mr-3">
                                   {item.ingredients.map((ingredient: string) => (
                                     <li key={ingredient} className="text-sm">{ingredient}</li>
@@ -138,8 +148,8 @@ const CustomerView = () => {
                           </div>
                         </DialogContent>
                       </Dialog>
-                      <p style={{ marginTop: '40px' }}>{item.name}</p>
-                      <p style={{ marginBottom: '50px' }}> {item.price}</p>
+                      <p style={{ marginTop: '80px' }}>{item.name}</p>
+                      <p style={{ marginBottom: '60px' }}> {item.price}</p>
                     </div>)
                 })}
             </div>

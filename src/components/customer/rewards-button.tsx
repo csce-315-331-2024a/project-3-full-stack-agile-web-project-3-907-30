@@ -40,12 +40,29 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
+    // Get and store customer information 
     const customer = await getCustomerFromDatabase(data.phone);
-
+    if (customer !== null) {
+      localStorage.setItem('customerId', customer!.cust_id.toString());
+      localStorage.setItem('customerName', customer!.cust_name);
+      localStorage.setItem('customerPhoneNumber', customer!.phone_number);
+      localStorage.setItem('customerNumOrders', customer!.num_orders.toString());
+      localStorage.setItem('customerTotalSpent', customer!.total_spent.toString());
+      localStorage.setItem('customerPoints', customer!.points.toString());
+    }
+    else {
+      localStorage.setItem('customerId', 'no customer ID');
+      localStorage.setItem('customerName', 'no customer');
+      localStorage.setItem('customerPhoneNumber', 'no customer phone number');
+      localStorage.setItem('customerNumOrders', 'no customer orders');
+      localStorage.setItem('customerTotalSpent', 'no customer total spent');
+      localStorage.setItem('customerPoints', 'no customer points');
+    }
+    let customerName: string = localStorage.getItem('customerName')!;
     if (customer) {
       toast({
         title: "Success!",
-        description: "You have successfully signed in.",
+        description: `Welcome back, ${customerName}`,
       });
 
       // reset the form and close the dialog
@@ -64,7 +81,7 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" data-testid="sign-in">
           Sign-in for Rewards
         </Button>
       </DialogTrigger>

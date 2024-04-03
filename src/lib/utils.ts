@@ -54,10 +54,12 @@ import db from "./db";
 //     return res;
 // }
 
-export function isLowStock(curr: number, reqd: number): boolean {
-  return curr < reqd;
-}
-
+/**
+ * Convert a given array row from a SQL execution result to an InventoryItem object.
+ *
+ * @param {any[]} array The given row array to be converted.
+ * @returns {MenuItem} The menu item from the given row.
+ */
 export function rowToMenuItem(array: any[]): MenuItem {
   return {
     id: array.at(0),
@@ -67,6 +69,12 @@ export function rowToMenuItem(array: any[]): MenuItem {
   } as MenuItem;
 }
 
+/**
+ * Convert a given array row from a SQL execution result to an InventoryItem object.
+ *
+ * @param {any[]} array The given row array to be converted.
+ * @returns {InventoryItem} The inventory item from the given row.
+ */
 export function rowToInventoryItem(array: any[]): InventoryItem {
   return {
     id: array.at(0),
@@ -84,7 +92,15 @@ export function rowToInventoryItem(array: any[]): InventoryItem {
   };
 }
 
-// Prepare and execute statement in one function, use callback to parse values
+/**
+ * Prepare and execute a SQL statement.
+ *
+ * @param {Pool} db The database pool
+ * @param {string} sql The SQL statement to be executed
+ * @param {number[]} paramTypes The types of the parameters, if any.
+ * @param {any[]} params The parameters for the statement to be executed.
+ * @returns {Promise<QueryResult>} The result of the executed SQL statement.
+ */
 export async function executeStatement(
   db: Pool,
   sql: string,
@@ -122,12 +138,27 @@ export async function getEmployeeFromDatabase(email: string) {
 }
 
 /**
- * Get all employees from the database.
+ * Get all employees, including managers and admins from the database.
  *
  * @returns {Promise<Employee[]>} All employees from the database.
  */
 export async function getAllEmployeesFromDatabase() {
   const res = await fetch("/api/employee/get-all");
+  const data: Employee[] = await res.json();
+  return data;
+}
+
+/**
+ * Get verified employees from the database.
+ *
+ * @returns {Promise<Employee[]>} Get verified employees from the database.
+ */
+export async function getVerifiedEmployeesFromDatabase() {
+  const res = await fetch("/api/employee/get-employees");
+
+  if (res.status === 404) {
+    return [];
+  }
   const data: Employee[] = await res.json();
   return data;
 }
@@ -143,8 +174,10 @@ export function getRole(employee: Employee) {
     return "Admin";
   } else if (employee.isManager) {
     return "Manager";
-  } else {
+  } else if (employee.isVerified) {
     return "Employee";
+  } else {
+    return "Unverified";
   }
 }
 
@@ -180,14 +213,22 @@ export async function getCustomerFromDatabase(phone: string) {
  * @param {empId}  The ID of the employee creating the order
  * @returns {string} The current role of the employee.
  */
-export async function submitOrder(orderId: number, orderTotal: number, custId: number, empId: number) {
-  //orderId = 1000001;
+export async function submitOrder(orderId: number, orderTotal: number, custId: number, empId: number, toast: any, chosenItems: any, quantities: any) {
+  if (orderTotal <= 0) {
+    toast({
+      variant: "destructive",
+      title: "Cart is empty",
+      description: "Please add items to your cart before submitting.",
+    });
+    return;
+  }
+
   const res = await fetch("/api/employee/submit-order", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ orderId, orderTotal, custId, empId }),
+    body: JSON.stringify({ orderId, orderTotal, custId, empId, chosenItems, quantities }),
   });
   return res;
 }

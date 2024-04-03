@@ -35,3 +35,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ignore re-generated populating scripts
+/scripts/customers.sql
+/scripts/employees.sql
+/scripts/inv_menu.sql
+/scripts/inventory.sql
+/scripts/menu_items.sql
+/scripts/menu_pairs.sql
+/scripts/orders.sql
+/scripts/orders_menu.sql
+
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
