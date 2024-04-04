@@ -12,7 +12,7 @@ A product where a customer, manager, or employee can securely login and access t
 - [X] Modify schema to hold Google OAuth necessary information E2 S0 T3 - Adam
 - [X] Implement login and logout routes and corresponding hooks E1 S0 T2 - Adam
 - [X] Managers can view all employee accounts that have logged into the POS system E2 S0 T1 - Aaron
-- [X] Managers can make accounts "employees" through a button click in the manager view E1  S0 T1 - Adam
+- [X] Managers can make accounts "employees" through a button click in the manager view E1 S0 T1 - Adam
 - [x] Restrict access of manager page from employees E1 S0 T1 - Gabe
 - [X] Make an interactive Employee GUI POS system that allows employees to create an order E1 S0 T3 - Akshay
 - [X] Make functions that can create and view the orders in the database E1 S0 T1 - Akshay
