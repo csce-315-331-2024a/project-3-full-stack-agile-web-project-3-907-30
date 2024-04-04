@@ -43,15 +43,13 @@ export default function Home() {
     }
   }, [account]);
 
-  
+
   return (
     <>
       <Head>
         <title>Rev&apos;s American Grill</title>
       </Head>
-      <div>
-        <h1>Rev&apos;s American Grill</h1>
-        {/* <h2>Customer View</h2> */}
+      <div className="flex items-center h-full">
         <CustomerView />
       </div>
     </>
