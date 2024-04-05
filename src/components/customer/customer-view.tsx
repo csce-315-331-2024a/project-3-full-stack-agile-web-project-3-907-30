@@ -41,6 +41,7 @@ const CustomerView = () => {
     fetch('/api/menu/menu_items/get-all-items-and-price')
       .then((res) => res.json())
       .then((data) => {
+        // Get the ingredients for each item
         const ingredientPromises = data.map((item: any) =>
           getIngredientsUsingItemID(item.id).then((ingredients) => ({
             name: item.name,
@@ -55,10 +56,12 @@ const CustomerView = () => {
       });
   }, []);
 
+  // Retrieve the image for the the menu Item
   const getImageForMenuItem = (itemName: string) => {
     return `/menu-item-pics/${itemName}.jpeg`;
   };
 
+  // Seperate the items to their own categories
   const itemBelongsToCategory = (item: any, category: string) => {
     switch (category) {
       case "Burgers & Wraps":
@@ -83,9 +86,9 @@ const CustomerView = () => {
   const categories = ["Burgers & Wraps", "Meals", "Tenders", "Sides", "Drinks", "Desserts"];
 
   return (
-    <div className="w-full max-h-full flex flex-col justify-center items-center p-4">
-      <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row items-stretch gap-2">
-        <TabsList className="grid grid-cols-1 w-1/5 h-fit mt-2">
+    <div className="w-full h-full flex flex-col justify-start items-start p-4">
+      <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-[90%]">
+        <TabsList className="grid grid-cols-1 w-1/5 mt-2 h-fit">
           {categories.map((category, index) => (
             <TabsTrigger key={index} value={category.replace(/\s/g, '')} className="px-8 py-9">
               <h2 className="text-2xl">
@@ -96,7 +99,7 @@ const CustomerView = () => {
         </TabsList>
         {categories.map((category, index) => (
           <TabsContent key={index} value={category.replace(/\s/g, '')} className="w-4/5">
-            <Card className="h-[632px] overflow-y-scroll">
+            <Card className="h-full overflow-y-scroll">
               <div className="grid grid-cols-5 gap-4 p-4 items-stretch">
                 {menuItems
                   .filter((item) => itemBelongsToCategory(item, category))
@@ -109,7 +112,7 @@ const CustomerView = () => {
                               <Image src={getImageForMenuItem(item.name)} alt={item.name} className="rounded-md" width={200} height={200} />
                               <div className="flex flex-col gap-2 text-lg text-center">
                                 <p className="font-semibold">{item.name}</p>
-                                <p className="text-base">${item.price}</p>
+                                <p className="text-base">${item.price.toFixed(2)}</p>
                               </div>
                             </Card>
                           </DialogTrigger>
