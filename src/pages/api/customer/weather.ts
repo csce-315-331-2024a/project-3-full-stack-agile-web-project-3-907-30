@@ -12,7 +12,8 @@ export default async function handler(
     res: NextApiResponse
 ) {
     try {
-        api.getCurrentWeatherByCityName({cityName: 'College Station'}).then(weather => {
+        // Get data from API and parse into Weather object
+        await api.getCurrentWeatherByCityName({cityName: 'College Station'}).then(weather => {
             const data: Weather = { 
                 description: weather.weather.at(0)!.description as Capitalize<string>,
                 value: Math.round(weather.main.temp),
@@ -21,6 +22,6 @@ export default async function handler(
             res.status(200).json(data);
         });
     } catch (error) {
-        res.status(400).json({error: error});
+        res.status(200).json({ value: 0, isDay: true, description: 'Clear' });
     }
 }

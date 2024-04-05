@@ -33,7 +33,7 @@ Ex:
   - [ ] 7. Make functions that can create, delete, view, and modify the orders in the database E1 P1 T0 - Akshay
   - [ ] 7. Have GUI call and display the results of that function when a customer is selecting a given item E1 P1 T0 - Akshay
 - [ ] 10. As an employee, I want to be able to view product information so I can inform the customer without leaving. - Margo
-  - [ ] 10. Make a function that queries all of the relevant characteristics of a menu item like allergen information.  E1 P2 T0 - Margo
+  - [X] 10. Make a function that queries all of the relevant characteristics of a menu item like allergen information.  E1 P2 T0 - Margo
   - [ ] 10. Have GUI show this information to the employee when they click on a menu item at POS. E1 P2 T0 - Margo
 - [ ] 14. As a customer, I want to be able to log in to see my past orders and points so that I can re-order or just see what I like. - Gabe
   - [ ] 14. Make Customer GUI “login” view that asks for relevant information (phone number)  E2 P1 T0 - Gabe

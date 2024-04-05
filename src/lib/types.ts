@@ -56,6 +56,14 @@ export interface InventoryItem {
   is_halal: boolean;
 }
 
+export interface Allergens {
+  has_dairy: boolean;
+  has_nuts: boolean;
+  has_eggs: boolean;
+  is_vegan: boolean;
+  is_halal: boolean;
+}
+
 export interface MenuItem {
     id: number,
     name: string,
