@@ -59,7 +59,7 @@ Ex:
   - [ ] 21. Add google translate functionality to all GUI items in sprint 2 E2 P1 T0 - Chris
 
 ### Chores (part of the backlog, but have no story points associated with them)
-- [ ] As a customer, I’d like to be able to see the weather E4 P2 T0 - Margo
+- [X] As a customer, I’d like to be able to see the weather E4 P2 T0 - Margo
 - [ ] Start reconfiguring database for sale items E1 P2 T0 - Gabe
 - [ ] Configure database for customer points/rewards E3 P2 T0 - Gabe
 - [ ] Clean up the UI for ordering  - Adam
