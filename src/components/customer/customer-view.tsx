@@ -25,6 +25,7 @@ const CustomerView = () => {
   const [ingredients, setIngredients] = useState<any[]>([]);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [hoveredTab, setHoveredTab] = useState<number | null>(null);
 
 
   const itemClicked = (item: any) => {
@@ -92,10 +93,19 @@ const CustomerView = () => {
       <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-[90%]">
         <TabsList className="grid grid-cols-1 w-1/5 mt-2 h-fit">
           {categories.map((category, index) => (
-            <TabsTrigger key={index} value={category.replace(/\s/g, '')} className="px-8 py-9">
+            <TabsTrigger 
+            key={index} 
+            value={category.replace(/\s/g, '')} 
+            className={`px-8 py-9 cursor-pointer relative`}
+            onMouseEnter={() => setHoveredTab(index)}
+            onMouseLeave={() => setHoveredTab(null)}
+          >
               <h2 className="text-2xl">
                 {category}
               </h2>
+              {hoveredTab === index && (
+                <div className="absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500"></div>
+              )}
             </TabsTrigger>
           ))}
         </TabsList>
