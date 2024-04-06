@@ -1,3 +1,4 @@
+// order-receipt.tsx
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
@@ -7,6 +8,7 @@ import { getNextOrderId } from "@/lib/utils";
 import { useToast } from "../ui/use-toast";
 import useAuth from "@/hooks/useAuth";
 import { AuthHookType } from "@/lib/types";
+import { clear } from "console";
 
 
 export interface OrderItem {
@@ -15,10 +17,11 @@ export interface OrderItem {
   quantity: number;
 }
 
-export interface OrderReceiptProps {
+interface OrderReceiptProps {
   items: OrderItem[];
   clearOrder: () => void;
 }
+
 
 /**
  * Displays an order receipt with the order details, subtotal, tax, and total cost. Allows for clearing and submitting orders.
@@ -33,11 +36,12 @@ export interface OrderReceiptProps {
  *   - Uses the useEffect hook to calculate the subtotal, tax, and total cost whenever the items array changes.
  *   - Uses the employeeSubmitOrder function to submit the order with the current employee's email address and display a toast notification with the order ID.
  */
-const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
+const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder  }) => {
   const [subTotal, setSubTotal] = useState(0);
   const [tax, setTax] = useState(0);
   const [total, setTotal] = useState(0);
   const { account } = useAuth() as AuthHookType;
+  const [orderNumber, setOrderNumber] = useState<string | null>(null);
 
   const { toast } = useToast();
 
@@ -53,9 +57,6 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     setTotal(calculatedTotal);
   }, [items]); // Dependency array ensures calculateTotals is called when items change
 
-
-
-
 /**
    * Submits an order for the current employee with the given email address and displays a toast notification with the order ID.
    * @example
@@ -69,8 +70,8 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
    *   - Displays a toast notification with the order ID.
    *   - Submits the order with the given order ID, total cost, employee ID, and toast notification function.
    */
-  const employeeSubmitOrder = async () => {
-
+const employeeSubmitOrder = async () => {
+  try {
     const { email } = account!;
     const employee = await getEmployeeFromDatabase(email);
     const nextOrderId = await getNextOrderId();
@@ -84,35 +85,60 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     const quantities = items.map((item) => item.quantity);
     const res = await submitOrder(nextOrderId, total, 1, parseInt(employee.empId), toast, chosenItems, quantities);
 
-    if (res) {
-      if (res.status === 200) {
-        toast({
-          title: 'Success!',
-          description: 'Your order has been placed!',
-        });
-    } else {
+    if (res && res.status === 200) {
       toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request.',
+        title: 'Success!',
+        description: 'Your order has been placed!',
       });
+    } else {
+      throw new Error('There was a problem with your request.');
     }
+
+    // Clear the order after submitting
+    clearOrder();
+
+    // Reset the order number
+    const newOrderId = await getNextOrderId();
+    setOrderNumber(newOrderId);
+
+  } catch (error) {
+    console.error('Error submitting order:', error);
+    toast({
+      variant: 'destructive',
+      title: 'Uh oh! Something went wrong.',
+      description: 'There was a problem with your request.',
+    });
   }
+};
+
+
+  const getNextOrderId = async () => {
+    const response = await fetch('/api/order/get-next-order-id');
+    const data = await response.json();
+    return data.nextOrderId;
   }
 
+  useEffect(() => {
+    const fetchOrderNumber = async () => {
+      const nextOrderId = await getNextOrderId();
+      setOrderNumber(nextOrderId);
+    };
+
+    fetchOrderNumber();
+  }, []);
+  
+
   return (
-    <Card className="h-[624px]">
+    <Card className="h-[669px]">
       <CardHeader>
         <CardTitle className="text-center">Order Receipt</CardTitle>
-        <Button onClick={clearOrder} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-          Clear Order
-        </Button>
+        
       </CardHeader>
       <CardContent className="p-4">
         <div className="mb-4 border-b pb-4">
           <h2 className="text-xl font-semibold mb-2">Order Details</h2>
           <div className="text-gray-700">
-            <span className="block">Order Number: </span> {/* Placeholder number */}
+            <span className="block">Order Number: {orderNumber}</span>
           </div>
         </div>
         <ScrollArea className="h-[150px]">
@@ -125,7 +151,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
             ))}
           </ul>
         </ScrollArea>
-        <div className="mt-4">
+        <div className="mt-4"> 
           <div className="flex justify-between py-2">
             <span className="text-gray-600">Subtotal</span>
             <span className="font-semibold">${subTotal.toFixed(2)}</span>

@@ -24,6 +24,8 @@ const CustomerView = () => {
   const [menuItems, setMenuItems] = useState<any[]>([]);
   const [ingredients, setIngredients] = useState<any[]>([]);
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [hoveredItem, setHoveredItem] = useState(null);
+
 
   const itemClicked = (item: any) => {
     setSelectedItem(item);
@@ -105,7 +107,11 @@ const CustomerView = () => {
                   .filter((item) => itemBelongsToCategory(item, category))
                   .map((item: any) => {
                     return (
-                      <div key={item.name} className="flex flex-col items-center gap-4 h-full">
+                      <div key={item.name}
+                      className={`flex flex-col items-center gap-4 h-full transition-transform transition-shadow duration-300 ease-in-out ${hoveredItem === item.name ? 'transform scale-105 shadow-lg' : ''}`}
+                      onMouseEnter={() => setHoveredItem(item.name)}
+                      onMouseLeave={() => setHoveredItem(null)}
+                      >
                         <Dialog>
                           <DialogTrigger asChild>
                             <Card className="flex flex-col justify-between items-center h-full w-full p-4 gap-8 cursor-pointer" onClick={() => itemClicked(item)}>
