@@ -28,13 +28,8 @@ export async function getServerSideProps(context: any) {
  */
 export default function Home() {
   return (
-    <>
-      <Head>
-        <title>Rev&apos;s American Grill</title>
-      </Head>
-      <div className="flex max-h-full items-center overflow-hidden">
-        <CustomerView />
-      </div>
-    </>
+    <div className="flex max-h-full items-center overflow-hidden">
+      <CustomerView />
+    </div>
   );
 }

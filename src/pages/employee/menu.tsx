@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from '@/components/ui/skeleton';
+import { categories, itemBelongsToCategory } from '@/lib/utils';
 
 interface MenuItem {
   name: string;
@@ -45,39 +46,15 @@ const Menu = () => {
 
   useEffect(() => {
     fetchMenuItems();
-  }, []);
-
-
-  const itemBelongsToCategory = (item: MenuItem, category: string) => {
-    switch (category) {
-      case "Burgers & Wraps":
-        return item.name.includes("Burger") || item.name.includes("Sandwich") || item.name.includes("Cheeseburger")
-          || item.name.includes("Hamburger") || item.name.includes("Melt") || item.name.includes("Club")
-          || item.name.includes("Wrap");
-      case "Meals":
-        return item.name.includes("Meal");
-      case "Tenders":
-        return item.name.includes("Tender");
-      case "Sides":
-        return item.name === "French Fries";
-      case "Drinks":
-        return item.name.includes("Shake") || item.name.includes("Water") || item.name.includes("Drink");
-      case "Desserts":
-        return item.name.includes("Sundae") || item.name.includes("Ice Cream") || item.name.includes("Float");
-      default:
-        return false;
-    }
-  };
-
-  const categories = ["Burgers & Wraps", "Meals", "Tenders", "Sides", "Drinks", "Desserts"];
+  }, [])
 
   return (
-    <div className="w-full h-full flex flex-col justify-start items-center p-4 max-h-full">
+    <div className="w-full h-full flex flex-col justify-start items-center p-4">
       <div className="w-full grid grid-cols-3 gap-8">
         {categories.map((category, index) => (
-          <Card key={index} className="">
+          <Card key={index} className="bg-[#500000] border-[#3C0000]">
             <CardHeader>
-              <CardTitle>{category}</CardTitle>
+              <CardTitle className="text-white">{category}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-1">
               {loading ? (
@@ -88,10 +65,10 @@ const Menu = () => {
                   </div>
                 ))
               ) : (
-                menuItems.filter(item => itemBelongsToCategory(item, category)).map((item, index) => (
-                  <div key={index} className="flex flex-row justify-between">
+                menuItems.filter(item => itemBelongsToCategory(item.name, category)).map((item, index) => (
+                  <div key={index} className="flex flex-row justify-between text-white">
                     <p className="font-medium">{item.name}</p>
-                    <p className="text-gray-600 pl-16">${item.price.toFixed(2)}</p>
+                    <p className="pl-16">${item.price.toFixed(2)}</p>
                   </div>
                 ))
               )

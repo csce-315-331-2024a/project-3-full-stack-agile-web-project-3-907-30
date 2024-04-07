@@ -63,5 +63,5 @@ Ex:
 - [ ] Start reconfiguring database for sale items E1 P2 T0 - Gabe
 - [ ] Configure database for customer points/rewards E3 P2 T0 - Gabe
 - [ ] Clean up the UI for ordering  - Adam
-  - [ ] Add tabs to customer and employee ordering E3 P2 T0 - Adam
+  - [x] Add tabs to customer and employee ordering E3 P2 T0 - Adam
   - [ ] Make menu board on theme E1 P2 T0 - Adam

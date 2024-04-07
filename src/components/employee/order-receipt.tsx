@@ -129,19 +129,19 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
 
 
   return (
-    <Card className="h-[669px]">
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>Order Receipt</CardTitle>
         <CardDescription>Review and submit your order.</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex flex-col gap-2">
         <div className="mb-4 border-b pb-4">
           <h2 className="text-xl font-semibold mb-2">Order Details</h2>
           <div className="text-gray-700">
             <span className="block">Order Number: {orderNumber}</span>
           </div>
         </div>
-        <ScrollArea className="h-[150px]">
+        <ScrollArea className="h-[200px]">
           <ul className="divide-y divide-gray-200 pr-4">
             {items.map((item, index) => (
               <li key={index} className="py-4 flex justify-between items-center">
@@ -167,7 +167,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
         </div>
         <Button onClick={async () => {
           employeeSubmitOrder();
-        }} className="bg-green-500 hover:bg-green-700 text-white text-lg font-bold p-6 rounded w-full">
+        }} className="bg-green-500 hover:bg-green-700 text-white text-xl font-bold px-6 py-8 rounded w-full">
           Submit Order
         </Button>
       </CardContent>
