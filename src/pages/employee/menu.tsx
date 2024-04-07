@@ -17,6 +17,7 @@ const Menu = () => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loading, setLoading] = useState(true);
 
+
   const getImageForMenuItem = (itemName: string) => {
     return `/menu-item-pics/${itemName}.jpeg`;
   };

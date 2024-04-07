@@ -1,3 +1,4 @@
+// Date 
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
@@ -134,6 +135,20 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
         });
     };
 
+    const removeItemFromOrder = (itemName: string) => {
+    setOrder((prevOrder) => {
+        const newOrder = { ...prevOrder };
+        const existingItem = newOrder[itemName];
+        if (existingItem && existingItem.quantity > 1) {
+            existingItem.quantity -= 1;
+            newOrder[itemName] = existingItem;
+        } else {
+            delete newOrder[itemName];
+        }
+        setOrderItems(Object.values(newOrder));
+        return newOrder;
+    });
+};
 
 
     return (
@@ -141,6 +156,9 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
             <CardHeader>
                 <CardTitle>Menu</CardTitle>
                 <CardDescription>Select your items</CardDescription>
+                <Button onClick={clearOrderAndSetOrderItems} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+          Clear Order
+        </Button>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
                 {loading ? (
@@ -164,6 +182,7 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                                                         min={0}
                                                         className="w-16"
                                                     />
+                                                    <Button onClick={() => removeItemFromOrder(item)}>–</Button>
                                                 </div>
                                             </div>
                                         ))}
