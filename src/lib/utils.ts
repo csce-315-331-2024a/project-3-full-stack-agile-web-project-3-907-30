@@ -213,7 +213,15 @@ export async function getCustomerFromDatabase(phone: string) {
  * @param {empId}  The ID of the employee creating the order
  * @returns {string} The current role of the employee.
  */
-export async function submitOrder(orderId: number, orderTotal: number, custId: number, empId: number, toast: any, chosenItems: any, quantities: any) {
+export async function submitOrder(
+  orderId: number,
+  orderTotal: number,
+  custId: number,
+  empId: number,
+  toast: any,
+  chosenItems: any,
+  quantities: any
+) {
   if (orderTotal <= 0) {
     toast({
       variant: "destructive",
@@ -228,7 +236,14 @@ export async function submitOrder(orderId: number, orderTotal: number, custId: n
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ orderId, orderTotal, custId, empId, chosenItems, quantities }),
+    body: JSON.stringify({
+      orderId,
+      orderTotal,
+      custId,
+      empId,
+      chosenItems,
+      quantities,
+    }),
   });
   return res;
 }
@@ -244,3 +259,57 @@ export async function getNextOrderId() {
   const nextOrderId = parseInt(returnedData.nextOrderId, 10);
   return nextOrderId;
 }
+
+/**
+ * Place an item into its respective category.
+ *
+ * @param {string | string[]} item The item to be categorized.
+ * @param {string} category The category to place the item in.
+ * @returns {boolean} Returns true if the item belongs to the category, false otherwise.
+ */
+export const itemBelongsToCategory = (
+  item: string | string[],
+  category: string
+) => {
+  switch (category) {
+    case "Burgers & Wraps":
+      return (
+        item.includes("Burger") ||
+        item.includes("Sandwich") ||
+        item.includes("Cheeseburger") ||
+        item.includes("Hamburger") ||
+        item.includes("Melt") ||
+        item.includes("Club") ||
+        item.includes("Wrap")
+      );
+    case "Meals":
+      return item.includes("Meal");
+    case "Tenders":
+      return item.includes("Tender");
+    case "Sides":
+      return item === "French Fries";
+    case "Drinks":
+      return (
+        item.includes("Shake") ||
+        item.includes("Water") ||
+        item.includes("Drink")
+      );
+    case "Desserts":
+      return (
+        item.includes("Sundae") ||
+        item.includes("Ice Cream") ||
+        item.includes("Float")
+      );
+    default:
+      return false;
+  }
+};
+
+export const categories = [
+  "Burgers & Wraps",
+  "Meals",
+  "Tenders",
+  "Sides",
+  "Drinks",
+  "Desserts",
+];
