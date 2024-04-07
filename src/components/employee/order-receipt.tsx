@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { getEmployeeFromDatabase, submitOrder } from "@/lib/utils";
@@ -56,19 +56,19 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
 
 
 
-/**
-   * Submits an order for the current employee with the given email address and displays a toast notification with the order ID.
-   * @example
-   * submitOrder('johndoe@example.com', 100)
-   * @param {string} email - The email address of the current employee.
-   * @param {number} total - The total cost of the order.
-   * @returns {boolean} Returns true if the order was successfully submitted, false otherwise.
-   * @description
-   *   - Retrieves the employee's information from the database using their email address.
-   *   - Gets the next available order ID.
-   *   - Displays a toast notification with the order ID.
-   *   - Submits the order with the given order ID, total cost, employee ID, and toast notification function.
-   */
+  /**
+     * Submits an order for the current employee with the given email address and displays a toast notification with the order ID.
+     * @example
+     * submitOrder('johndoe@example.com', 100)
+     * @param {string} email - The email address of the current employee.
+     * @param {number} total - The total cost of the order.
+     * @returns {boolean} Returns true if the order was successfully submitted, false otherwise.
+     * @description
+     *   - Retrieves the employee's information from the database using their email address.
+     *   - Gets the next available order ID.
+     *   - Displays a toast notification with the order ID.
+     *   - Submits the order with the given order ID, total cost, employee ID, and toast notification function.
+     */
   const employeeSubmitOrder = async () => {
 
     const { email } = account!;
@@ -90,25 +90,23 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
           title: 'Success!',
           description: 'Your order has been placed!',
         });
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request.',
-      });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Uh oh! Something went wrong.',
+          description: 'There was a problem with your request.',
+        });
+      }
     }
-  }
   }
 
   return (
     <Card className="h-[624px]">
       <CardHeader>
-        <CardTitle className="text-center">Order Receipt</CardTitle>
-        <Button onClick={clearOrder} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-          Clear Order
-        </Button>
+        <CardTitle>Order Receipt</CardTitle>
+        <CardDescription>Review and submit your order.</CardDescription>
       </CardHeader>
-      <CardContent className="p-4">
+      <CardContent>
         <div className="mb-4 border-b pb-4">
           <h2 className="text-xl font-semibold mb-2">Order Details</h2>
           <div className="text-gray-700">
@@ -139,10 +137,13 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
             <span className="text-lg font-bold">${total.toFixed(2)}</span>
           </div>
         </div>
-        <div className="flex justify-end mt-6">
+        <div className="flex justify-center w-full mt-6 gap-2">
+          <Button onClick={clearOrder} className="bg-red-500 hover:bg-red-700 text-white text-lg font-bold p-6 rounded w-1/2">
+            Clear Order
+          </Button>
           <Button onClick={async () => {
             employeeSubmitOrder();
-          }} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+          }} className="bg-green-500 hover:bg-green-700 text-white text-lg font-bold p-6 rounded w-1/2">
             Submit Order
           </Button>
         </div>

@@ -13,6 +13,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Card } from '../ui/card';
+import { categories, itemBelongsToCategory } from '@/lib/utils';
 
 export interface OrderItem {
   name: string;
@@ -61,33 +62,9 @@ const CustomerView = () => {
     return `/menu-item-pics/${itemName}.jpeg`;
   };
 
-  // Seperate the items to their own categories
-  const itemBelongsToCategory = (item: any, category: string) => {
-    switch (category) {
-      case "Burgers & Wraps":
-        return item.name.includes("Burger") || item.name.includes("Sandwich") || item.name.includes("Cheeseburger")
-          || item.name.includes("Hamburger") || item.name.includes("Melt") || item.name.includes("Club")
-          || item.name.includes("Wrap");
-      case "Meals":
-        return item.name.includes("Meal");
-      case "Tenders":
-        return item.name.includes("Tender");
-      case "Sides":
-        return item.name === "French Fries";
-      case "Drinks":
-        return item.name.includes("Shake") || item.name.includes("Water") || item.name.includes("Drink");
-      case "Desserts":
-        return item.name.includes("Sundae") || item.name.includes("Ice Cream") || item.name.includes("Float");
-      default:
-        return false;
-    }
-  };
-
-  const categories = ["Burgers & Wraps", "Meals", "Tenders", "Sides", "Drinks", "Desserts"];
-
   return (
     <div className="w-full h-full flex flex-col justify-start items-start p-4">
-      <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-[90%]">
+      <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-full">
         <TabsList className="grid grid-cols-1 w-1/5 mt-2 h-fit">
           {categories.map((category, index) => (
             <TabsTrigger key={index} value={category.replace(/\s/g, '')} className="px-8 py-9">
@@ -99,10 +76,10 @@ const CustomerView = () => {
         </TabsList>
         {categories.map((category, index) => (
           <TabsContent key={index} value={category.replace(/\s/g, '')} className="w-4/5">
-            <Card className="h-full overflow-y-scroll">
+            <Card className="overflow-y-scroll h-full">
               <div className="grid grid-cols-5 gap-4 p-4 items-stretch">
                 {menuItems
-                  .filter((item) => itemBelongsToCategory(item, category))
+                  .filter((item) => itemBelongsToCategory(item.name, category))
                   .map((item: any) => {
                     return (
                       <div key={item.name} className="flex flex-col items-center gap-4 h-full">

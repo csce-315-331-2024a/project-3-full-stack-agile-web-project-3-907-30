@@ -32,7 +32,7 @@ export default function Home() {
       <Head>
         <title>Rev&apos;s American Grill</title>
       </Head>
-      <div className="flex items-center h-full">
+      <div className="flex max-h-full items-center overflow-hidden">
         <CustomerView />
       </div>
     </>
