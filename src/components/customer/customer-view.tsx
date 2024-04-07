@@ -70,13 +70,13 @@ const CustomerView = () => {
       <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-full">
         <TabsList className="grid grid-cols-1 w-1/5 mt-2 h-fit">
           {categories.map((category, index) => (
-            <TabsTrigger 
-            key={index} 
-            value={category.replace(/\s/g, '')} 
-            className={`px-8 py-9 cursor-pointer relative`}
-            onMouseEnter={() => setHoveredTab(index)}
-            onMouseLeave={() => setHoveredTab(null)}
-          >
+            <TabsTrigger
+              key={index}
+              value={category.replace(/\s/g, '')}
+              className={`px-8 py-9 cursor-pointer relative`}
+              onMouseEnter={() => setHoveredTab(index)}
+              onMouseLeave={() => setHoveredTab(null)}
+            >
               <h2 className="text-2xl">
                 {category}
               </h2>
@@ -95,9 +95,9 @@ const CustomerView = () => {
                   .map((item: any) => {
                     return (
                       <div key={item.name}
-                      className={`flex flex-col items-center gap-4 h-full transition-transform transition-shadow duration-300 ease-in-out ${hoveredItem === item.name ? 'transform scale-105 shadow-lg' : ''}`}
-                      onMouseEnter={() => setHoveredItem(item.name)}
-                      onMouseLeave={() => setHoveredItem(null)}
+                        className={`flex flex-col items-center gap-4 h-full transition-all duration-300 ease-in-out ${hoveredItem === item.name ? 'transform scale-105 shadow-lg rounded-lg' : ''}`}
+                        onMouseEnter={() => setHoveredItem(item.name)}
+                        onMouseLeave={() => setHoveredItem(null)}
                       >
                         <Dialog>
                           <DialogTrigger asChild>
