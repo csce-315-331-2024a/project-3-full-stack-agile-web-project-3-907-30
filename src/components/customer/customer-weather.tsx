@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge"
 import { Weather } from "@/pages/api/customer/weather";
 
 export const getCurrentWeather = async () => {
-    const response = await fetch('api/customer/weather');
+    const response = await fetch('http://localhost:3000/api/customer/weather');
     if (!response.ok) {
         throw new Error('Error fetching weather');
     }

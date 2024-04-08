@@ -6,6 +6,19 @@ import { clear } from 'console';
 import { ScrollArea } from '../ui/scroll-area';
 import { InventoryItem, MenuItem } from '@/lib/types';
 import { toast } from '../ui/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Allergens } from "@/lib/types";
+
 
 export interface OrderItem extends MenuItem {
     quantity: number;
@@ -21,6 +34,8 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     const [loading, setLoading] = useState(true);
     const [order, setOrder] = useState<{ [key: string]: OrderItem }>({});
     const [inputValues, setInputValues] = useState<{ [key: string]: number }>({});
+    const [currentAllergens, setAllergens] = useState<Allergens>();
+    const [open, setOpen] = useState<{[key: string]: boolean}>({});
 
     useEffect(() => {
         fetch('/api/menu/menu_items/get-all-items')
@@ -28,6 +43,10 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
             .then((data) => {
                 setMenuItems(data);
                 setLoading(false);
+                const strings = data as string[];
+                strings.map(row => {
+                    setOpen({...open, [row]: false})
+                })
             });
     }, []);
 
@@ -134,7 +153,20 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
         });
     };
 
+    const getAllergensForItem = async (name: string) => {
+        try {
+            const res = await fetch(`/api/menu/allergens/${name}`);
 
+            if (!res.ok) {
+                throw new Error('Item not found');
+            }
+
+            const data = await res.json() as Allergens;
+            setAllergens(data);
+        } catch (error) {
+            console.error('Error getting allergens', error);
+        }
+    }
 
     return (
         <Card>
@@ -156,7 +188,49 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                                             <div key={item} className="flex justify-between items-center">
                                                 <span>{item}</span>
                                                 <div className="flex items-center gap-2">
-                                                    <Button onClick={() => fetchPriceAndAddToOrder(item)}>+</Button>
+                                                    <AlertDialog open={open[item]}>
+                                                        <AlertDialogTrigger asChild>
+                                                            <Button onClick={async () => {
+                                                               await getAllergensForItem(item);
+                                                               setOpen({...open, [item]: true});
+                                                            }}>+</Button>
+                                                        </AlertDialogTrigger>
+                                                        <AlertDialogContent>
+                                                            <AlertDialogHeader>
+                                                                <AlertDialogTitle>
+                                                                    Dietary Restrictions
+                                                                </AlertDialogTitle>
+                                                                <AlertDialogDescription>
+                                                                    Dairy? {currentAllergens?.has_dairy ? "Yes" : "No"}
+                                                                </AlertDialogDescription>
+                                                                <AlertDialogDescription>
+                                                                    Eggs? {currentAllergens?.has_eggs ? "Yes" : "No"}
+                                                                </AlertDialogDescription>
+                                                                <AlertDialogDescription>
+                                                                    Nuts? {currentAllergens?.has_nuts ? "Yes" : "No"}
+                                                                </AlertDialogDescription>
+                                                                <AlertDialogDescription>
+                                                                    Vegan? {currentAllergens?.is_vegan ? "Yes" : "No"}
+                                                                </AlertDialogDescription>
+                                                                <AlertDialogDescription>
+                                                                    Halal? {currentAllergens?.is_halal ? "Yes" : "No"}
+                                                                </AlertDialogDescription>
+                                                            </AlertDialogHeader>
+                                                            <AlertDialogFooter>
+                                                                <AlertDialogCancel asChild>
+                                                                    <Button onClick={() => setOpen({...open, [item]: false})} className="text-black">
+                                                                        Cancel
+                                                                    </Button>
+                                                                </AlertDialogCancel>
+                                                                <AlertDialogAction>
+                                                                    <Button onClick={() => {
+                                                                        fetchPriceAndAddToOrder(item);
+                                                                        setOpen({...open, [item]: false});
+                                                                    }}>Confirm</Button>
+                                                                </AlertDialogAction>
+                                                            </AlertDialogFooter>
+                                                        </AlertDialogContent>
+                                                    </AlertDialog>
                                                     <Input
                                                         type="number"
                                                         value={inputValues[item] ?? order[item]?.quantity ?? 0}
