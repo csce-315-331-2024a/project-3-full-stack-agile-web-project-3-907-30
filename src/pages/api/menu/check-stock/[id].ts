@@ -29,5 +29,4 @@ export default async function handler(
             return rowToInventoryItem(row);
         }));
     }
-
 }
