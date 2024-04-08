@@ -14,7 +14,7 @@
 - [x] Assign stories to the team
 - [x] Clear up any confusing tasks from selected stories
 - [x] Add and assign chores (0 point tasks)
-- [ ] Come up with a sprint goal and MVP
+- [x] Come up with a sprint goal and MVP
 
 ## Minutes
 
@@ -34,3 +34,8 @@
 - Cleaning up the UI for the entire POS system was also added as a chore
 - Reconfiguring the database for making items on sale
 - Configure database for customer points and rewards
+
+### Come up with a sprint goal and MVP
+- Trends, Google Translate API, weather API, more point system features, allergen information, customer order functionality are the main features we are implementing this sprint
+- Sprint goal is more general and our MVP is more technical
+- Discussed what we need for MVP statement because it contains a lot more details on the features we are actually implementing

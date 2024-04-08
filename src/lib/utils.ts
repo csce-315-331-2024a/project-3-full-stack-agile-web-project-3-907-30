@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Customer, Employee } from "./types";
+import { Allergens, Customer, Employee } from "./types";
 import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
 import db from "./db";
@@ -89,6 +89,16 @@ export function rowToInventoryItem(array: any[]): InventoryItem {
     has_eggs: array.at(9),
     is_vegan: array.at(10),
     is_halal: array.at(11),
+  };
+}
+
+export function rowToAllergens(array: any[]): Allergens {
+  return {
+    has_dairy: array.at(0),
+    has_nuts: array.at(1),
+    has_eggs: array.at(2),
+    is_vegan: array.at(3),
+    is_halal: array.at(4),
   };
 }
 
