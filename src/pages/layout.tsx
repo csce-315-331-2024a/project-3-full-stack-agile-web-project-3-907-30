@@ -19,6 +19,7 @@ import RewardsButton from "@/components/customer/rewards-button";
 import CustomerInfo from "@/components/customer/customer-info";
 import { Weather } from "./api/customer/weather";
 import { getCurrentWeather } from "@/components/customer/customer-weather";
+import Head from "next/head";
 
 interface LayoutProps {
   children: ReactNode;
@@ -55,6 +56,9 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <>
+      <Head>
+        <title>Rev&apos;s American Grill</title>
+      </Head>
       {router.asPath === '/' ? (
         <main className="flex flex-col w-full h-dvh" >
           <div className="border-b">

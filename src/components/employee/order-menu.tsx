@@ -1,9 +1,8 @@
+// Date 
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { clear } from 'console';
-import { ScrollArea } from '../ui/scroll-area';
 import { InventoryItem, MenuItem } from '@/lib/types';
 import { toast } from '../ui/use-toast';
 import {
@@ -18,7 +17,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Allergens } from "@/lib/types";
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { categories, itemBelongsToCategory } from '@/lib/utils';
 
 export interface OrderItem extends MenuItem {
     quantity: number;
@@ -36,6 +36,7 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     const [inputValues, setInputValues] = useState<{ [key: string]: number }>({});
     const [currentAllergens, setAllergens] = useState<Allergens>();
     const [open, setOpen] = useState<{[key: string]: boolean}>({});
+    const [hoveredTab, setHoveredTab] = useState<number | null>(null);
 
     useEffect(() => {
         fetch('/api/menu/menu_items/get-all-items')
@@ -54,30 +55,6 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
         setOrder({}); // Reset the order state
         setInputValues({}); // Reset the input values
         clearOrder(); // Call the clearOrder prop
-    };
-
-
-    const categories = ["Burgers & Wraps", "Meals", "Tenders", "Sides", "Drinks", "Desserts"];
-
-    const itemBelongsToCategory = (item: string | string[], category: string) => {
-        switch (category) {
-            case "Burgers & Wraps":
-                return item.includes("Burger") || item.includes("Sandwich") || item.includes("Cheeseburger")
-                    || item.includes("Hamburger") || item.includes("Melt") || item.includes("Club")
-                    || item.includes("Wrap");
-            case "Meals":
-                return item.includes("Meal");
-            case "Tenders":
-                return item.includes("Tender");
-            case "Sides":
-                return item === "French Fries";
-            case "Drinks":
-                return item.includes("Shake") || item.includes("Water") || item.includes("Drink");
-            case "Desserts":
-                return item.includes("Sundae") || item.includes("Ice Cream") || item.includes("Float");
-            default:
-                return false;
-        }
     };
 
     const fetchPriceAndAddToOrder = async (itemName: string) => {
@@ -153,6 +130,21 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
         });
     };
 
+    const removeItemFromOrder = (itemName: string) => {
+        setOrder((prevOrder) => {
+            const newOrder = { ...prevOrder };
+            const existingItem = newOrder[itemName];
+            if (existingItem && existingItem.quantity > 1) {
+                existingItem.quantity -= 1;
+                newOrder[itemName] = existingItem;
+            } else {
+                delete newOrder[itemName];
+            }
+            setOrderItems(Object.values(newOrder));
+            return newOrder;
+        });
+    };
+  
     const getAllergensForItem = async (name: string) => {
         try {
             const res = await fetch(`/api/menu/allergens/${name}`);
@@ -169,34 +161,56 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     }
 
     return (
-        <Card>
+        <Card className="flex flex-col h-full">
             <CardHeader>
                 <CardTitle>Menu</CardTitle>
                 <CardDescription>Select your items</CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col gap-4">
+            <CardContent className="flex flex-col gap-4 h-full">
                 {loading ? (
                     <div>Loading menu items...</div>
                 ) : (
-                    <ScrollArea className="h-[500px] pr-4">
-                        {
-                            categories.map((category) => (
-                                <div key={category}>
-                                    <h3 className="text-lg font-bold">{category}</h3>
-                                    <div className="flex flex-col gap-2">
-                                        {menuItems.filter(item => itemBelongsToCategory(item, category)).map((item) => (
-                                            <div key={item} className="flex justify-between items-center">
-                                                <span>{item}</span>
-                                                <div className="flex items-center gap-2">
-                                                    <AlertDialog open={open[item]}>
-                                                        <AlertDialogTrigger asChild>
-                                                            <Button onClick={async () => {
-                                                               await getAllergensForItem(item);
-                                                               setOpen({...open, [item]: true});
-                                                            }}>+</Button>
-                                                        </AlertDialogTrigger>
-                                                        <AlertDialogContent>
-                                                            <AlertDialogHeader>
+                    <>
+                        <Button onClick={clearOrderAndSetOrderItems} className="bg-red-500 hover:bg-red-700 text-white font-bold py-8 px-2 text-lg rounded">
+                            Clear Order
+                        </Button>
+                        <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-col gap-2 h-full">
+                            <TabsList className="grid grid-cols-6 w-full h-fit">
+                                {categories.map((category, index) => (
+                                    <TabsTrigger
+                                        key={index}
+                                        value={category.replace(/\s/g, '')}
+                                        className={`p-4 cursor-pointer relative`}
+                                        onMouseEnter={() => setHoveredTab(index)}
+                                        onMouseLeave={() => setHoveredTab(null)}
+                                    >
+                                        <h2>
+                                            {category}
+                                        </h2>
+                                        {hoveredTab === index && (
+                                            <div className="absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500"></div>
+                                        )}
+                                    </TabsTrigger>
+                                ))}
+                            </TabsList>
+                            {
+                                categories.map((category) => (
+                                    <TabsContent key={category} value={category.replace(/\s/g, '')} className="h-full">
+                                        <div key={category} className="h-full overflow-y-scroll">
+                                            <div className="grid grid-cols-4 gap-4 h-[100px]">
+                                                {menuItems.filter(item => itemBelongsToCategory(item, category)).map((item) => (
+                                                    <Card key={item} className="flex flex-col justify-between gap-8 items-center py-3">
+                                                        <h3 className="text-center font-semibold">{item}</h3>
+                                                        <div className="flex items-center gap-2">
+                                                          <AlertDialog open={open[item]}>
+                                                            <AlertDialogTrigger asChild>
+                                                              <Button onClick={async () => {
+                                                                await getAllergensForItem(item);
+                                                                setOpen({...open, [item]: true});
+                                                              }}>+</Button>
+                                                            </AlertDialogTrigger>
+                                                            <AlertDialogContent>
+                                                              <AlertDialogHeader>
                                                                 <AlertDialogTitle>
                                                                     Dietary Restrictions
                                                                 </AlertDialogTitle>
@@ -215,8 +229,8 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                                                                 <AlertDialogDescription>
                                                                     Halal? {currentAllergens?.is_halal ? "Yes" : "No"}
                                                                 </AlertDialogDescription>
-                                                            </AlertDialogHeader>
-                                                            <AlertDialogFooter>
+                                                              </AlertDialogHeader>
+                                                              <AlertDialogFooter>
                                                                 <AlertDialogCancel asChild>
                                                                     <Button onClick={() => setOpen({...open, [item]: false})} className="text-black">
                                                                         Cancel
@@ -228,27 +242,30 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                                                                         setOpen({...open, [item]: false});
                                                                     }}>Confirm</Button>
                                                                 </AlertDialogAction>
-                                                            </AlertDialogFooter>
-                                                        </AlertDialogContent>
-                                                    </AlertDialog>
-                                                    <Input
-                                                        type="number"
-                                                        value={inputValues[item] ?? order[item]?.quantity ?? 0}
-                                                        onChange={(e) => setInputValues({ ...inputValues, [item]: parseInt(e.target.value) })}
-                                                        min={0}
-                                                        className="w-16"
-                                                    />
-                                                </div>
+                                                              </AlertDialogFooter>
+                                                            </AlertDialogContent>
+                                                          </AlertDialog>
+                                                          <Input
+                                                              type="number"
+                                                              value={inputValues[item] ?? order[item]?.quantity ?? 0}
+                                                              onChange={(e) => setInputValues({ ...inputValues, [item]: parseInt(e.target.value) })}
+                                                              min={0}
+                                                              className="w-16"
+                                                          />
+                                                          <Button onClick={() => removeItemFromOrder(item)}>-</Button>
+                                                        </div>
+                                                    </Card>
+                                                ))}
                                             </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ))
-                        }
-                    </ScrollArea>
+                                        </div>
+                                    </TabsContent>
+                                ))
+                            }
+                        </Tabs>
+                    </>
                 )}
-            </CardContent>
-        </Card>
+            </CardContent >
+        </Card >
     );
 };
 
