@@ -110,7 +110,7 @@ const CustomerView = () => {
                             </Card>
                           </DialogTrigger>
                           <DialogContent className="w-[600px]">
-                            <DialogHeader></DialogHeader>
+                            <DialogHeader>{item.name}</DialogHeader>
                             <div className="grid gap-4 py-4">
                               <div className="flex items-center justify-center gap-4">
                                 {selectedItem &&
