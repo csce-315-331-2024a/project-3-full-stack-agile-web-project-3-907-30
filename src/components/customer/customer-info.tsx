@@ -5,7 +5,7 @@ const useLocalStorageChangeListener = () => {
     const [localStorageChange, updateLocalStorageChange] = useState(false);
 
     // Need to check if client side window is defined before interacting with client-side storage
-    if(typeof window !== 'undefined') {
+    if (typeof window !== 'undefined') {
         localStorage.setItem('prevName', localStorage.getItem('customerName')!);
         localStorage.setItem('prevPoints', localStorage.getItem('customerPoints')!);
     }
@@ -17,7 +17,7 @@ const useLocalStorageChangeListener = () => {
             let currentPoints: string | null;
             let prevName: string | null;
             let prevPoints: string | null;
-            if(typeof window !== 'undefined'){
+            if (typeof window !== 'undefined') {
                 currentName = localStorage.getItem('customerName');
                 currentPoints = localStorage.getItem('customerPoints');
                 prevName = localStorage.getItem('prevName');
@@ -29,7 +29,7 @@ const useLocalStorageChangeListener = () => {
                 prevName = null;
                 prevPoints = null;
             }
-            if(currentName !== prevName && currentPoints !== prevPoints) {
+            if (currentName !== prevName && currentPoints !== prevPoints) {
                 updateLocalStorageChange(prevState => !prevState);
 
                 localStorage.setItem('prevName', currentName!);
@@ -38,14 +38,14 @@ const useLocalStorageChangeListener = () => {
         }
 
         // Will run checkForChange every 0.1 sec
-        const intervalId = setInterval(checkForChange,100);
+        const intervalId = setInterval(checkForChange, 100);
 
         return () => clearInterval(intervalId);
 
     }, []);
 
     return localStorageChange;
-  }
+}
 
 const CustomerInfo = () => {
     const localStorageChange = useLocalStorageChangeListener();
@@ -58,14 +58,14 @@ const CustomerInfo = () => {
     useEffect(() => {
         // When component mounts, set hydrated
         setHydrated(true);
-    },[])
+    }, [])
 
-    if(!hydrated){
+    if (!hydrated) {
         // If component not mounted, return nothing
         return null;
     }
 
-    if(typeof window !== 'undefined'){
+    if (typeof window !== 'undefined') {
         customerName = localStorage.getItem('customerName')!;
         customerPoints = localStorage.getItem('customerPoints')!;
     }
@@ -77,19 +77,19 @@ const CustomerInfo = () => {
     return (
         // Render different html based on what customerName is
         <div>
-            { customerName === null &&(
+            {customerName === null && (
                 <div className="flex flex-row justify-between items-center">
-                    <h1>Sign in here &gt;</h1>
+                    <h1>Welcome! Sign-in to view your points.</h1>
                 </div>
             )}
-            { customerName === 'no customer' && (
+            {customerName === 'no customer' && (
                 <div className="flex flex-row justify-between items-center">
-                    <h1>Sign in failed :{'('} </h1>
+                    <h1>No customer found.</h1>
                 </div>
             )}
-            { customerName !== null && customerName !== 'no customer' &&(
+            {customerName !== null && customerName !== 'no customer' && (
                 <div className="flex flex-row justify-between items-center">
-                    <h1>Hey {customerName}!    You have {customerPoints} points!</h1>
+                    <h1>Hey {customerName}! You have {customerPoints} points!</h1>
                 </div>
             )}
         </div>

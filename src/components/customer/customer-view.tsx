@@ -25,6 +25,9 @@ const CustomerView = () => {
   const [menuItems, setMenuItems] = useState<any[]>([]);
   const [ingredients, setIngredients] = useState<any[]>([]);
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const [hoveredTab, setHoveredTab] = useState<number | null>(null);
+
 
   const itemClicked = (item: any) => {
     setSelectedItem(item);
@@ -67,10 +70,19 @@ const CustomerView = () => {
       <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-full">
         <TabsList className="grid grid-cols-1 w-1/5 mt-2 h-fit">
           {categories.map((category, index) => (
-            <TabsTrigger key={index} value={category.replace(/\s/g, '')} className="px-8 py-9">
+            <TabsTrigger
+              key={index}
+              value={category.replace(/\s/g, '')}
+              className={`px-8 py-9 cursor-pointer relative`}
+              onMouseEnter={() => setHoveredTab(index)}
+              onMouseLeave={() => setHoveredTab(null)}
+            >
               <h2 className="text-2xl">
                 {category}
               </h2>
+              {hoveredTab === index && (
+                <div className="absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500"></div>
+              )}
             </TabsTrigger>
           ))}
         </TabsList>
@@ -82,7 +94,11 @@ const CustomerView = () => {
                   .filter((item) => itemBelongsToCategory(item.name, category))
                   .map((item: any) => {
                     return (
-                      <div key={item.name} className="flex flex-col items-center gap-4 h-full">
+                      <div key={item.name}
+                        className={`flex flex-col items-center gap-4 h-full transition-all duration-300 ease-in-out ${hoveredItem === item.name ? 'transform scale-105 shadow-lg rounded-lg' : ''}`}
+                        onMouseEnter={() => setHoveredItem(item.name)}
+                        onMouseLeave={() => setHoveredItem(null)}
+                      >
                         <Dialog>
                           <DialogTrigger asChild>
                             <Card className="flex flex-col justify-between items-center h-full w-full p-4 gap-8 cursor-pointer" onClick={() => itemClicked(item)}>
@@ -94,7 +110,7 @@ const CustomerView = () => {
                             </Card>
                           </DialogTrigger>
                           <DialogContent className="w-[600px]">
-                            <DialogHeader></DialogHeader>
+                            <DialogHeader>{item.name}</DialogHeader>
                             <div className="grid gap-4 py-4">
                               <div className="flex items-center justify-center gap-4">
                                 {selectedItem &&

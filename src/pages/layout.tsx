@@ -17,6 +17,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Skeleton } from "@/components/ui/skeleton";
 import RewardsButton from "@/components/customer/rewards-button";
 import CustomerInfo from "@/components/customer/customer-info";
+import Head from "next/head";
 
 interface LayoutProps {
   children: ReactNode;
@@ -49,6 +50,9 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <>
+      <Head>
+        <title>Rev&apos;s American Grill</title>
+      </Head>
       {router.asPath === '/' ? (
         <main className="flex flex-col w-full h-dvh" >
           <div className="border-b">
