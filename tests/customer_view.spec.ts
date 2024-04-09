@@ -3,7 +3,7 @@ import exp from "constants";
 
 test("Check if menu categories are on the page", async ({ page }) => {
   await page.goto(
-    "https://https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
+    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
   );
 
   await expect(page.getByRole("heading", { name: "Burgers & Wraps" }))
@@ -17,7 +17,7 @@ test("Check if menu categories are on the page", async ({ page }) => {
 
 test("Check if Double Stack Burger exists", async ({ page }) => {
   await page.goto(
-    "https://https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
+    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
   );
   await expect(page.getByRole("paragraph", { name: "Double Stack Burger" }))
     .toBeVisible;
@@ -25,7 +25,7 @@ test("Check if Double Stack Burger exists", async ({ page }) => {
 
 test("Testing random menu item clicks", async ({ page }) => {
   await page.goto(
-    "https://https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
+    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
   );
   await page
     .locator("div")
@@ -69,7 +69,7 @@ test("Testing random menu item clicks", async ({ page }) => {
 
 test("Test if burgers and wraps pop up correctly", async ({ page }) => {
   await page.goto(
-    "https://https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
+    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
   );
   await page
     .locator("div")
@@ -147,7 +147,7 @@ test("Test if burgers and wraps pop up correctly", async ({ page }) => {
 
 test("Test employee login button", async ({ page }) => {
   await page.goto(
-    "https://https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
+    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
   );
   await page.getByRole("link", { name: "I'm an Employee" }).click();
   await page.getByRole("button", { name: "Sign-in with Google" }).click();
@@ -157,7 +157,7 @@ test("Signing in with phone number that is not in customer database", async ({
   page,
 }) => {
   await page.goto(
-    "https://https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
+    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
   );
   await page.getByRole("button", { name: "Sign-in for Rewards" }).click();
   await page.getByLabel("Phone Number").fill("1111111111");
