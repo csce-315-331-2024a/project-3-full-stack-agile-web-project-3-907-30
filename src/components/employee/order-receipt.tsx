@@ -1,15 +1,24 @@
 // order-receipt.tsx
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
+import { Switch } from "../ui/switch";
+import { Label } from "../ui/label";
 import { getEmployeeFromDatabase, submitOrder } from "@/lib/utils";
 import { getNextOrderId } from "@/lib/utils";
 import { useToast } from "../ui/use-toast";
 import useAuth from "@/hooks/useAuth";
 import { AuthHookType } from "@/lib/types";
 import { clear } from "console";
-
+import { Sword } from "lucide-react";
+import { set } from "zod";
 
 export interface OrderItem {
   name: string;
@@ -21,7 +30,6 @@ interface OrderReceiptProps {
   items: OrderItem[];
   clearOrder: () => void;
 }
-
 
 /**
  * Displays an order receipt with the order details, subtotal, tax, and total cost. Allows for clearing and submitting orders.
@@ -42,34 +50,53 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
   const [total, setTotal] = useState(0);
   const { account } = useAuth() as AuthHookType;
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
+  const [customerPoints, setCustomerPoints] = useState<string | null>(null);
+
+  const [isSwitchToggled, setIsSwitchToggled] = useState(false);
+  const [totalPoints, setTotalPoints] = useState(0);
 
   const { toast } = useToast();
 
-
   // Effect to calculate totals
   useEffect(() => {
-    const calculatedSubTotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
-    const calculatedTax = calculatedSubTotal * 0.07; // Assuming a tax rate of 7%
-    const calculatedTotal = calculatedSubTotal + calculatedTax;
+    const calculateTotals = () => {
+      const calculatedSubTotal = items.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+      const calculatedTax = calculatedSubTotal * 0.07; // Assuming a tax rate of 7%
+      let calculatedTotal =
+        calculatedSubTotal + calculatedTax - (isSwitchToggled ? totalPoints : 0);
 
-    setSubTotal(calculatedSubTotal);
-    setTax(calculatedTax);
-    setTotal(calculatedTotal);
-  }, [items]); // Dependency array ensures calculateTotals is called when items change
+      if (isSwitchToggled && totalPoints > calculatedTotal) {
+        calculatedTotal = 0; // Set total to 0 if points cover the entire order
+      } else if (isSwitchToggled && totalPoints < calculatedTotal) {
+        calculatedTotal -= totalPoints; // Subtract points from total
+      }
+
+      setSubTotal(calculatedSubTotal);
+      setTax(calculatedTax);
+      setTotal(calculatedTotal);
+    };
+
+    calculateTotals();
+
+  }, [items, isSwitchToggled, totalPoints]);
+
 
   /**
-     * Submits an order for the current employee with the given email address and displays a toast notification with the order ID.
-     * @example
-     * submitOrder('johndoe@example.com', 100)
-     * @param {string} email - The email address of the current employee.
-     * @param {number} total - The total cost of the order.
-     * @returns {boolean} Returns true if the order was successfully submitted, false otherwise.
-     * @description
-     *   - Retrieves the employee's information from the database using their email address.
-     *   - Gets the next available order ID.
-     *   - Displays a toast notification with the order ID.
-     *   - Submits the order with the given order ID, total cost, employee ID, and toast notification function.
-     */
+   * Submits an order for the current employee with the given email address and displays a toast notification with the order ID.
+   * @example
+   * submitOrder('johndoe@example.com', 100)
+   * @param {string} email - The email address of the current employee.
+   * @param {number} total - The total cost of the order.
+   * @returns {boolean} Returns true if the order was successfully submitted, false otherwise.
+   * @description
+   *   - Retrieves the employee's information from the database using their email address.
+   *   - Gets the next available order ID.
+   *   - Displays a toast notification with the order ID.
+   *   - Submits the order with the given order ID, total cost, employee ID, and toast notification function.
+   */
   const employeeSubmitOrder = async () => {
     try {
       const { email } = account!;
@@ -77,21 +104,29 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
       const nextOrderId = await getNextOrderId();
 
       toast({
-        title: 'Order ID',
+        title: "Order ID",
         description: nextOrderId,
       });
 
       const chosenItems = items.map((item) => item.name);
       const quantities = items.map((item) => item.quantity);
-      const res = await submitOrder(nextOrderId, total, 1, parseInt(employee.empId), toast, chosenItems, quantities);
+      const res = await submitOrder(
+        nextOrderId,
+        isSwitchToggled ? total - totalPoints : total,
+        1,
+        parseInt(employee.empId),
+        toast,
+        chosenItems,
+        quantities
+      );
 
       if (res && res.status === 200) {
         toast({
-          title: 'Success!',
-          description: 'Your order has been placed!',
+          title: "Success!",
+          description: "Your order has been placed!",
         });
       } else {
-        throw new Error('There was a problem with your request.');
+        throw new Error("There was a problem with your request.");
       }
 
       // Clear the order after submitting
@@ -100,23 +135,52 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
       // Reset the order number
       const newOrderId = await getNextOrderId();
       setOrderNumber(newOrderId);
-
     } catch (error) {
-      console.error('Error submitting order:', error);
+      console.error("Error submitting order:", error);
       toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: 'There was a problem with your request.',
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
       });
     }
   };
 
-
   const getNextOrderId = async () => {
-    const response = await fetch('/api/order/get-next-order-id');
+    const response = await fetch("/api/order/get-next-order-id");
     const data = await response.json();
     return data.nextOrderId;
-  }
+  };
+
+  const getTotalPointsValueForOrder = async () => {
+    // create flattened array of item names that has duplicates
+    const itemNames = items
+      .map((item) => Array(item.quantity).fill(item.name))
+      .flat();
+
+    // loop through item names and get points for each item and sum them
+    let totalPoints = 0;
+    for (const itemName of itemNames) {
+      const response = await fetch(
+        `/api/order/get-points-for-item?itemName=${itemName}`
+      );
+      const data = await response.json();
+      totalPoints += parseInt(data.points, 10);
+    }
+
+    // if customer has enough points, return total points
+    // otherwise return 0
+    const customer_points = localStorage.getItem("customerPoints");
+    if (customer_points && parseInt(customer_points, 10) >= totalPoints) {
+      setTotalPoints(totalPoints);
+    } else {
+      setTotalPoints(0);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! You don't have enough points.",
+        description: "Please choose an alternative payment method.",
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchOrderNumber = async () => {
@@ -127,6 +191,12 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     fetchOrderNumber();
   }, []);
 
+  useEffect(() => {
+    const points = localStorage.getItem("customerPoints");
+    if (points) {
+      setCustomerPoints(points);
+    }
+  }, []);
 
   return (
     <Card className="h-full">
@@ -135,18 +205,40 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
         <CardDescription>Review and submit your order.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
-        <div className="mb-4 border-b pb-4">
-          <h2 className="text-xl font-semibold mb-2">Order Details</h2>
+        <div className="flex justify-between items-center mb-4 border-b pb-4">
           <div className="text-gray-700">
             <span className="block">Order Number: {orderNumber}</span>
+            <span className="block">Customer Points: {customerPoints}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <Switch
+              id="points_switch"
+              className="w-11 h-6"
+              checked={isSwitchToggled}
+              onCheckedChange={(isChecked) => {
+                setIsSwitchToggled(isChecked);
+                getTotalPointsValueForOrder();
+              }}
+
+            />
+            <Label className="block px-3 text-lg" htmlFor="points_switch">
+              Pay With Points
+            </Label>
           </div>
         </div>
         <ScrollArea className="h-[200px]">
           <ul className="divide-y divide-gray-200 pr-4">
             {items.map((item, index) => (
-              <li key={index} className="py-4 flex justify-between items-center">
-                <span className="text-gray-600">{item.name} x {item.quantity}</span>
-                <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span>
+              <li
+                key={index}
+                className="py-4 flex justify-between items-center"
+              >
+                <span className="text-gray-600">
+                  {item.name} x {item.quantity}
+                </span>
+                <span className="font-semibold">
+                  ${(item.price * item.quantity).toFixed(2)}
+                </span>
               </li>
             ))}
           </ul>
@@ -165,9 +257,12 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
             <span className="text-lg font-bold">${total.toFixed(2)}</span>
           </div>
         </div>
-        <Button onClick={async () => {
-          employeeSubmitOrder();
-        }} className="bg-green-500 hover:bg-green-700 text-white text-xl font-bold px-6 py-8 rounded w-full">
+        <Button
+          onClick={async () => {
+            employeeSubmitOrder();
+          }}
+          className="bg-green-500 hover:bg-green-700 text-white text-xl font-bold px-6 py-8 rounded w-full"
+        >
           Submit Order
         </Button>
       </CardContent>
