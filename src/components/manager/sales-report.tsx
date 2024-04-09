@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/table";
 import { SalesReportItem } from "@/lib/types";
 
-
 const SalesReport = ({ data }: { data: SalesReportItem[] }) => {
     return (
         <>

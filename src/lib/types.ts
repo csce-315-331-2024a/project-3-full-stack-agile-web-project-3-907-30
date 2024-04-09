@@ -85,3 +85,9 @@ export interface SalesReportItem {
   name: string;
   profit: number;
 }
+
+export interface ProductUsageItem {
+    id: number;
+    name: string;
+    amount: number
+}
