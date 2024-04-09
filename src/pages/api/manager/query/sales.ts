@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { executeStatement, rowToInventoryItem } from "@/lib/utils";
+import { executeStatement } from "@/lib/utils";
 import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 
@@ -27,9 +27,6 @@ export default async function handler(
     req: NextApiRequest, res: NextApiResponse
 ) {
     const { begin, end } = req.body;
-
-    console.log(begin, end);
-
     const rows = await executeStatement(
         db,
         `SELECT menu_items.item_id, menu_items.item_name, COUNT(*)*menu_items.item_price::numeric as profit
