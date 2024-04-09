@@ -28,10 +28,10 @@ Ex:
     - [ ] 5. Excess Report E2 P1 T0 - Aaron
     - [ ] 5. Restock Report E2 P1 T0 - Aaron
     - [ ] 5. Days with the most sales in a given month E2 P1 T0 - Gabe
-- [ ] 7. As an employee, I want to be able to make orders so I can translate a customer’s desires to the kitchen. - Akshay
-  - [ ] 7. Make Employee GUI POS system that allows employees to create, delete, customize, and see the information contained within an order E1 P1 T0 - Akshay
-  - [ ] 7. Make functions that can create, delete, view, and modify the orders in the database E1 P1 T0 - Akshay
-  - [ ] 7. Have GUI call and display the results of that function when a customer is selecting a given item E1 P1 T0 - Akshay
+- [X] 7. As an employee, I want to be able to make orders so I can translate a customer’s desires to the kitchen. - Akshay
+  - [X] 7. Make Employee GUI POS system that allows employees to create, delete, customize, and see the information contained within an order E1 P1 T0 - Akshay
+  - [X] 7. Make functions that can create, delete, view, and modify the orders in the database E1 P1 T0 - Akshay
+  - [X] 7. Have GUI call and display the results of that function when a customer is selecting a given item E1 P1 T0 - Akshay
 - [X] 10. As an employee, I want to be able to view product information so I can inform the customer without leaving. - Margo
   - [X] 10. Make a function that queries all of the relevant characteristics of a menu item like allergen information.  E1 P2 T1 - Margo
   - [X] 10. Have GUI show this information to the employee when they click on a menu item at POS. E1 P2 T2 - Margo
