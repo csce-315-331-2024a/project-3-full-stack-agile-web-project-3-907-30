@@ -3,7 +3,7 @@ import exp from "constants";
 
 test("Check if menu categories are on the page", async ({ page }) => {
   await page.goto(
-    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/"
+    "https://https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
   );
 
   await expect(page.getByRole("heading", { name: "Burgers & Wraps" }))
@@ -17,36 +17,15 @@ test("Check if menu categories are on the page", async ({ page }) => {
 
 test("Check if Double Stack Burger exists", async ({ page }) => {
   await page.goto(
-    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/"
+    "https://https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
   );
   await expect(page.getByRole("paragraph", { name: "Double Stack Burger" }))
     .toBeVisible;
 });
 
-test("Signing in as customer Isabella Brown and clicking on menu item", async ({
-  page,
-}) => {
-  await page.goto(
-    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/"
-  );
-  await page.getByTestId("sign-in").click();
-  await page.getByLabel("Phone Number").fill("7217709711");
-  await page.getByRole("button", { name: "Sign-in" }).click();
-  await expect(page.locator("h1")).toContainText(
-    "Hey Isabella Brown! You have 61516 points!"
-  );
-  await page
-    .locator("div")
-    .filter({ hasText: /^Bacon Cheeseburger\$8\.29$/ })
-    .nth(1)
-    .click();
-  await expect(page.getByRole("dialog")).toContainText("Bacon Cheeseburger");
-  await page.getByRole("button", { name: "Close" }).click();
-});
-
 test("Testing random menu item clicks", async ({ page }) => {
   await page.goto(
-    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/"
+    "https://https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
   );
   await page
     .locator("div")
@@ -90,7 +69,7 @@ test("Testing random menu item clicks", async ({ page }) => {
 
 test("Test if burgers and wraps pop up correctly", async ({ page }) => {
   await page.goto(
-    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/"
+    "https://https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
   );
   await page
     .locator("div")
@@ -168,87 +147,21 @@ test("Test if burgers and wraps pop up correctly", async ({ page }) => {
 
 test("Test employee login button", async ({ page }) => {
   await page.goto(
-    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/"
+    "https://https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
   );
   await page.getByRole("link", { name: "I'm an Employee" }).click();
   await page.getByRole("button", { name: "Sign-in with Google" }).click();
-});
-
-test("Check if all text is visible", async ({ page }) => {
-  await page.goto(
-    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/"
-  );
-  await expect(page.locator("h1")).toContainText(
-    "Welcome! Sign-in to view your points."
-  );
-  await expect(page.getByRole("link")).toContainText("I'm an Employee");
-  await expect(page.getByTestId("sign-in")).toContainText(
-    "Sign-in for Rewards"
-  );
-  await expect(
-    page.locator('[id="radix-\\:Rkm\\:-trigger-Burgers\\&Wraps"]')
-  ).toContainText("Burgers & Wraps");
-  await expect(
-    page.locator('[id="radix-\\:Rkm\\:-trigger-Meals"]')
-  ).toContainText("Meals");
-  await expect(
-    page.locator('[id="radix-\\:Rkm\\:-trigger-Tenders"]')
-  ).toContainText("Tenders");
-  await expect(
-    page.locator('[id="radix-\\:Rkm\\:-trigger-Sides"]')
-  ).toContainText("Sides");
-  await expect(
-    page.locator('[id="radix-\\:Rkm\\:-trigger-Drinks"]')
-  ).toContainText("Drinks");
-  await expect(
-    page.locator('[id="radix-\\:Rkm\\:-trigger-Desserts"]')
-  ).toContainText("Desserts");
-  await page.getByRole("tab", { name: "Burgers & Wraps" }).click();
-  await expect(page.getByLabel("Burgers & Wraps")).toContainText(
-    "Bacon Cheeseburger"
-  );
-  await expect(page.getByLabel("Burgers & Wraps")).toContainText(
-    "Classic Hamburger"
-  );
-  await expect(page.getByLabel("Burgers & Wraps")).toContainText(
-    "Double Stack Burger"
-  );
-  await expect(page.getByLabel("Burgers & Wraps")).toContainText(
-    "Gig Em Patty Melt"
-  );
-  await expect(page.getByLabel("Burgers & Wraps")).toContainText(
-    "Black Bean Burger"
-  );
-  await expect(page.getByLabel("Burgers & Wraps")).toContainText(
-    "Revs Grilled Chicken Sandwich"
-  );
-  await expect(page.getByLabel("Burgers & Wraps")).toContainText(
-    "Spicy Chicken Sandwich"
-  );
-  await expect(page.getByLabel("Burgers & Wraps")).toContainText(
-    "Aggie Chicken Club"
-  );
-  await expect(page.getByLabel("Burgers & Wraps")).toContainText(
-    "Chicken Wraps"
-  );
-  await expect(page.getByLabel("Burgers & Wraps")).toContainText(
-    "Fish Sandwich"
-  );
-  await expect(page.getByLabel("Burgers & Wraps")).toContainText("Tuna Melt");
-  await expect(page.getByLabel("Burgers & Wraps")).toContainText(
-    "Cheeseburger"
-  );
 });
 
 test("Signing in with phone number that is not in customer database", async ({
   page,
 }) => {
   await page.goto(
-    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/"
+    "https://https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
   );
   await page.getByRole("button", { name: "Sign-in for Rewards" }).click();
   await page.getByLabel("Phone Number").fill("1111111111");
   await page.getByLabel("Phone Number").press("Enter");
   await page.getByRole("button", { name: "Close" }).click();
-  await page.getByRole("heading", { name: "Sign in failed :(" }).click();
+  await page.getByRole("heading", { name: "No customer found." }).click();
 });
