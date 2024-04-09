@@ -26,22 +26,5 @@ const rowToSalesReportItem = (array: any[]) => {
 export default async function handler(
     req: NextApiRequest, res: NextApiResponse
 ) {
-    const { begin, end } = req.body;
-    const rows = await executeStatement(
-        db,
-        `SELECT menu_items.item_id, menu_items.item_name, COUNT(*)*menu_items.item_price::numeric as profit
-                    FROM menu_items
-                    INNER JOIN orders_menu ON menu_items.item_id = orders_menu.item_id
-                    INNER JOIN orders ON orders_menu.order_id = orders.order_id
-                    WHERE orders.order_date BETWEEN $1 AND $2
-                    GROUP BY menu_items.item_id;`,
-        [DataTypeOIDs.date, DataTypeOIDs.date],
-        [begin, end]
-    ).then(data => data.rows!);
-
-    if (rows.length === 0) {
-        return res.status(400).json({ error: 'No corresponding data for the date range' });
-    } else {
-        return res.status(200).json(rows.map(row => rowToSalesReportItem(row)));
-    }
+    
 }
