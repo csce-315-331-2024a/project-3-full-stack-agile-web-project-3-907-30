@@ -17,6 +17,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Skeleton } from "@/components/ui/skeleton";
 import RewardsButton from "@/components/customer/rewards-button";
 import CustomerInfo from "@/components/customer/customer-info";
+import { Weather } from "./api/customer/weather";
+import { getCurrentWeather } from "@/components/customer/customer-weather";
+import Head from "next/head";
 
 interface LayoutProps {
   children: ReactNode;
@@ -36,6 +39,7 @@ const Layout = ({ children }: LayoutProps) => {
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
   const [customer, setCustomer] = useState<Customer>();
+  const [weather, setWeather] = useState<Weather>({ value: 0, isDay: true, description: 'Clear' });
 
   useEffect(() => {
     if (account) {
@@ -45,16 +49,22 @@ const Layout = ({ children }: LayoutProps) => {
         setLoading(false);
       });
     }
+    getCurrentWeather().then((data) => {
+      setWeather(data);
+    })
   }, [account]);
 
   return (
     <>
+      <Head>
+        <title>Rev&apos;s American Grill</title>
+      </Head>
       {router.asPath === '/' ? (
         <main className="flex flex-col w-full h-dvh" >
           <div className="border-b">
             <div className="flex h-16 items-center justify-between px-4">
               <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm" priority />
-              <CustomerInfo />
+              <CustomerInfo weather={weather} />
               <div className="flex gap-4">
                 <Button variant="outline" asChild>
                   <Link href="/employee/login">
