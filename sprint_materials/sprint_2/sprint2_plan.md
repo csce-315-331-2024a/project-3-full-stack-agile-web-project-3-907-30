@@ -28,19 +28,19 @@ Ex:
     - [ ] 5. Excess Report E2 P1 T0 - Aaron
     - [ ] 5. Restock Report E2 P1 T0 - Aaron
     - [ ] 5. Days with the most sales in a given month E2 P1 T0 - Gabe
-- [ ] 7. As an employee, I want to be able to make orders so I can translate a customer’s desires to the kitchen. - Akshay
-  - [ ] 7. Make Employee GUI POS system that allows employees to create, delete, customize, and see the information contained within an order E1 P1 T0 - Akshay
-  - [ ] 7. Make functions that can create, delete, view, and modify the orders in the database E1 P1 T0 - Akshay
-  - [ ] 7. Have GUI call and display the results of that function when a customer is selecting a given item E1 P1 T0 - Akshay
+- [x] 7. As an employee, I want to be able to make orders so I can translate a customer’s desires to the kitchen. - Akshay
+  - [x] 7. Make Employee GUI POS system that allows employees to create, delete, customize, and see the information contained within an order E1 P1 T0 - Akshay
+  - [x] 7. Make functions that can create, delete, view, and modify the orders in the database E1 P1 T0 - Akshay
+  - [x] 7. Have GUI call and display the results of that function when a customer is selecting a given item E1 P1 T0 - Akshay
 - [ ] 10. As an employee, I want to be able to view product information so I can inform the customer without leaving. - Margo
   - [ ] 10. Make a function that queries all of the relevant characteristics of a menu item like allergen information.  E1 P2 T0 - Margo
   - [ ] 10. Have GUI show this information to the employee when they click on a menu item at POS. E1 P2 T0 - Margo
 - [ ] 14. As a customer, I want to be able to log in to see my past orders and points so that I can re-order or just see what I like. - Gabe
   - [ ] 14. Make Customer GUI “login” view that asks for relevant information (phone number)  E2 P1 T0 - Gabe
-  - [ ] 14. Implement encrypted database login functionality for customers to login E3 P1 T0 - Gabe
-  - [ ] 14. Implement login and logout routes and corresponding hooks E1 P1 T0 - Gabe (deprecated)
+  - [x] 14. Implement encrypted database login functionality for customers to login E3 P1 T0 - Gabe
+  - [x] 14. Implement login and logout routes and corresponding hooks E1 P1 T0 - Gabe (deprecated)
   - [ ] 14. Make Customer GUI information view that shows all of the relevant information (general and rewards) on a customer’s account E2 P3 S1 - Gabe
-  - [ ] 14. Create new tables and/or columns in the database holding the extra rewards information E2 P3 S1 - Gabe
+  - [x] 14. Create new tables and/or columns in the database holding the extra rewards information E2 P3 S1 - Gabe
   - [ ] 14. Make function that queries a customer’s general information E1 P2 T0 - Gabe
   - [ ] 14. Make function that queries a customer’s purchase history   E1 P2 T0 - Gabe
   - [ ] 14. Make a function that queries a customer’s rewards information  E1 P3 S1 - Gabe
