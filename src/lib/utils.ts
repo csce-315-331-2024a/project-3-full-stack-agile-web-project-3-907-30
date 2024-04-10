@@ -339,3 +339,19 @@ export const rowToProductUsageItem = (array: any[]) => {
         amount: array[2]
     } as ProductUsageItem;
 }
+
+/**
+ * Gets the 10 least selling items from the database.
+ *
+ * @returns {Promise<MenuItem[]>} Get the 10 least selling menu items from the database.
+ */
+export async function getLeastSelling() {
+  const res = await fetch("/api/manager/get-least-selling");
+
+  if (res.status === 404) {
+    return [];
+  }
+  const data: MenuItem[] = await res.json();
+  console.log(data);
+  return data;
+}

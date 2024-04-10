@@ -8,6 +8,7 @@ import SalesReport from "@/components/manager/sales-report";
 import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 import ProductUsage from "@/components/manager/product-usage";
+import LeastSellingView from "@/components/manager/least-selling-view";
 
 
 
@@ -45,6 +46,7 @@ const Manager = ({ salesReportData, productUsageData }: ManagerProps) => {
           {employee?.isAdmin && (
             <>
               <UserManagement />
+              <LeastSellingView />
               {/* <SalesReport data={salesReportData} /> */}
               {/* <ProductUsage data={productUsageData} /> */}
             </>

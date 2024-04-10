@@ -20,7 +20,6 @@ import { Skeleton } from "../ui/skeleton";
 const ViewEmployees = () => {
 
   const numAccounts = 3;
-  // @ts-ignore
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +38,8 @@ const ViewEmployees = () => {
         <CardDescription>The following employees have logged into the system.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
-        {loading ? (
+        {
+        loading ? (
           Array.from({ length: numAccounts }).map((_, index) => (
             <div className="flex items-center space-x-4" key={index}>
               <Skeleton className="h-12 w-12 rounded-full" />
