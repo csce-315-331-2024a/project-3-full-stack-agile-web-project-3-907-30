@@ -270,6 +270,10 @@ export async function getNextOrderId() {
   return nextOrderId;
 }
 
+export async function whatSellsTogether() {
+  
+}
+
 /**
  * Place an item into its respective category.
  *

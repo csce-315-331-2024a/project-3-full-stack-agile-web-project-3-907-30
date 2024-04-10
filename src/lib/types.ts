@@ -79,3 +79,9 @@ export interface Order {
     cust_id: number,
     emp_id: number
 };
+
+export interface pairsAndAppearance {
+    item1: string,
+    item2: string,
+    appearances: number
+};

@@ -37,10 +37,10 @@ Ex:
   - [X] 10. Have GUI show this information to the employee when they click on a menu item at POS. E1 P2 T2 - Margo
 - [ ] 14. As a customer, I want to be able to log in to see my past orders and points so that I can re-order or just see what I like. - Gabe
   - [ ] 14. Make Customer GUI “login” view that asks for relevant information (phone number)  E2 P1 T0 - Gabe
-  - [x] 14. Implement encrypted database login functionality for customers to login E3 P1 T0 - Gabe
-  - [x] 14. Implement login and logout routes and corresponding hooks E1 P1 T0 - Gabe (deprecated)
+  - [x] 14. Implement encrypted database login functionality for customers to login E3 P1 T4 - Gabe
+  - [x] 14. Implement login and logout routes and corresponding hooks E1 P1 Tx - Gabe (deprecated)
   - [ ] 14. Make Customer GUI information view that shows all of the relevant information (general and rewards) on a customer’s account E2 P3 S1 - Gabe
-  - [x] 14. Create new tables and/or columns in the database holding the extra rewards information E2 P3 S1 - Gabe
+  - [x] 14. Create new tables and/or columns in the database holding the extra rewards information E2 P3 T1 - Gabe
   - [ ] 14. Make function that queries a customer’s general information E1 P2 T0 - Gabe
   - [ ] 14. Make function that queries a customer’s purchase history   E1 P2 T0 - Gabe
   - [ ] 14. Make a function that queries a customer’s rewards information  E1 P3 S1 - Gabe
@@ -63,5 +63,5 @@ Ex:
 - [ ] Start reconfiguring database for sale items E1 P2 T0 - Gabe
 - [ ] Configure database for customer points/rewards E3 P2 T0 - Gabe
 - [x] Clean up the UI for ordering  - Adam
-  - [x] Add tabs to customer and employee ordering E3 P2 T0 - Adam
-  - [x] Make menu board on theme E1 P2 T0 - Adam
+  - [x] Add tabs to customer and employee ordering E3 P2 T2 - Adam
+  - [x] Make menu board on theme E1 P2 T2 - Adam
