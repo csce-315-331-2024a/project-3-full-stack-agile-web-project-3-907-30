@@ -20,6 +20,15 @@ import { clear } from "console";
 import { Sword } from "lucide-react";
 import { set } from "zod";
 
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "../ui/hover-card";
+
+import { CalendarIcon } from "@radix-ui/react-icons"
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
+
 export interface OrderItem {
   name: string;
   price: number;
@@ -51,6 +60,8 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
   const { account } = useAuth() as AuthHookType;
   const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [customerPoints, setCustomerPoints] = useState<string | null>(null);
+  const [customerName, setCustomerName] = useState<string | null>(null);
+  const [customerId, setCustomerId] = useState<string | null>(null);
 
   const [isSwitchToggled, setIsSwitchToggled] = useState(false);
   const [totalPoints, setTotalPoints] = useState(0);
@@ -66,7 +77,9 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
       );
       const calculatedTax = calculatedSubTotal * 0.07; // Assuming a tax rate of 7%
       let calculatedTotal =
-        calculatedSubTotal + calculatedTax - (isSwitchToggled ? totalPoints : 0);
+        calculatedSubTotal +
+        calculatedTax -
+        (isSwitchToggled ? totalPoints : 0);
 
       if (isSwitchToggled && totalPoints > calculatedTotal) {
         calculatedTotal = 0; // Set total to 0 if points cover the entire order
@@ -80,9 +93,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     };
 
     calculateTotals();
-
   }, [items, isSwitchToggled, totalPoints]);
-
 
   /**
    * Submits an order for the current employee with the given email address and displays a toast notification with the order ID.
@@ -110,9 +121,17 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
 
       const chosenItems = items.map((item) => item.name);
       const quantities = items.map((item) => item.quantity);
+      let total = subTotal + tax - (isSwitchToggled ? totalPoints : 0);
+
+      if (isSwitchToggled && totalPoints > total) {
+        total = 0;
+      } else if (isSwitchToggled && totalPoints < total) {
+        total -= totalPoints;
+      }
+
       const res = await submitOrder(
         nextOrderId,
-        isSwitchToggled ? total - totalPoints : total,
+        total,
         1,
         parseInt(employee.empId),
         toast,
@@ -193,8 +212,12 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
 
   useEffect(() => {
     const points = localStorage.getItem("customerPoints");
+    const name = localStorage.getItem("customerName");
+    const id = localStorage.getItem("customerId");
     if (points) {
       setCustomerPoints(points);
+      setCustomerName(name);
+      setCustomerId(id);
     }
   }, []);
 
@@ -208,7 +231,24 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
         <div className="flex justify-between items-center mb-4 border-b pb-4">
           <div className="text-gray-700">
             <span className="block">Order Number: {orderNumber}</span>
-            <span className="block">Customer Points: {customerPoints}</span>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <span className="font-semibold cursor-default">Customer Points: {customerPoints}</span>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80">
+                <div className="flex justify-between space-x-4">
+                  <div className="space-y-1">
+                    <h4 className="text-sm font-semibold">Customer Details</h4>
+                    <p className="text-sm">
+                      Name: {customerName}
+                    </p>
+                    <p className="text-sm">
+                      ID: {customerId}
+                    </p>
+                  </div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           </div>
           <div className="flex justify-between items-center">
             <Switch
@@ -219,7 +259,6 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
                 setIsSwitchToggled(isChecked);
                 getTotalPointsValueForOrder();
               }}
-
             />
             <Label className="block px-3 text-lg" htmlFor="points_switch">
               Pay With Points
