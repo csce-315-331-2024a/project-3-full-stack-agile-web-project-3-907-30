@@ -1,7 +1,3 @@
-import { useEffect, useState } from "react";
-import useAuth from "../hooks/useAuth";
-import { Employee, AuthHookType } from "@/lib/types";
-import { getEmployeeFromDatabase } from "@/lib/utils";
 import CustomerView from "@/components/customer/customer-view";
 import Head from "next/head";
 /**
@@ -31,29 +27,9 @@ export async function getServerSideProps(context: any) {
  * @returns {JSX.Element} The home page.
  */
 export default function Home() {
-  const { account } = useAuth() as AuthHookType;
-
-  const [employee, setEmployee] = useState<Employee>();
-
-  useEffect(() => {
-    if (account) {
-      getEmployeeFromDatabase(account.email).then((data) => {
-        setEmployee(data);
-      });
-    }
-  }, [account]);
-
-  
   return (
-    <>
-      <Head>
-        <title>Rev&apos;s American Grill</title>
-      </Head>
-      <div>
-        <h1>Rev&apos;s American Grill</h1>
-        {/* <h2>Customer View</h2> */}
-        <CustomerView />
-      </div>
-    </>
+    <div className="flex max-h-full items-center overflow-hidden">
+      <CustomerView />
+    </div>
   );
 }
