@@ -17,47 +17,39 @@ export default async function handler(
 
 
     try {
-        
-    
     // First, Get IDs for each of the menu items
-    const selectStatement = await db.prepare(
-      ""
+    const IdSelectStatement = await db.prepare(
+        "SELECT item_name FROM menu_items ORDER BY item_id ASC"
     );
+  
+    const IdSelectStatementResult = await IdSelectStatement.execute();
+  
+    await IdSelectStatement.close();
+  
+    const rows = IdSelectStatementResult.rows!;
+    const menuItemsOrderedById: string[] = rows.map((row) => row[0]);
+
+    const selectStatement = await db.prepare(
+      `SELECT menu_items.item_id, menu_items.item_name, menu_items.item_price, COUNT(orders_menu.item_id)
+      FROM orders
+      INNER JOIN orders_menu ON orders.order_id = orders_menu.order_id
+      INNER JOIN menu_items ON orders_menu.item_id = menu_items.item_id
+      GROUP BY orders_menu.item_id
+      ORDER BY COUNT(orders_menu.item_id) LIMIT 10`
+    );
+
 
     const selectStatementResult = await selectStatement.execute();
 
-await selectStatement.close();
+    const rows2 = selectStatementResult.rows!;
 
-    const rows = selectStatementResult.rows!;
-    const menuItemsOrderedById: string[] = rows.map((row) => row[0]);
-    
-    let parametersArray = [];
-    
-    for (let i = 0; i < chosenItems.length; i++){
-      const currentId = menuItemsOrderedById.indexOf(chosenItems[i]);
-      for (let j = 0; j < quantities[i]; j++){
-        parametersArray.push(orderIdInt, currentId);
+    await selectStatement.close();
+
+    if (rows.length === 0) {
+        res.status(404).json({ error: "Errors" });
+      } else {
+        
+        
+        res.status(200).json();
       }
-    }
-
-    // One insert is much more optimized than multiple insert statements
-    let updateStatementString = "INSERT INTO orders_menu (order_id, item_id) VALUES";
-
-    for (let i = 1; i <= parametersArray.length/2 - 1; i++){
-      updateStatementString =  updateStatementString + ` ($${2*i-1}, $${2*i}),`;
-    }
-    updateStatementString =  updateStatementString + ` ($${2*(parametersArray.length/2)-1}, $${2*(parametersArray.length/2)})`;
-    
-    const updateStatement = await db.prepare(updateStatementString);
-
-  await updateStatement.execute({
-    params: parametersArray,
-  });
-
-  await updateStatement.close();
-    res.status(200).json({ message: 'Order submitted successfully' });
-  } catch (error) {
-    console.error("Error submitting order:", error);
-    res.status(500).json({ error: "Error submitting order" });
-  }
 }
