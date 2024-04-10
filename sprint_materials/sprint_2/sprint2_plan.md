@@ -62,6 +62,6 @@ Ex:
 - [X] As a customer, I’d like to be able to see the weather E4 P2 T0 - Margo
 - [ ] Start reconfiguring database for sale items E1 P2 T0 - Gabe
 - [ ] Configure database for customer points/rewards E3 P2 T0 - Gabe
-- [ ] Clean up the UI for ordering  - Adam
-  - [ ] Add tabs to customer and employee ordering E3 P2 T0 - Adam
-  - [ ] Make menu board on theme E1 P2 T0 - Adam
+- [x] Clean up the UI for ordering  - Adam
+  - [x] Add tabs to customer and employee ordering E3 P2 T0 - Adam
+  - [x] Make menu board on theme E1 P2 T0 - Adam

@@ -91,6 +91,23 @@ const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' 
                     <h1>Hey {customerName}! You have {customerPoints} points!</h1>
                 )}
             </div>
+            <div>
+                {customerName === null && (
+                    <div className="flex flex-row justify-between items-center">
+                        <h1>Welcome! Sign-in to view your points.</h1>
+                    </div>
+                )}
+                {customerName === 'no customer' && (
+                    <div className="flex flex-row justify-between items-center">
+                        <h1>No customer found.</h1>
+                    </div>
+                )}
+                {customerName !== null && customerName !== 'no customer' && (
+                    <div className="flex flex-row justify-between items-center">
+                        <h1>Hey {customerName}! You have {customerPoints} points!</h1>
+                    </div>
+                )}
+            </div>
         </>
     );
 }

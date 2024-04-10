@@ -1,7 +1,5 @@
 
-import { Button } from '@/components/ui/button';
-import React, { use, useEffect } from 'react';
-import { Input } from '@/components/ui/input';
+import React, { useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import {
   Dialog,
@@ -12,54 +10,64 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useState } from 'react';
-import { set } from 'zod';
 import Image from 'next/image';
-
-
-
-
-// Order Item types
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Card } from '../ui/card';
+import { categories, itemBelongsToCategory } from '@/lib/utils';
+import { set } from 'react-hook-form';
+import ComboboxForm from './customer-translate';
 export interface OrderItem {
   name: string;
   price: number;
   quantity: number;
 }
 
-
 const CustomerView = () => {
-
-  // State for the Menu Items
   const [menuItems, setMenuItems] = useState<any[]>([]);
-  // State for the Ingredients
   const [ingredients, setIngredients] = useState<any[]>([]);
-
-
-  // State for when an Item is Clicked
   const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const [hoveredTab, setHoveredTab] = useState<number | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
+
+  const translations: {
+    [key: string]: { [lang: string]: string }} = {
+    'Burgers & Wraps': {
+      en: 'Burgers & Wraps',
+      fr: 'Burgers et Wraps',
+      de: 'Burger und Wraps',
+      es: 'Hamburguesas y Envolturas',
+      pt: 'Hamburgueres e Wraps',
+      ru: 'Бургеры и обертывания',
+      ja: 'バーガー＆ラップ',
+      ko: '버거 & 랩',
+      zh: '汉堡包和包装',
+    },
+    };
+
+    const translateText = (text: string) => {
+      return translations[text]?.[selectedLanguage] || text;
+    }
+
 
   const itemClicked = (item: any) => {
     setSelectedItem(item);
   };
 
-
-
-
-
-// Getting the Ingredient names using the ItemID
-const getIngredientsUsingItemID = async (itemID: number) =>  {
-  const res = await fetch(`/api/menu/ingredients/${itemID}`)
+  // Getting the Ingredient names using the ItemID
+  const getIngredientsUsingItemID = async (itemID: number) => {
+    const res = await fetch(`/api/menu/ingredients/${itemID}`)
     const data = await res.json();
     const ingredientNames = data.map((ingredient: any) => ingredient.name);
     return ingredientNames;
   };
-
 
   useEffect(() => {
     fetch('/api/menu/menu_items/get-all-items-and-price')
       .then((res) => res.json())
       .then((data) => {
         // Get the ingredients for each item
-        const ingredientPromises = data.map((item:any) =>
+        const ingredientPromises = data.map((item: any) =>
           getIngredientsUsingItemID(item.id).then((ingredients) => ({
             name: item.name,
             price: item.price,
@@ -71,8 +79,11 @@ const getIngredientsUsingItemID = async (itemID: number) =>  {
           setMenuItems(items);
         });
       });
-  }, []);
+  }, [selectedLanguage]);
 
+  const handleLanguageChange = (language: string) => {
+    setSelectedLanguage(language);
+  }
 
 
   // Retrieve the image for the the menu Item
@@ -80,87 +91,84 @@ const getIngredientsUsingItemID = async (itemID: number) =>  {
     return `/menu-item-pics/${itemName}.jpeg`;
   };
 
-
-  // Seperate the items to their own categories
-  const itemBelongsToCategory = (item: any, category: string) => {
-    switch (category) {
-      case "Burgers & Wraps":
-        return item.name.includes("Burger") || item.name.includes("Sandwich") || item.name.includes("Cheeseburger")
-          || item.name.includes("Hamburger") || item.name.includes("Melt") || item.name.includes("Club")
-          || item.name.includes("Wrap");
-      case "Meals":
-        return item.name.includes("Meal");
-      case "Tenders":
-        return item.name.includes("Tender");
-      case "Sides":
-        return item.name === "French Fries";
-      case "Drinks":
-        return item.name.includes("Shake") || item.name.includes("Water") || item.name.includes("Drink");
-      case "Desserts":
-        return item.name.includes("Sundae") || item.name.includes("Ice Cream") || item.name.includes("Float");
-      default:
-        return false;
-    }
-  };
-
-  // Placing all the items in their respective categories
-  const categories = ["Burgers & Wraps", "Meals", "Tenders", "Sides", "Drinks", "Desserts"];
-
   return (
-    <div style={{backgroundColor: "#5a0000 "}} className=" w-full h-full flex flex-col justify-center items-center p-4">
-      <h1 className="text-2xl flex-col items-center text-white font-bold"> Ordering Menu</h1>
-      {categories.map((category, index) => (
-        <div key={index} className="flex flex-col items-center">
-          <h2 className="text-lg text-white">{category}</h2>
-          <div className="bg-white p-1 rounded-md border-white border-4 ">
-            <div style={{marginTop: '100px' }} className="grid grid-cols-6 gap-x-12 gap-y-16">
-              {menuItems
-                .filter((item) => itemBelongsToCategory(item, category))
-                .map((item: any) => {
-                  return (
-                    <div key={item.name} className="flex flex-col items-center gap-4">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="outline" style={{ backgroundColor: 'transparent', border: 'none'}} onClick={() => itemClicked(item)}>
-                            <Image src={getImageForMenuItem(item.name)} alt={item.name} className="rounded-md" width={200} height={200} />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent style={{ width: '600px', height: '600px' }}>
-                          <DialogHeader></DialogHeader>
-                          <div className="grid gap-4 py-4">
-                            <div className="flex items-center justify-center gap-4">
-                              {selectedItem &&
-                                <Image src={getImageForMenuItem(selectedItem.name)} alt={selectedItem.name} className="rounded-md" width={400} height={400} />
-                              }
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                              <Label htmlFor="name" className="text-right mr-4">
-                                Ingredients:
-                              </Label>
-                              <div id="name" className="col-span-3">
-                                <ul className="flex flex-row gap-1 mr-3">
-                                  {item.ingredients.map((ingredient: string) => (
-                                    <li key={ingredient} className="text-sm">{ingredient}</li>
-                                  ))}
-                                </ul>
+    <div className="w-full h-full flex flex-col justify-start items-start p-4">
+      <ComboboxForm onLanguageChange={handleLanguageChange} />
+      <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-full">
+        <TabsList className="grid grid-cols-1 w-1/5 mt-2 h-fit">
+          {categories.map((category, index) => (
+            <TabsTrigger
+              key={index}
+              value={category.replace(/\s/g, '')}
+              className={`px-8 py-9 cursor-pointer relative`}
+              onMouseEnter={() => setHoveredTab(index)}
+              onMouseLeave={() => setHoveredTab(null)}
+            >
+              <h2 className="text-2xl">
+                {translateText(category)}
+              </h2>
+              {hoveredTab === index && (
+                <div className="absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500"></div>
+              )}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {categories.map((category, index) => (
+          <TabsContent key={index} value={category.replace(/\s/g, '')} className="w-4/5">
+            <Card className="overflow-y-scroll h-full">
+              <div className="grid grid-cols-5 gap-4 p-4 items-stretch">
+                {menuItems
+                  .filter((item) => itemBelongsToCategory(item.name, category))
+                  .map((item: any) => {
+                    return (
+                      <div key={item.name}
+                        className={`flex flex-col items-center gap-4 h-full transition-all duration-300 ease-in-out ${hoveredItem === item.name ? 'transform scale-105 shadow-lg rounded-lg' : ''}`}
+                        onMouseEnter={() => setHoveredItem(item.name)}
+                        onMouseLeave={() => setHoveredItem(null)}
+                      >
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Card className="flex flex-col justify-between items-center h-full w-full p-4 gap-8 cursor-pointer" onClick={() => itemClicked(item)}>
+                              <Image src={getImageForMenuItem(item.name)} alt={item.name} className="rounded-md" width={200} height={200} />
+                              <div className="flex flex-col gap-2 text-lg text-center">
+                                <p className="font-semibold">{item.name}</p>
+                                <p className="text-base">${item.price.toFixed(2)}</p>
+                              </div>
+                            </Card>
+                          </DialogTrigger>
+                          <DialogContent className="w-[600px]">
+                            <DialogHeader>{item.name}</DialogHeader>
+                            <div className="grid gap-4 py-4">
+                              <div className="flex items-center justify-center gap-4">
+                                {selectedItem &&
+                                  <Image src={getImageForMenuItem(selectedItem.name)} alt={selectedItem.name} className="rounded-md" width={400} height={400} />
+                                }
+                              </div>
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="name" className="text-right mr-4">
+                                  Ingredients:
+                                </Label>
+                                <div id="name" className="col-span-3">
+                                  <ul className="flex flex-row gap-1 mr-3">
+                                    {item.ingredients.map((ingredient: string) => (
+                                      <li key={ingredient} className="text-sm">{ingredient}</li>
+                                    ))}
+                                  </ul>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
-                      <p style={{ marginTop: '80px' }}>{item.name}</p>
-                      <p style={{ marginBottom: '60px' }}> {item.price}</p>
-                    </div>)
-                })}
-            </div>
-          </div>
-        </div>
-      ))}
+                          </DialogContent>
+                        </Dialog>
+                      </div>)
+                  })}
+              </div>
+            </Card>
+          </TabsContent>
+        ))
+        }
+      </Tabs>
     </div>
   );
 }
 
 export default CustomerView;
-
-
-

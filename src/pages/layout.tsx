@@ -19,7 +19,8 @@ import RewardsButton from "@/components/customer/rewards-button";
 import CustomerInfo from "@/components/customer/customer-info";
 import { Weather } from "./api/customer/weather";
 import { getCurrentWeather } from "@/components/customer/customer-weather";
-
+import ComboboxForm from "@/components/customer/customer-translate";
+import Head from "next/head";
 interface LayoutProps {
   children: ReactNode;
 }
@@ -51,15 +52,23 @@ const Layout = ({ children }: LayoutProps) => {
     getCurrentWeather().then((data) => {
       setWeather(data);
     })
+
+
+
+
   }, [account]);
 
   return (
     <>
+      <Head>
+        <title>Rev&apos;s American Grill</title>
+      </Head>
       {router.asPath === '/' ? (
         <main className="flex flex-col w-full h-dvh" >
           <div className="border-b">
             <div className="flex h-16 items-center justify-between px-4">
               <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm" priority />
+              <ComboboxForm />
               <CustomerInfo weather={weather} />
               <div className="flex gap-4">
                 <Button variant="outline" asChild>
