@@ -49,10 +49,12 @@ const Layout = ({ children }: LayoutProps) => {
         setLoading(false);
       });
     }
-    getCurrentWeather().then((data) => {
-      setWeather(data);
-    })
-  }, [account]);
+    if (router.asPath === '/') {
+      getCurrentWeather().then((data) => {
+        setWeather(data);
+      })
+    }
+  }, [account, router.asPath]);
 
   return (
     <>

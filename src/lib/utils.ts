@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Allergens, Customer, Employee } from "./types";
+import { Allergens, Customer, Employee, ProductUsageItem, SalesReportItem } from "./types";
 import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
 import db from "./db";
@@ -327,3 +327,19 @@ export const categories = [
   "Drinks",
   "Desserts",
 ];
+
+export const rowToSalesReportItem = (array: any[]) => {
+  return {
+    id: array[0],
+    name: array[1],
+    profit: array[2]
+  } as SalesReportItem;
+}
+
+export const rowToProductUsageItem = (array: any[]) => {
+    return {
+        id: array[0],
+        name: array[1],
+        amount: array[2]
+    } as ProductUsageItem;
+}
