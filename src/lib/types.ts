@@ -79,3 +79,15 @@ export interface Order {
     cust_id: number,
     emp_id: number
 };
+
+export interface SalesReportItem {
+  id: number;
+  name: string;
+  profit: number;
+}
+
+export interface ProductUsageItem {
+    id: number;
+    name: string;
+    amount: number
+}
