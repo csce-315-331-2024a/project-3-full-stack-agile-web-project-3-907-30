@@ -32,9 +32,9 @@ Ex:
   - [ ] 7. Make Employee GUI POS system that allows employees to create, delete, customize, and see the information contained within an order E1 P1 T0 - Akshay
   - [ ] 7. Make functions that can create, delete, view, and modify the orders in the database E1 P1 T0 - Akshay
   - [ ] 7. Have GUI call and display the results of that function when a customer is selecting a given item E1 P1 T0 - Akshay
-- [ ] 10. As an employee, I want to be able to view product information so I can inform the customer without leaving. - Margo
-  - [X] 10. Make a function that queries all of the relevant characteristics of a menu item like allergen information.  E1 P2 T0 - Margo
-  - [ ] 10. Have GUI show this information to the employee when they click on a menu item at POS. E1 P2 T0 - Margo
+- [X] 10. As an employee, I want to be able to view product information so I can inform the customer without leaving. - Margo
+  - [X] 10. Make a function that queries all of the relevant characteristics of a menu item like allergen information.  E1 P2 T1 - Margo
+  - [X] 10. Have GUI show this information to the employee when they click on a menu item at POS. E1 P2 T2 - Margo
 - [ ] 14. As a customer, I want to be able to log in to see my past orders and points so that I can re-order or just see what I like. - Gabe
   - [ ] 14. Make Customer GUI “login” view that asks for relevant information (phone number)  E2 P1 T0 - Gabe
   - [ ] 14. Implement encrypted database login functionality for customers to login E3 P1 T0 - Gabe
@@ -59,7 +59,7 @@ Ex:
   - [ ] 21. Add google translate functionality to all GUI items in sprint 2 E2 P1 T0 - Chris
 
 ### Chores (part of the backlog, but have no story points associated with them)
-- [X] As a customer, I’d like to be able to see the weather E4 P2 T0 - Margo
+- [X] As a customer, I’d like to be able to see the weather E4 P2 T2 - Margo
 - [ ] Start reconfiguring database for sale items E1 P2 T0 - Gabe
 - [ ] Configure database for customer points/rewards E3 P2 T0 - Gabe
 - [x] Clean up the UI for ordering  - Adam

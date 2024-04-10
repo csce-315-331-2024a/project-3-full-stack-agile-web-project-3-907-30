@@ -82,10 +82,10 @@ const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' 
             <CustomerWeather data={weather}></CustomerWeather>
             <div className="flex flex-row justify-between items-center">
                 {customerName === null && (
-                    <h1>Sign in here &gt;</h1>
+                    <h1>Welcome! Sign-in to view your points.</h1>
                 )}
                 {customerName === 'no customer' && (
-                    <h1>Sign in failed :{'('} </h1>
+                    <h1>No customer found.</h1>
                 )}
                 {customerName !== null && customerName !== 'no customer' && (
                     <h1>Hey {customerName}! You have {customerPoints} points!</h1>

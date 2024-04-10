@@ -5,6 +5,18 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { InventoryItem, MenuItem } from '@/lib/types';
 import { toast } from '../ui/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Allergens } from "@/lib/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { categories, itemBelongsToCategory } from '@/lib/utils';
 
@@ -22,6 +34,8 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     const [loading, setLoading] = useState(true);
     const [order, setOrder] = useState<{ [key: string]: OrderItem }>({});
     const [inputValues, setInputValues] = useState<{ [key: string]: number }>({});
+    const [currentAllergens, setAllergens] = useState<Allergens>();
+    const [open, setOpen] = useState<{[key: string]: boolean}>({});
     const [hoveredTab, setHoveredTab] = useState<number | null>(null);
 
     useEffect(() => {
@@ -30,6 +44,10 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
             .then((data) => {
                 setMenuItems(data);
                 setLoading(false);
+                const strings = data as string[];
+                strings.map(row => {
+                    setOpen({...open, [row]: false})
+                })
             });
     }, []);
 
@@ -126,7 +144,21 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
             return newOrder;
         });
     };
+  
+    const getAllergensForItem = async (name: string) => {
+        try {
+            const res = await fetch(`/api/menu/allergens/${name}`);
 
+            if (!res.ok) {
+                throw new Error('Item not found');
+            }
+
+            const data = await res.json() as Allergens;
+            setAllergens(data);
+        } catch (error) {
+            console.error('Error getting allergens', error);
+        }
+    }
 
     return (
         <Card className="flex flex-col h-full">
@@ -139,7 +171,6 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                     <div>Loading menu items...</div>
                 ) : (
                     <>
-
                         <Button onClick={clearOrderAndSetOrderItems} className="bg-red-500 hover:bg-red-700 text-white font-bold py-8 px-2 text-lg rounded">
                             Clear Order
                         </Button>
@@ -171,15 +202,57 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                                                     <Card key={item} className="flex flex-col justify-between gap-8 items-center py-3">
                                                         <h3 className="text-center font-semibold">{item}</h3>
                                                         <div className="flex items-center gap-2">
-                                                            <Button onClick={() => fetchPriceAndAddToOrder(item)}>+</Button>
-                                                            <Input
-                                                                type="number"
-                                                                value={inputValues[item] ?? order[item]?.quantity ?? 0}
-                                                                onChange={(e) => setInputValues({ ...inputValues, [item]: parseInt(e.target.value) })}
-                                                                min={0}
-                                                                className="w-16"
-                                                            />
-                                                            <Button onClick={() => removeItemFromOrder(item)}>-</Button>
+                                                          <AlertDialog open={open[item]}>
+                                                            <AlertDialogTrigger asChild>
+                                                              <Button onClick={async () => {
+                                                                await getAllergensForItem(item);
+                                                                setOpen({...open, [item]: true});
+                                                              }}>+</Button>
+                                                            </AlertDialogTrigger>
+                                                            <AlertDialogContent>
+                                                              <AlertDialogHeader>
+                                                                <AlertDialogTitle>
+                                                                    Dietary Restrictions
+                                                                </AlertDialogTitle>
+                                                                <AlertDialogDescription>
+                                                                    Dairy? {currentAllergens?.has_dairy ? "Yes" : "No"}
+                                                                </AlertDialogDescription>
+                                                                <AlertDialogDescription>
+                                                                    Eggs? {currentAllergens?.has_eggs ? "Yes" : "No"}
+                                                                </AlertDialogDescription>
+                                                                <AlertDialogDescription>
+                                                                    Nuts? {currentAllergens?.has_nuts ? "Yes" : "No"}
+                                                                </AlertDialogDescription>
+                                                                <AlertDialogDescription>
+                                                                    Vegan? {currentAllergens?.is_vegan ? "Yes" : "No"}
+                                                                </AlertDialogDescription>
+                                                                <AlertDialogDescription>
+                                                                    Halal? {currentAllergens?.is_halal ? "Yes" : "No"}
+                                                                </AlertDialogDescription>
+                                                              </AlertDialogHeader>
+                                                              <AlertDialogFooter>
+                                                                <AlertDialogCancel asChild>
+                                                                    <Button onClick={() => setOpen({...open, [item]: false})} className="text-black">
+                                                                        Cancel
+                                                                    </Button>
+                                                                </AlertDialogCancel>
+                                                                <AlertDialogAction>
+                                                                    <Button onClick={() => {
+                                                                        fetchPriceAndAddToOrder(item);
+                                                                        setOpen({...open, [item]: false});
+                                                                    }}>Confirm</Button>
+                                                                </AlertDialogAction>
+                                                              </AlertDialogFooter>
+                                                            </AlertDialogContent>
+                                                          </AlertDialog>
+                                                          <Input
+                                                              type="number"
+                                                              value={inputValues[item] ?? order[item]?.quantity ?? 0}
+                                                              onChange={(e) => setInputValues({ ...inputValues, [item]: parseInt(e.target.value) })}
+                                                              min={0}
+                                                              className="w-16"
+                                                          />
+                                                          <Button onClick={() => removeItemFromOrder(item)}>-</Button>
                                                         </div>
                                                     </Card>
                                                 ))}
