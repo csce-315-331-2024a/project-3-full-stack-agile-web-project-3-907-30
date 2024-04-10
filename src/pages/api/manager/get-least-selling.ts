@@ -31,11 +31,11 @@ export default async function handler(
 
     const selectStatement = await db.prepare(
       `SELECT menu_items.item_id, menu_items.item_name, menu_items.item_price, COUNT(orders_menu.item_id)
-      FROM orders
-      INNER JOIN orders_menu ON orders.order_id = orders_menu.order_id
-      INNER JOIN menu_items ON orders_menu.item_id = menu_items.item_id
-      GROUP BY orders_menu.item_id
-      ORDER BY COUNT(orders_menu.item_id) LIMIT 10`
+      FROM menu_items
+      INNER JOIN orders_menu ON menu_items.item_id = orders_menu.item_id
+      INNER JOIN orders ON orders_menu.order_id = orders.order_id  
+      GROUP BY menu_items.item_id
+      ORDER BY COUNT(menu_items.item_id) LIMIT 10`
     );
 
 
