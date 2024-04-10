@@ -29,7 +29,7 @@ const SalesReport = ({ data }: { data: SalesReportItem[] }) => {
                                         {item.name}
                                     </TableCell>
                                     <TableCell>
-                                        {item.profit}
+                                        ${item.profit}
                                     </TableCell>
                                 </TableRow>
                             );
@@ -37,7 +37,16 @@ const SalesReport = ({ data }: { data: SalesReportItem[] }) => {
                     }
                 </TableBody>
                 <TableFooter>
-
+                    <TableRow>
+                        <TableCell>
+                            Total Profits:
+                        </TableCell>
+                        <TableCell>
+                            ${data.reduce((accum, curr) => {
+                                return accum + curr.profit;
+                            }, 0)}
+                        </TableCell>
+                    </TableRow>
                 </TableFooter>
             </Table>
         </>
