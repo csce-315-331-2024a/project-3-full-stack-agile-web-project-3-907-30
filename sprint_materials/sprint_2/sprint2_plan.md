@@ -23,8 +23,8 @@ Ex:
   - [ ] 5. Make Manager GUI page that has a menu of available trend reports E3 P1 T0 - Adam
   - [ ] 5. Make functions for the following trend reports:
     - [ ] 5. What sells together E2 P1 T0 - Gabe
-    - [ ] 5. Product Usage Chart E2 P1 T0 - Margo
-    - [ ] 5. Sales Report E2 P1 T0 - Margo
+    - [X] 5. Product Usage Chart E2 P1 T1 - Margo
+    - [X] 5. Sales Report E2 P1 T2 - Margo
     - [ ] 5. Excess Report E2 P1 T0 - Aaron
     - [ ] 5. Restock Report E2 P1 T0 - Aaron
     - [ ] 5. Days with the most sales in a given month E2 P1 T0 - Gabe
