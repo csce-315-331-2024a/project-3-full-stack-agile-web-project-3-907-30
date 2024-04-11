@@ -20,6 +20,7 @@ import { clear } from "console";
 import { Sword } from "lucide-react";
 import { set } from "zod";
 
+
 import {
   HoverCard,
   HoverCardContent,
@@ -28,6 +29,7 @@ import {
 
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
+import { get } from "http";
 
 export interface OrderItem {
   name: string;
@@ -138,12 +140,55 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
         chosenItems,
         quantities
       );
+      
+      let newPoints = 0;
+      // if points aren't used, and order is successful, update customer points
+      if (!isSwitchToggled && res && res.status === 200) {
+        let updatedPoints = customerPoints ? parseInt(customerPoints, 10) - total : 0;
+        // get sum of points for all items in order
+        const itemNames = items
+          .map((item) => Array(item.quantity).fill(item.name))
+          .flat();
+
+        // loop through item names and get points for each item and sum them
+        
+        for (const itemName of itemNames) {
+          const response = await fetch(
+            `/api/order/get-points-for-item?itemName=${itemName}`
+          );
+          const data = await response.json();
+          newPoints += parseInt(data.points, 10);
+        }
+
+        updatedPoints += newPoints;
+        // round updatePoints to whole number
+        updatedPoints = Math.round(updatedPoints);
+        if (customerId && updatedPoints >= 0) {
+          await updateCustomerPoints(updatedPoints, parseInt(customerId, 10));
+          localStorage.setItem("customerPoints", updatedPoints.toString());
+        }
+      }
 
       if (res && res.status === 200) {
         toast({
           title: "Success!",
-          description: "Your order has been placed!",
+          description: `Your order has been placed! You recieved ${newPoints} from this order!`,
         });
+
+        // Update used_points column in orders table
+        fetch("/api/order/update-usedpointsbool", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            order_id: nextOrderId,
+            used_points: isSwitchToggled ? true : false,
+          }),
+        });
+
+        console.log("Order submitted successfully.")
+
       } else {
         throw new Error("There was a problem with your request.");
       }
@@ -168,6 +213,21 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     const response = await fetch("/api/order/get-next-order-id");
     const data = await response.json();
     return data.nextOrderId;
+  };
+
+  const updateCustomerPoints = async (points: number, customerId: number) => {
+    const response = await fetch("/api/customer/update-customer-points", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cust_id: customerId,
+        points: points,
+      }),
+    });
+    const data = await response.json();
+    return data;
   };
 
   const getTotalPointsValueForOrder = async () => {
