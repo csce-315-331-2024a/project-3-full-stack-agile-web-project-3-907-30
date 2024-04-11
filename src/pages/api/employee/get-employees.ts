@@ -34,6 +34,7 @@ export default async function handler(
       isManager: row[4],
       isAdmin: row[5],
       isVerified: row[6],
+      totalOrders: row[7],
     }));
 
     res.status(200).json(employees);
