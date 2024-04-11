@@ -22,12 +22,12 @@ Ex:
 - [ ] 5. As a manager I want to be able to see trends in sales data so I can estimate inventory purchasing and present to business owners. - Adam, Gabe, Margo, Aaron
   - [ ] 5. Make Manager GUI page that has a menu of available trend reports E3 P1 T0 - Adam
   - [ ] 5. Make functions for the following trend reports:
-    - [ ] 5. What sells together E2 P1 T0 - Gabe
+    - [x] 5. What sells together E2 P1 T2 - Gabe
     - [X] 5. Product Usage Chart E2 P1 T1 - Margo
     - [X] 5. Sales Report E2 P1 T2 - Margo
     - [ ] 5. Excess Report E2 P1 T0 - Aaron
     - [ ] 5. Restock Report E2 P1 T0 - Aaron
-    - [ ] 5. Days with the most sales in a given month E2 P1 T0 - Gabe
+    - [x] 5. Days with the most sales in a given month E2 P1 T1 - Gabe
 - [x] 7. As an employee, I want to be able to make orders so I can translate a customer’s desires to the kitchen. - Akshay
   - [x] 7. Make Employee GUI POS system that allows employees to create, delete, customize, and see the information contained within an order E1 P1 T0 - Akshay
   - [x] 7. Make functions that can create, delete, view, and modify the orders in the database E1 P1 T0 - Akshay

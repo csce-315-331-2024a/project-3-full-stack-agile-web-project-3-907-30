@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Allergens, Customer, Employee, ProductUsageItem, SalesReportItem } from "./types";
+import { Allergens, Customer, Employee, PairsAndAppearance, PopularMenuItem, ProductUsageItem, SalesForADay, SalesReportItem } from "./types";
 import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
 import db from "./db";
@@ -270,8 +270,79 @@ export async function getNextOrderId() {
   return nextOrderId;
 }
 
-export async function whatSellsTogether() {
-  
+/**
+ * Get the pairs of items that sold together the most in a given time frame
+ * 
+ * @param startDate 
+ * @param endDate 
+ * @returns {PairsAndAppearance[]} List of pairs and how many times they sold 
+ */
+export async function whatSellsTogether( startDate: string, endDate: string) {
+  const res = await fetch("/api/manager/what-sells-together?"+
+  "startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}",{
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+  return res;
+}
+
+/**
+ * Get the top 10 most popular menu items by sales in a given time window 
+ * 
+ * @param startdate 
+ * @param endDate 
+ * @returns {PopularMenuItem[]} List of menu items and how many times they sold
+ */
+export async function menuItemsPopularity( startdate: string, endDate: string) {
+  const res = await fetch("/api/manager/menu-items-popularity?"+
+  "startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}",{
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+  return res;
+}
+
+/**
+ * Get the days that had the most sales in a given month and year
+ * 
+ * @param startdate 
+ * @param endDate 
+ * @returns {SalesForADay[]} List of days and how many sales they had 
+ */
+export async function daysWithMostSales( month: number, year: number ) {
+  const res = await fetch("/api/manager/days-with-most-sales?"+
+  "month=${encodeURIComponent(month)}&year=${encodeURIComponent(year)}",{
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+  return res;
+}
+
+/**
+ * Adds a new customer account to the database
+ * 
+ * @param custName 
+ * @param phoneNumber 
+ * @returns {string} Message saying whether insertion was successfull or not
+ */
+export async function newCustomer( custName: string, phoneNumber: string ) {
+  const res = await fetch("/api/customer/new-customer", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      custName,
+      phoneNumber
+    }),
+  });
+  return res.json;
 }
 
 /**
