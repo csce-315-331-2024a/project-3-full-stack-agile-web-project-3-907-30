@@ -108,3 +108,9 @@ export interface ProductUsageItem {
   name: string;
   amount: number;
 }
+
+export interface MostProductiveEmployeeItem {
+  id: number;
+  name: string;
+  total_orders: number;
+}

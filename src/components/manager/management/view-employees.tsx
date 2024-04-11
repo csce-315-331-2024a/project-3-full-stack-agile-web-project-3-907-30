@@ -31,7 +31,7 @@ const ViewEmployees = () => {
 
 
   return (
-    <Card className="w-1/2">
+    <Card className="w-1/2 overflow-y-scroll">
       <CardHeader>
         <CardTitle>Current Employees</CardTitle>
         <CardDescription>The following employees have logged into the system.</CardDescription>

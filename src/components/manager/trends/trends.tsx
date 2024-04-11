@@ -1,11 +1,14 @@
-import { SalesReportItem, ProductUsageItem } from "@/lib/types";
+import { SalesReportItem, ProductUsageItem, MostProductiveEmployeeItem } from "@/lib/types";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import SalesReport from "./sales-report";
 import ProductUsage from "./product-usage";
+import { Card } from "@/components/ui/card";
+import MostProductiveEmployees from "./most-productive-employees";
 
 export interface TrendsProps {
   salesReportData: SalesReportItem[];
   productUsageData: ProductUsageItem[];
+  mostProductiveEmployeesData: MostProductiveEmployeeItem[];
 }
 
 /**
@@ -18,7 +21,7 @@ export interface TrendsProps {
  * // Render a trends component.
  * <Trends />
  */
-const Trends = ({ salesReportData, productUsageData }: TrendsProps) => {
+const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData }: TrendsProps) => {
 
   const trendsTabs = [
     "Sales Report",
@@ -31,7 +34,7 @@ const Trends = ({ salesReportData, productUsageData }: TrendsProps) => {
   ];
 
   return (
-    <Tabs defaultValue="SalesReport" className="flex flex-row gap-4 w-full">
+    <Tabs defaultValue="SalesReport" className="flex flex-row gap-4 w-full h-full">
       <TabsList className="grid grid-cols-1 h-fit mt-2 w-1/5">
         {trendsTabs.map((tab, index) => (
           <TabsTrigger key={index} value={tab.replaceAll(" ", "")} className="py-4">
@@ -40,18 +43,24 @@ const Trends = ({ salesReportData, productUsageData }: TrendsProps) => {
         ))}
       </TabsList>
       <TabsContent value="SalesReport" className="w-4/5">
-        <SalesReport data={salesReportData} />
+        <Card className="flex min-h-fit max-h-[85%]">
+          <SalesReport data={salesReportData} />
+        </Card>
       </TabsContent>
       <TabsContent value="ProductUsageReport" className="w-4/5">
-        <ProductUsage data={productUsageData} />
+        <Card className="flex min-h-fit max-h-[85%]">
+          <ProductUsage data={productUsageData} />
+        </Card>
       </TabsContent>
       <TabsContent value="ExcessReport">
         Excess Report
       </TabsContent>
-      <TabsContent value="MostProductiveEmployees">
-        Most Productive Employees
+      <TabsContent value="MostProductiveEmployees" className="w-4/5">
+        <Card className="flex min-h-fit max-h-[85%]">
+          <MostProductiveEmployees data={mostProductiveEmployeesData} />
+        </Card>
       </TabsContent>
-      <TabsContent value="DaysWithMostSales">
+      <TabsContent value="DayswithMostSales">
         Days with Most Sales
       </TabsContent>
       <TabsContent value="MostPopularItems">

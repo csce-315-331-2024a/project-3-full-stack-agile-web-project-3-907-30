@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import UserManagement from "./user-management";
 import ViewEmployees from "./view-employees";
+import { Card } from "@/components/ui/card";
 
 /**
  * A management component that encapsulates managing users, inventory, menu, and orders.
@@ -40,21 +41,21 @@ const Management = () => {
   }, [account]);
 
   return (
-    <Tabs defaultValue="account" className="flex flex-row gap-4">
-      <TabsList className="grid grid-cols-1 h-fit mt-2">
+    <Tabs defaultValue="UserManagement" className="flex flex-row gap-4 h-full">
+      <TabsList className="grid grid-cols-1 h-fit mt-2 w-1/5">
         {managementTabs.map((tab, index) => (
           <TabsTrigger key={index} value={tab.replaceAll(" ", "")} className="py-4">
             {tab}
           </TabsTrigger>
         ))}
       </TabsList>
-      <TabsContent value="UserManagement">
-        <section className="flex gap-8">
+      <TabsContent value="UserManagement" className="w-4/5">
+        <Card className="flex min-h-fit max-h-[85%] gap-8 p-4">
           {employee?.isAdmin && (
             <UserManagement />
           )}
           <ViewEmployees />
-        </section>
+        </Card>
       </TabsContent>
       <TabsContent value="OrderManagement">
         Order Management

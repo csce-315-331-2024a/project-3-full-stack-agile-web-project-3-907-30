@@ -75,7 +75,7 @@ const UserManagement = () => {
   };
 
   return (
-    <Card className="w-1/2">
+    <Card className="w-1/2 overflow-y-scroll">
       <CardHeader>
         <CardTitle>Manage Users</CardTitle>
         <CardDescription>Manage your users at a glance.</CardDescription>
