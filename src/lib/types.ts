@@ -79,3 +79,31 @@ export interface Order {
     cust_id: number,
     emp_id: number
 };
+
+export interface PairsAndAppearance {
+    item1: string,
+    item2: string,
+    appearances: number
+};
+
+export interface PopularMenuItem {
+    item: string,
+    num_sales: number
+}
+
+export interface SalesForADay {
+    day: Date,
+    sales: number
+}
+
+export interface SalesReportItem {
+    id: number;
+    name: string;
+    profit: number;
+}
+
+export interface ProductUsageItem {
+    id: number;
+    name: string;
+    amount: number
+}
