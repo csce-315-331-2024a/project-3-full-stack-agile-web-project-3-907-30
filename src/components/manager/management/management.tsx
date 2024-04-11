@@ -43,7 +43,7 @@ const Management = () => {
     <Tabs defaultValue="account" className="flex flex-row gap-4">
       <TabsList className="grid grid-cols-1 h-fit mt-2">
         {managementTabs.map((tab, index) => (
-          <TabsTrigger key={index} value={tab.replace(" ", "")} className="py-4">
+          <TabsTrigger key={index} value={tab.replaceAll(" ", "")} className="py-4">
             {tab}
           </TabsTrigger>
         ))}

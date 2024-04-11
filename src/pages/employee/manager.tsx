@@ -8,6 +8,7 @@ import SalesReport from "@/components/manager/trends/sales-report";
 import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 import ProductUsage from "@/components/manager/trends/product-usage";
+import Trends from "@/components/manager/trends/trends";
 
 
 
@@ -40,20 +41,18 @@ const Manager = ({ salesReportData, productUsageData }: ManagerProps) => {
 
   return (
     <main className="flex flex-col w-full h-full items-start justify-start p-4 gap-4">
-
       {employee?.isManager ? (
         <>
           <h1 className="text-3xl font-bold">Manager Dashboard</h1>
-          <Tabs defaultValue="account">
+          <Tabs defaultValue="overview" className="w-full">
             <TabsList className="grid w-fit grid-cols-3">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="trends">Trends</TabsTrigger>
               <TabsTrigger value="management">Management</TabsTrigger>
             </TabsList>
             <TabsContent value="overview">Overview</TabsContent>
-            <TabsContent value="trends" className="flex gap-12">
-              <SalesReport data={salesReportData} />
-              <ProductUsage data={productUsageData} />
+            <TabsContent value="trends">
+              <Trends salesReportData={salesReportData} productUsageData={productUsageData} />
             </TabsContent>
             <TabsContent value="management">
               <Management />
