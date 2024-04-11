@@ -13,7 +13,7 @@ Ex:
   - [ ] task
     - [ ] sub-task
 - [ ] 2. As a manager, I want to be able to view past orders and see what is selling the least, so we can advertise it more. - Aaron
-  - [ ] 2. Make function that queries the menu items that have sold the least and the amounts that they have sold in ascending order (least sales first); have 10 item cutoff (bottom 10 sellers) E1 P2 T0 - Aaron
+  - [x] 2. Make function that queries the menu items that have sold the least and the amounts that they have sold in ascending order (least sales first); have 10 item cutoff (bottom 10 sellers) E1 P2 T0 - Aaron
   - [ ] 2. Add functionality to the function that queries the menu items that contribute the smallest percentage to the total revenue as well, for a more accurate view of the weak links E1 P2 T0 - Aaron
   - [ ] 2. Have GUI make the items that pop up interactable; eg if you click corn dogs because they’re selling poorly, it should take you to the menu items view where you can edit the corndog item or add a promotion to it E3 P2 T0 - Aaron
 - [ ] 4. As a manager, I want to be able to see what employees have made the most orders so I can see which employee is most valuable. - Adam
@@ -61,7 +61,7 @@ Ex:
 ### Chores (part of the backlog, but have no story points associated with them)
 - [X] As a customer, I’d like to be able to see the weather E4 P2 T2 - Margo
 - [ ] Start reconfiguring database for sale items E1 P2 T0 - Gabe
-- [ ] Configure database for customer points/rewards E3 P2 T0 - Gabe
+- [x] Configure database for customer points/rewards E3 P2 T4 - Gabe
 - [x] Clean up the UI for ordering  - Adam
   - [x] Add tabs to customer and employee ordering E3 P2 T2 - Adam
   - [x] Make menu board on theme E1 P2 T2 - Adam
