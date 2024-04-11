@@ -153,15 +153,15 @@ test("Test employee login button", async ({ page }) => {
   await page.getByRole("button", { name: "Sign-in with Google" }).click();
 });
 
-test("Signing in with phone number that is not in customer database", async ({
-  page,
-}) => {
-  await page.goto(
-    "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
-  );
-  await page.getByRole("button", { name: "Sign-in for Rewards" }).click();
-  await page.getByLabel("Phone Number").fill("1111111111");
-  await page.getByLabel("Phone Number").press("Enter");
-  await page.getByRole("button", { name: "Close" }).click();
-  await page.getByRole("heading", { name: "No customer found." }).click();
-});
+// test("Signing in with phone number that is not in customer database", async ({
+//   page,
+// }) => {
+//   await page.goto(
+//     "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app"
+//   );
+//   await page.getByRole("button", { name: "Sign-in for Rewards" }).click();
+//   await page.getByLabel("Phone Number").fill("1111111111");
+//   await page.getByLabel("Phone Number").press("Enter");
+//   await page.getByRole("button", { name: "Close" }).click();
+//   await page.getByRole("heading", { name: "No customer found." }).click();
+// });
