@@ -1,19 +1,19 @@
-import ViewEmployees from "@/components/manager/view-employees";
-import UserManagement from "@/components/manager/user-management";
 import useAuth from "@/hooks/useAuth";
-import { Employee, AuthHookType, SalesReportItem, ProductUsageItem } from "@/lib/types";
-import { getEmployeeFromDatabase, executeStatement, rowToSalesReportItem, rowToProductUsageItem } from "@/lib/utils";
+import { Employee, AuthHookType, SalesReportItem, ProductUsageItem, MostProductiveEmployeeItem } from "@/lib/types";
+import { getEmployeeFromDatabase, executeStatement, rowToSalesReportItem, rowToProductUsageItem, rowToMostProductiveEmployeeItem } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import SalesReport from "@/components/manager/sales-report";
+import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
+import Management from "@/components/manager/management/management";
 import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
-import ProductUsage from "@/components/manager/product-usage";
+import Trends from "@/components/manager/trends/trends";
 
 
 
 export interface ManagerProps {
   salesReportData: SalesReportItem[];
   productUsageData: ProductUsageItem[];
+  mostProductiveEmployeesData: MostProductiveEmployeeItem[];
 }
 
 /**
@@ -22,7 +22,7 @@ export interface ManagerProps {
  * @component
  * @returns {JSX.Element} The manager view page.
  */
-const Manager = ({ salesReportData, productUsageData }: ManagerProps) => {
+const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesData }: ManagerProps) => {
   const { account } = useAuth() as AuthHookType;
 
   const [employee, setEmployee] = useState<Employee>();
@@ -39,18 +39,23 @@ const Manager = ({ salesReportData, productUsageData }: ManagerProps) => {
   }, [account]);
 
   return (
-    <main className="flex w-full h-full items-start justify-start p-4">
+    <main className="flex flex-col w-full h-full max-h-full items-start justify-start p-4 gap-4 overflow-hidden">
       {employee?.isManager ? (
-        <section className="flex w-full gap-8">
-          {employee?.isAdmin && (
-            <>
-              <UserManagement />
-              {/* <SalesReport data={salesReportData} /> */}
-              {/* <ProductUsage data={productUsageData} /> */}
-            </>
-          )}
-          <ViewEmployees />
-        </section>
+        <>
+          <h1 className="text-3xl font-bold">Manager Dashboard</h1>
+          <Tabs defaultValue="overview" className="w-full h-full">
+            <TabsList className="grid grid-cols-2 w-full h-fit">
+              <TabsTrigger value="management" className="py-2">Management</TabsTrigger>
+              <TabsTrigger value="trends" className="py-2">Trends</TabsTrigger>
+            </TabsList>
+            <TabsContent value="management" className="h-full">
+              <Management />
+            </TabsContent>
+            <TabsContent value="trends" className="h-full">
+              <Trends salesReportData={salesReportData} productUsageData={productUsageData} mostProductiveEmployeesData={mostProductiveEmployeesData} />
+            </TabsContent>
+          </Tabs>
+        </>
       ) : (loading ? (
         <h1 className="text-xl">Loading...</h1>
       ) : (
@@ -66,8 +71,9 @@ const Manager = ({ salesReportData, productUsageData }: ManagerProps) => {
 export const getServerSideProps = async () => {
   const salesReportData = await getSalesReportData('2023-01-03', '2023-03-03');
   const productUsageData = await getProductUsageData('2023-01-03', '2023-03-03');
+  const mostProductiveEmployeesData = await getMostProductiveEmployees();
   return {
-    props: { salesReportData, productUsageData }
+    props: { salesReportData, productUsageData, mostProductiveEmployeesData },
   };
 }
 
@@ -103,6 +109,19 @@ const getProductUsageData = async (begin: string, end: string) => {
 
   return rows.map(row => rowToProductUsageItem(row));
 
+}
+
+const getMostProductiveEmployees = async () => {
+  const rows = await executeStatement(
+    db,
+    `SELECT emp_id, emp_name, total_orders
+    FROM Employees WHERE total_orders > 0 
+    ORDER BY total_orders DESC;`,
+    [],
+    []
+  ).then(data => data.rows!);
+
+  return rows.map(row => rowToMostProductiveEmployeeItem(row));
 }
 
 export default Manager;

@@ -71,6 +71,15 @@ await selectStatement.close();
     params: parametersArray,
   });
 
+  // update employee's total orders
+  const updateEmployeeStatement = await db.prepare(
+    "UPDATE employees SET total_orders = total_orders + 1 WHERE emp_id = $1"
+  );
+
+  await updateEmployeeStatement.execute({
+    params: [empIdInt],
+  });
+
   await updateStatement.close();
     res.status(200).json({ message: 'Order submitted successfully' });
   } catch (error) {
