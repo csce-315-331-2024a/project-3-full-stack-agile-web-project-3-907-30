@@ -143,9 +143,7 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
                     Earn rewards with a new account!
                   </DialogHeader>
                   <div className="flex pt-4">
-                    <Form>
-                      
-                    </Form>
+                   {/*not done */}
                   </div>
                 </DialogContent>
                 <Button type="submit">Sign-in</Button>
