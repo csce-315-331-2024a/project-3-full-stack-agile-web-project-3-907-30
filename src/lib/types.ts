@@ -91,3 +91,11 @@ export interface ProductUsageItem {
     name: string;
     amount: number
 }
+
+export interface RevenueReportItem {
+  id: number;
+  name: string;
+  price: number;
+  revenue: number;
+  percentage: number;
+}
