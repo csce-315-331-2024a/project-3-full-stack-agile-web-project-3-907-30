@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card";
 import { getAllEmployeesFromDatabase, getRole } from "@/lib/utils";
 import { Employee } from "@/lib/types";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { useToast } from "../ui/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
+import { useToast } from "../../ui/use-toast";
 
 /**
  * An user management component that allows admins to manage their employees and managers. 
@@ -75,7 +75,7 @@ const UserManagement = () => {
   };
 
   return (
-    <Card>
+    <Card className="w-1/2">
       <CardHeader>
         <CardTitle>Manage Users</CardTitle>
         <CardDescription>Manage your users at a glance.</CardDescription>
