@@ -4,10 +4,10 @@ import { getEmployeeFromDatabase, executeStatement, rowToSalesReportItem, rowToP
 import { useEffect, useState } from "react";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import Management from "@/components/manager/management/management";
-import SalesReport from "@/components/manager/sales-report";
+import SalesReport from "@/components/manager/trends/sales-report";
 import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
-import ProductUsage from "@/components/manager/product-usage";
+import ProductUsage from "@/components/manager/trends/product-usage";
 
 
 
