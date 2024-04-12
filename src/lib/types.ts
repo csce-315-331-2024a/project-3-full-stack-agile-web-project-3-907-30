@@ -122,3 +122,10 @@ export interface MostProductiveEmployeeItem {
   name: string;
   total_orders: number;
 }
+
+export interface ExcessReportItem {
+  id: number;
+  name: string;
+  initial_amount: number;
+  percent_used: number;
+}

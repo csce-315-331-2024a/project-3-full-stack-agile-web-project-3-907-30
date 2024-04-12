@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Allergens, Customer, Employee, MostProductiveEmployeeItem, PairsAndAppearance, PopularMenuItem, ProductUsageItem, SalesForADay, SalesReportItem, RevenueReportItem } from "./types";
+import { Allergens, Customer, Employee, MostProductiveEmployeeItem, PairsAndAppearance, PopularMenuItem, ProductUsageItem, SalesForADay, SalesReportItem, RevenueReportItem, ExcessReportItem } from "./types";
 import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
 import db from "./db";
@@ -446,6 +446,23 @@ export async function getLeastContributing() {
   //console.log(data);
   return data;
 }
+
+/**
+ * Gets the excess report
+ *
+ * @returns {Promise<ExcessReportItem[]>} Gets the excess report.
+ */
+export async function getExcessReport() {
+  const res = await fetch("/api/manager/get-excess-report");
+
+  if (res.status === 404) {
+    return [];
+  }
+  const data: ExcessReportItem[] = await res.json();
+  //console.log(data);
+  return data;
+}
+
 export const rowToMostProductiveEmployeeItem = (array: any[]) => {
     return {
         id: array[0],
