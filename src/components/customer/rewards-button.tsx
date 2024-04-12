@@ -78,6 +78,10 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
     }
   }
 
+  async function newCustomer() {
+    
+  }
+
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
@@ -131,6 +135,17 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
                 )}
               />
               <DialogFooter>
+                <DialogTrigger asChild>
+                  <Button variant="outline">No account? Sign-up Here</Button>
+                </DialogTrigger>
+                <DialogContent className="min-w-fit">
+                  <DialogHeader>
+                    Earn rewards with a new account!
+                  </DialogHeader>
+                  <div className="flex pt-4">
+                   {/*not done */}
+                  </div>
+                </DialogContent>
                 <Button type="submit">Sign-in</Button>
               </DialogFooter>
             </form>
