@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Allergens, Customer, Employee, ProductUsageItem, SalesReportItem } from "./types";
+import { Allergens, Customer, Employee, ProductUsageItem, RevenueReportItem, SalesReportItem } from "./types";
 import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
 import db from "./db";
@@ -352,6 +352,22 @@ export async function getLeastSelling() {
     return [];
   }
   const data: MenuItem[] = await res.json();
-  console.log(data);
+  //console.log(data);
+  return data;
+}
+
+/**
+ * Gets the 5 items which make the smallest contribution to the revenue
+ *
+ * @returns {Promise<RevenueReportItem[]>} Get the 5 items which make the smallest contribution to the revenue from the database.
+ */
+export async function getLeastContributing() {
+  const res = await fetch("/api/manager/get-least-contributing");
+
+  if (res.status === 404) {
+    return [];
+  }
+  const data: RevenueReportItem[] = await res.json();
+  //console.log(data);
   return data;
 }

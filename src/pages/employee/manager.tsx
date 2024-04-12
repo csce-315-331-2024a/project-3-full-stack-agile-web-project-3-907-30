@@ -9,6 +9,7 @@ import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 import ProductUsage from "@/components/manager/product-usage";
 import LeastSellingView from "@/components/manager/least-selling-view";
+import LeastContributingView from "@/components/manager/least-contributing-view";
 
 
 
@@ -47,6 +48,7 @@ const Manager = ({ salesReportData, productUsageData }: ManagerProps) => {
             <>
               <UserManagement />
               <LeastSellingView />
+              <LeastContributingView />
               {/* <SalesReport data={salesReportData} /> */}
               {/* <ProductUsage data={productUsageData} /> */}
             </>
