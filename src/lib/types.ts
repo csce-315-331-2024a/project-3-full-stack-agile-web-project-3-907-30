@@ -129,3 +129,10 @@ export interface ExcessReportItem {
   initial_amount: number;
   percent_used: number;
 }
+
+export interface RestockReportItem {
+  id: number;
+  name: string;
+  current_level: number;
+  fill_level: number;
+}
