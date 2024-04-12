@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Allergens, Customer, Employee, MostProductiveEmployeeItem, PairsAndAppearance, PopularMenuItem, ProductUsageItem, SalesForADay, SalesReportItem, RevenueReportItem, ExcessReportItem } from "./types";
+import { Allergens, Customer, Employee, MostProductiveEmployeeItem, PairsAndAppearance, PopularMenuItem, ProductUsageItem, SalesForADay, SalesReportItem, RevenueReportItem, ExcessReportItem, RestockReportItem } from "./types";
 import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
 import db from "./db";
@@ -459,6 +459,22 @@ export async function getExcessReport() {
     return [];
   }
   const data: ExcessReportItem[] = await res.json();
+  //console.log(data);
+  return data;
+}
+
+/**
+ * Gets the restock report
+ *
+ * @returns {Promise<RestockReportItem[]>} Gets the excess report.
+ */
+export async function getRestockReport() {
+  const res = await fetch("/api/manager/get-restock-report");
+
+  if (res.status === 404) {
+    return [];
+  }
+  const data: RestockReportItem[] = await res.json();
   //console.log(data);
   return data;
 }
