@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import CustomerWeather from './customer-weather';
 import { Weather } from '@/pages/api/customer/weather';
+import TranslateButton from './customer-translate';
+
+
+
+
 
 // Make function that periodically checks if localStorage has changed, and re-renders component if it has
 const useLocalStorageChangeListener = () => {
@@ -49,10 +54,22 @@ const useLocalStorageChangeListener = () => {
     return localStorageChange;
 }
 
-const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' } as Weather }) => {
+interface customerInfoProps {
+    weather: Weather;
+    children?: React.ReactNode;
+}
+
+
+const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' } as Weather, children }) => {
     const localStorageChange = useLocalStorageChangeListener();
     let customerName: string | null;
     let customerPoints: string | null;
+    // State to hold the translated text
+    const [translatedText, setTranslatedText] = useState({
+        welcome: 'Welcome! Sign-in to view your points.',
+        noCustomer: 'No customer found.',
+        greeting: 'Hey {customerName}! You have {customerPoints} points!',
+    });
 
     // This fixes 'hydration' issue, where the client side has not loaded the component, but on the server side
     // the logic is already working; causing the renders to not match
@@ -82,13 +99,16 @@ const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' 
             <CustomerWeather data={weather}></CustomerWeather>
             <div className="flex flex-row justify-between items-center">
                 {customerName === null && (
-                    <h1>Welcome! Sign-in to view your points.</h1>
+                    // <h1>Welcome! Sign-in to view your points.</h1>
+                    <h1>{translatedText.welcome}</h1>
                 )}
                 {customerName === 'no customer' && (
-                    <h1>No customer found.</h1>
+                    // <h1>No customer found.</h1>
+                    <h1>{translatedText.noCustomer}</h1>
                 )}
                 {customerName !== null && customerName !== 'no customer' && (
-                    <h1>Hey {customerName}! You have {customerPoints} points!</h1>
+                    // <h1>Hey {customerName}! You have {customerPoints} points!</h1>
+                    <h1>{translatedText.greeting}</h1>
                 )}
             </div>
             <div>
@@ -108,6 +128,7 @@ const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' 
                     </div>
                 )}
             </div>
+            {children}
         </>
     );
 }

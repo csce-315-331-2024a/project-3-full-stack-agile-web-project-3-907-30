@@ -14,8 +14,17 @@ import Image from 'next/image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Card } from '../ui/card';
 import { categories, itemBelongsToCategory } from '@/lib/utils';
-import { set } from 'react-hook-form';
-import ComboboxForm from './customer-translate';
+import TranslateButton from './customer-translate';
+import { set } from 'zod';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SelectGroup,
+} from "@/components/ui/select"
+
 export interface OrderItem {
   name: string;
   price: number;
@@ -28,27 +37,7 @@ const CustomerView = () => {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [hoveredTab, setHoveredTab] = useState<number | null>(null);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
-
-  const translations: {
-    [key: string]: { [lang: string]: string }} = {
-    'Burgers & Wraps': {
-      en: 'Burgers & Wraps',
-      fr: 'Burgers et Wraps',
-      de: 'Burger und Wraps',
-      es: 'Hamburguesas y Envolturas',
-      pt: 'Hamburgueres e Wraps',
-      ru: 'Бургеры и обертывания',
-      ja: 'バーガー＆ラップ',
-      ko: '버거 & 랩',
-      zh: '汉堡包和包装',
-    },
-    };
-
-    const translateText = (text: string) => {
-      return translations[text]?.[selectedLanguage] || text;
-    }
-
+  const [originalMenuItems, setOriginalMenuItems] = useState<any[]>([]);
 
   const itemClicked = (item: any) => {
     setSelectedItem(item);
@@ -62,38 +51,62 @@ const CustomerView = () => {
     return ingredientNames;
   };
 
+  const translateName = async (name: string) => {
+    const translatedName = await fetch('/api/customer/translate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: name, from: 'en', to: 'es' }),
+    }).then((res) => res.json());
+    return translatedName.translation;
+  };
+
+
   useEffect(() => {
     fetch('/api/menu/menu_items/get-all-items-and-price')
       .then((res) => res.json())
-      .then((data) => {
+      .then(async (data) => {
         // Get the ingredients for each item
-        const ingredientPromises = data.map((item: any) =>
-          getIngredientsUsingItemID(item.id).then((ingredients) => ({
+        const ingredientPromises = data.map(async (item: any) => {
+          const ingredients = await getIngredientsUsingItemID(item.id);
+          
+          return {
+            originalName: item.name,
             name: item.name,
             price: item.price,
             ingredients: ingredients,
-          }))
-        );
-        // Wait for all the ingredients to be fetched
-        Promise.all(ingredientPromises).then((items) => {
-          setMenuItems(items);
+          };
         });
+        // Wait for all the ingredients and translations to be fetched
+        const items = await Promise.all(ingredientPromises);
+        const itemsWithID = items.map((item, index) => ({
+          ...item,
+          id: data[index].id,
+        }));
+        setMenuItems(itemsWithID);
+        setOriginalMenuItems(itemsWithID);
       });
-  }, [selectedLanguage]);
-
-  const handleLanguageChange = (language: string) => {
-    setSelectedLanguage(language);
-  }
+  }, []);
 
 
-  // Retrieve the image for the the menu Item
-  const getImageForMenuItem = (itemName: string) => {
-    return `/menu-item-pics/${itemName}.jpeg`;
+  // Retrieve the image for menu item using the item ID
+  const getImageForMenuItem = (itemID: number) => {
+    return `/menu-item-pics/${itemID}.jpeg`;
   };
+
+  const [translatedCategories, setTranslatedCategories] = useState<string[]>(categories);
+
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start p-4">
-      <ComboboxForm onLanguageChange={handleLanguageChange} />
+      <div className="flex items-center">
+      <TranslateButton categories={categories} setCategories={setTranslatedCategories}
+      menuItems={menuItems} setMenuItems={setMenuItems} originalMenuItems={originalMenuItems} originalCategories={categories} />
+      <span className="ml-2">🌐</span>
+      </div>
+      {/* <LanguageSelector categories={categories} setCategories={setTranslatedCategories}
+        menuItems={menuItems} setMenuItems={setMenuItems} originalMenuItems={originalMenuItems} /> */}
       <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-full">
         <TabsList className="grid grid-cols-1 w-1/5 mt-2 h-fit">
           {categories.map((category, index) => (
@@ -105,7 +118,7 @@ const CustomerView = () => {
               onMouseLeave={() => setHoveredTab(null)}
             >
               <h2 className="text-2xl">
-                {translateText(category)}
+                {translatedCategories[index]}
               </h2>
               {hoveredTab === index && (
                 <div className="absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500"></div>
@@ -118,8 +131,9 @@ const CustomerView = () => {
             <Card className="overflow-y-scroll h-full">
               <div className="grid grid-cols-5 gap-4 p-4 items-stretch">
                 {menuItems
-                  .filter((item) => itemBelongsToCategory(item.name, category))
+                  .filter((item) => itemBelongsToCategory(item.originalName, category))
                   .map((item: any) => {
+                    // console.log(item.id);
                     return (
                       <div key={item.name}
                         className={`flex flex-col items-center gap-4 h-full transition-all duration-300 ease-in-out ${hoveredItem === item.name ? 'transform scale-105 shadow-lg rounded-lg' : ''}`}
@@ -129,7 +143,7 @@ const CustomerView = () => {
                         <Dialog>
                           <DialogTrigger asChild>
                             <Card className="flex flex-col justify-between items-center h-full w-full p-4 gap-8 cursor-pointer" onClick={() => itemClicked(item)}>
-                              <Image src={getImageForMenuItem(item.name)} alt={item.name} className="rounded-md" width={200} height={200} />
+                              <Image src={getImageForMenuItem(item.id)} alt={item.name} className="rounded-md" width={200} height={200} />
                               <div className="flex flex-col gap-2 text-lg text-center">
                                 <p className="font-semibold">{item.name}</p>
                                 <p className="text-base">${item.price.toFixed(2)}</p>
@@ -141,7 +155,7 @@ const CustomerView = () => {
                             <div className="grid gap-4 py-4">
                               <div className="flex items-center justify-center gap-4">
                                 {selectedItem &&
-                                  <Image src={getImageForMenuItem(selectedItem.name)} alt={selectedItem.name} className="rounded-md" width={400} height={400} />
+                                  <Image src={getImageForMenuItem(selectedItem.id)} alt={selectedItem.name} className="rounded-md" width={400} height={400} />
                                 }
                               </div>
                               <div className="grid grid-cols-4 items-center gap-4">
