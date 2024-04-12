@@ -19,8 +19,12 @@ import {
 import { Allergens } from "@/lib/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { categories, itemBelongsToCategory } from '@/lib/utils';
+import TranslateButton from '../customer/customer-translate';
+import EmployeeTranslateButton from './employee-translate';
 
 export interface OrderItem extends MenuItem {
+    name: string;
+    price: number;
     quantity: number;
 }
 
@@ -37,6 +41,17 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     const [currentAllergens, setAllergens] = useState<Allergens>();
     const [open, setOpen] = useState<{[key: string]: boolean}>({});
     const [hoveredTab, setHoveredTab] = useState<number | null>(null);
+    // TRANSLATION // 
+    
+    const [ingredients, setIngredients] = useState<any[]>([]);
+    const [selectedItem, setSelectedItem] = useState<any>(null);
+    const [hoveredItem, setHoveredItem] = useState(null);
+    const [originalMenuItems, setOriginalMenuItems] = useState<any[]>([]);
+    const [translatedCategories, setTranslatedCategories] = useState<string[]>(categories);
+
+    const itemClicked = (item: any) => {
+        setSelectedItem(item);
+    }
 
     useEffect(() => {
         fetch('/api/menu/menu_items/get-all-items')
@@ -161,6 +176,12 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     }
 
     return (
+        <div className="w-full h-full flex flex-col justify-start items-start p-4">
+        <div className="glex items-center">
+        <EmployeeTranslateButton categories={categories} setCategories={setTranslatedCategories}
+        menuItems={menuItems} setMenuItems={setMenuItems} originalMenuItems={originalMenuItems} originalCategories={categories} />
+      <span className="ml-2">🌐</span>
+      </div>
         <Card className="flex flex-col h-full">
             <CardHeader>
                 <CardTitle>Menu</CardTitle>
@@ -266,6 +287,7 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                 )}
             </CardContent >
         </Card >
+        </div>
     );
 };
 
