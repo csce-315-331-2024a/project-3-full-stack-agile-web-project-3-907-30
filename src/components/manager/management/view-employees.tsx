@@ -18,11 +18,7 @@ import { Skeleton } from "../../ui/skeleton";
  */
 const ViewEmployees = () => {
 
-<<<<<<< HEAD:src/components/manager/view-employees.tsx
-  const numAccounts = 3;
-=======
   const skeletonCount = 3;
->>>>>>> ba4116966c749bc32159ea8a7cf2b1ea0e18a7cd:src/components/manager/management/view-employees.tsx
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,14 +37,8 @@ const ViewEmployees = () => {
         <CardDescription>The following employees have logged into the system.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
-<<<<<<< HEAD:src/components/manager/view-employees.tsx
-        {
-        loading ? (
-          Array.from({ length: numAccounts }).map((_, index) => (
-=======
         {loading ? (
           Array.from({ length: skeletonCount }).map((_, index) => (
->>>>>>> ba4116966c749bc32159ea8a7cf2b1ea0e18a7cd:src/components/manager/management/view-employees.tsx
             <div className="flex items-center space-x-4" key={index}>
               <Skeleton className="h-12 w-12 rounded-full" />
               <div className="space-y-2">
