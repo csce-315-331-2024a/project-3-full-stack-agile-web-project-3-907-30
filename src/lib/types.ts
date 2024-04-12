@@ -8,6 +8,7 @@ export interface Employee {
   isManager: boolean;
   isAdmin: boolean;
   isVerified: boolean;
+  totalOrders: number;
 }
 
 export interface GoogleAccount {
@@ -65,20 +66,36 @@ export interface Allergens {
 }
 
 export interface MenuItem {
-    id: number,
-    name: string,
-    price: number,
-    times_ordered: number
-};
+  id: number;
+  name: string;
+  price: number;
+  times_ordered: number;
+}
 
 export interface Order {
-    id: number,
-    date: Date,
-    time: Date,
-    total: number,
-    cust_id: number,
-    emp_id: number
-};
+  id: number;
+  date: Date;
+  time: Date;
+  total: number;
+  cust_id: number;
+  emp_id: number;
+}
+
+export interface PairsAndAppearance {
+  item1: string;
+  item2: string;
+  appearances: number;
+}
+
+export interface PopularMenuItem {
+  item: string;
+  num_sales: number;
+}
+
+export interface SalesForADay {
+  day: Date;
+  sales: number;
+}
 
 export interface SalesReportItem {
   id: number;
@@ -98,4 +115,10 @@ export interface RevenueReportItem {
   price: number;
   revenue: number;
   percentage: number;
+}
+
+export interface MostProductiveEmployeeItem {
+  id: number;
+  name: string;
+  total_orders: number;
 }

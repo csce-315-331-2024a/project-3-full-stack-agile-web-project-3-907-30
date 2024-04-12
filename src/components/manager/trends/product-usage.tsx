@@ -12,7 +12,7 @@ import { ProductUsageItem } from "@/lib/types";
 
 const ProductUsage = ({ data }: { data: ProductUsageItem[] }) => {
     return (<>
-        <Table>
+        <Table className="overflow-hidden">
             <TableHeader>
                 <TableRow>
                     <TableHead>Item Name</TableHead>

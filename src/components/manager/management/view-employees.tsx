@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { getAllEmployeesFromDatabase, getVerifiedEmployeesFromDatabase } from "@/lib/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card";
+import { getVerifiedEmployeesFromDatabase } from "@/lib/utils";
 import { Employee } from "@/lib/types";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Skeleton } from "../ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
+import { Skeleton } from "../../ui/skeleton";
 
 
 /**
@@ -19,7 +18,11 @@ import { Skeleton } from "../ui/skeleton";
  */
 const ViewEmployees = () => {
 
+<<<<<<< HEAD:src/components/manager/view-employees.tsx
   const numAccounts = 3;
+=======
+  const skeletonCount = 3;
+>>>>>>> ba4116966c749bc32159ea8a7cf2b1ea0e18a7cd:src/components/manager/management/view-employees.tsx
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -32,15 +35,20 @@ const ViewEmployees = () => {
 
 
   return (
-    <Card>
+    <Card className="w-1/2 overflow-y-scroll">
       <CardHeader>
         <CardTitle>Current Employees</CardTitle>
         <CardDescription>The following employees have logged into the system.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
+<<<<<<< HEAD:src/components/manager/view-employees.tsx
         {
         loading ? (
           Array.from({ length: numAccounts }).map((_, index) => (
+=======
+        {loading ? (
+          Array.from({ length: skeletonCount }).map((_, index) => (
+>>>>>>> ba4116966c749bc32159ea8a7cf2b1ea0e18a7cd:src/components/manager/management/view-employees.tsx
             <div className="flex items-center space-x-4" key={index}>
               <Skeleton className="h-12 w-12 rounded-full" />
               <div className="space-y-2">
