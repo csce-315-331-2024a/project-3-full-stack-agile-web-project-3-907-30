@@ -80,7 +80,7 @@ async function addNewEmployee(data: GoogleAccount) {
   const nextId = await getNextId();
 
   const insertStatement = await db.prepare(
-    "INSERT INTO employees(emp_id, emp_name, emp_email, emp_picture, is_manager, is_admin) VALUES($1, $2, $3, $4, $5, $6)",
+    "INSERT INTO employees(emp_id, emp_name, emp_email, emp_picture, is_manager, is_admin, is_verified, total_orders) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
     {
       paramTypes: [
         DataTypeOIDs.int4,
@@ -89,12 +89,14 @@ async function addNewEmployee(data: GoogleAccount) {
         DataTypeOIDs.varchar,
         DataTypeOIDs.bool,
         DataTypeOIDs.bool,
+        DataTypeOIDs.bool,
+        DataTypeOIDs.int4,
       ],
     }
   );
 
   await insertStatement.execute({
-    params: [nextId, data.name, data.email, data.picture, false, false],
+    params: [nextId, data.name, data.email, data.picture, false, false, false, 0],
   });
 
   await insertStatement.close();

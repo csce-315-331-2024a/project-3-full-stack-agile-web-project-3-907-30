@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Allergens, Customer, Employee, PairsAndAppearance, PopularMenuItem, ProductUsageItem, SalesForADay, SalesReportItem } from "./types";
+import { Allergens, Customer, Employee, MostProductiveEmployeeItem, PairsAndAppearance, PopularMenuItem, ProductUsageItem, SalesForADay, SalesReportItem } from "./types";
 import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
 import db from "./db";
@@ -232,7 +232,7 @@ export async function submitOrder(
   chosenItems: any,
   quantities: any
 ) {
-  if (orderTotal <= 0) {
+  if (orderTotal < 0) {
     toast({
       variant: "destructive",
       title: "Cart is empty",
@@ -414,3 +414,11 @@ export const rowToProductUsageItem = (array: any[]) => {
         amount: array[2]
     } as ProductUsageItem;
 }
+
+export const rowToMostProductiveEmployeeItem = (array: any[]) => {
+    return {
+        id: array[0],
+        name: array[1],
+        total_orders: array[2]
+    } as MostProductiveEmployeeItem;
+};
