@@ -52,7 +52,7 @@ const Layout = ({ children }: LayoutProps) => {
 
 
 
-  
+
 
   useEffect(() => {
     if (account) {
@@ -69,7 +69,7 @@ const Layout = ({ children }: LayoutProps) => {
     }
   }, [account, router.asPath]);
 
-  
+
 
   return (
     <>

@@ -60,7 +60,7 @@ interface customerInfoProps {
 }
 
 
-const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' } as Weather, children }) => {
+const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' } as Weather, children }: customerInfoProps) => {
     const localStorageChange = useLocalStorageChangeListener();
     let customerName: string | null;
     let customerPoints: string | null;

@@ -232,7 +232,7 @@ export async function submitOrder(
   chosenItems: any,
   quantities: any
 ) {
-  if (orderTotal <= 0) {
+  if (orderTotal < 0) {
     toast({
       variant: "destructive",
       title: "Cart is empty",
