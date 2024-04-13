@@ -35,6 +35,7 @@ interface MenuOrderProps {
   clearOrder: () => void;
 }
 
+
 const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);

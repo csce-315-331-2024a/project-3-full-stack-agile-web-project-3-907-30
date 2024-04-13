@@ -7,6 +7,7 @@ import Management from "@/components/manager/management/management";
 import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 import Trends from "@/components/manager/trends/trends";
+import { Button } from "@/components/ui/button";
 
 
 

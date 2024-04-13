@@ -20,6 +20,11 @@ import CustomerInfo from "@/components/customer/customer-info";
 import { Weather } from "./api/customer/weather";
 import { getCurrentWeather } from "@/components/customer/customer-weather";
 import Head from "next/head";
+import TranslateButton from "@/components/customer/customer-translate";
+
+
+import { categories, itemBelongsToCategory } from '@/lib/utils';
+import { translate } from "googleapis/build/src/apis/translate";
 
 interface LayoutProps {
   children: ReactNode;
@@ -40,6 +45,14 @@ const Layout = ({ children }: LayoutProps) => {
   const [loading, setLoading] = useState(false);
   const [customer, setCustomer] = useState<Customer>();
   const [weather, setWeather] = useState<Weather>({ value: 0, isDay: true, description: 'Clear' });
+  const [translatedCategories, setTranslatedCategories] = useState<string[]>([]);
+  const [menuItems, setMenuItems] = useState<any[]>([]);
+  const [originalMenuItems, setOriginalMenuItems] = useState<any[]>([]);
+
+
+
+
+
 
   useEffect(() => {
     if (account) {
@@ -56,6 +69,8 @@ const Layout = ({ children }: LayoutProps) => {
     }
   }, [account, router.asPath]);
 
+
+
   return (
     <>
       <Head>
@@ -66,7 +81,8 @@ const Layout = ({ children }: LayoutProps) => {
           <div className="border-b">
             <div className="flex h-16 items-center justify-between px-4">
               <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm" priority />
-              <CustomerInfo weather={weather} />
+              <CustomerInfo weather={weather}>
+              </CustomerInfo>
               <div className="flex gap-4">
                 <Button variant="outline" asChild>
                   <Link href="/employee/login">
