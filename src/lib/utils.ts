@@ -278,14 +278,14 @@ export async function getNextOrderId() {
  * @returns {PairsAndAppearance[]} List of pairs and how many times they sold 
  */
 export async function whatSellsTogether( startDate: string, endDate: string) {
-  const res = await fetch("/api/manager/what-sells-together?"+
-  "startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}",{
+  const res = await fetch(`/api/manager/what-sells-together?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,{
     method: "GET",
     headers: {
       "Content-Type": "application/json"
     }
   });
-  return res;
+  const data: PairsAndAppearance[] = await res.json();
+  return data;
 }
 
 /**
@@ -295,15 +295,15 @@ export async function whatSellsTogether( startDate: string, endDate: string) {
  * @param endDate 
  * @returns {PopularMenuItem[]} List of menu items and how many times they sold
  */
-export async function menuItemsPopularity( startdate: string, endDate: string) {
-  const res = await fetch("/api/manager/menu-items-popularity?"+
-  "startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}",{
+export async function menuItemsPopularity( startDate: string, endDate: string) {
+  const res = await fetch(`/api/manager/menu-items-popularity?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,{
     method: "GET",
     headers: {
       "Content-Type": "application/json"
     }
   });
-  return res;
+  const data: PopularMenuItem[] = await res.json();
+  return data;
 }
 
 /**
@@ -314,14 +314,14 @@ export async function menuItemsPopularity( startdate: string, endDate: string) {
  * @returns {SalesForADay[]} List of days and how many sales they had 
  */
 export async function daysWithMostSales( month: number, year: number ) {
-  const res = await fetch("/api/manager/days-with-most-sales?"+
-  "month=${encodeURIComponent(month)}&year=${encodeURIComponent(year)}",{
+  const res = await fetch(`/api/manager/days-with-most-sales?month=${encodeURIComponent(month)}&year=${encodeURIComponent(year)}`,{
     method: "GET",
     headers: {
       "Content-Type": "application/json"
     }
   });
-  return res;
+  const data: SalesForADay[] = await res.json();
+  return data;
 }
 
 /**

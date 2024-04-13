@@ -29,7 +29,8 @@ export default async function handler (
         WHERE orders.order_date BETWEEN $3 AND $4
         ) AS so2 ON so2.item_id = mp.item2_id AND so2.order_id = so1.order_id 
         GROUP BY mp.item1_id, mp.item2_id, mp.item1_name, mp.item2_name
-        ORDER BY pair_appearances DESC;`, {paramTypes: [DataTypeOIDs.date, DataTypeOIDs.date,
+        ORDER BY pair_appearances DESC
+        LIMIT 10;`, {paramTypes: [DataTypeOIDs.date, DataTypeOIDs.date,
         DataTypeOIDs.date, DataTypeOIDs.date]});
 
         const pairs = await getPairs.execute({params:[startDate, endDate, startDate, endDate]});

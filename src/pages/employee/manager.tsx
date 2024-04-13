@@ -1,19 +1,25 @@
 import ViewEmployees from "@/components/manager/view-employees";
 import UserManagement from "@/components/manager/user-management";
 import useAuth from "@/hooks/useAuth";
-import { Employee, AuthHookType, SalesReportItem, ProductUsageItem } from "@/lib/types";
-import { getEmployeeFromDatabase, executeStatement, rowToSalesReportItem, rowToProductUsageItem } from "@/lib/utils";
+import { Employee, AuthHookType, SalesReportItem, ProductUsageItem, PairsAndAppearance, PopularMenuItem, SalesForADay } from "@/lib/types";
+import { getEmployeeFromDatabase, executeStatement, rowToSalesReportItem, rowToProductUsageItem, whatSellsTogether, menuItemsPopularity, daysWithMostSales } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import SalesReport from "@/components/manager/sales-report";
 import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 import ProductUsage from "@/components/manager/product-usage";
+import WhatSellsTogether from "@/components/manager/what-sells-together";
+import DaysWithMostSales from "@/components/manager/days-with-most-sales";
+import MenuItemPopularity from "@/components/manager/menu-item-popularity";
 
 
 
 export interface ManagerProps {
   salesReportData: SalesReportItem[];
   productUsageData: ProductUsageItem[];
+  // whatSellsTogetherData: PairsAndAppearance[];
+  // popularMenuItemData: PopularMenuItem[];
+  // salesForADayData: SalesForADay[];
 }
 
 /**
@@ -22,11 +28,29 @@ export interface ManagerProps {
  * @component
  * @returns {JSX.Element} The manager view page.
  */
-const Manager = ({ salesReportData, productUsageData }: ManagerProps) => {
+const Manager = ({ salesReportData, productUsageData}: ManagerProps) => {
   const { account } = useAuth() as AuthHookType;
 
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
+  const [whatSellsTogetherData,setWhatSellsTogether] = useState<PairsAndAppearance[]>();
+  const [popularMenuItemData, setPopularMenuItem] = useState<PopularMenuItem[]>();
+  const [salesForADayData, setSalesForADay] = useState<SalesForADay[]>();
+
+  useEffect(() => {
+    const fetchTrendData = async () => {
+      const whatSellsData = await whatSellsTogether("2023-01-01","2023-05-05");
+      setWhatSellsTogether(whatSellsData!);
+
+      const popularMenuItemData = await menuItemsPopularity('2023-01-03', '2023-05-01');
+      setPopularMenuItem(popularMenuItemData!);
+
+      const salesDayData = await daysWithMostSales(4,2023);
+      setSalesForADay(salesDayData!);
+    }
+
+    fetchTrendData();
+  }, [])
 
   useEffect(() => {
     if (account) {
@@ -45,8 +69,11 @@ const Manager = ({ salesReportData, productUsageData }: ManagerProps) => {
           {employee?.isAdmin && (
             <>
               <UserManagement />
-              {/* <SalesReport data={salesReportData} /> */}
-              {/* <ProductUsage data={productUsageData} /> */}
+              {/* <SalesReport data={salesReportData} />
+              <ProductUsage data={productUsageData} /> */}
+              <WhatSellsTogether data={whatSellsTogetherData!} />
+              <MenuItemPopularity data={popularMenuItemData!} />
+              <DaysWithMostSales data={salesForADayData!} />
             </>
           )}
           <ViewEmployees />
@@ -66,8 +93,11 @@ const Manager = ({ salesReportData, productUsageData }: ManagerProps) => {
 export const getServerSideProps = async () => {
   const salesReportData = await getSalesReportData('2023-01-03', '2023-03-03');
   const productUsageData = await getProductUsageData('2023-01-03', '2023-03-03');
+  // const whatSellsTogetherData = await whatSellsTogether('2023-01-03', '2023-05-01');
+  // const popularMenuItemData = await menuItemsPopularity('2023-01-03', '2023-05-01');
+  // const salesForADayData = await daysWithMostSales(4,2023);
   return {
-    props: { salesReportData, productUsageData }
+    props: { salesReportData, productUsageData/* popularMenuItemData, salesForADayData*/}
   };
 }
 
