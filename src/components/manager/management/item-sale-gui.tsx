@@ -13,7 +13,7 @@ import { Dispatch, SetStateAction } from 'react';
   
   const FormSchema = z.object({
     item_name: z.string(),
-    item_price: z.number()
+    item_price: z.string()
   })
   
   const ItemSaleGUI = () => {
@@ -25,7 +25,8 @@ import { Dispatch, SetStateAction } from 'react';
     })
   
     async function onSubmit(data: z.infer<typeof FormSchema>) {
-
+        console.log("Hello World");
+        console.log( data.item_name );
     }
   
     return (
@@ -54,7 +55,7 @@ import { Dispatch, SetStateAction } from 'react';
                     <FormItem>
                         <FormLabel>Update Price</FormLabel>
                         <FormControl>
-                            <Input placeholder="Enter new price here" {...field} />
+                            <Input placeholder="Enter new price here broken" {...field} />
                         </FormControl>
                         <FormDescription>
                             Update the price of menu items here.
@@ -63,6 +64,7 @@ import { Dispatch, SetStateAction } from 'react';
                 )
                 }
             />
+        <Button type="submit">Submit</Button>
         </form>
       </Form>
     );
