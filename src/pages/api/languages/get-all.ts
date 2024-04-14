@@ -2,13 +2,13 @@ import { Translate } from "@google-cloud/translate/build/src/v2";
 import * as fs from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const keyFilename = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+const keyFilename = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS as string);
 
 if (!keyFilename) {
   throw new Error("GOOGLE_APPLICATION_CREDENTIALS not set in .env");
 }
 
-const keys = JSON.parse(fs.readFileSync(keyFilename, "utf8"));
+const keys = keyFilename;
 
 const translate = new Translate({
   credentials: keys,
