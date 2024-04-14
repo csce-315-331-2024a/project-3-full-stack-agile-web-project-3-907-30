@@ -44,7 +44,7 @@ const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesDat
       {employee?.isManager ? (
         <>
           <h1 className="text-3xl font-bold">Manager Dashboard</h1>
-          <Tabs defaultValue="overview" className="w-full h-full">
+          <Tabs defaultValue="management" className="w-full h-full">
             <TabsList className="grid grid-cols-2 w-full h-fit">
               <TabsTrigger value="management" className="py-2">Management</TabsTrigger>
               <TabsTrigger value="trends" className="py-2">Trends</TabsTrigger>

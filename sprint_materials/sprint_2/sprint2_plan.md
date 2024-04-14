@@ -55,8 +55,8 @@ Ex:
   - [ ] 19. Add screen reader functionality to all GUI items in sprint 2 E1 P1 T0 - Gabe
 - [ ] 20. As a user who has poor vision, I want to be able to see and use the website without any additional help, so I can order correctly.
   - [ ] 20. Make sure that all views have high color contrast and easily legible font in sprint 2 E1 P1 T0 - Gabe
-- [ ] 21. As a non-english speaking user, I want to be able to read the site in my native language so that I can order what I want without a substantial barrier. - Chris
-  - [ ] 21. Add google translate functionality to all GUI items in sprint 2 E2 P1 T0 - Chris
+- [x] 21. As a non-english speaking user, I want to be able to read the site in my native language so that I can order what I want without a substantial barrier. - Chris
+  - [x] 21. Add google translate functionality to all GUI items in sprint 2 E2 P1 T3 - Chris
 
 ### Chores (part of the backlog, but have no story points associated with them)
 - [X] As a customer, I’d like to be able to see the weather E4 P2 T2 - Margo
