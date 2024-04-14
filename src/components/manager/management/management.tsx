@@ -7,6 +7,7 @@ import UserManagement from "./user-management";
 import ViewEmployees from "./view-employees";
 import LeastSellingView from "./least-selling-view";
 import LeastContributingView from "./least-contributing-view";
+import ItemSaleGUI from "./item-sale-gui";
 import { Card } from "@/components/ui/card";
 
 /**
@@ -70,6 +71,7 @@ const Management = () => {
         <Card className="flex min-h-fit max-h-[85%] gap-8 p-4">
           <LeastSellingView />
           <LeastContributingView />
+          <ItemSaleGUI />
         </Card>
       </TabsContent>
     </Tabs>
