@@ -4,6 +4,7 @@ import { AuthProvider, getGoogleAccountFromSession } from "../context/authContex
 import Layout from "./layout";
 import { ElementType } from "react";
 import { GoogleAccount } from "@/lib/types";
+import 'rsuite/dist/rsuite-no-reset.min.css';
 
 interface MyAppProps {
   Component: ElementType;

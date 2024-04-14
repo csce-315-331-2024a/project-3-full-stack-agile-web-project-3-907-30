@@ -1,11 +1,6 @@
 import { useState, useEffect } from 'react';
 import CustomerWeather from './customer-weather';
 import { Weather } from '@/pages/api/customer/weather';
-import TranslateButton from './customer-translate';
-
-
-
-
 
 // Make function that periodically checks if localStorage has changed, and re-renders component if it has
 const useLocalStorageChangeListener = () => {
@@ -99,33 +94,16 @@ const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' 
             <CustomerWeather data={weather}></CustomerWeather>
             <div className="flex flex-row justify-between items-center">
                 {customerName === null && (
-                     <h1>Welcome! Sign-in to view your points.</h1>
+                    <h1>Welcome! Sign-in to view your points.</h1>
                     // <h1>{translatedText.welcome}</h1>
                 )}
                 {customerName === 'no customer' && (
-                     <h1>No customer found.</h1>
-                   // <h1>{translatedText.noCustomer}</h1>
+                    <h1>No customer found.</h1>
+                    // <h1>{translatedText.noCustomer}</h1>
                 )}
                 {customerName !== null && customerName !== 'no customer' && (
-                     <h1>Hey {customerName}! You have {customerPoints} points!</h1>
+                    <h1>Hey {customerName}! You have {customerPoints} points!</h1>
                     // <h1>{translatedText.greeting}</h1>
-                )}
-            </div>
-            <div>
-                {customerName === null && (
-                    <div className="flex flex-row justify-between items-center">
-                        <h1>Welcome! Sign-in to view your points.</h1>
-                    </div>
-                )}
-                {customerName === 'no customer' && (
-                    <div className="flex flex-row justify-between items-center">
-                        <h1>No customer found.</h1>
-                    </div>
-                )}
-                {customerName !== null && customerName !== 'no customer' && (
-                    <div className="flex flex-row justify-between items-center">
-                        <h1>Hey {customerName}! You have {customerPoints} points!</h1>
-                    </div>
                 )}
             </div>
             {children}
