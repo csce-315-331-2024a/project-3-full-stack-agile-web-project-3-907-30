@@ -82,17 +82,20 @@ export interface Order {
 }
 
 export interface PairsAndAppearance {
+  row_id: number,
   item1: string;
   item2: string;
   appearances: number;
 }
 
 export interface PopularMenuItem {
+  row_id: number,
   item: string;
   num_sales: number;
 }
 
 export interface SalesForADay {
+  row_id: number,
   day: Date;
   sales: number;
 }
@@ -113,4 +116,14 @@ export interface MostProductiveEmployeeItem {
   id: number;
   name: string;
   total_orders: number;
+}
+
+export interface CustomerOrder {
+  order_id: number,
+  order_date: Date,
+  order_time: TimeRanges,
+  order_total: number,
+  cust_id: number,
+  emp_id: number,
+  used_points: boolean
 }

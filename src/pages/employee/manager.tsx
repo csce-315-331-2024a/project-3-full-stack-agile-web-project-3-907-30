@@ -7,9 +7,9 @@ import Management from "@/components/manager/management/management";
 import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 import Trends from "@/components/manager/trends/trends";
-import WhatSellsTogether from "@/components/manager/what-sells-together";
-import DaysWithMostSales from "@/components/manager/days-with-most-sales";
-import MenuItemPopularity from "@/components/manager/menu-item-popularity";
+import WhatSellsTogether from "@/components/manager/trends/what-sells-together";
+import DaysWithMostSales from "@/components/manager/trends/days-with-most-sales";
+import MenuItemPopularity from "@/components/manager/trends/menu-item-popularity";
 
 
 
@@ -76,7 +76,8 @@ const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesDat
               <Management />
             </TabsContent>
             <TabsContent value="trends" className="h-full">
-              <Trends salesReportData={salesReportData} productUsageData={productUsageData} mostProductiveEmployeesData={mostProductiveEmployeesData} />
+              <Trends salesReportData={salesReportData} productUsageData={productUsageData} mostProductiveEmployeesData={mostProductiveEmployeesData} 
+              whatSellsTogetherData={whatSellsTogetherData!} popularMenuItemData={popularMenuItemData!} salesForADayData={salesForADayData!}/>
             </TabsContent>
           </Tabs>
         </>

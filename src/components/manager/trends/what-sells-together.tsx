@@ -8,16 +8,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { SalesForADay } from "@/lib/types";
+import { PairsAndAppearance } from "@/lib/types";
 
 /**
- * Shows the Menu Item Popularity trend in table format.
+ * Shows the What Sells Together trend in table format.
  * 
  * @component
- * @param {SalesForADay[]} data The input data holding the result of database call.
- * @returns {JSX.Element} The Menu Item Popularity table component.
+ * @param {PairsAndAppearance[]} data The input data holding the result of database call.
+ * @returns {JSX.Element} The What Sells Together table component.
  */
-const DaysWithMostSales = ({ data }: { data: SalesForADay[] }) => {
+const WhatSellsTogether = ({ data }: { data: PairsAndAppearance[] }) => {
     if(!data) {
         return null;
     }
@@ -27,19 +27,23 @@ const DaysWithMostSales = ({ data }: { data: SalesForADay[] }) => {
             <TableHeader>
                 <TableRow>
                     <TableHead>Sales</TableHead>
-                    <TableHead>Day</TableHead>
+                    <TableHead>Item 1</TableHead>
+                    <TableHead>Item 2</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {
-                    data.map((item: SalesForADay) => {
+                    data.map((item: PairsAndAppearance) => {
                         return (
-                            <TableRow key={item.sales}>
+                            <TableRow key={item.row_id}>
                                 <TableCell>
-                                    {item.sales}
+                                    {item.appearances}
                                 </TableCell>
                                 <TableCell>
-                                    {(item.day).toString().slice(0,10)}
+                                    {item.item1}   
+                                </TableCell>
+                                <TableCell>
+                                    {item.item2}
                                 </TableCell>
                             </TableRow>
                         );
@@ -54,4 +58,4 @@ const DaysWithMostSales = ({ data }: { data: SalesForADay[] }) => {
     </>);
 }
 
-export default DaysWithMostSales;
+export default WhatSellsTogether;

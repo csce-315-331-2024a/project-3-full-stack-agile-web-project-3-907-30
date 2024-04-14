@@ -16,16 +16,17 @@ export default async function handler (
     try{
 
         const getPopularItems = await db.prepare(
-            `SELECT mi.item_name, COUNT(ord.item_id) AS num_sales
+            `SELECT ROW_NUMBER() OVER () AS row, t.*
+            FROM (SELECT mi.item_name, COUNT(ord.item_id) AS num_sales
              FROM menu_items AS mi
              JOIN (
                 SELECT orders.order_id, item_id
                 FROM orders
                 JOIN orders_menu ON orders_menu.order_id = orders.order_id
-                WHERE orders.order_date BETWEEN $1 AND $2
+                WHERE orders.order_date BETWEEN '2023-01-01' AND '2023-05-01'
              ) AS ord ON mi.item_id = ord.item_id
              GROUP BY mi.item_id
-             ORDER BY num_sales DESC LIMIT 10;`,
+             ORDER BY num_sales DESC LIMIT 10) AS t;`,
              { paramTypes: [DataTypeOIDs.date, DataTypeOIDs.date] }
         );
 
@@ -39,8 +40,9 @@ export default async function handler (
         else {
             const popularItemsData: PopularMenuItem[] = popularItems.rows!.map( (row) =>
                 ({
-                    item: row[0],
-                    num_sales: row[1]
+                    row_id: row[0],
+                    item: row[1],
+                    num_sales: row[2]
                 })
             )
             res.status(200).json(popularItemsData);

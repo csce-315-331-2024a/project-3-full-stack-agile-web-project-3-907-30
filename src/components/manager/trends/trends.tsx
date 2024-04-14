@@ -1,14 +1,20 @@
-import { SalesReportItem, ProductUsageItem, MostProductiveEmployeeItem } from "@/lib/types";
+import { SalesReportItem, ProductUsageItem, MostProductiveEmployeeItem, PairsAndAppearance, PopularMenuItem, SalesForADay } from "@/lib/types";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import SalesReport from "./sales-report";
 import ProductUsage from "./product-usage";
 import { Card } from "@/components/ui/card";
 import MostProductiveEmployees from "./most-productive-employees";
+import WhatSellsTogether from "./what-sells-together";
+import MenuItemPopularity from "./menu-item-popularity";
+import DaysWithMostSales from "./days-with-most-sales";
 
 export interface TrendsProps {
   salesReportData: SalesReportItem[];
   productUsageData: ProductUsageItem[];
   mostProductiveEmployeesData: MostProductiveEmployeeItem[];
+  whatSellsTogetherData: PairsAndAppearance[];
+  popularMenuItemData: PopularMenuItem[];
+  salesForADayData: SalesForADay[];
 }
 
 /**
@@ -21,7 +27,9 @@ export interface TrendsProps {
  * // Render a trends component.
  * <Trends />
  */
-const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData }: TrendsProps) => {
+const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData, whatSellsTogetherData, popularMenuItemData,
+  salesForADayData
+ }: TrendsProps) => {
 
   const trendsTabs = [
     "Sales Report",
@@ -60,14 +68,20 @@ const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData
           <MostProductiveEmployees data={mostProductiveEmployeesData} />
         </Card>
       </TabsContent>
-      <TabsContent value="DayswithMostSales">
-        Days with Most Sales
+      <TabsContent value="WhatSellsTogether" className="w-4/5">
+        <Card className="flex min-h-fit max-h-[85%]">
+          <WhatSellsTogether data={whatSellsTogetherData} />
+        </Card>
       </TabsContent>
-      <TabsContent value="MostPopularItems">
-        Most Popular Items
+      <TabsContent value="MostPopularItems" className="w-4/5">
+        <Card className="flex min-h-fit max-h-[85%]">
+          <MenuItemPopularity data={popularMenuItemData} />
+        </Card>
       </TabsContent>
-      <TabsContent value="WhatSellsTogether">
-        What Sells Together
+      <TabsContent value="DayswithMostSales" className="w-4/5">
+        <Card className="flex min-h-fit max-h-[85%]">
+          <DaysWithMostSales data={salesForADayData} />
+        </Card>
       </TabsContent>
     </Tabs>
   );

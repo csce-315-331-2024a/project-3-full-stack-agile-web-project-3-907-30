@@ -8,42 +8,38 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { PairsAndAppearance } from "@/lib/types";
+import { SalesForADay } from "@/lib/types";
 
 /**
- * Shows the What Sells Together trend in table format.
+ * Shows the Menu Item Popularity trend in table format.
  * 
  * @component
- * @param {PairsAndAppearance[]} data The input data holding the result of database call.
- * @returns {JSX.Element} The What Sells Together table component.
+ * @param {SalesForADay[]} data The input data holding the result of database call.
+ * @returns {JSX.Element} The Menu Item Popularity table component.
  */
-const WhatSellsTogether = ({ data }: { data: PairsAndAppearance[] }) => {
+const DaysWithMostSales = ({ data }: { data: SalesForADay[] }) => {
     if(!data) {
         return null;
     }
 
     return (<>
-        <Table>
+        <Table className="overflow-hidden">
             <TableHeader>
                 <TableRow>
                     <TableHead>Sales</TableHead>
-                    <TableHead>Item 1</TableHead>
-                    <TableHead>Item 2</TableHead>
+                    <TableHead>Day</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
                 {
-                    data.map((item: PairsAndAppearance) => {
+                    data.map((item: SalesForADay) => {
                         return (
-                            <TableRow key={item.appearances}>
+                            <TableRow key={item.row_id}>
                                 <TableCell>
-                                    {item.appearances}
+                                    {item.sales}
                                 </TableCell>
                                 <TableCell>
-                                    {item.item1}   
-                                </TableCell>
-                                <TableCell>
-                                    {item.item2}
+                                    {(item.day).toString().slice(0,10)}
                                 </TableCell>
                             </TableRow>
                         );
@@ -58,4 +54,4 @@ const WhatSellsTogether = ({ data }: { data: PairsAndAppearance[] }) => {
     </>);
 }
 
-export default WhatSellsTogether;
+export default DaysWithMostSales;

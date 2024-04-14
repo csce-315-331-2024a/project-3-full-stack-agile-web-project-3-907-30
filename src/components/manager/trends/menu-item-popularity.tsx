@@ -23,7 +23,7 @@ const MenuItemPopularity = ({ data }: { data: PopularMenuItem[] }) => {
     }
 
     return (<>
-        <Table>
+        <Table className="overflow-hidden">
             <TableHeader>
                 <TableRow>
                     <TableHead>Sales</TableHead>
@@ -34,7 +34,7 @@ const MenuItemPopularity = ({ data }: { data: PopularMenuItem[] }) => {
                 {
                     data.map((item: PopularMenuItem) => {
                         return (
-                            <TableRow key={item.num_sales}>
+                            <TableRow key={item.row_id}>
                                 <TableCell>
                                     {item.num_sales}
                                 </TableCell>

@@ -42,15 +42,15 @@ Ex:
   - [x] 14. Make Customer GUI information view that shows all of the relevant information (general and rewards) on a customer’s account E2 P3 S1 - Gabe
   - [x] 14. Create new tables and/or columns in the database holding the extra rewards information E2 P3 T1 - Gabe
   - [ ] 14. Make function that queries a customer’s general information E1 P2 T0 - Gabe
-  - [ ] 14. Make function that queries a customer’s purchase history   E1 P2 T0 - Gabe
+  - [x] 14. Make function that queries a customer’s purchase history   E1 P2 T0 - Gabe
   - [ ] 14. Make a function that queries a customer’s rewards information  E1 P3 T1 - Gabe
 - [ ] 16. As a customer, I want to see allergy and dietary information so I can make an informed decision about what to eat. - Chris
   - [ ] 16. Have GUI show allergy alerts when the customer selects an item E2 P2 T0 - Chris
   - [ ] 16. Make function that retrieves the allergy information for a menu item E1 P2 T0 - Chris
 - [X] 17. As a customer, I want to gain points for previous transactions, so I can use that information to get discounted items. - Akshay
-  - [X] 17. Have GUI give feedback to logged-in customers showing how many points they have earned for an order E1 P3 T0 - Akshay
-  - [X] 17. Have Customer GUI view that shows the rewards they can get with their point balance E2 P3 T0 - Akshay
-  - [X] 17. Make function to query what rewards are available with the point total of the given customer E1 P3 T0 - Akshay
+  - [X] 17. Have GUI give feedback to logged-in customers showing how many points they have earned for an order E1 P3 T3 - Akshay
+  - [X] 17. Have Customer GUI view that shows the rewards they can get with their point balance E2 P3 T4 - Akshay
+  - [X] 17. Make function to query what rewards are available with the point total of the given customer E1 P3 T2 - Akshay
 - [ ] 19. As a user who is blind, I want to be able to use the website with the help of a screen reader, so that I know what is being displayed.
   - [ ] 19. Add screen reader functionality to all GUI items in sprint 2 E1 P1 T0 - Gabe
 - [ ] 20. As a user who has poor vision, I want to be able to see and use the website without any additional help, so I can order correctly.

@@ -14,7 +14,9 @@ export default async function handler (
     const { startDate, endDate } = req.query;
 
     try{
-        const getPairs = await db.prepare(`SELECT mp.item1_name, mp.item2_name, COUNT(DISTINCT so1.order_id) AS pair_appearances
+        const getPairs = await db.prepare(
+        `SELECT ROW_NUMBER() OVER () AS row, t.*
+        FROM (SELECT mp.item1_name, mp.item2_name, COUNT(DISTINCT so1.order_id) AS pair_appearances
         FROM menu_pairs AS mp 
         JOIN (
         SELECT orders.order_id, item_id
@@ -30,7 +32,7 @@ export default async function handler (
         ) AS so2 ON so2.item_id = mp.item2_id AND so2.order_id = so1.order_id 
         GROUP BY mp.item1_id, mp.item2_id, mp.item1_name, mp.item2_name
         ORDER BY pair_appearances DESC
-        LIMIT 10;`, {paramTypes: [DataTypeOIDs.date, DataTypeOIDs.date,
+        LIMIT 10) AS t;`, {paramTypes: [DataTypeOIDs.date, DataTypeOIDs.date,
         DataTypeOIDs.date, DataTypeOIDs.date]});
 
         const pairs = await getPairs.execute({params:[startDate, endDate, startDate, endDate]});
@@ -43,9 +45,10 @@ export default async function handler (
         else {
             const pairsData: PairsAndAppearance[] = pairs.rows!.map((row) => 
                 ({
-                    item1: row[0],
-                    item2: row[1],
-                    appearances: row[2]
+                    row_id: row[0],
+                    item1: row[1],
+                    item2: row[2],
+                    appearances: row[3]
                 })
             )
             res.status(200).json(pairsData);
