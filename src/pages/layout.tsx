@@ -20,11 +20,7 @@ import CustomerInfo from "@/components/customer/customer-info";
 import { Weather } from "./api/customer/weather";
 import { getCurrentWeather } from "@/components/customer/customer-weather";
 import Head from "next/head";
-import TranslateButton from "@/components/customer/customer-translate";
-
-
-import { categories, itemBelongsToCategory } from '@/lib/utils';
-import { translate } from "googleapis/build/src/apis/translate";
+import Translate from "@/components/common/translate";
 
 interface LayoutProps {
   children: ReactNode;
@@ -80,9 +76,11 @@ const Layout = ({ children }: LayoutProps) => {
         <main className="flex flex-col w-full h-dvh" >
           <div className="border-b">
             <div className="flex h-16 items-center justify-between px-4">
-              <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm" priority />
-              <CustomerInfo weather={weather}>
-              </CustomerInfo>
+              <div className="flex gap-4">
+                <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm mr-8" priority />
+                <Translate />
+                <CustomerInfo weather={weather} />
+              </div>
               <div className="flex gap-4">
                 <Button variant="outline" asChild>
                   <Link href="/employee/login">
@@ -106,7 +104,8 @@ const Layout = ({ children }: LayoutProps) => {
           <div className="border-b">
             <div className="flex h-16 items-center justify-between px-4">
               <div className="flex gap-4">
-                <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm" priority />
+                <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm mr-8" priority />
+                <Translate />
                 <NavigationMenu>
                   <NavigationMenuList>
                     <NavigationMenuItem>

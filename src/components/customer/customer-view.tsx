@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import {
@@ -14,16 +13,8 @@ import Image from 'next/image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Card } from '../ui/card';
 import { categories, itemBelongsToCategory } from '@/lib/utils';
-import TranslateButton from './customer-translate';
-import { set } from 'zod';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  SelectGroup,
-} from "@/components/ui/select"
+import { Allergens } from '@/lib/types';
+
 
 export interface OrderItem {
   name: string;
@@ -37,10 +28,12 @@ const CustomerView = () => {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [hoveredItem, setHoveredItem] = useState(null);
   const [hoveredTab, setHoveredTab] = useState<number | null>(null);
-  const [originalMenuItems, setOriginalMenuItems] = useState<any[]>([]);
+  const [currentAllergens, setAllergens] = useState<Allergens>();
+  const [open, setOpen] = useState<{ [key: string]: boolean }>({});
 
-  const itemClicked = (item: any) => {
+  const itemClicked = async (item: any) => {
     setSelectedItem(item);
+    await getAllergensForItem(item.name);
   };
 
   // Getting the Ingredient names using the ItemID
@@ -51,17 +44,6 @@ const CustomerView = () => {
     return ingredientNames;
   };
 
-  const translateName = async (name: string) => {
-    const translatedName = await fetch('/api/customer/translate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ text: name, from: 'en', to: 'es' }),
-    }).then((res) => res.json());
-    return translatedName.translation;
-  };
-
 
   useEffect(() => {
     fetch('/api/menu/menu_items/get-all-items-and-price')
@@ -70,7 +52,7 @@ const CustomerView = () => {
         // Get the ingredients for each item
         const ingredientPromises = data.map(async (item: any) => {
           const ingredients = await getIngredientsUsingItemID(item.id);
-          
+
           return {
             originalName: item.name,
             name: item.name,
@@ -85,7 +67,6 @@ const CustomerView = () => {
           id: data[index].id,
         }));
         setMenuItems(itemsWithID);
-        setOriginalMenuItems(itemsWithID);
       });
   }, []);
 
@@ -95,18 +76,26 @@ const CustomerView = () => {
     return `/menu-item-pics/${itemID}.jpeg`;
   };
 
-  const [translatedCategories, setTranslatedCategories] = useState<string[]>(categories);
+  const getAllergensForItem = async (name: string) => {
+    try {
+      const res = await fetch(`/api/menu/allergens/${name}`);
+
+      if (!res.ok) {
+        throw new Error("Item not found");
+      }
+
+      const data = (await res.json()) as Allergens;
+      setAllergens(data);
+    } catch (error) {
+      console.error("Error getting allergens", error);
+    }
+  };
+
+
 
 
   return (
     <div className="w-full h-full flex flex-col justify-start items-start p-4">
-      <div className="flex items-center">
-      <TranslateButton categories={categories} setCategories={setTranslatedCategories}
-      menuItems={menuItems} setMenuItems={setMenuItems} originalMenuItems={originalMenuItems} originalCategories={categories} />
-      <span className="ml-2">🌐</span>
-      </div>
-      {/* <LanguageSelector categories={categories} setCategories={setTranslatedCategories}
-        menuItems={menuItems} setMenuItems={setMenuItems} originalMenuItems={originalMenuItems} /> */}
       <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-full">
         <TabsList className="grid grid-cols-1 w-1/5 mt-2 h-fit">
           {categories.map((category, index) => (
@@ -118,7 +107,7 @@ const CustomerView = () => {
               onMouseLeave={() => setHoveredTab(null)}
             >
               <h2 className="text-2xl">
-                {translatedCategories[index]}
+                {category}
               </h2>
               {hoveredTab === index && (
                 <div className="absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500"></div>
@@ -128,18 +117,16 @@ const CustomerView = () => {
         </TabsList>
         {categories.map((category, index) => (
           <TabsContent key={index} value={category.replace(/\s/g, '')} className="w-4/5">
-            <Card className="overflow-y-scroll h-full">
+            <Card className="overflow-y-scroll h-[90%]">
               <div className="grid grid-cols-5 gap-4 p-4 items-stretch">
                 {menuItems
                   .filter((item) => itemBelongsToCategory(item.originalName, category))
                   .map((item: any) => {
-                    // console.log(item.id);
                     return (
                       <div key={item.name}
                         className={`flex flex-col items-center gap-4 h-full transition-all duration-300 ease-in-out ${hoveredItem === item.name ? 'transform scale-105 shadow-lg rounded-lg' : ''}`}
                         onMouseEnter={() => setHoveredItem(item.name)}
-                        onMouseLeave={() => setHoveredItem(null)}
-                      >
+                        onMouseLeave={() => setHoveredItem(null)}>
                         <Dialog>
                           <DialogTrigger asChild>
                             <Card className="flex flex-col justify-between items-center h-full w-full p-4 gap-8 cursor-pointer" onClick={() => itemClicked(item)}>
@@ -152,23 +139,35 @@ const CustomerView = () => {
                           </DialogTrigger>
                           <DialogContent className="w-[600px]">
                             <DialogHeader>{item.name}</DialogHeader>
-                            <div className="grid gap-4 py-4">
-                              <div className="flex items-center justify-center gap-4">
-                                {selectedItem &&
-                                  <Image src={getImageForMenuItem(selectedItem.id)} alt={selectedItem.name} className="rounded-md" width={400} height={400} />
-                                }
+                            <div className="grid gap-4 py-4"></div>
+                            <div className="flex items-center justify-center gap-4">
+                              {selectedItem &&
+                                <Image src={getImageForMenuItem(selectedItem.id)} alt={selectedItem.name} className="rounded-md" width={300} height={300} />
+                              }
+                            </div>
+                            <div className="flex items-center justify-start gap-4">
+                              <Label htmlFor="name" className="text-right mt-0.5">
+                                Ingredients:
+                              </Label>
+                              <div id="name" className="col-span-3">
+                                {/* <ul className="flex flex-row gap-1 mr-3"> */}
+                                <ul className="flex flex-row gap-1 mr-3 justify-center flex-wrap">
+                                  {item.ingredients.map((ingredient: string) => (
+                                    <li key={ingredient} className="text-sm">{ingredient}</li>
+                                  ))}
+                                </ul>
                               </div>
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="name" className="text-right mr-4">
-                                  Ingredients:
-                                </Label>
-                                <div id="name" className="col-span-3">
-                                  <ul className="flex flex-row gap-1 mr-3">
-                                    {item.ingredients.map((ingredient: string) => (
-                                      <li key={ingredient} className="text-sm">{ingredient}</li>
-                                    ))}
-                                  </ul>
-                                </div>
+                            </div>
+                            <div className="flex items-center justify-start gap-4">
+                              <Label htmlFor="allergens" className="text-right mt-0.5 text-red-500 font-bold ">
+                                CONTAINS
+                              </Label>
+                              <div id="allergens" className="flex flex-row gap-4 justify-center flex-wrap">
+                                {currentAllergens?.has_dairy && <p className="text-red-500">Dairy</p>}
+                                {currentAllergens?.has_nuts && <p className="text-red-500">Nuts</p>}
+                                {currentAllergens?.has_eggs && <p className="text-red-500">Eggs</p>}
+                                {currentAllergens?.is_vegan && <p className="text-red-500">Vegan</p>}
+                                {currentAllergens?.is_halal && <p className="text-red-500">Halal</p>}
                               </div>
                             </div>
                           </DialogContent>
