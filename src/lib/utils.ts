@@ -486,3 +486,26 @@ export const rowToMostProductiveEmployeeItem = (array: any[]) => {
         total_orders: array[2]
     } as MostProductiveEmployeeItem;
 };
+
+/**
+ * Update the price of a menu item.
+ *
+ * @param {itemName}  The name of the menu item
+ * @param {newPrice}  The new price of the menu item
+ */
+export async function updateMenuItemPrice(
+  itemName: string,
+  newPrice: number
+) {
+  const res = await fetch("/api/manager/update-menu-item-price", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      itemName,
+      newPrice
+    }),
+  });
+  return res;
+}

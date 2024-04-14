@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from '../../ui/use-toast';
 import { Input } from '../../ui/input'
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '../../ui/form';
-import { getCustomerFromDatabase } from '@/lib/utils';
+import { getCustomerFromDatabase, updateMenuItemPrice } from '@/lib/utils';
 import { useState } from 'react';
 import { Dispatch, SetStateAction } from 'react';
   
@@ -25,8 +25,9 @@ import { Dispatch, SetStateAction } from 'react';
     })
   
     async function onSubmit(data: z.infer<typeof FormSchema>) {
-        console.log("Hello World");
-        console.log( data.item_name );
+        // console.log("Hello World");
+        // console.log( data.item_name );
+        await updateMenuItemPrice(data.item_name, parseFloat(data.item_price));
     }
   
     return (
