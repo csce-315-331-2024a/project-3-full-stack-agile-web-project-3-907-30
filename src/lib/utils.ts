@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Allergens, Customer, Employee, MostProductiveEmployeeItem, PairsAndAppearance, PopularMenuItem, ProductUsageItem, SalesForADay, SalesReportItem } from "./types";
+import { Allergens, Customer, Employee, MostProductiveEmployeeItem, PairsAndAppearance, PopularMenuItem, ProductUsageItem, SalesForADay, SalesReportItem, RevenueReportItem, ExcessReportItem, RestockReportItem } from "./types";
 import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
 import db from "./db";
@@ -417,6 +417,79 @@ export const rowToProductUsageItem = (array: any[]) => {
     } as ProductUsageItem;
 }
 
+/**
+ * Gets the 10 least selling items from the database.
+ *
+ * @returns {Promise<MenuItem[]>} Get the 10 least selling menu items from the database.
+ */
+export async function getLeastSelling() {
+  const res = await fetch("/api/manager/get-least-selling");
+
+  if (res.status === 404) {
+    return [];
+  }
+  const data: MenuItem[] = await res.json();
+  //console.log(data);
+  return data;
+}
+
+/**
+ * Gets the 5 items which make the smallest contribution to the revenue
+ *
+ * @returns {Promise<RevenueReportItem[]>} Get the 5 items which make the smallest contribution to the revenue from the database.
+ */
+export async function getLeastContributing() {
+  const res = await fetch("/api/manager/get-least-contributing");
+
+  if (res.status === 404) {
+    return [];
+  }
+  const data: RevenueReportItem[] = await res.json();
+  //console.log(data);
+  return data;
+}
+
+/**
+ * Gets the excess report
+ *
+ * @returns {Promise<ExcessReportItem[]>} Gets the excess report.
+ */
+export async function getExcessReport(startDate: string) {
+
+  const res = await fetch("/api/manager/get-excess-report", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      startDate
+    }),
+  });
+
+  if (res.status === 404) {
+    return [];
+  }
+  const data: ExcessReportItem[] = await res.json();
+  //console.log(data);
+  return data;
+}
+
+/**
+ * Gets the restock report
+ *
+ * @returns {Promise<RestockReportItem[]>} Gets the excess report.
+ */
+export async function getRestockReport() {
+  const res = await fetch("/api/manager/get-restock-report");
+
+  if (res.status === 404) {
+    return [];
+  }
+  const data: RestockReportItem[] = await res.json();
+  //console.log(data);
+  return data;
+}
+
 export const rowToMostProductiveEmployeeItem = (array: any[]) => {
     return {
         id: array[0],
@@ -424,3 +497,26 @@ export const rowToMostProductiveEmployeeItem = (array: any[]) => {
         total_orders: array[2]
     } as MostProductiveEmployeeItem;
 };
+
+/**
+ * Update the price of a menu item.
+ *
+ * @param {itemName}  The name of the menu item
+ * @param {newPrice}  The new price of the menu item
+ */
+export async function updateMenuItemPrice(
+  itemName: string,
+  newPrice: number
+) {
+  const res = await fetch("/api/manager/update-menu-item-price", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      itemName,
+      newPrice
+    }),
+  });
+  return res;
+}

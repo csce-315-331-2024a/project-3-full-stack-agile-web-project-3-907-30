@@ -7,6 +7,7 @@ import Management from "@/components/manager/management/management";
 import db from "@/lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 import Trends from "@/components/manager/trends/trends";
+import { Button } from "@/components/ui/button";
 import WhatSellsTogether from "@/components/manager/trends/what-sells-together";
 import DaysWithMostSales from "@/components/manager/trends/days-with-most-sales";
 import MenuItemPopularity from "@/components/manager/trends/menu-item-popularity";
@@ -67,7 +68,7 @@ const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesDat
       {employee?.isManager ? (
         <>
           <h1 className="text-3xl font-bold">Manager Dashboard</h1>
-          <Tabs defaultValue="overview" className="w-full h-full">
+          <Tabs defaultValue="management" className="w-full h-full">
             <TabsList className="grid grid-cols-2 w-full h-fit">
               <TabsTrigger value="management" className="py-2">Management</TabsTrigger>
               <TabsTrigger value="trends" className="py-2">Trends</TabsTrigger>

@@ -35,6 +35,7 @@ interface MenuOrderProps {
   clearOrder: () => void;
 }
 
+
 /**
  * A menu component that allows users to select items and add them to an order.
  * @component
