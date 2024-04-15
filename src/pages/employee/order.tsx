@@ -8,6 +8,8 @@ import clearOrderAndSetOrderItems from '@/components/employee/order-menu';
 
 /**
  * Component for displaying a menu order and order receipt for an employee
+ * @component
+ * @prop {AuthHookType} account - The account object containing account information
  * @prop {Employee} employee - The employee object containing employee information
  * @prop {boolean} loading - A boolean indicating if the component is currently loading
  * @prop {OrderItem[]} orderItems - An array of order items for the current order

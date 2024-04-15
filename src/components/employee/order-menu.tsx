@@ -35,6 +35,33 @@ interface MenuOrderProps {
 }
 
 
+/**
+ * Component that displays a menu of items and allows users to add items to an order.
+ * @component
+ * @example
+ *   <Menu setOrderItems={setOrderItems} clearOrder={clearOrder} />
+ * @prop {function} setOrderItems - Function to set the order items state in the parent component.
+ * @prop {function} clearOrder - Function to clear the order state in the parent component.
+ * @description
+ *   - Uses an API call to fetch menu items and displays them in a grid.
+ *   - Allows users to add items to an order by selecting a quantity and clicking a button.
+ *   - Displays a notification if an item is low in stock.
+ *   - Allows users to view allergens information for each item.
+ *   - Uses state variables to manage the order, input values, allergens, and open/closed status of allergens modals.
+ *   - Uses useEffect to fetch menu items on component mount.
+ *   - Uses useState to set the menu items, loading status, order, input values, allergens, and open/closed status of allergens modals.
+ *   - Uses immutability to update the order state when adding or removing items.
+ *   - Uses a fetchPriceAndAddToOrder function to fetch item information and add it to the order.
+ *   - Uses a checkLowStock function to check for low stock and display a notification if necessary.
+ *   - Uses an addToOrder function to add an item to the order and update the order items list.
+ *   - Uses a removeItemFromOrder function to decrease the quantity of an item in the order or remove it if the quantity is 1.
+ *   - Uses a getAllergensForItem function to fetch allergens data for a specific menu item.
+ *   - Uses a fetchPriceAndAddToOrder function to fetch item information and add it to the order.
+ *   - Uses a checkLowStock function to check for low stock and display a notification if necessary.
+ *   - Uses an addToOrder function to add an item to the order and update the order items list.
+ *   - Uses a removeItemFromOrder function to decrease the quantity of an item in the order or remove it if the quantity is 1.
+ *   - Uses a getAllergensForItem function to fetch allergens data for a specific menu item.
+ */
 const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
