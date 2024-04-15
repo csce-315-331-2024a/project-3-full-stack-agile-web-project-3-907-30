@@ -65,20 +65,16 @@ const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData
         </Card>
         <DatePicker />
       </TabsContent>
-      <TabsContent value="ExcessReport">
-        <Card className="flex min-h-fit max-h-[85%]">
-          <ExcessReport />
-        </Card>
+      <TabsContent value="ExcessReport" className="w-4/5">
+        <ExcessReport />
       </TabsContent>
-      <TabsContent value="RestockReport">
+      <TabsContent value="RestockReport" className="w-4/5">
         <Card className="flex min-h-fit max-h-[85%]">
           <RestockReport />
         </Card>
       </TabsContent>
       <TabsContent value="MostProductiveEmployees" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%]">
-          <MostProductiveEmployees data={mostProductiveEmployeesData} />
-        </Card>
+        <MostProductiveEmployees data={mostProductiveEmployeesData} />
       </TabsContent>
       <TabsContent value="WhatSellsTogether" className="w-4/5">
         <Card className="flex min-h-fit max-h-[85%]">
