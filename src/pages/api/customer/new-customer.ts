@@ -29,7 +29,7 @@ export default async function handler (
     const {custName, phoneNumber} = req.body;
 
     try{
-        const nextIdQ = await db.prepare(`SELECT cust_id FROM customers ORDER BY cust_id DESC LIMIT 1`);
+        const nextIdQ = await db.prepare(`SELECT cust_id FROM customers ORDER BY cust_id DESC LIMIT 1;`);
         const nextIdRes = await nextIdQ.execute();
         await nextIdQ.close();
         let nextId: number = parseInt(nextIdRes.rows!.at(0));
@@ -43,7 +43,7 @@ export default async function handler (
 
         const getPairs = await db.prepare(
             `INSERT INTO customers
-             VALUES ($1, $2, $3, 0, 0, 0)`, {paramTypes: [DataTypeOIDs.numeric, DataTypeOIDs.text,
+             VALUES ($1, $2, $3, 0, 0, 0);`, {paramTypes: [DataTypeOIDs.numeric, DataTypeOIDs.text,
         DataTypeOIDs.text]});
 
         const status = await getPairs.execute({params:[nextId, custName, hashedPhone]});

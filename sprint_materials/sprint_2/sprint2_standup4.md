@@ -1,6 +1,6 @@
 ### Sprint 2 Stand-up 4 for CSCE 331 Project 3
 ### Prepared by: Gabriel Floreslovo
-### Meeting Date: 3/25/2024
+### Meeting Date: 4/11/2024
 
 ## Meeting Attendees
 - Adam Teo
@@ -11,9 +11,9 @@
 - Gabriel Floreslovo
 
 ## Agenda
-- [ ] What we have finished, what we have left, and how we will do it
-- [ ] Conduct "fist of five" vote on the confidence in acheiving the sprint goal
-- [ ] Share any roadblocks that are interrupting progress 
+- [x] What we have finished, what we have left, and how we will do it
+- [x] Conduct "fist of five" vote on the confidence in acheiving the sprint goal
+- [x] Share any roadblocks that are interrupting progress 
 
 ## What we have completed
 - Backend for smallest percentage of revenue - Aaron
