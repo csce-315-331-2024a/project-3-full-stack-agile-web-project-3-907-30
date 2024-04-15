@@ -2,7 +2,17 @@ import { useState, useEffect } from 'react';
 import CustomerWeather from './customer-weather';
 import { Weather } from '@/pages/api/customer/weather';
 
-// Make function that periodically checks if localStorage has changed, and re-renders component if it has
+/**
+ * Checks for changes in client-side storage and updates the state accordingly.
+ * @example
+ * checkForChange()
+ * @returns {boolean} Returns true if there is a change in client-side storage, false otherwise.
+ * @description
+ *   - Checks if client-side window is defined before interacting with storage.
+ *   - Defines variables for current and previous customer name and points.
+ *   - Compares current and previous values and updates state if there is a change.
+ *   - Runs every 0.1 seconds using an interval timer.
+ */
 const useLocalStorageChangeListener = () => {
     const [localStorageChange, updateLocalStorageChange] = useState(false);
 
