@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 const FormSchema = z.object({
     start_date: z.string()
-  })
+})
 
 const ExcessReport = () => {
 
@@ -29,14 +29,14 @@ const ExcessReport = () => {
         resolver: zodResolver(FormSchema),
         defaultValues: {
         },
-      })
-    
+    })
+
     var [data, setData] = useState<ExcessReportItem[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getExcessReport("2023-01-01").then((data) => {
-        setData(data);
+            setData(data);
         });
         setLoading(false);
     }, [loading]);
@@ -51,67 +51,66 @@ const ExcessReport = () => {
         const res = getExcessReport(formData.start_date);
         data = await res;
         setData(data);
-        console.log(data);
     }
 
     return (
-        <Card className="overflow-y-scroll">
+        <Card className="min-h-fit max-h-[85%] overflow-y-scroll w-full">
             <CardHeader>
                 <CardTitle>Excess Report</CardTitle>
                 <CardDescription>View items that have barely been used.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-6">
                 <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                            <FormField
-                                control={form.control}
-                                name="start_date"
-                                render={({field}) => (
-                                    <FormItem>
-                                        <FormLabel>Start Date</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="e.g. 2023-01-01" {...field} />
-                                        </FormControl>
-                                        <FormDescription>
-                                            Enter the start date of the interval you want to see.
-                                        </FormDescription>
-                                    </FormItem>
-                                )
-                                }
-                                />
-                            <Button type="submit">Submit</Button>
-                        </form>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                        <FormField
+                            control={form.control}
+                            name="start_date"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Start Date</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="e.g. 2023-01-01" {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Enter the start date of the interval you want to see.
+                                    </FormDescription>
+                                </FormItem>
+                            )
+                            }
+                        />
+                        <Button type="submit">Submit</Button>
+                    </form>
                 </Form>
                 <Table>
-            <TableHeader>
-                <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Initial Amount</TableHead>
-                    <TableHead>Percent Used</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {
-                    data.map((item: ExcessReportItem) => (
-                            <TableRow key={item.id}>
-                                <TableCell>
-                                    {item.name}
-                                </TableCell>
-                                <TableCell>
-                                    {item.initial_amount}
-                                </TableCell>
-                                <TableCell>
-                                    {item.percent_used}
-                                </TableCell>
-                            </TableRow>
-                    )
-                    )
-                }
-            </TableBody>
-            <TableFooter>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Initial Amount</TableHead>
+                            <TableHead>Percent Used</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {
+                            data.map((item: ExcessReportItem) => (
+                                <TableRow key={item.id}>
+                                    <TableCell>
+                                        {item.name}
+                                    </TableCell>
+                                    <TableCell>
+                                        {item.initial_amount}
+                                    </TableCell>
+                                    <TableCell>
+                                        {item.percent_used}
+                                    </TableCell>
+                                </TableRow>
+                            )
+                            )
+                        }
+                    </TableBody>
+                    <TableFooter>
 
-            </TableFooter>
-        </Table>
+                    </TableFooter>
+                </Table>
             </CardContent>
         </Card>
     );

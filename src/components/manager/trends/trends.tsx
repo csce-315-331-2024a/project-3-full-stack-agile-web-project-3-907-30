@@ -1,4 +1,4 @@
-import { SalesReportItem, ProductUsageItem, MostProductiveEmployeeItem } from "@/lib/types";
+import { SalesReportItem, ProductUsageItem, MostProductiveEmployeeItem, PairsAndAppearance, PopularMenuItem, SalesForADay } from "@/lib/types";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import SalesReport from "./sales-report";
 import ProductUsage from "./product-usage";
@@ -7,11 +7,17 @@ import MostProductiveEmployees from "./most-productive-employees";
 import ExcessReport from "./excess-report";
 import RestockReport from "./restock-report";
 import DatePicker from "./date-picker";
+import WhatSellsTogether from "./what-sells-together";
+import MenuItemPopularity from "./menu-item-popularity";
+import DaysWithMostSales from "./days-with-most-sales";
 
 export interface TrendsProps {
   salesReportData: SalesReportItem[];
   productUsageData: ProductUsageItem[];
   mostProductiveEmployeesData: MostProductiveEmployeeItem[];
+  whatSellsTogetherData: PairsAndAppearance[];
+  popularMenuItemData: PopularMenuItem[];
+  salesForADayData: SalesForADay[];
 }
 
 /**
@@ -24,7 +30,9 @@ export interface TrendsProps {
  * // Render a trends component.
  * <Trends />
  */
-const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData }: TrendsProps) => {
+const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData, whatSellsTogetherData, popularMenuItemData,
+  salesForADayData
+}: TrendsProps) => {
 
   const trendsTabs = [
     "Sales Report",
@@ -47,39 +55,37 @@ const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData
         ))}
       </TabsList>
       <TabsContent value="SalesReport" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[70%]">
-          <SalesReport data={salesReportData} />
-        </Card>
+        <SalesReport data={salesReportData} />
       </TabsContent>
       <TabsContent value="ProductUsageReport" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[70%]">
-          <ProductUsage data={productUsageData} />
-        </Card>
-        <DatePicker />
+        <ProductUsage data={productUsageData} />
+        {/* <DatePicker /> */}
       </TabsContent>
-      <TabsContent value="ExcessReport">
-        <Card className="flex min-h-fit max-h-[85%]">
-          <ExcessReport />
-        </Card>
+      <TabsContent value="ExcessReport" className="w-4/5">
+        <ExcessReport />
       </TabsContent>
-      <TabsContent value="RestockReport">
+      <TabsContent value="RestockReport" className="w-4/5">
         <Card className="flex min-h-fit max-h-[85%]">
           <RestockReport />
         </Card>
       </TabsContent>
       <TabsContent value="MostProductiveEmployees" className="w-4/5">
+        <MostProductiveEmployees data={mostProductiveEmployeesData} />
+      </TabsContent>
+      <TabsContent value="WhatSellsTogether" className="w-4/5">
         <Card className="flex min-h-fit max-h-[85%]">
-          <MostProductiveEmployees data={mostProductiveEmployeesData} />
+          <WhatSellsTogether data={whatSellsTogetherData} />
         </Card>
       </TabsContent>
-      <TabsContent value="DayswithMostSales">
-        Days with Most Sales
+      <TabsContent value="MostPopularItems" className="w-4/5">
+        <Card className="flex min-h-fit max-h-[85%]">
+          <MenuItemPopularity data={popularMenuItemData} />
+        </Card>
       </TabsContent>
-      <TabsContent value="MostPopularItems">
-        Most Popular Items
-      </TabsContent>
-      <TabsContent value="WhatSellsTogether">
-        What Sells Together
+      <TabsContent value="DayswithMostSales" className="w-4/5">
+        <Card className="flex min-h-fit max-h-[85%]">
+          <DaysWithMostSales data={salesForADayData} />
+        </Card>
       </TabsContent>
     </Tabs>
   );
