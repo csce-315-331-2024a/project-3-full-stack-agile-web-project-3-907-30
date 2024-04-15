@@ -12,11 +12,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "GET") {
+  if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-
+  const startDate = req.body.startDate;
 
 const selectStatement = await db.prepare(
     `SELECT inventory.inv_id, inv_name, SUM(amount) + inventory.current_level AS initial_amount, CAST(SUM(amount) AS DECIMAL)/(SUM(amount) + inventory.current_level) * 100 AS percent_used
@@ -24,14 +24,17 @@ const selectStatement = await db.prepare(
     INNER JOIN orders_menu ON Orders.order_id = orders_menu.order_id
     INNER JOIN inv_menu ON orders_menu.item_id = inv_menu.item_id
     INNER JOIN inventory ON inv_menu.inv_id = inventory.inv_id
-    WHERE order_date >= '2023-01-01'
+    WHERE order_date >= $1
     GROUP BY inventory.inv_id
     HAVING CAST(SUM(amount) AS DECIMAL)/(SUM(amount) + inventory.current_level) * 100 < 50
     ORDER BY inventory.inv_id;`
 );
 
 
-const selectStatementResult = await selectStatement.execute();
+const selectStatementResult = await selectStatement.execute({
+  params: [startDate]
+}
+);
 
 const rows = selectStatementResult.rows!;
 

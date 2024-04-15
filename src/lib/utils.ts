@@ -452,8 +452,17 @@ export async function getLeastContributing() {
  *
  * @returns {Promise<ExcessReportItem[]>} Gets the excess report.
  */
-export async function getExcessReport() {
-  const res = await fetch("/api/manager/get-excess-report");
+export async function getExcessReport(startDate: string) {
+
+  const res = await fetch("/api/manager/get-excess-report", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      startDate
+    }),
+  });
 
   if (res.status === 404) {
     return [];

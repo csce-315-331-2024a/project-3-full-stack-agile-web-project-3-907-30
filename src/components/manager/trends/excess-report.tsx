@@ -11,23 +11,78 @@ import {
 } from "@/components/ui/table";
 import { getExcessReport } from "@/lib/utils";
 import { ExcessReportItem } from "@/lib/types";
+import { Input } from '../../ui/input'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '../../ui/form';
+import { Button } from '../../ui/button';
+import { z } from "zod"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
 
-
+const FormSchema = z.object({
+    start_date: z.string()
+  })
 
 const ExcessReport = () => {
 
-    const [data, setData] = useState<ExcessReportItem[]>([]);
+    const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
+        defaultValues: {
+        },
+      })
+    
+    var [data, setData] = useState<ExcessReportItem[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        getExcessReport().then((data) => {
+        getExcessReport("2023-01-01").then((data) => {
         setData(data);
         });
         setLoading(false);
     }, [loading]);
 
-    return (<>
-        <Table>
+    useEffect(() => {
+        // getExcessReport().then((data) => {
+        // setData(data);
+        // });
+    }, [onSubmit]);
+
+    async function onSubmit(formData: z.infer<typeof FormSchema>) {
+        const res = getExcessReport(formData.start_date);
+        data = await res;
+        setData(data);
+        console.log(data);
+    }
+
+    return (
+        <Card className="overflow-y-scroll">
+            <CardHeader>
+                <CardTitle>Excess Report</CardTitle>
+                <CardDescription>View items that have barely been used.</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-6">
+                <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                            <FormField
+                                control={form.control}
+                                name="start_date"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>Start Date</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="e.g. 2023-01-01" {...field} />
+                                        </FormControl>
+                                        <FormDescription>
+                                            Enter the start date of the interval you want to see.
+                                        </FormDescription>
+                                    </FormItem>
+                                )
+                                }
+                                />
+                            <Button type="submit">Submit</Button>
+                        </form>
+                </Form>
+                <Table>
             <TableHeader>
                 <TableRow>
                     <TableHead>Name</TableHead>
@@ -57,8 +112,9 @@ const ExcessReport = () => {
 
             </TableFooter>
         </Table>
-
-    </>);
+            </CardContent>
+        </Card>
+    );
 }
 
 export default ExcessReport;
