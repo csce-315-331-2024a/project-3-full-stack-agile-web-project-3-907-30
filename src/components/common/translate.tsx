@@ -51,11 +51,6 @@ const Translate = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(selected)
-  }, [selected])
-
-
   const getLanguageOptions = async () => {
     const response = await fetch('/api/languages/get-all');
     const data = await response.json();

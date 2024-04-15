@@ -80,7 +80,7 @@ const UserManagement = () => {
         <CardTitle>Manage Users</CardTitle>
         <CardDescription>Manage your users at a glance.</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-6">
+      <CardContent className="flex flex-col gap-6 notranslate">
         {
           employees.map((employee) => (
             <div key={employee.empEmail} className="flex justify-between gap-16 items-center">
