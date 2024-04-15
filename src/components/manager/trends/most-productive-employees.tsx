@@ -10,6 +10,16 @@ import {
 } from "@/components/ui/table";
 import { MostProductiveEmployeeItem } from "@/lib/types";
 
+/**
+ * Component to display the most productive employees
+ * 
+ * @param {MostProductiveEmployeeItem[]} data Data to display
+ * @returns {JSX.Element} Most productive employees component
+ * 
+ * @example
+ * // Display the most productive employees
+ * <MostProductiveEmployees data={data} />
+ */
 const MostProductiveEmployees = ({ data }: { data: MostProductiveEmployeeItem[] }) => {
   return (<>
     <Table className="overflow-hidden">
