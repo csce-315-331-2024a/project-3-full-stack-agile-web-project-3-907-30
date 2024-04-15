@@ -21,7 +21,6 @@ import { Dispatch, SetStateAction } from 'react';
 import { Input } from "@/components/ui/input"
 
 
-
 const FormSchema = z.object({
     firstname: z.string().min(1, {
         message: "Input a first name"
@@ -96,7 +95,7 @@ const CustomerSignUp = () => {
                     <DialogTitle>Earn Points!</DialogTitle>
                     <DialogDescription>Make an account to begin earning rewards.</DialogDescription>
                 </DialogHeader>
-                <div className="flex pt-4">
+                <div className="flex pt-4 notranslate">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                             <FormField
