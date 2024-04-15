@@ -518,3 +518,25 @@ export async function updateMenuItemPrice(
   });
   return res;
 }
+
+export async function getMostProductiveEmployeesInRange(
+  startDate: string,
+  endDate: string
+) {
+  const res = await fetch("/api/manager/get-most-productive", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      startDate,
+      endDate
+    }),
+  });
+
+  if (res.status === 404) {
+    return [];
+  }
+  const data: MostProductiveEmployeeItem[] = await res.json();
+  return data;
+}
