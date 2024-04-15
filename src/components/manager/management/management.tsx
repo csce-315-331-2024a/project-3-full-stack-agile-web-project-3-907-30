@@ -67,8 +67,7 @@ const Management = () => {
         Inventory Management
       </TabsContent>
       <TabsContent value="MenuManagement">
-        Menu Management
-        <Card className="flex min-h-fit max-h-[85%] gap-8 p-4">
+        <Card className="flex min-h-fit max-h-[85%] gap-8 p-4 notranslate">
           <LeastSellingView />
           <LeastContributingView />
           <ItemSaleGUI />

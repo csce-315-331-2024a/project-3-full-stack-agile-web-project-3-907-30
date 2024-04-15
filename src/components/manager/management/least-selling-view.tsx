@@ -13,6 +13,19 @@ import { getLeastSelling } from "@/lib/utils";
 import { MenuItem } from "@/lib/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card";
 
+/**
+ * Displays the 10 least selling items on the menu in a table format.
+ * @component
+ * @example
+ *   <LeastSellingItems prop1={sample_value1} prop2={sample_value2} />
+ * @prop {MenuItem[]} data - An array of menu items with their corresponding data.
+ * @prop {boolean} loading - A boolean indicating whether the data is still loading or not.
+ * @description
+ *   - Uses the useState hook to manage the data and loading state variables.
+ *   - Uses the useEffect hook to fetch the data from the server and update the state variables.
+ *   - Renders a Card component with a title and description.
+ *   - Renders a Table component with a header, body, and footer.
+ */
 const LeastSellingView = () => {
 
     const [data, setData] = useState<MenuItem[]>([]);

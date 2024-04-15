@@ -82,17 +82,20 @@ export interface Order {
 }
 
 export interface PairsAndAppearance {
+  row_id: number,
   item1: string;
   item2: string;
   appearances: number;
 }
 
 export interface PopularMenuItem {
+  row_id: number,
   item: string;
   num_sales: number;
 }
 
 export interface SalesForADay {
+  row_id: number,
   day: Date;
   sales: number;
 }
@@ -135,4 +138,13 @@ export interface RestockReportItem {
   name: string;
   current_level: number;
   fill_level: number;
+}
+
+export interface CustomerOrder {
+  order_id: number,
+  order_date: Date,
+  order_time: TimeRanges,
+  order_total: number,
+  emp_name: number,
+  used_points: boolean
 }
