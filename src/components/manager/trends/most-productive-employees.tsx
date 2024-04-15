@@ -6,7 +6,7 @@ import {
   TableFooter,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from "@/components/ui/table";
 import { MostProductiveEmployeeItem } from "@/lib/types";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '../../ui/form';
@@ -25,14 +25,16 @@ const FormSchema = z.object({
 })
 
 /**
- * Component to display the most productive employees
- * 
- * @param {MostProductiveEmployeeItem[]} data Data to display
- * @returns {JSX.Element} Most productive employees component
- * 
+ * Displays a table of the most productive employees based on their total number of orders.
+ * @component
  * @example
- * // Display the most productive employees
- * <MostProductiveEmployees data={data} />
+ *   <MostProductiveEmployeesTable data={sample_data} />
+ * @prop {MostProductiveEmployeeItem[]} data - An array of objects containing information about the most productive employees.
+ * @description
+ *   - Uses the data prop to map through the array and display the employee name and total orders in a table.
+ *   - Uses the id, name, and total_orders properties from each object in the data array.
+ *   - Does not have any lifecycle methods.
+ *   - Renders a Table component from the Material-UI library.
  */
 const MostProductiveEmployees = ({ data }: { data: MostProductiveEmployeeItem[] }) => {
   const form = useForm<z.infer<typeof FormSchema>>({

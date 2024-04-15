@@ -22,6 +22,22 @@ export interface OrderItem {
   quantity: number;
 }
 
+/**
+ * Displays a menu with different categories and items to choose from.
+ * @component
+ * @example
+ *   <Menu prop1={sample_value1} prop2={sample_value2} />
+ * @prop {any[]} menuItems - An array of objects containing menu item names, prices, and ingredients.
+ * @prop {any[]} ingredients - An array of strings representing the ingredients for a specific menu item.
+ * @prop {any} selectedItem - An object representing the currently selected menu item.
+ * @prop {any} hoveredItem - An object representing the currently hovered menu item.
+ * @prop {number | null} hoveredTab - A number representing the currently hovered tab, or null if no tab is hovered.
+ * @description
+ *   - Uses state variables to keep track of selected and hovered menu items and tabs.
+ *   - Makes API calls to retrieve menu items and their corresponding ingredients.
+ *   - Uses React Dialog component to display more information about a selected menu item.
+ *   - Uses React Tabs component to display different categories of menu items.
+ */
 const CustomerView = () => {
   const [menuItems, setMenuItems] = useState<any[]>([]);
   const [ingredients, setIngredients] = useState<any[]>([]);
@@ -31,11 +47,21 @@ const CustomerView = () => {
   const [currentAllergens, setAllergens] = useState<Allergens>();
   const [open, setOpen] = useState<{ [key: string]: boolean }>({});
 
+  /**
+   * Function to handle when an item is clicked
+   * @param item - The item that was clicked.
+   */
   const itemClicked = async (item: any) => {
     setSelectedItem(item);
     await getAllergensForItem(item.name);
   };
 
+
+  /**
+   * Function to get the ingredients for a specific item
+   * @param itemID - ID of the item.
+   * @returns - The ingredients for the item.
+   */
   // Getting the Ingredient names using the ItemID
   const getIngredientsUsingItemID = async (itemID: number) => {
     const res = await fetch(`/api/menu/ingredients/${itemID}`)
@@ -45,6 +71,10 @@ const CustomerView = () => {
   };
 
 
+/**
+ * Function to get all the menu items and their prices.
+ * @returns - The menu items and their prices.
+ */
   useEffect(() => {
     fetch('/api/menu/menu_items/get-all-items-and-price')
       .then((res) => res.json())
@@ -71,11 +101,21 @@ const CustomerView = () => {
   }, []);
 
 
+/**
+ * Function to get the image for a specific menu item
+ * @param itemID - ID of the item.
+ * @returns - The image URL for the menu items.
+ */
   // Retrieve the image for menu item using the item ID
   const getImageForMenuItem = (itemID: number) => {
     return `/menu-item-pics/${itemID}.jpeg`;
   };
 
+
+/**
+ * Function to get allergens for a specific item
+ * @param name - Name of the item.
+ */
   const getAllergensForItem = async (name: string) => {
     try {
       const res = await fetch(`/api/menu/allergens/${name}`);

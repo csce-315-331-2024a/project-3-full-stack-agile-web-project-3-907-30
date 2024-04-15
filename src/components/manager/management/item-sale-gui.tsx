@@ -17,6 +17,19 @@ import { Dispatch, SetStateAction } from 'react';
     item_price: z.string()
   })
   
+/**
+   * A form component for updating menu item prices
+   * @component
+   * @example
+   *   <UpdateItemPricesForm item_name="Bacon Cheeseburger" item_price="9.99" />
+   * @prop {string} item_name - The name of the menu item to be updated
+   * @prop {number} item_price - The new price for the menu item
+   * @description
+   *   - Uses useForm hook from react-hook-form to handle form validation and submission
+   *   - Renders a form with two fields: item_name and item_price
+   *   - On form submission, calls the updateMenuItemPrice function with the entered data
+   *   - Uses zod library for form schema validation
+   */
   const ItemSaleGUI = () => {
   
     const form = useForm<z.infer<typeof FormSchema>>({
