@@ -10,6 +10,15 @@ declare global {
   }
 }
 
+/**
+ * Translate dropdown component
+ * 
+ * @returns {JSX.Element} Translate dropdown component
+ * 
+ * @example
+ * // Render a translate component
+ * <Translate />
+ */
 const Translate = () => {
   const [languageOptions, setLanguageOptions] = useState<any>([]);
   const [selected, setSelected] = useState<any>(null)
