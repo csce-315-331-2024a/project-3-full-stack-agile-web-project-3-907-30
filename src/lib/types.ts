@@ -104,13 +104,35 @@ export interface SalesReportItem {
 }
 
 export interface ProductUsageItem {
+    id: number;
+    name: string;
+    amount: number
+}
+
+export interface RevenueReportItem {
   id: number;
   name: string;
-  amount: number;
+  price: number;
+  revenue: number;
+  percentage: number;
 }
 
 export interface MostProductiveEmployeeItem {
   id: number;
   name: string;
   total_orders: number;
+}
+
+export interface ExcessReportItem {
+  id: number;
+  name: string;
+  initial_amount: number;
+  percent_used: number;
+}
+
+export interface RestockReportItem {
+  id: number;
+  name: string;
+  current_level: number;
+  fill_level: number;
 }
