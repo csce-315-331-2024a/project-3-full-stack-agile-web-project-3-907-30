@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* to hide google translate api top bar */
+body > .skiptranslate {
+  display: none;
+}
+
+body {
+  top: 0px !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import MostProductiveEmployees from "./most-productive-employees";
 import ExcessReport from "./excess-report";
 import RestockReport from "./restock-report";
+import DatePicker from "./date-picker";
 
 export interface TrendsProps {
   salesReportData: SalesReportItem[];
@@ -46,14 +47,15 @@ const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData
         ))}
       </TabsList>
       <TabsContent value="SalesReport" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%]">
+        <Card className="flex min-h-fit max-h-[70%]">
           <SalesReport data={salesReportData} />
         </Card>
       </TabsContent>
       <TabsContent value="ProductUsageReport" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%]">
+        <Card className="flex min-h-fit max-h-[70%]">
           <ProductUsage data={productUsageData} />
         </Card>
+        <DatePicker />
       </TabsContent>
       <TabsContent value="ExcessReport">
         <Card className="flex min-h-fit max-h-[85%]">

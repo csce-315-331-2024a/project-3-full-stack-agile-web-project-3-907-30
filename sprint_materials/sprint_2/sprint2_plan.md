@@ -44,9 +44,9 @@ Ex:
   - [ ] 14. Make function that queries a customer’s general information E1 P2 T0 - Gabe
   - [ ] 14. Make function that queries a customer’s purchase history   E1 P2 T0 - Gabe
   - [ ] 14. Make a function that queries a customer’s rewards information  E1 P3 S1 - Gabe
-- [ ] 16. As a customer, I want to see allergy and dietary information so I can make an informed decision about what to eat. - Chris
-  - [ ] 16. Have GUI show allergy alerts when the customer selects an item E2 P2 T0 - Chris
-  - [ ] 16. Make function that retrieves the allergy information for a menu item E1 P2 T0 - Chris
+- [X] 16. As a customer, I want to see allergy and dietary information so I can make an informed decision about what to eat. - Chris
+  - [X] 16. Have GUI show allergy alerts when the customer selects an item E2 P2 T2 - Chris
+  - [X] 16. Make function that retrieves the allergy information for a menu item E1 P2 T1 - Chris
 - [X] 17. As a customer, I want to gain points for previous transactions, so I can use that information to get discounted items. - Akshay
   - [X] 17. Have GUI give feedback to logged-in customers showing how many points they have earned for an order E1 P3 T0 - Akshay
   - [X] 17. Have Customer GUI view that shows the rewards they can get with their point balance E2 P3 T0 - Akshay
@@ -55,8 +55,8 @@ Ex:
   - [ ] 19. Add screen reader functionality to all GUI items in sprint 2 E1 P1 T0 - Gabe
 - [ ] 20. As a user who has poor vision, I want to be able to see and use the website without any additional help, so I can order correctly.
   - [ ] 20. Make sure that all views have high color contrast and easily legible font in sprint 2 E1 P1 T0 - Gabe
-- [ ] 21. As a non-english speaking user, I want to be able to read the site in my native language so that I can order what I want without a substantial barrier. - Chris
-  - [ ] 21. Add google translate functionality to all GUI items in sprint 2 E2 P1 T0 - Chris
+- [x] 21. As a non-english speaking user, I want to be able to read the site in my native language so that I can order what I want without a substantial barrier. - Chris
+  - [x] 21. Add google translate functionality to all GUI items in sprint 2 E2 P1 T3 - Chris
 
 ### Chores (part of the backlog, but have no story points associated with them)
 - [X] As a customer, I’d like to be able to see the weather E4 P2 T2 - Margo
