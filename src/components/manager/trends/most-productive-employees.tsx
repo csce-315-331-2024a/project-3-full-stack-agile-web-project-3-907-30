@@ -17,7 +17,7 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useState } from "react";
-import { getExcessReport, getMostProductiveEmployeesInRange } from "@/lib/utils";
+import { getMostProductiveEmployeesInRange } from "@/lib/utils";
 
 const FormSchema = z.object({
   start_date: z.string(),
