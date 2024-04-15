@@ -1,5 +1,4 @@
 import { Translate } from "@google-cloud/translate/build/src/v2";
-import * as fs from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
 
 const keyFilename = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS as string);
@@ -14,6 +13,12 @@ const translate = new Translate({
   credentials: keys,
 });
 
+/**
+ * Get all supported languages for translation
+ * 
+ * @param {NextApiRequest} req Request object
+ * @param {NextApiResponse} res Response object
+ */
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

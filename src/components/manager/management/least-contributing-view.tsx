@@ -14,6 +14,19 @@ import { RevenueReportItem } from "@/lib/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card";
 
 
+/**
+ * Displays the 10 least selling items on the menu and their corresponding revenue and percentage of total revenue.
+ * @component
+ * @example
+ *   <LeastSellingItems prop1={sample_value1} prop2={sample_value2} />
+ * @prop {RevenueReportItem[]} data - An array of objects containing information about the least selling items.
+ * @prop {boolean} loading - A boolean value indicating whether the data is still loading.
+ * @description
+ *   - Uses the useState hook to manage the component's state variables.
+ *   - Uses the useEffect hook to fetch data from the server and update the state.
+ *   - Renders a Card component with a Table displaying the least selling items and their corresponding revenue and percentage of total revenue.
+ *   - Uses the data prop to map through the array and render a TableRow for each item.
+ */
 const LeastContributingView = () => {
 
     const [data, setData] = useState<RevenueReportItem[]>([]);

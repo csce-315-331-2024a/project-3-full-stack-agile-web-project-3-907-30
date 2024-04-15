@@ -10,6 +10,15 @@ declare global {
   }
 }
 
+/**
+ * Translate dropdown component
+ * 
+ * @returns {JSX.Element} Translate dropdown component
+ * 
+ * @example
+ * // Render a translate component
+ * <Translate />
+ */
 const Translate = () => {
   const [languageOptions, setLanguageOptions] = useState<any>([]);
   const [selected, setSelected] = useState<any>(null)
@@ -23,6 +32,9 @@ const Translate = () => {
       'google_translate_element');
   }
 
+  /**
+   * Change the language of the page using the Google Translate API
+   */
   const langChange = (e: any, m: any, evt: any) => {
     if (hasCookie('googtrans')) {
       setCookie('googtrans', decodeURI(e))
@@ -51,6 +63,9 @@ const Translate = () => {
     }
   }, []);
 
+  /**
+   * Get the supported languages from the API
+   */
   const getLanguageOptions = async () => {
     const response = await fetch('/api/languages/get-all');
     const data = await response.json();
