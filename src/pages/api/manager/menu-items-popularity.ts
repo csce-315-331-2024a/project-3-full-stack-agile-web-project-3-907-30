@@ -36,7 +36,7 @@ export default async function handler (
                 SELECT orders.order_id, item_id
                 FROM orders
                 JOIN orders_menu ON orders_menu.order_id = orders.order_id
-                WHERE orders.order_date BETWEEN '2023-01-01' AND '2023-05-01'
+                WHERE orders.order_date BETWEEN $1 AND $2
              ) AS ord ON mi.item_id = ord.item_id
              GROUP BY mi.item_id
              ORDER BY num_sales DESC LIMIT 10) AS t;`,

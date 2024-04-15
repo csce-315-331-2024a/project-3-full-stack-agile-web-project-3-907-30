@@ -46,7 +46,7 @@ const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesDat
       const popularMenuItemData = await menuItemsPopularity('2023-01-01', '2023-01-01');
       setPopularMenuItem(popularMenuItemData!);
 
-      const salesDayData = await daysWithMostSales(4,2023);
+      const salesDayData = await daysWithMostSales(1,2022);
       setSalesForADay(salesDayData!);
     }
 
