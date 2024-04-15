@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from '../ui/use-toast';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '../ui/form';
-import { getCustomerFromDatabase } from '@/lib/utils';
+import { getCustomerFromDatabase, putCustomerInLocalStorage } from '@/lib/utils';
 import { useState , Dispatch, SetStateAction } from 'react';
 import { Customer } from '@/lib/types';
 
@@ -50,22 +50,9 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     // Get and store customer information 
     const customer = await getCustomerFromDatabase(data.phone);
-    if (customer !== null) {
-      localStorage.setItem('customerId', customer!.cust_id.toString());
-      localStorage.setItem('customerName', customer!.cust_name);
-      localStorage.setItem('customerPhoneNumber', customer!.phone_number);
-      localStorage.setItem('customerNumOrders', customer!.num_orders.toString());
-      localStorage.setItem('customerTotalSpent', customer!.total_spent.toString());
-      localStorage.setItem('customerPoints', customer!.points.toString());
-    }
-    else {
-      localStorage.setItem('customerId', 'no customer ID');
-      localStorage.setItem('customerName', 'no customer');
-      localStorage.setItem('customerPhoneNumber', 'no customer phone number');
-      localStorage.setItem('customerNumOrders', 'no customer orders');
-      localStorage.setItem('customerTotalSpent', 'no customer total spent');
-      localStorage.setItem('customerPoints', 'no customer points');
-    }
+
+    await putCustomerInLocalStorage(customer!);
+    
     let customerName: string = localStorage.getItem('customerName')!;
     if (customer) {
       toast({

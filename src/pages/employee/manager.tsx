@@ -40,10 +40,10 @@ const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesDat
 
   useEffect(() => {
     const fetchTrendData = async () => {
-      const whatSellsData = await whatSellsTogether("2023-01-01","2023-05-05");
+      const whatSellsData = await whatSellsTogether("2023-01-01","2023-01-01");
       setWhatSellsTogether(whatSellsData!);
 
-      const popularMenuItemData = await menuItemsPopularity('2023-01-03', '2023-05-01');
+      const popularMenuItemData = await menuItemsPopularity('2023-01-01', '2023-01-01');
       setPopularMenuItem(popularMenuItemData!);
 
       const salesDayData = await daysWithMostSales(4,2023);

@@ -392,6 +392,37 @@ export const itemBelongsToCategory = (
   }
 };
 
+/**
+ * Saves customer information in local storage.
+ * @example
+ * putCustomerInLocalStorage(sample_customer)
+ * @param {Customer} customer - The customer object to be saved in local storage.
+ * @returns {void} No return value.
+ * @description
+ * - Checks if customer object is null before saving.
+ * - If customer object is null, default values are saved.
+ * - Customer object must have properties: cust_id, cust_name, phone_number, num_orders, total_spent, points.
+ * - If any of these properties are missing, default values will be saved.
+ */
+export async function putCustomerInLocalStorage(customer: Customer) {
+  if (customer !== null) {
+    localStorage.setItem('customerId', customer!.cust_id.toString());
+    localStorage.setItem('customerName', customer!.cust_name);
+    localStorage.setItem('customerPhoneNumber', customer!.phone_number);
+    localStorage.setItem('customerNumOrders', customer!.num_orders.toString());
+    localStorage.setItem('customerTotalSpent', customer!.total_spent.toString());
+    localStorage.setItem('customerPoints', customer!.points.toString());
+  }
+  else {
+    localStorage.setItem('customerId', 'no customer ID');
+    localStorage.setItem('customerName', 'no customer');
+    localStorage.setItem('customerPhoneNumber', 'no customer phone number');
+    localStorage.setItem('customerNumOrders', 'no customer orders');
+    localStorage.setItem('customerTotalSpent', 'no customer total spent');
+    localStorage.setItem('customerPoints', 'no customer points');
+  }
+}
+
 export const categories = [
   "Burgers & Wraps",
   "Meals",

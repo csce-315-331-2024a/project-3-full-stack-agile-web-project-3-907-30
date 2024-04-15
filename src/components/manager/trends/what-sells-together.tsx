@@ -9,6 +9,19 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { PairsAndAppearance } from "@/lib/types";
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '../../ui/form';
+import { Input } from '../../ui/input'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card";
+import { Button } from '../../ui/button';
+import { z } from "zod"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect, useState } from "react";
+
+const FormSchema = z.object({
+    start_date: z.string(),
+    end_date: z.string()
+  })
 
 /**
  * Shows the What Sells Together trend in table format.
@@ -18,11 +31,33 @@ import { PairsAndAppearance } from "@/lib/types";
  * @returns {JSX.Element} The What Sells Together table component.
  */
 const WhatSellsTogether = ({ data }: { data: PairsAndAppearance[] }) => {
+
+    const [formData, setFormData] = useState<PairsAndAppearance[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
+        defaultValues: {
+        }
+    })
+
+    useEffect(() => {
+        setFormData(data);
+        setLoading(false);
+    }, [loading]);
+    
+
     if(!data) {
         return null;
     }
 
     return (<>
+    <Card>
+        <CardContent>
+        <CardHeader>
+            <CardTitle>What Sells Together</CardTitle>
+            <CardDescription>See which item pairs sold the most in a given date range</CardDescription>
+        </CardHeader>
         <Table>
             <TableHeader>
                 <TableRow>
@@ -54,7 +89,8 @@ const WhatSellsTogether = ({ data }: { data: PairsAndAppearance[] }) => {
 
             </TableFooter>
         </Table>
-
+        </CardContent>
+    </Card>
     </>);
 }
 
