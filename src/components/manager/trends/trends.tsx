@@ -32,7 +32,7 @@ export interface TrendsProps {
  */
 const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData, whatSellsTogetherData, popularMenuItemData,
   salesForADayData
- }: TrendsProps) => {
+}: TrendsProps) => {
 
   const trendsTabs = [
     "Sales Report",
@@ -55,30 +55,22 @@ const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData
         ))}
       </TabsList>
       <TabsContent value="SalesReport" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[70%]">
-          <SalesReport data={salesReportData} />
-        </Card>
+        <SalesReport data={salesReportData} />
       </TabsContent>
       <TabsContent value="ProductUsageReport" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[70%]">
-          <ProductUsage data={productUsageData} />
-        </Card>
-        <DatePicker />
+        <ProductUsage data={productUsageData} />
+        {/* <DatePicker /> */}
       </TabsContent>
-      <TabsContent value="ExcessReport">
-        <Card className="flex min-h-fit max-h-[85%]">
-          <ExcessReport />
-        </Card>
+      <TabsContent value="ExcessReport" className="w-4/5">
+        <ExcessReport />
       </TabsContent>
-      <TabsContent value="RestockReport">
+      <TabsContent value="RestockReport" className="w-4/5">
         <Card className="flex min-h-fit max-h-[85%]">
           <RestockReport />
         </Card>
       </TabsContent>
       <TabsContent value="MostProductiveEmployees" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%]">
-          <MostProductiveEmployees data={mostProductiveEmployeesData} />
-        </Card>
+        <MostProductiveEmployees data={mostProductiveEmployeesData} />
       </TabsContent>
       <TabsContent value="WhatSellsTogether" className="w-4/5">
         <Card className="flex min-h-fit max-h-[85%]">

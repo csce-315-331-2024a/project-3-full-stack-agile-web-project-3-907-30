@@ -1,9 +1,21 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Allergens, Customer, Employee, MostProductiveEmployeeItem, PairsAndAppearance, PopularMenuItem, ProductUsageItem, SalesForADay, SalesReportItem, RevenueReportItem, ExcessReportItem, RestockReportItem } from "./types";
-import { Pool, DataTypeOIDs, QueryResult } from "postgresql-client";
+import {
+  Allergens,
+  Customer,
+  Employee,
+  MostProductiveEmployeeItem,
+  PairsAndAppearance,
+  PopularMenuItem,
+  ProductUsageItem,
+  SalesForADay,
+  SalesReportItem,
+  RevenueReportItem,
+  ExcessReportItem,
+  RestockReportItem,
+} from "./types";
+import { Pool, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
-import db from "./db";
 
 // export async function getMenuItem(id: number) : Promise<MenuItem> {
 //     const sql = "SELECT item_id, item_name, item_price::numeric, times_ordered FROM menu_items WHERE item_id = ($1)";
@@ -272,66 +284,81 @@ export async function getNextOrderId() {
 
 /**
  * Get the pairs of items that sold together the most in a given time frame
- * 
- * @param startDate 
- * @param endDate 
- * @returns {PairsAndAppearance[]} List of pairs and how many times they sold 
+ *
+ * @param startDate
+ * @param endDate
+ * @returns {PairsAndAppearance[]} List of pairs and how many times they sold
  */
-export async function whatSellsTogether( startDate: string, endDate: string) {
-  const res = await fetch(`/api/manager/what-sells-together?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,{
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
+export async function whatSellsTogether(startDate: string, endDate: string) {
+  const res = await fetch(
+    `/api/manager/what-sells-together?startDate=${encodeURIComponent(
+      startDate
+    )}&endDate=${encodeURIComponent(endDate)}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
-  });
+  );
   const data: PairsAndAppearance[] = await res.json();
   return data;
 }
 
 /**
- * Get the top 10 most popular menu items by sales in a given time window 
- * 
- * @param startdate 
- * @param endDate 
+ * Get the top 10 most popular menu items by sales in a given time window
+ *
+ * @param startdate
+ * @param endDate
  * @returns {PopularMenuItem[]} List of menu items and how many times they sold
  */
-export async function menuItemsPopularity( startDate: string, endDate: string) {
-  const res = await fetch(`/api/manager/menu-items-popularity?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,{
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
+export async function menuItemsPopularity(startDate: string, endDate: string) {
+  const res = await fetch(
+    `/api/manager/menu-items-popularity?startDate=${encodeURIComponent(
+      startDate
+    )}&endDate=${encodeURIComponent(endDate)}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
-  });
+  );
   const data: PopularMenuItem[] = await res.json();
   return data;
 }
 
 /**
  * Get the days that had the most sales in a given month and year
- * 
- * @param startdate 
- * @param endDate 
- * @returns {SalesForADay[]} List of days and how many sales they had 
+ *
+ * @param startdate
+ * @param endDate
+ * @returns {SalesForADay[]} List of days and how many sales they had
  */
-export async function daysWithMostSales( month: number, year: number ) {
-  const res = await fetch(`/api/manager/days-with-most-sales?month=${encodeURIComponent(month)}&year=${encodeURIComponent(year)}`,{
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json"
+export async function daysWithMostSales(month: number, year: number) {
+  const res = await fetch(
+    `/api/manager/days-with-most-sales?month=${encodeURIComponent(
+      month
+    )}&year=${encodeURIComponent(year)}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
-  });
+  );
   const data: SalesForADay[] = await res.json();
   return data;
 }
 
 /**
  * Adds a new customer account to the database
- * 
- * @param custName 
- * @param phoneNumber 
+ *
+ * @param custName
+ * @param phoneNumber
  * @returns {string} Message saying whether insertion was successfull or not
  */
-export async function newCustomer( custName: string, phoneNumber: string ) {
+export async function newCustomer(custName: string, phoneNumber: string) {
   const res = await fetch("/api/customer/new-customer", {
     method: "POST",
     headers: {
@@ -339,7 +366,7 @@ export async function newCustomer( custName: string, phoneNumber: string ) {
     },
     body: JSON.stringify({
       custName,
-      phoneNumber
+      phoneNumber,
     }),
   });
 
@@ -392,6 +419,37 @@ export const itemBelongsToCategory = (
   }
 };
 
+/**
+ * Saves customer information in local storage.
+ * @example
+ * putCustomerInLocalStorage(sample_customer)
+ * @param {Customer} customer - The customer object to be saved in local storage.
+ * @returns {void} No return value.
+ * @description
+ * - Checks if customer object is null before saving.
+ * - If customer object is null, default values are saved.
+ * - Customer object must have properties: cust_id, cust_name, phone_number, num_orders, total_spent, points.
+ * - If any of these properties are missing, default values will be saved.
+ */
+export async function putCustomerInLocalStorage(customer: Customer) {
+  if (customer !== null) {
+    localStorage.setItem('customerId', customer!.cust_id.toString());
+    localStorage.setItem('customerName', customer!.cust_name);
+    localStorage.setItem('customerPhoneNumber', customer!.phone_number);
+    localStorage.setItem('customerNumOrders', customer!.num_orders.toString());
+    localStorage.setItem('customerTotalSpent', customer!.total_spent.toString());
+    localStorage.setItem('customerPoints', customer!.points.toString());
+  }
+  else {
+    localStorage.setItem('customerId', 'no customer ID');
+    localStorage.setItem('customerName', 'no customer');
+    localStorage.setItem('customerPhoneNumber', 'no customer phone number');
+    localStorage.setItem('customerNumOrders', 'no customer orders');
+    localStorage.setItem('customerTotalSpent', 'no customer total spent');
+    localStorage.setItem('customerPoints', 'no customer points');
+  }
+}
+
 export const categories = [
   "Burgers & Wraps",
   "Meals",
@@ -405,17 +463,17 @@ export const rowToSalesReportItem = (array: any[]) => {
   return {
     id: array[0],
     name: array[1],
-    profit: array[2]
+    profit: array[2],
   } as SalesReportItem;
-}
+};
 
 export const rowToProductUsageItem = (array: any[]) => {
-    return {
-        id: array[0],
-        name: array[1],
-        amount: array[2]
-    } as ProductUsageItem;
-}
+  return {
+    id: array[0],
+    name: array[1],
+    amount: array[2],
+  } as ProductUsageItem;
+};
 
 /**
  * Gets the 10 least selling items from the database.
@@ -455,14 +513,13 @@ export async function getLeastContributing() {
  * @returns {Promise<ExcessReportItem[]>} Gets the excess report.
  */
 export async function getExcessReport(startDate: string) {
-
   const res = await fetch("/api/manager/get-excess-report", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      startDate
+      startDate,
     }),
   });
 
@@ -491,11 +548,11 @@ export async function getRestockReport() {
 }
 
 export const rowToMostProductiveEmployeeItem = (array: any[]) => {
-    return {
-        id: array[0],
-        name: array[1],
-        total_orders: array[2]
-    } as MostProductiveEmployeeItem;
+  return {
+    id: array[0],
+    name: array[1],
+    total_orders: array[2],
+  } as MostProductiveEmployeeItem;
 };
 
 /**
@@ -504,10 +561,7 @@ export const rowToMostProductiveEmployeeItem = (array: any[]) => {
  * @param {itemName}  The name of the menu item
  * @param {newPrice}  The new price of the menu item
  */
-export async function updateMenuItemPrice(
-  itemName: string,
-  newPrice: number
-) {
+export async function updateMenuItemPrice(itemName: string, newPrice: number) {
   const res = await fetch("/api/manager/update-menu-item-price", {
     method: "POST",
     headers: {
@@ -515,8 +569,88 @@ export async function updateMenuItemPrice(
     },
     body: JSON.stringify({
       itemName,
-      newPrice
+      newPrice,
     }),
   });
   return res;
+}
+
+export async function getMostProductiveEmployeesInRange(
+  startDate: string,
+  endDate: string
+) {
+  const res = await fetch("/api/manager/most-productive-employees", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      startDate,
+      endDate,
+    }),
+  });
+
+  if (res.status === 404) {
+    return [];
+  }
+  const data: MostProductiveEmployeeItem[] = await res.json();
+  return data;
+}
+
+/**
+ * Get the product usage report within a given date range.
+ *
+ * @param {string} startDate The start date of the range
+ * @param {string} endDate The end date of the range
+ * @returns {ProductUsageItem[]} The product usage report within the given date range.
+ */
+export async function getProductUsageReportInRange(
+  startDate: string,
+  endDate: string
+) {
+  const res = await fetch("/api/manager/get-product-usage-report", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      startDate,
+      endDate,
+    }),
+  });
+
+  if (res.status === 404) {
+    return [];
+  }
+  const data: ProductUsageItem[] = await res.json();
+  return data;
+}
+
+/**
+ * Get the sales report within a given date range.
+ * 
+ * @param {string} startDate The start date of the range
+ * @param {string} endDate The end date of the range
+ * @returns {SalesReportItem[]} The sales report within the given date range. 
+ */
+export async function getSalesReportInRange(
+  startDate: string, 
+  endDate: string
+) {
+  const res = await fetch("/api/manager/get-sales-report", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      startDate,
+      endDate,
+    }),
+  });
+
+  if (res.status === 404) {
+    return [];
+  }
+  const data: SalesReportItem[] = await res.json();
+  return data;
 }
