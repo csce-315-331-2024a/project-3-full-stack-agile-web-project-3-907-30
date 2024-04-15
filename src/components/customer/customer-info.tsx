@@ -55,6 +55,18 @@ interface customerInfoProps {
 }
 
 
+/**
+ * Displays a welcome message and customer points if signed in, or a message if no customer found.
+ * @component
+ * @example
+ *   <CustomerPoints data={weather} />
+ * @prop {Weather} data - Object containing weather information
+ * @description
+ *   - Uses local storage to check for customer name and points
+ *   - Handles 'hydration' issue by only rendering after component has mounted
+ *   - Renders different html based on customer name
+ *   - If no customer found, displays a message
+ */
 const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' } as Weather, children }: customerInfoProps) => {
     const localStorageChange = useLocalStorageChangeListener();
     let customerName: string | null;

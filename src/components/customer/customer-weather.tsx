@@ -39,6 +39,12 @@ const getIcon = (data: Weather): string => {
     return icon;
 }
 
+/**
+ * Displays icon with the current temperature and weather condiditons.
+ * 
+ * @param {Weather} data Passes in weather information from API
+ * @returns {JSX.Element} Weather icon component.
+ */
 const CustomerWeather = ({ data }: { data: Weather }) => {
 
     const theme: string = (data.isDay) ? 'bg-orange-400' : 'bg-indigo-950';
