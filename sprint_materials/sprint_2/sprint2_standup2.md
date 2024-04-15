@@ -1,6 +1,6 @@
 ### Sprint 2 Stand-up 2 for CSCE 331 Project 3
 ### Prepared by: Gabriel Floreslovo
-### Meeting Date: 3/25/2024
+### Meeting Date: 4/9/2024
 
 ## Meeting Attendees
 - Adam Teo
