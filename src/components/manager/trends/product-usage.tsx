@@ -26,7 +26,7 @@ const FormSchema = z.object({
 
 
 /**
- * Displays a table of product usage items with their corresponding names and amounts.
+ * Component that displays product usage data.
  * @component
  * @example
  *   <ProductUsageTable data={[{id: 1, name: "Product A", amount: 10}, {id: 2, name: "Product B", amount: 5}]} />

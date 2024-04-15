@@ -25,7 +25,7 @@ const FormSchema = z.object({
 })
 
 /**
- * A table component that displays sales report data
+ * Component that displays sales report data
  * @component
  * @example
  *   <SalesReportTable data={salesData} />
