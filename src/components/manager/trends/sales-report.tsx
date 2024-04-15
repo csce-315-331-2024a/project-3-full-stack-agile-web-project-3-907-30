@@ -10,6 +10,18 @@ import {
 } from "@/components/ui/table";
 import { SalesReportItem } from "@/lib/types";
 
+/**
+ * A table component that displays sales report data
+ * @component
+ * @example
+ *   <SalesReportTable data={salesData} />
+ * @prop {SalesReportItem[]} data - An array of sales report items
+ * @description
+ *   - The component renders a table with two columns: Item Name and Profits.
+ *   - The data prop is an array of objects with properties id, name, and profit.
+ *   - The component calculates and displays the total profits from the data.
+ *   - The data is mapped to table rows using the map function.
+ */
 const SalesReport = ({ data }: { data: SalesReportItem[] }) => {
     return (
         <>

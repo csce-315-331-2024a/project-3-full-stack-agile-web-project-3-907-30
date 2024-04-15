@@ -3,6 +3,20 @@ import db from "../../../lib/db";
 import { SalesForADay } from "@/lib/types";
 import { DataTypeOIDs } from "postgresql-client";
 
+/**
+ * Retrieves the best sales days for a given month and year.
+ * @example
+ * handler("10", "2021")
+ * @param {NextApiRequest} req - The request object.
+ * @param {NextApiResponse} res - The response object.
+ * @returns {SalesForADay[]} An array of objects containing the row number, day, and number of sales for each day.
+ * @description
+ *   - Checks if the request method is valid.
+ *   - Retrieves the month and year from the request query.
+ *   - Executes a SQL query to get the best sales days for the given month and year.
+ *   - Converts the result into an array of objects.
+ *   - Handles errors and returns appropriate responses.
+ */
 export default async function handler (
     req: NextApiRequest,
     res: NextApiResponse

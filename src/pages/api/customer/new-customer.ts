@@ -3,6 +3,21 @@ import db from "../../../lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 import { createHash } from "crypto";
 
+
+/**
+ * Handles a POST request to insert a new customer into the database.
+ * @example
+ * handler(req, res)
+ * @param {NextApiRequest} req - The request object.
+ * @param {NextApiResponse} res - The response object.
+ * @returns {NextApiResponse} Returns a response object with a status code and message.
+ * @description
+ * - Checks if the request method is POST, returns an error if not.
+ * - Extracts the customer name and phone number from the request body.
+ * - Generates a unique customer ID and hashes the phone number.
+ * - Inserts the customer into the database and returns a success or error message.
+ * - Handles any errors that may occur during the process.
+ */
 export default async function handler (
     req: NextApiRequest,
     res: NextApiResponse

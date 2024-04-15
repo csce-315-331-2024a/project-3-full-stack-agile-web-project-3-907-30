@@ -35,6 +35,19 @@ interface MenuOrderProps {
   clearOrder: () => void;
 }
 
+/**
+ * A menu component that allows users to select items and add them to an order.
+ * @component
+ * @example
+ *   <Menu prop1={sample_value1} prop2={sample_value2} />
+ * @prop {function} setOrderItems - A function that sets the order items in the parent component.
+ * @prop {function} clearOrder - A function that clears the order in the parent component.
+ * @description
+ *   - Fetches menu items from an API and displays them in a tabbed layout.
+ *   - Allows users to select the quantity of each item and add it to an order.
+ *   - Shows allergen information for each item and allows users to confirm or cancel adding the item to the order.
+ *   - Allows users to remove items from the order.
+ */
 const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);

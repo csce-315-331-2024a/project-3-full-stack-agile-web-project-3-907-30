@@ -3,6 +3,19 @@ import db from "../../../lib/db";
 import { PopularMenuItem } from "@/lib/types";
 import { DataTypeOIDs } from "postgresql-client";
 
+/**
+ * Retrieves the top 10 most popular menu items between the specified start and end dates.
+ * @example
+ * handler('2023-01-01', '2023-05-01')
+ * @param {NextApiRequest} req - The NextApiRequest object.
+ * @param {NextApiResponse} res - The NextApiResponse object.
+ * @returns {PopularMenuItem[]} An array of PopularMenuItem objects, each containing the row number, item name, and number of sales.
+ * @description
+ *   - Only retrieves menu items with at least one sale during the specified date range.
+ *   - Returns an error if the specified date range does not contain any sales.
+ *   - Catches and handles any errors that occur during the retrieval process.
+ *   - Only allows GET requests.
+ */
 export default async function handler (
     req: NextApiRequest,
     res: NextApiResponse

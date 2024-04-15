@@ -34,6 +34,21 @@ const FormSchema = z.object({
     })
 })
 
+/**
+ * A dialog component for creating a new customer account
+ * 
+ * @component
+ * @description
+ *   - Uses the Dialog component from Chakra UI to display a form for creating a new customer account
+ *   - Utilizes useForm and zodResolver from React Hook Form and Zod to validate and handle form data
+ *   - Displays a success or error toast message upon form submission
+ *   - Resets the form and closes the dialog upon successful submission
+ */
+/**
+ * @prop {string} firstname - The first name of the customer
+ * @prop {string} lastname - The last name of the customer
+ * @prop {string} phone - The phone number of the customer
+ */
 const CustomerSignUp = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -43,8 +58,8 @@ const CustomerSignUp = () => {
           firstname: "",
           lastname: "",
           phone: ""
-        },
-      })
+        }
+    })
 
     async function onSubmit(data: z.infer<typeof FormSchema>) {
         const fullName = data.firstname + " " + data.lastname;

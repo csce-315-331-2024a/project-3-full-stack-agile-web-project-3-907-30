@@ -3,6 +3,22 @@ import db from "../../../lib/db";
 import { PairsAndAppearance } from "@/lib/types";
 import { DataTypeOIDs } from "postgresql-client";
 
+/**
+ * Retrieves the top 10 most frequently ordered pairs of menu items within a given date range.
+ * 
+ * @example
+ * handler('2021-01-01', '2021-01-31')
+ * @param {NextApiRequest} req - The NextApiRequest object.
+ * @param {NextApiResponse} res - The NextApiResponse object.
+ * @returns {PairsAndAppearance[]} An array of objects containing the row number, item names, and number of appearances for each pair.
+ * @description
+ * - Checks if the request method is GET and returns an error if it is not.
+ * - Retrieves the start and end dates from the request query.
+ * - Executes a SQL query to retrieve the top 10 pairs of menu items and their number of appearances within the given date range.
+ * - Converts the results into an array of objects with the necessary data.
+ * - Returns the array of objects if there are any pairs found, otherwise returns an error.
+ * - Handles any errors that may occur during the process.
+ */
 export default async function handler (
     req: NextApiRequest,
     res: NextApiResponse

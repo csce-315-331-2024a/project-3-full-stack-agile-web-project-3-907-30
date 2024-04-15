@@ -41,9 +41,9 @@ Ex:
   - [x] 14. Implement login and logout routes and corresponding hooks E1 P1 Tx - Gabe (deprecated)
   - [x] 14. Make Customer GUI information view that shows all of the relevant information (general and rewards) on a customer’s account E2 P3 S1 - Gabe
   - [x] 14. Create new tables and/or columns in the database holding the extra rewards information E2 P3 T1 - Gabe
-  - [ ] 14. Make function that queries a customer’s general information E1 P2 T0 - Gabe
+  - [x] 14. Make function that queries a customer’s general information E1 P2 T0 - Gabe
   - [x] 14. Make function that queries a customer’s purchase history   E1 P2 T0 - Gabe
-  - [ ] 14. Make a function that queries a customer’s rewards information  E1 P3 T1 - Gabe
+  - [x] 14. Make a function that queries a customer’s rewards information  E1 P3 T1 - Gabe
 - [ ] 16. As a customer, I want to see allergy and dietary information so I can make an informed decision about what to eat. - Chris
   - [ ] 16. Have GUI show allergy alerts when the customer selects an item E2 P2 T0 - Chris
   - [ ] 16. Make function that retrieves the allergy information for a menu item E1 P2 T0 - Chris

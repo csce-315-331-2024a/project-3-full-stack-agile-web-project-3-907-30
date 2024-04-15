@@ -3,12 +3,27 @@ import { CustomerOrder } from "../../../lib/types";
 import db from "../../../lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 
+/**
+ * Handles GET requests for customer order history.
+ * 
+ * @example
+ * handler(req, res)
+ * @param {NextApiRequest} req - The request object.
+ * @param {NextApiResponse} res - The response object.
+ * @returns {Promise} A promise that resolves to an array of customer order data.
+ * @description
+ *   - Retrieves customer order history from the database.
+ *   - Uses the customer ID from the request query to filter results.
+ *   - Converts order data into a custom format.
+ *   - Returns an error if no order history is found or if there is an error retrieving items.
+ */
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     if(req.method !== "GET") {
-        res.status(400).json({ error: "Not a valid Method" })
+        res.status(400).json({ error: "Not a valid Method" });
+        return;
     }
 
     try{

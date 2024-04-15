@@ -15,9 +15,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from '../ui/use-toast';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '../ui/form';
 import { getCustomerFromDatabase } from '@/lib/utils';
-import { useState } from 'react';
+import { useState , Dispatch, SetStateAction } from 'react';
 import { Customer } from '@/lib/types';
-import { Dispatch, SetStateAction } from 'react';
+
 import CustomerSignUp from './customer-sign-up';
 
 interface RewardsButtonProps {
@@ -26,10 +26,17 @@ interface RewardsButtonProps {
 
 const FormSchema = z.object({
   phone: z.string().min(10, {
-    message: "Your phone number must be 10 characters.",
+    message: "Your phone number must be 10 characters."
   }),
 })
 
+/**
+ * Button that allows cutomers to sign into their rewards account. 
+ * 
+ * @component
+ * @param {RewardsButtonProps} setCustomer useState function that updates to the customer that logs in.
+ * @returns {JSX.Element} The rewards sign-in button.
+ */
 const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
