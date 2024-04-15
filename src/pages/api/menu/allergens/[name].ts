@@ -31,7 +31,6 @@ export default async function handler(
 }
 
 const parseAllergens = (itemAllergens: Allergens[]) : Allergens => {
-    // console.log((itemAllergens));
     return itemAllergens.reduce((accum, curr) => {
             accum.has_dairy = accum.has_dairy || curr.has_dairy;
             accum.has_nuts = (curr.has_nuts) || accum.has_nuts;

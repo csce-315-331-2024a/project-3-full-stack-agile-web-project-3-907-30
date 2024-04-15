@@ -77,7 +77,7 @@ const Layout = ({ children }: LayoutProps) => {
           <div className="border-b">
             <div className="flex h-16 items-center justify-between px-4">
               <div className="flex gap-4">
-                <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm mr-8" priority />
+                <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm" priority />
                 <Translate />
                 <CustomerInfo weather={weather} />
               </div>
@@ -104,7 +104,7 @@ const Layout = ({ children }: LayoutProps) => {
           <div className="border-b">
             <div className="flex h-16 items-center justify-between px-4">
               <div className="flex gap-4">
-                <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm mr-8" priority />
+                <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm" priority />
                 <Translate />
                 <NavigationMenu>
                   <NavigationMenuList>
