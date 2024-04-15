@@ -579,7 +579,7 @@ export async function getMostProductiveEmployeesInRange(
   startDate: string,
   endDate: string
 ) {
-  const res = await fetch("/api/manager/most-productive-employees", {
+  const res = await fetch("/api/manager/get-most-productive", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
