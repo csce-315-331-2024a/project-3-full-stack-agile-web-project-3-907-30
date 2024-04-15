@@ -209,12 +209,28 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     }
   };
 
+  /**
+   *  Fetches the next available order ID from the server.
+   * @returns {number} The next available order ID.
+   */
   const getNextOrderId = async () => {
     const response = await fetch("/api/order/get-next-order-id");
     const data = await response.json();
     return data.nextOrderId;
   };
 
+/**
+   * Updates the customer's points in the database.
+   * updateCustomerPoints(100, 12345)
+   * @param {number} points - The number of points to be added to the customer's current points.
+   * @param {number} customerId - The ID of the customer whose points will be updated.
+   * @returns {object} The updated customer data.
+   * @description
+   *   - This function uses the fetch API to make a PUT request to the specified endpoint.
+   *   - The customer's ID and the number of points to be added are passed as parameters.
+   *   - The response from the server is converted to JSON and returned.
+   *   - This function is asynchronous and will wait for the response before returning the updated data.
+   */
   const updateCustomerPoints = async (points: number, customerId: number) => {
     const response = await fetch("/api/customer/update-customer-points", {
       method: "PUT",
@@ -230,6 +246,18 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     return data;
   };
 
+/**
+   * Calculates the total points for a customer's order based on the items and their quantities.
+   * calculateTotalPoints([{name: "apple", quantity: 2}, {name: "banana", quantity: 3}])
+   * @param {Array} items - An array of objects containing the name and quantity of each item.
+   * @returns {Number} The total points for the customer's order.
+   * @description
+   *   - Uses the items array to create a flattened array of item names with duplicates.
+   *   - Loops through the item names and fetches the points for each item from the API.
+   *   - Calculates the total points by summing the points for each item.
+   *   - Checks if the customer has enough points and returns the total points if so.
+   *   - If the customer does not have enough points, returns 0 and displays a toast message.
+   */
   const getTotalPointsValueForOrder = async () => {
     // create flattened array of item names that has duplicates
     const itemNames = items

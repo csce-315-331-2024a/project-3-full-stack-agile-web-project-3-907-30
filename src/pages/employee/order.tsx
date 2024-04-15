@@ -6,6 +6,18 @@ import MenuOrder, { OrderItem } from '@/components/employee/order-menu';
 import OrderReceipt from '@/components/employee/order-receipt';
 import clearOrderAndSetOrderItems from '@/components/employee/order-menu';
 
+/**
+ * Component for displaying a menu order and order receipt for an employee
+ * @prop {Employee} employee - The employee object containing employee information
+ * @prop {boolean} loading - A boolean indicating if the component is currently loading
+ * @prop {OrderItem[]} orderItems - An array of order items for the current order
+ * @prop {() => void} clearOrder - A function to clear the current order
+ * @description
+ *   - Uses the useAuth hook to get the current employee's account information
+ *   - Uses the useEffect hook to fetch the employee's information from the database
+ *   - Uses the useState hook to manage the employee, loading, order items, and clear order function
+ *   - Renders a main component with a menu order and order receipt section
+ */
 const EmployeeOrderPage = () => {
   const { account } = useAuth() as AuthHookType;
 

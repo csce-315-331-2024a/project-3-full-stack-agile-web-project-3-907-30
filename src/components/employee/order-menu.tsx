@@ -1,4 +1,3 @@
-// Date
 import { useEffect, useState } from "react";
 import {
   Card,
@@ -58,12 +57,30 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
       });
   }, []);
 
+  /**
+   * Clear the order state and set the order items to an empty array
+   * @description
+   * - Resets the order state to an empty object
+   * - Resets the input values to an empty object
+   * - Calls the clearOrder prop function
+   */
   const clearOrderAndSetOrderItems = () => {
     setOrder({}); // Reset the order state
     setInputValues({}); // Reset the input values
     clearOrder(); // Call the clearOrder prop
   };
 
+/**
+   * Component that adds items to an order based on user input
+   * @example
+   *   <AddToOrder itemName="Burger" />
+   * @prop {string} itemName - Name of the item to be added to the order
+   * @description
+   *   - Uses user input to fetch item information from an API
+   *   - Validates the item price and quantity before adding it to the order
+   *   - Checks for low stock and displays a notification if necessary
+   *   - Handles errors that may occur during the process
+   */
   const fetchPriceAndAddToOrder = async (itemName: string) => {
     try {
       const quantity = inputValues[itemName] ?? 1;
@@ -114,6 +131,18 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     }
   };
 
+/**
+   * Fetches the inventory item with the given id from the menu and checks its stock.
+   * @example
+   * checkStock(123)
+   * @param {number} id - The id of the inventory item to be checked.
+   * @returns {InventoryItem[]} An array of inventory items with the given id and their stock status.
+   * @description
+   *   - Makes an API call to fetch the inventory item with the given id.
+   *   - Throws an error if the item is not found.
+   *   - Parses the response as an array of InventoryItem objects.
+   *   - Returns the array of inventory items with their stock status.
+   */
   const checkLowStock = async (id: number) => {
     try {
       const res = await fetch(`/api/menu/check-stock/${id}`);
@@ -129,6 +158,22 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     }
   };
 
+/**
+   * Adds an item to the order and updates the order items list.
+   * @example
+   * addItem(1, "Pizza", 10.99, 5, 2)
+   * @param {number} id - The unique identifier for the item.
+   * @param {string} itemName - The name of the item.
+   * @param {number} price - The price of the item.
+   * @param {number} times_ordered - The number of times the item has been ordered.
+   * @param {number} quantity - The quantity of the item to be added to the order.
+   * @returns {object} The updated order with the added item.
+   * @description
+   *   - If the item already exists in the order, the quantity will be updated.
+   *   - The order items list will be updated with the added item.
+   *   - The updated order will be returned.
+   *   - The added item will have a unique identifier, name, price, times ordered, and quantity.
+   */
   const addToOrder = (
     id: number,
     itemName: string,
@@ -158,6 +203,18 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     });
   };
 
+/**
+   * Updates the order by decreasing the quantity of the specified item by 1, or removing it if the quantity is 1.
+   * @example
+   * updateOrder("apple")
+   * @param {string} itemName - The name of the item to be updated.
+   * @returns {object} The updated order with the specified item's quantity decreased by 1, or removed if the quantity is 1.
+   * @description
+   * - Uses immutability to update the order.
+   * - If the specified item's quantity is 1, it will be removed from the order.
+   * - The updated order is also set as the order items state.
+   * - Only works for items that already exist in the order.
+   */
   const removeItemFromOrder = (itemName: string) => {
     setOrder((prevOrder) => {
       const newOrder = { ...prevOrder };
@@ -176,6 +233,18 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     });
   };
 
+/**
+   * Fetches allergens data for a specific menu item.
+   * @example
+   * getAllergens("Burger")
+   * @param {string} name - The name of the menu item.
+   * @returns {Allergens} Allergens data for the specified menu item.
+   * @description
+   *   - Makes an asynchronous call to the server to retrieve allergens data.
+   *   - Throws an error if the response is not successful.
+   *   - Sets the retrieved data to the state variable "allergens".
+   *   - Logs an error if there is an error while retrieving the data.
+   */
   const getAllergensForItem = async (name: string) => {
     try {
       const res = await fetch(`/api/menu/allergens/${name}`);
