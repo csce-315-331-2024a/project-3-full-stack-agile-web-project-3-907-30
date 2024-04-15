@@ -87,7 +87,7 @@ const Layout = ({ children }: LayoutProps) => {
                     I&apos;m an Employee
                   </Link>
                 </Button>
-                <RewardsButton setCustomer={setCustomer} />
+                <RewardsButton setCustomer={setCustomer}/>
               </div>
             </div>
           </div>

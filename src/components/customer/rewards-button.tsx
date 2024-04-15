@@ -100,7 +100,7 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
             Sign-in to view your points.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex pt-4">
+        <div className="flex pt-4 notranslate">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
