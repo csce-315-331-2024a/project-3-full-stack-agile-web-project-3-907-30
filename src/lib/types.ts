@@ -123,7 +123,6 @@ export interface CustomerOrder {
   order_date: Date,
   order_time: TimeRanges,
   order_total: number,
-  cust_id: number,
-  emp_id: number,
+  emp_name: number,
   used_points: boolean
 }

@@ -18,6 +18,7 @@ import { getCustomerFromDatabase } from '@/lib/utils';
 import { useState } from 'react';
 import { Customer } from '@/lib/types';
 import { Dispatch, SetStateAction } from 'react';
+import CustomerSignUp from './customer-sign-up';
 
 interface RewardsButtonProps {
   setCustomer: Dispatch<SetStateAction<Customer | undefined>>;
@@ -78,10 +79,6 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
     }
   }
 
-  async function newCustomer() {
-    
-  }
-
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
@@ -135,17 +132,7 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
                 )}
               />
               <DialogFooter>
-                <DialogTrigger asChild>
-                  <Button variant="outline">No account? Sign-up Here</Button>
-                </DialogTrigger>
-                <DialogContent className="min-w-fit">
-                  <DialogHeader>
-                    Earn rewards with a new account!
-                  </DialogHeader>
-                  <div className="flex pt-4">
-                   {/*not done */}
-                  </div>
-                </DialogContent>
+                <CustomerSignUp/>
                 <Button type="submit">Sign-in</Button>
               </DialogFooter>
             </form>

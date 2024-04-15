@@ -13,9 +13,11 @@ export default async function handler(
 
     try{
         const custId = req.query.custId;// Should be in local storage
-        // Note: when only passing one parameter, dont use backticks (``), use ""
+        // Note: when getting only one paramater from query, specify what you're getting
         const getPurchases = await db.prepare(
-            "SELECT * FROM orders WHERE cust_id = $1 ORDER BY order_date DESC",{paramTypes: [DataTypeOIDs.numeric]}
+            `SELECT order_id, order_date, order_time, order_total::numeric, e.emp_name, used_points FROM orders as o
+             JOIN employees AS e ON e.emp_id = o.emp_id
+             WHERE cust_id = 300 ORDER BY order_date DESC;`,{paramTypes: [DataTypeOIDs.numeric]}
         );
         const customerOrders = await getPurchases.execute({params: [custId]});
         await getPurchases.close();
@@ -30,9 +32,8 @@ export default async function handler(
                     order_date: row[1],
                     order_time: row[2],
                     order_total: row[3],
-                    cust_id: row[4],
-                    emp_id: row[5],
-                    used_points: row[6]
+                    emp_name: row[4],
+                    used_points: row[5]
                 })
             )
             res.status(200).json(customerOrderData);
