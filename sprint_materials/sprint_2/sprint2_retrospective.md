@@ -15,6 +15,29 @@
 - [x] What part of our features would we like to improve/tweak looking back
 - [x] What parts of the user studies will we implement in our design moving forward
 - [x] What do we feel were the biggest blockers/what went wrong during the sprint
+- [x] What should we change to make those blockers disappear/general changes for next sprint
+- [x] Any other new tasks (0 point tasks a.k.a chores) that we should add to our product backlog
+- [x] Set time for Sprint 3 planning meeting
+
+## Meeting Minutes
+
+### Sprint 2 Retrospective for CSCE 331 Project 3
+### Prepared by: Gabriel Floreslovo
+### Meeting Date: 4/15/2024
+
+## Meeting Attendees
+- Adam Teo
+- Akshay Belhe
+- Aaron Mathews
+- Chris Avila
+- Margo Gongora
+- Gabriel Floreslovo
+
+## Agenda
+- [x] What features are we all happiest with
+- [x] What part of our features would we like to improve/tweak looking back
+- [x] What parts of the user studies will we implement in our design moving forward
+- [x] What do we feel were the biggest blockers/what went wrong during the sprint
 - [x] What should we change to make those blockers disappear
 - [x] Any other new tasks (0 point tasks a.k.a chores) that we should add to our product backlog
 - [x] Set time for Sprint 3 planning meeting

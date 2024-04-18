@@ -1,6 +1,6 @@
-### Sprint 2 Planning Meeting for CSCE 331 Project 3
+### Sprint 3 Planning Meeting for CSCE 331 Project 3
 ### Prepared by: Gabriel Floreslovo
-### Meeting Date: 4/3/2024
+### Meeting Date: 4/17/2024
 
 ## Meeting Attendees
 - Adam Teo
