@@ -1,3 +1,5 @@
+import { columns } from "@/components/employee/kitchen/columns";
+import DataTable from "@/components/employee/kitchen/data-table";
 import db from "@/lib/db";
 import { CustomerOrder } from "@/lib/types";
 import { executeStatement } from "@/lib/utils";
@@ -5,7 +7,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { QueryResult } from "postgresql-client";
 
 export interface PendingOrder extends CustomerOrder {
-    status: number;
+    status: "Pending" | "Complete" | "Cancelled";
 }
 
 export interface MenuOrderPair {
@@ -42,12 +44,12 @@ export const getServerSideProps = (async () => {
             return res.rows!.map((row: any[]) => {
                 return {
                     order_id: row[0],
-                    order_date: row[1],
-                    order_time: row[2],
-                    order_total: row[3],
+                    order_date: row[1].toString().substring(4, 15),
+                    order_time: row[2].toString(),
+                    order_total: row[3].toFixed(2),
                     emp_name: row[4],
                     used_points: row[5],
-                    status: row[6]
+                    status: row[6] === 0 ? "Pending" : "Complete"
                 } as PendingOrder;
             })
         }
@@ -67,8 +69,8 @@ export const getServerSideProps = (async () => {
         }
     });
 
-    console.log(orders);
-    console.log(items);
+    // console.log(orders);
+    // console.log(items);
 
     return { props: { orders, items } };
 }) satisfies GetServerSideProps<KitchenProps>
@@ -76,7 +78,7 @@ export const getServerSideProps = (async () => {
 const Kitchen = ({ orders, items }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     return (
         <>
-            <h1>FUCK</h1>
+            <DataTable columns={columns} data={orders} />
         </>
     )
 }
