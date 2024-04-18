@@ -185,7 +185,7 @@ const CustomerView = () => {
                                 <Image src={getImageForMenuItem(selectedItem.id)} alt={selectedItem.name} className="rounded-md" width={300} height={300} />
                               }
                             </div>
-                            <div className="flex items-center justify-start gap-4">
+                            <div className="flex items-center justify-start gap-4 mb-1">
                               <Label htmlFor="name" className="text-right mt-0.5">
                                 Ingredients:
                               </Label>
@@ -193,24 +193,29 @@ const CustomerView = () => {
                                 {/* <ul className="flex flex-row gap-1 mr-3"> */}
                                 <ul className="flex flex-row gap-1 mr-3 justify-center flex-wrap">
                                   {item.ingredients.map((ingredient: string) => (
-                                    <li key={ingredient} className="text-sm">{ingredient}</li>
+                                    <li key={ingredient} className="text-sm">
+                                    {ingredient.charAt(0).toUpperCase() + ingredient.slice(1)} </li>
                                   ))}
                                 </ul>
                               </div>
                             </div>
-                            <div className="flex items-center justify-start gap-4">
-                              <Label htmlFor="allergens" className="text-right mt-0.5 text-red-500 font-bold ">
+                            {(currentAllergens?.has_dairy || currentAllergens?.has_nuts || currentAllergens?.has_eggs) && (
+                            <div className="flex items-center justify-start gap-4 mb-0 py-0">
+                              <Label htmlFor="allergens" className="text-right text-red-500 font-bold ">
                                 CONTAINS
                               </Label>
                               <div id="allergens" className="flex flex-row gap-4 justify-center flex-wrap">
-                                {currentAllergens?.has_dairy && <p className="text-red-500">Dairy</p>}
-                                {currentAllergens?.has_nuts && <p className="text-red-500">Nuts</p>}
-                                {currentAllergens?.has_eggs && <p className="text-red-500">Eggs</p>}
-                                {currentAllergens?.is_vegan && <p className="text-red-500">Vegan</p>}
-                                {currentAllergens?.is_halal && <p className="text-red-500">Halal</p>}
+                                {currentAllergens?.has_dairy && <p className="text-red-500 mb-0">Dairy</p>}
+                                {currentAllergens?.has_nuts && <p className="text-red-500 mb-0">Nuts</p>}
+                                {currentAllergens?.has_eggs && <p className="text-red-500 mb-0">Eggs</p>}
                               </div>
                             </div>
-                          </DialogContent>
+                          )}
+                          <div className="flex justify-end gap-3">
+                            {currentAllergens?.is_vegan && <p className="text-sm font-bold text-green-500 mt-0 mb-0">VEGAN</p>}
+                            {currentAllergens?.is_halal && <p className="text-sm font-bold text-blue-500 mt-0 mb-0">HALAL</p>}
+                          </div>
+                            </DialogContent>
                         </Dialog>
                       </div>)
                   })}
