@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Card } from '../ui/card';
 import { categories, itemBelongsToCategory } from '@/lib/utils';
 import { Allergens } from '@/lib/types';
+import CustomerOrders from './customer-orders';
 
 
 export interface OrderItem {
@@ -32,6 +33,7 @@ export interface OrderItem {
  * @prop {any} selectedItem - An object representing the currently selected menu item.
  * @prop {any} hoveredItem - An object representing the currently hovered menu item.
  * @prop {number | null} hoveredTab - A number representing the currently hovered tab, or null if no tab is hovered.
+ * @prop {Allergens} currentAllergens - An Allergens object depicting the boolean state of the current selected item.
  * @description
  *   - Uses state variables to keep track of selected and hovered menu items and tabs.
  *   - Makes API calls to retrieve menu items and their corresponding ingredients.
@@ -71,10 +73,10 @@ const CustomerView = () => {
   };
 
 
-/**
- * Function to get all the menu items and their prices.
- * @returns - The menu items and their prices.
- */
+  /**
+   * Function to get all the menu items and their prices.
+   * @returns - The menu items and their prices.
+   */
   useEffect(() => {
     fetch('/api/menu/menu_items/get-all-items-and-price')
       .then((res) => res.json())
@@ -101,21 +103,21 @@ const CustomerView = () => {
   }, []);
 
 
-/**
- * Function to get the image for a specific menu item
- * @param itemID - ID of the item.
- * @returns - The image URL for the menu items.
- */
+  /**
+   * Function to get the image for a specific menu item
+   * @param itemID - ID of the item.
+   * @returns - The image URL for the menu items.
+   */
   // Retrieve the image for menu item using the item ID
   const getImageForMenuItem = (itemID: number) => {
     return `/menu-item-pics/${itemID}.jpeg`;
   };
 
 
-/**
- * Function to get allergens for a specific item
- * @param name - Name of the item.
- */
+  /**
+   * Function to get allergens for a specific item
+   * @param name - Name of the item.
+   */
   const getAllergensForItem = async (name: string) => {
     try {
       const res = await fetch(`/api/menu/allergens/${name}`);
@@ -154,6 +156,19 @@ const CustomerView = () => {
               )}
             </TabsTrigger>
           ))}
+          <TabsTrigger
+            value="pastOrders"
+            className="px-8 py-9 cursor-pointer relative"
+            onMouseEnter={() => setHoveredTab(6)}
+            onMouseLeave={() => setHoveredTab(null)}
+          >
+            <h2 className="text-2xl">
+              Past Orders
+            </h2>
+            {hoveredTab === 6 && (
+              <div className='absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500'></div>
+            )}
+          </TabsTrigger>
         </TabsList>
         {categories.map((category, index) => (
           <TabsContent key={index} value={category.replace(/\s/g, '')} className="w-4/5">
@@ -219,6 +234,16 @@ const CustomerView = () => {
           </TabsContent>
         ))
         }
+        <TabsContent value='pastOrders' className='w-4/5'>
+          <Card className="overflow-y-scroll h-[90%]">
+            <div className="p-4 items-stretch">
+              {
+                typeof window !== 'undefined' && localStorage.getItem('customerId') !== null && (
+                  <CustomerOrders id={localStorage.getItem('customerId')!}></CustomerOrders>
+                )}
+            </div>
+          </Card>
+        </TabsContent>
       </Tabs>
     </div>
   );
