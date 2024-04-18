@@ -78,7 +78,7 @@ export const getServerSideProps = (async () => {
 const Kitchen = ({ orders, items }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     return (
         <>
-            <DataTable columns={columns} data={orders} />
+            <DataTable columns={columns} data={orders} items={items} />
         </>
     )
 }
