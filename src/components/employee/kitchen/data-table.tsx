@@ -1,7 +1,9 @@
 "use client"
 
+import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+
 
 interface DataTableProps<TData, TVal> {
   columns: ColumnDef<TData, TVal>[],
@@ -33,6 +35,9 @@ function DataTable<TData, TVal>({ columns, data }: DataTableProps<TData, TVal>) 
                   </TableHead>
                 );
               })}
+              <TableHead>
+                Actions
+              </TableHead>
             </TableRow>
           ))}
         </TableHeader>
@@ -46,6 +51,12 @@ function DataTable<TData, TVal>({ columns, data }: DataTableProps<TData, TVal>) 
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
+                  <TableCell>
+                    <Button className="bg-red-950">Complete</Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button className="bg-red-950">View Order</Button>
+                  </TableCell>
                 </TableRow>
               ))
             )
