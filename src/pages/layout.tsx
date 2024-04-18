@@ -82,6 +82,11 @@ const Layout = ({ children }: LayoutProps) => {
                 <CustomerInfo weather={weather} />
               </div>
               <div className="flex gap-4">
+                <Button>
+                  <Link target="_blank" href="https://www.yelp.com/writeareview/biz/6dSStUCjMAfixAqz73iy9g?return_url=%2Fbiz%2F6dSStUCjMAfixAqz73iy9g&review_origin=biz-details-war-button">
+                    Rate Us! 🌟
+                  </Link>
+                </Button>
                 <Button variant="outline" asChild>
                   <Link href="/employee/login">
                     I&apos;m an Employee
