@@ -3,10 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { MenuOrderPair, PendingOrder } from "@/pages/employee/kitchen";
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { useRouter } from "next/router";
 import { ReactNode, useEffect, useState } from "react";
-import handler from "@/pages/api/kitchen/complete-order";
-import { NextApiRequest, NextApiResponse } from "next";
 
 interface DataTableProps<TData, TVal> {
   columns: ColumnDef<TData, TVal>[],
@@ -17,7 +14,6 @@ interface DataTableProps<TData, TVal> {
 function DataTable<TData, TVal>({ columns, data, items }: DataTableProps<TData, TVal>) {
   const [open, setOpen] = useState<{ [key: number]: boolean }>({});
   const [tableData, setTableData] = useState<TData[]>(data);
-  const router = useRouter();
 
   useEffect(() => {
     tableData.map((row, index) => {
@@ -56,25 +52,38 @@ function DataTable<TData, TVal>({ columns, data, items }: DataTableProps<TData, 
     )
   }
 
-  const markOrderCompleted = async (index: number) => {
+  // const markOrderCompleted = async (index: number) => {
+  //   const order = data[index] as PendingOrder;
+  //   order.status = "Complete";
+  //   const nextTableData = data.map((value, tableIndex) => {
+  //     if (index == tableIndex) {
+  //       return order as TData;
+  //     }
+  //     return value;
+  //   })
+
+  //   console.log(order);
+
+  //   await fetch(`http://localhost:3000/api/kitchen/complete-order?id=${order.order_id}`, {
+  //     method: 'PUT'
+  //   });
+
+  //   setTableData(nextTableData);
+  // }
+
+  const markOrder = async (status: string, url: string, index: number) => {
     const order = data[index] as PendingOrder;
-    order.status = "Complete";
+    order.status = status;
     const nextTableData = data.map((value, tableIndex) => {
-      if (index == tableIndex) {
-        return order as TData;
-      }
+      if (index === tableIndex) return order as TData;
       return value;
     })
 
-    console.log(order);
-
-    await fetch(`http://localhost:3000/api/kitchen/complete-order?id=${order.order_id}`, {
+    await fetch(url + `?id=${order.order_id}`, {
       method: 'PUT'
     });
 
     setTableData(nextTableData);
-
-
   }
 
   return (
@@ -112,40 +121,49 @@ function DataTable<TData, TVal>({ columns, data, items }: DataTableProps<TData, 
                     </TableCell>
                   ))}
                   <TableCell>
-                    <Button
-                      className="bg-red-950"
-                      onClick={async () => {
-                        await markOrderCompleted(index);
-                      }}
-                    >Complete</Button>
+                    <div className="flex flex-col">
+                      <Button
+                        className="bg-red-950 m-1"
+                        onClick={async () => {
+                          await markOrder("Complete", "http://localhost:3000/api/kitchen/complete-order", index);
+                        }}
+                      >Complete</Button>
+                      <Button
+                        className="bg-red-950 m-1"
+                        onClick={async () => {
+                          await markOrder("Cancelled", "http://localhost:3000/api/kitchen/cancel-order", index);
+                        }}
+                      >Cancel</Button>
+                      <AlertDialog open={open[index]}>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            className="bg-red-950 m-1"
+                            onClick={() => {
+                              setOpen({ ...open, [index]: true });
+                            }}
+                          >View Order</Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Order Details
+                            </AlertDialogTitle>
+                            {getListOfMenuItems(index)}
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogAction
+                              onClick={() => {
+                                setOpen({ ...open, [index]: false });
+                              }}
+                            >Exit
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
                   </TableCell>
                   <TableCell>
-                    <AlertDialog open={open[index]}>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          className="bg-red-950"
-                          onClick={() => {
-                            setOpen({ ...open, [index]: true });
-                          }}
-                        >View Order</Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Order Details
-                          </AlertDialogTitle>
-                          {getListOfMenuItems(index)}
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogAction
-                            onClick={() => {
-                              setOpen({ ...open, [index]: false });
-                            }}
-                          >Exit
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+
                   </TableCell>
                 </TableRow>
               ))

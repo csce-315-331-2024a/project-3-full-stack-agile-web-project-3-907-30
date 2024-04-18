@@ -15,11 +15,11 @@ export default async function handler(
     }
 
     const sql = `UPDATE orders
-    SET status = 1
+    SET status = -1
     WHERE order_id = $1;`;
 
     await executeStatement(db, sql, [DataTypeOIDs.int8], [id]);
     
-    res.status(200).json({msg: "Order marked as complete"});
+    res.status(200).json({msg: "Order marked as cancelled"});
 
 }

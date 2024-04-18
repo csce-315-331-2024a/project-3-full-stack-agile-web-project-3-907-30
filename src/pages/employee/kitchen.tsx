@@ -7,7 +7,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { QueryResult } from "postgresql-client";
 
 export interface PendingOrder extends CustomerOrder {
-    status: "Pending" | "Complete" | "Cancelled";
+    status: string;
 }
 
 export interface MenuOrderPair {
