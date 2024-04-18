@@ -234,7 +234,7 @@ const CustomerView = () => {
    *   - Displays a toast notification with the order ID.
    *   - Submits the order with the given order ID, total cost, employee ID, and toast notification function.
    */
-  const employeeSubmitOrder = async () => {
+  const customerSubmitOrder = async () => {
     try {
       const employee = 1;
       const nextOrderId = await getNextOrderId();
@@ -326,8 +326,8 @@ const CustomerView = () => {
       console.error("Error submitting order:", error);
       toast({
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request.",
+        title: "Cart is empty!",
+        description: "Please add items to your cart before submitting.",
       });
     }
   };
@@ -538,7 +538,7 @@ const CustomerView = () => {
             <div className="flex justify-between py-2 gap-2">
             <Button
               onClick={async () => {
-                employeeSubmitOrder();
+                customerSubmitOrder();
               }}
               className="bg-green-500 hover:bg-green-700 text-white text-xl font-bold px-6 py-8 rounded w-full"
             >

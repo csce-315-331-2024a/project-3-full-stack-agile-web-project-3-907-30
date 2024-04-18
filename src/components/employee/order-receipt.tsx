@@ -18,7 +18,7 @@ import useAuth from "@/hooks/useAuth";
 import { AuthHookType } from "@/lib/types";
 import { clear } from "console";
 import { Sword } from "lucide-react";
-import { set } from "zod";
+import { custom, set } from "zod";
 
 
 import {
@@ -131,10 +131,12 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
         total -= totalPoints;
       }
 
+      const customer_id = localStorage.getItem("customerId") ?? '';
+
       const res = await submitOrder(
         nextOrderId,
         total,
-        1,
+        parseInt(customer_id),
         parseInt(employee.empId),
         toast,
         chosenItems,
@@ -203,8 +205,8 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
       console.error("Error submitting order:", error);
       toast({
         variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request.",
+        title: "Cart is empty!",
+        description: "Please add items to your cart before submitting.",
       });
     }
   };
