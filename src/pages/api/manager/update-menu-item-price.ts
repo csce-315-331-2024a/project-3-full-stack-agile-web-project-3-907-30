@@ -20,7 +20,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
         const updateMenuItemStatement = await db.prepare(
-            "UPDATE menu_items SET item_price = $1 WHERE item_name = $2"
+            // ** AARON **
+             // "UPDATE menu_items SET item_price = $1 WHERE item_name = $2"
+
+            // Setting current price instead of item_price
+            "UPDATE menu_items SET cur_price = $1 WHERE item_name = $2"
         );
 
         await updateMenuItemStatement.execute({

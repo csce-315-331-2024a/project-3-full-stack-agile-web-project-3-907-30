@@ -96,9 +96,27 @@ const CustomerView = () => {
           ...item,
           id: data[index].id,
         }));
-        setMenuItems(itemsWithID);
+
+        const res2 = await fetch('/api/menu/menu_items/get-item-promotion');
+        const data2 = await res2.json();
+
+        const itemsOnSale = data2.map((item: any) => ({
+          ...item,
+          onSale: item.currentPrice < item.price,
+        }));
+
+        const combinedItems = itemsWithID.map((item, index) => ({
+          ...item,
+          currentPrice: itemsOnSale[index].currentPrice,
+          onSale: itemsOnSale[index].onSale,
+        }));
+
+        setMenuItems(combinedItems);
       });
+      
   }, []);
+
+
 
 
 /**
@@ -160,7 +178,8 @@ const CustomerView = () => {
             <Card className="overflow-y-scroll h-[90%]">
               <div className="grid grid-cols-5 gap-4 p-4 items-stretch">
                 {menuItems
-                  .filter((item) => itemBelongsToCategory(item.originalName, category))
+                   .filter((item) => itemBelongsToCategory(item.originalName, category))
+                  // .filter((item) => item && item.originalName && itemBelongsToCategory(item.originalName, category))
                   .map((item: any) => {
                     return (
                       <div key={item.name}
@@ -173,7 +192,9 @@ const CustomerView = () => {
                               <Image src={getImageForMenuItem(item.id)} alt={item.name} className="rounded-md" width={200} height={200} />
                               <div className="flex flex-col gap-2 text-lg text-center">
                                 <p className="font-semibold">{item.name}</p>
-                                <p className="text-base">${item.price.toFixed(2)}</p>
+                                {/* <p className="text-base">${item.price.toFixed(2)}</p> */}
+                                {!item.onSale && <p className="text-base">${item.currentPrice.toFixed(2)}</p>}
+                                {item.onSale && <p className="text-sm text-red-500 font-bold">ON SALE! ${item.currentPrice.toFixed(2)}</p>}
                               </div>
                             </Card>
                           </DialogTrigger>
