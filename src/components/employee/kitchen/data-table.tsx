@@ -13,13 +13,11 @@ interface DataTableProps<TData, TVal> {
 
 function DataTable<TData, TVal>({ columns, data, items }: DataTableProps<TData, TVal>) {
   const [open, setOpen] = useState<{ [key: number]: boolean }>({});
-  const [tableData, setTableData] = useState<TData[]>(data);
+  const [tableData, setTableData] = useState<TData[]>([]);
 
   useEffect(() => {
-    tableData.map((row, index) => {
-      setOpen({ ...open, [index]: false });
-    })
-  }, [])
+    setTableData(data);
+  }, [data])
 
   const table = useReactTable({
     data: tableData,
@@ -30,6 +28,7 @@ function DataTable<TData, TVal>({ columns, data, items }: DataTableProps<TData, 
   const getListOfMenuItems = (index: number): ReactNode => {
     const filteredItems = items.filter((item) => {
       const order = data[index] as PendingOrder;
+      if (order === undefined) return;
       return order.order_id === item.id;
     })
 

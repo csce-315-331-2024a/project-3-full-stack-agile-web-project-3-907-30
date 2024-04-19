@@ -154,7 +154,7 @@ const CustomerView = () => {
 							onMouseLeave={() => setHoveredTab(null)}
 						>
 							<h2 className="text-2xl">
-								For Right Now
+								Climate Cravings
 							</h2>
 							{hoveredTab === 6 && (
 								<div className='absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500'></div>

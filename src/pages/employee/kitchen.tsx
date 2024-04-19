@@ -1,10 +1,7 @@
 import { columns } from "@/components/employee/kitchen/columns";
 import DataTable from "@/components/employee/kitchen/data-table";
-import db from "@/lib/db";
 import { CustomerOrder } from "@/lib/types";
-import { executeStatement } from "@/lib/utils";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import { QueryResult } from "postgresql-client";
+import { useEffect, useState } from "react";
 
 export interface PendingOrder extends CustomerOrder {
   status: string;
@@ -20,62 +17,32 @@ export interface KitchenProps {
   items: MenuOrderPair[];
 }
 
-export const getServerSideProps = (async () => {
-  const order_sql = `SELECT
-    order_id, order_date, order_time,
-    order_total::numeric, e.emp_name, used_points, status
-    FROM orders AS o 
-    INNER JOIN employees AS e ON o.emp_id = e.emp_id
-    WHERE status = 0
-    ORDER BY order_date DESC;`;
+const Kitchen = () => {
+  const [orders, setOrders] = useState<PendingOrder[]>([]);
+  const [items, setItems] = useState<MenuOrderPair[]>([]);
 
-  const items_sql = `SELECT
-    o.order_id, m.item_name
-    FROM orders AS o
-    INNER JOIN orders_menu AS om ON o.order_id = om.order_id
-    INNER JOIN menu_items AS m ON om.item_id = m.item_id
-    WHERE o.status = 0;`;
+  useEffect(() => {
+    const getAndSetData = (async () => {
 
-  // Get customer orders
-  const orders = await executeStatement(db, order_sql, [], []).then((res: QueryResult) => {
-    if (res.rows!.length === 0) {
-      return []
-    } else {
-      return res.rows!.map((row: any[]) => {
-        return {
-          order_id: row[0],
-          order_date: row[1].toString().substring(4, 15),
-          order_time: row[2].toString(),
-          order_total: row[3].toFixed(2),
-          emp_name: row[4],
-          used_points: row[5],
-          status: row[6] === 0 ? "Pending" : "Complete"
-        } as PendingOrder;
-      })
-    }
-  });
+      const orderRes = await fetch('http://localhost:3000/api/kitchen/get-pending-orders');
+      const pendingOrders = JSON.parse(await orderRes.json()) as PendingOrder[];
+      console.log(pendingOrders);
 
-  // Get menu-order pairs from join table
-  const items = await executeStatement(db, items_sql, [], []).then((res: QueryResult) => {
-    if (res.rows!.length === 0) {
-      return []
-    } else {
-      return res.rows!.map((row: any[]) => {
-        return {
-          id: row[0],
-          name: row[1]
-        } as MenuOrderPair;
-      });
-    }
-  });
+      const itemsRes = await fetch('http://localhost:3000/api/kitchen/get-order-items');
+      const itemsPairs = JSON.parse(await itemsRes.json()) as MenuOrderPair[];
+      console.log(itemsPairs);
 
-  // console.log(orders);
-  // console.log(items);
+      setOrders(pendingOrders);
+      setItems(itemsPairs);
+    });
 
-  return { props: { orders, items } };
-}) satisfies GetServerSideProps<KitchenProps>
+    getAndSetData();
 
-const Kitchen = ({ orders, items }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const interval = setInterval(getAndSetData, 10000);
+    return () => clearInterval(interval);
+
+  }, [])
+
   return (
     <>
       <DataTable columns={columns} data={orders} items={items} />
