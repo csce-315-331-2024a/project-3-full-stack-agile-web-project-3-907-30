@@ -13,6 +13,7 @@ import {
   RevenueReportItem,
   ExcessReportItem,
   RestockReportItem,
+  OrderItem,
 } from "./types";
 import { Pool, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
@@ -384,20 +385,22 @@ export const itemBelongsToCategory = (
  */
 export async function putCustomerInLocalStorage(customer: Customer) {
   if (customer !== null) {
-    localStorage.setItem('customerId', customer!.cust_id.toString());
-    localStorage.setItem('customerName', customer!.cust_name);
-    localStorage.setItem('customerPhoneNumber', customer!.phone_number);
-    localStorage.setItem('customerNumOrders', customer!.num_orders.toString());
-    localStorage.setItem('customerTotalSpent', customer!.total_spent.toString());
-    localStorage.setItem('customerPoints', customer!.points.toString());
-  }
-  else {
-    localStorage.setItem('customerId', 'no customer ID');
-    localStorage.setItem('customerName', 'no customer');
-    localStorage.setItem('customerPhoneNumber', 'no customer phone number');
-    localStorage.setItem('customerNumOrders', 'no customer orders');
-    localStorage.setItem('customerTotalSpent', 'no customer total spent');
-    localStorage.setItem('customerPoints', 'no customer points');
+    localStorage.setItem("customerId", customer!.cust_id.toString());
+    localStorage.setItem("customerName", customer!.cust_name);
+    localStorage.setItem("customerPhoneNumber", customer!.phone_number);
+    localStorage.setItem("customerNumOrders", customer!.num_orders.toString());
+    localStorage.setItem(
+      "customerTotalSpent",
+      customer!.total_spent.toString()
+    );
+    localStorage.setItem("customerPoints", customer!.points.toString());
+  } else {
+    localStorage.setItem("customerId", "no customer ID");
+    localStorage.setItem("customerName", "no customer");
+    localStorage.setItem("customerPhoneNumber", "no customer phone number");
+    localStorage.setItem("customerNumOrders", "no customer orders");
+    localStorage.setItem("customerTotalSpent", "no customer total spent");
+    localStorage.setItem("customerPoints", "no customer points");
   }
 }
 
@@ -498,6 +501,12 @@ export async function getRestockReport() {
   return data;
 }
 
+/**
+ * Converts a row from the database to a MostProductiveEmployeeItem object.
+ *
+ * @param {any[]} array Row from SQL query
+ * @returns {MostProductiveEmployeeItem} Most productive employee item
+ */
 export const rowToMostProductiveEmployeeItem = (array: any[]) => {
   return {
     id: array[0],
@@ -526,6 +535,13 @@ export async function updateMenuItemPrice(itemName: string, newPrice: number) {
   return res;
 }
 
+/**
+ * Get the most productive employees within a given date range.
+ *
+ * @param {string} startDate The start date of the range
+ * @param {string} endDate The end date of the range
+ * @returns {MostProductiveEmployeeItem[]} The most productive employees within the given date range.
+ */
 export async function getMostProductiveEmployeesInRange(
   startDate: string,
   endDate: string
@@ -579,13 +595,13 @@ export async function getProductUsageReportInRange(
 
 /**
  * Get the sales report within a given date range.
- * 
+ *
  * @param {string} startDate The start date of the range
  * @param {string} endDate The end date of the range
- * @returns {SalesReportItem[]} The sales report within the given date range. 
+ * @returns {SalesReportItem[]} The sales report within the given date range.
  */
 export async function getSalesReportInRange(
-  startDate: string, 
+  startDate: string,
   endDate: string
 ) {
   const res = await fetch("/api/manager/get-sales-report", {
@@ -603,5 +619,100 @@ export async function getSalesReportInRange(
     return [];
   }
   const data: SalesReportItem[] = await res.json();
+  return data;
+}
+
+/**
+ * Get all inventory items from the database.
+ *
+ * @returns {InventoryItem[]} The revenue report within the given date range.
+ */
+export async function getAllInventoryItems() {
+  const res = await fetch("/api/inventory/get-all");
+  const data: InventoryItem[] = await res.json();
+  return data;
+}
+
+/**
+ * Get an inventory item from the database by its ID.
+ *
+ * @param {number} id The ID of the inventory item to get.
+ * @returns {InventoryItem} The inventory item from the database.
+ */
+export async function getInventoryItem(id: number) {
+  const res = await fetch("/api/inventory/get", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id }),
+  });
+
+  const data: InventoryItem = await res.json();
+  return data;
+}
+
+/**
+ * Add an inventory item to the database.
+ *
+ * @param {InventoryItem} item The inventory item to add.
+ * @returns {Response} The response from the database.
+ */
+export async function addInventoryItem(item: InventoryItem) {
+  const res = await fetch("/api/inventory/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(item),
+  });
+
+  return res;
+}
+
+/**
+ * Update an inventory item in the database.
+ *
+ * @param {InventoryItem} item The inventory item to update.
+ * @returns {Response} The response from the database.
+ */
+export async function updateInventoryItem(item: InventoryItem) {
+  const res = await fetch("/api/inventory/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(item),
+  });
+
+  return res;
+}
+
+/**
+ * Delete an inventory item from the database.
+ *
+ * @param {number} id The ID of the inventory item to delete.
+ * @returns {Response} The response from the database.
+ */
+export async function deleteInventoryItem(id: number) {
+  const res = await fetch("/api/inventory/delete", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id }),
+  });
+
+  return res;
+}
+
+/**
+ * Get all orders from the database.
+ * 
+ * @returns {OrderItem[]} All orders from the database. 
+ */
+export async function getAllOrders() {
+  const res = await fetch("/api/order/get-all");
+  const data = await res.json();
   return data;
 }

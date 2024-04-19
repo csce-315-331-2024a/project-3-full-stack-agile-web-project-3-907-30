@@ -36,7 +36,7 @@ const ViewEmployees = () => {
         <CardTitle>Current Employees</CardTitle>
         <CardDescription>The following employees have logged into the system.</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-6">
+      <CardContent className="flex flex-col gap-6 notranslate">
         {loading ? (
           Array.from({ length: skeletonCount }).map((_, index) => (
             <div className="flex items-center space-x-4" key={index}>

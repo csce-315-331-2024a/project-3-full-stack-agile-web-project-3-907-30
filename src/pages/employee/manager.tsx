@@ -34,7 +34,7 @@ const Manager = () => {
         <>
           <h1 className="text-3xl font-bold">Manager Dashboard</h1>
           <Tabs defaultValue="management" className="w-full h-full">
-            <TabsList className="grid grid-cols-2 w-full h-fit">
+            <TabsList className="grid grid-cols-2 w-full h-fit text-black">
               <TabsTrigger value="management" className="py-2">Management</TabsTrigger>
               <TabsTrigger value="trends" className="py-2">Trends</TabsTrigger>
             </TabsList>

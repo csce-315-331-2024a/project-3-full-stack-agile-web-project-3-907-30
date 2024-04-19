@@ -36,7 +36,7 @@ const Trends = () => {
     <Tabs defaultValue="SalesReport" className="flex flex-row gap-4 w-full h-full">
       <TabsList className="grid grid-cols-1 h-fit mt-2 w-1/5">
         {trendsTabs.map((tab, index) => (
-          <TabsTrigger key={index} value={tab.replaceAll(" ", "")} className="py-4">
+          <TabsTrigger key={index} value={tab.replaceAll(" ", "")} className="py-4 px-8">
             {tab}
           </TabsTrigger>
         ))}

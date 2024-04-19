@@ -139,3 +139,14 @@ export interface CustomerOrder {
   emp_name: number,
   used_points: boolean
 }
+
+export interface OrderItem {
+  order_id: number;
+  order_date: Date;
+  order_time: string;
+  order_total: number;
+  cust_id: number;
+  emp_id: string;
+  used_points: boolean;
+  status: number;
+}

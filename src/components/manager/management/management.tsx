@@ -9,6 +9,8 @@ import LeastSellingView from "./least-selling-view";
 import LeastContributingView from "./least-contributing-view";
 import ItemSaleGUI from "./item-sale-gui";
 import { Card } from "@/components/ui/card";
+import InventoryManagement from "./inventory-management";
+import OrderManagement from "./order-management";
 
 /**
  * A management component that encapsulates managing users, inventory, menu, and orders.
@@ -45,9 +47,9 @@ const Management = () => {
 
   return (
     <Tabs defaultValue="UserManagement" className="flex flex-row gap-4 h-full">
-      <TabsList className="grid grid-cols-1 h-fit mt-2 w-1/5">
+      <TabsList className="grid grid-cols-1 h-fit mt-2 w-1/5 text-black">
         {managementTabs.map((tab, index) => (
-          <TabsTrigger key={index} value={tab.replaceAll(" ", "")} className="py-4">
+          <TabsTrigger key={index} value={tab.replaceAll(" ", "")} className="py-4 px-8">
             {tab}
           </TabsTrigger>
         ))}
@@ -60,13 +62,13 @@ const Management = () => {
           <ViewEmployees />
         </Card>
       </TabsContent>
-      <TabsContent value="OrderManagement">
-        Order Management
+      <TabsContent value="OrderManagement" className="w-4/5">
+        <OrderManagement />
       </TabsContent>
-      <TabsContent value="InventoryManagement">
-        Inventory Management
+      <TabsContent value="InventoryManagement" className="w-4/5">
+        <InventoryManagement />
       </TabsContent>
-      <TabsContent value="MenuManagement">
+      <TabsContent value="MenuManagement" className="w-4/5">
         <Card className="flex min-h-fit max-h-[85%] gap-8 p-4 notranslate">
           <LeastSellingView />
           <LeastContributingView />
