@@ -79,8 +79,7 @@ const CustomerOrders = ({ id }: CustomerOrdersProps) => {
 							})}
 						</TableBody>
 					</Table>
-				)
-				}
+				)}
 			</ScrollArea>
 		</>
 	)

@@ -1,4 +1,4 @@
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { MenuOrderPair, PendingOrder } from "@/pages/employee/kitchen";
@@ -51,25 +51,6 @@ function DataTable<TData, TVal>({ columns, data, items }: DataTableProps<TData, 
       </>
     )
   }
-
-  // const markOrderCompleted = async (index: number) => {
-  //   const order = data[index] as PendingOrder;
-  //   order.status = "Complete";
-  //   const nextTableData = data.map((value, tableIndex) => {
-  //     if (index == tableIndex) {
-  //       return order as TData;
-  //     }
-  //     return value;
-  //   })
-
-  //   console.log(order);
-
-  //   await fetch(`http://localhost:3000/api/kitchen/complete-order?id=${order.order_id}`, {
-  //     method: 'PUT'
-  //   });
-
-  //   setTableData(nextTableData);
-  // }
 
   const markOrder = async (status: string, url: string, index: number) => {
     const order = data[index] as PendingOrder;
@@ -127,7 +108,7 @@ function DataTable<TData, TVal>({ columns, data, items }: DataTableProps<TData, 
                         onClick={async () => {
                           await markOrder("Complete", "http://localhost:3000/api/kitchen/complete-order", index);
                         }}
-                      >Complete</Button>
+                      >Mark as Complete</Button>
                       <Button
                         className="bg-red-950 m-1"
                         onClick={async () => {
@@ -161,9 +142,6 @@ function DataTable<TData, TVal>({ columns, data, items }: DataTableProps<TData, 
                         </AlertDialogContent>
                       </AlertDialog>
                     </div>
-                  </TableCell>
-                  <TableCell>
-
                   </TableCell>
                 </TableRow>
               ))

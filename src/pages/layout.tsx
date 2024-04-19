@@ -87,7 +87,7 @@ const Layout = ({ children }: LayoutProps) => {
                     I&apos;m an Employee
                   </Link>
                 </Button>
-                <RewardsButton setCustomer={setCustomer}/>
+                <RewardsButton setCustomer={setCustomer} />
               </div>
             </div>
           </div>
@@ -128,6 +128,13 @@ const Layout = ({ children }: LayoutProps) => {
                           <Link href="/employee/menu" legacyBehavior passHref>
                             <NavigationMenuLink className={navigationMenuTriggerStyle()} active={router.asPath === '/employee/menu'}>
                               Menu View
+                            </NavigationMenuLink>
+                          </Link>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                          <Link href="/employee/kitchen" legacyBehavior passHref>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()} active={router.asPath === '/employee/kitchen'}>
+                              Kitchen View
                             </NavigationMenuLink>
                           </Link>
                         </NavigationMenuItem>

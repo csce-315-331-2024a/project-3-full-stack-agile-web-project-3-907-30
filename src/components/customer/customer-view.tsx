@@ -3,9 +3,7 @@ import { Label } from '@/components/ui/label';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useState } from 'react';
@@ -15,6 +13,10 @@ import { Card } from '../ui/card';
 import { categories, itemBelongsToCategory } from '@/lib/utils';
 import { Allergens } from '@/lib/types';
 import CustomerOrders from './customer-orders';
+import { ScrollArea } from '../ui/scroll-area';
+import CustomerWeatherReccs from './weather-recc';
+import { Weather } from '@/pages/api/customer/weather';
+import { getCurrentWeather } from './customer-weather';
 
 
 export interface OrderItem {
@@ -48,6 +50,7 @@ const CustomerView = () => {
   const [hoveredTab, setHoveredTab] = useState<number | null>(null);
   const [currentAllergens, setAllergens] = useState<Allergens>();
   const [open, setOpen] = useState<{ [key: string]: boolean }>({});
+  const [currentWeather, setWeather] = useState<Weather>();
 
   /**
    * Function to handle when an item is clicked
@@ -100,6 +103,9 @@ const CustomerView = () => {
         }));
         setMenuItems(itemsWithID);
       });
+    getCurrentWeather().then((weather) => {
+      setWeather(weather);
+    })
   }, []);
 
 
@@ -139,37 +145,53 @@ const CustomerView = () => {
   return (
     <div className="w-full h-full flex flex-col justify-start items-start p-4">
       <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-full">
-        <TabsList className="grid grid-cols-1 w-1/5 mt-2 h-fit">
-          {categories.map((category, index) => (
+        <ScrollArea className="w-1/5">
+          <TabsList className="grid grid-cols-1 mt-2 h-fit">
             <TabsTrigger
-              key={index}
-              value={category.replace(/\s/g, '')}
-              className={`px-8 py-9 cursor-pointer relative`}
-              onMouseEnter={() => setHoveredTab(index)}
+              value="reccs"
+              className="px-8 py-9 cursor-pointer relative"
+              onMouseEnter={() => setHoveredTab(7)}
               onMouseLeave={() => setHoveredTab(null)}
             >
               <h2 className="text-2xl">
-                {category}
+                For Right Now
               </h2>
-              {hoveredTab === index && (
-                <div className="absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500"></div>
+              {hoveredTab === 6 && (
+                <div className='absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500'></div>
               )}
             </TabsTrigger>
-          ))}
-          <TabsTrigger
-            value="pastOrders"
-            className="px-8 py-9 cursor-pointer relative"
-            onMouseEnter={() => setHoveredTab(6)}
-            onMouseLeave={() => setHoveredTab(null)}
-          >
-            <h2 className="text-2xl">
-              Past Orders
-            </h2>
-            {hoveredTab === 6 && (
-              <div className='absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500'></div>
-            )}
-          </TabsTrigger>
-        </TabsList>
+            {categories.map((category, index) => (
+              <TabsTrigger
+                key={index}
+                value={category.replace(/\s/g, '')}
+                className={`px-8 py-9 cursor-pointer relative`}
+                onMouseEnter={() => setHoveredTab(index)}
+                onMouseLeave={() => setHoveredTab(null)}
+              >
+                <h2 className="text-2xl">
+                  {category}
+                </h2>
+                {hoveredTab === index && (
+                  <div className="absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500"></div>
+                )}
+              </TabsTrigger>
+            ))}
+            <TabsTrigger
+              value="pastOrders"
+              className="px-8 py-9 cursor-pointer relative"
+              onMouseEnter={() => setHoveredTab(6)}
+              onMouseLeave={() => setHoveredTab(null)}
+            >
+              <h2 className="text-2xl">
+                Past Orders
+              </h2>
+              {hoveredTab === 6 && (
+                <div className='absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500'></div>
+              )}
+            </TabsTrigger>
+
+          </TabsList>
+        </ScrollArea>
         {categories.map((category, index) => (
           <TabsContent key={index} value={category.replace(/\s/g, '')} className="w-4/5">
             <Card className="overflow-y-scroll h-[90%]">
@@ -232,8 +254,7 @@ const CustomerView = () => {
               </div>
             </Card>
           </TabsContent>
-        ))
-        }
+        ))}
         <TabsContent value='pastOrders' className='w-4/5'>
           <Card className="overflow-y-scroll h-[90%]">
             <div className="p-4 items-stretch">
@@ -241,6 +262,13 @@ const CustomerView = () => {
                 typeof window !== 'undefined' && localStorage.getItem('customerId') !== null && (
                   <CustomerOrders id={localStorage.getItem('customerId')!}></CustomerOrders>
                 )}
+            </div>
+          </Card>
+        </TabsContent>
+        <TabsContent value='reccs' className='w-4/5'>
+          <Card className='overflow-y-scroll h-[90%]'>
+            <div className='grid grid-cols-5 gap-4 p-4 items-stretch'>
+              <CustomerWeatherReccs weather={currentWeather!} items={menuItems} />
             </div>
           </Card>
         </TabsContent>
