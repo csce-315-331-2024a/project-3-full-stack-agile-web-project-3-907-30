@@ -13,6 +13,7 @@ import {
   RevenueReportItem,
   ExcessReportItem,
   RestockReportItem,
+  OrderItem,
 } from "./types";
 import { Pool, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
@@ -752,4 +753,15 @@ export async function deleteInventoryItem(id: number) {
   });
 
   return res;
+}
+
+/**
+ * Get all orders from the database.
+ * 
+ * @returns {OrderItem[]} All orders from the database. 
+ */
+export async function getAllOrders() {
+  const res = await fetch("/api/order/get-all");
+  const data = await res.json();
+  return data;
 }

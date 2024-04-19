@@ -10,6 +10,7 @@ import LeastContributingView from "./least-contributing-view";
 import ItemSaleGUI from "./item-sale-gui";
 import { Card } from "@/components/ui/card";
 import InventoryManagement from "./inventory-management";
+import OrderManagement from "./order-management";
 
 /**
  * A management component that encapsulates managing users, inventory, menu, and orders.
@@ -61,8 +62,8 @@ const Management = () => {
           <ViewEmployees />
         </Card>
       </TabsContent>
-      <TabsContent value="OrderManagement">
-        Order Management
+      <TabsContent value="OrderManagement" className="w-4/5">
+        <OrderManagement />
       </TabsContent>
       <TabsContent value="InventoryManagement" className="w-4/5">
         <InventoryManagement />
