@@ -24,11 +24,11 @@ const Kitchen = () => {
   useEffect(() => {
     const getAndSetData = (async () => {
 
-      const orderRes = await fetch('http://localhost:3000/api/kitchen/get-pending-orders');
+      const orderRes = await fetch('https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/api/kitchen/get-pending-orders');
       const pendingOrders = JSON.parse(await orderRes.json()) as PendingOrder[];
       console.log(pendingOrders);
 
-      const itemsRes = await fetch('http://localhost:3000/api/kitchen/get-order-items');
+      const itemsRes = await fetch('https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/api/kitchen/get-order-items');
       const itemsPairs = JSON.parse(await itemsRes.json()) as MenuOrderPair[];
       console.log(itemsPairs);
 
