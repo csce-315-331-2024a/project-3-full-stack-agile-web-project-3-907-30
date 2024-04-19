@@ -131,6 +131,13 @@ const Layout = ({ children }: LayoutProps) => {
                             </NavigationMenuLink>
                           </Link>
                         </NavigationMenuItem>
+                        <NavigationMenuItem>
+                          <Link href="/employee/kitchen" legacyBehavior passHref>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()} active={router.asPath === '/employee/kitchen'}>
+                              Kitchen View
+                            </NavigationMenuLink>
+                          </Link>
+                        </NavigationMenuItem>
                       </>
                     )}
                     {employee && employee.isManager && (
