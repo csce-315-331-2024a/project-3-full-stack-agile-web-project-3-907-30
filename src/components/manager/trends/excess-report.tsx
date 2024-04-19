@@ -35,17 +35,8 @@ const ExcessReport = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        getExcessReport("2023-01-01").then((data) => {
-            setData(data);
-        });
         setLoading(false);
     }, [loading]);
-
-    useEffect(() => {
-        // getExcessReport().then((data) => {
-        // setData(data);
-        // });
-    }, [onSubmit]);
 
     async function onSubmit(formData: z.infer<typeof FormSchema>) {
         const res = getExcessReport(formData.start_date);
@@ -81,7 +72,7 @@ const ExcessReport = () => {
                         <Button type="submit">Submit</Button>
                     </form>
                 </Form>
-                <Table>
+                {data.length !== 0 && (<Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead>Name</TableHead>
@@ -110,7 +101,7 @@ const ExcessReport = () => {
                     <TableFooter>
 
                     </TableFooter>
-                </Table>
+                </Table>)}
             </CardContent>
         </Card>
     );

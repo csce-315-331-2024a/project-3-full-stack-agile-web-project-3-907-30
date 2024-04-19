@@ -11,13 +11,6 @@ import WhatSellsTogether from "./what-sells-together";
 import MenuItemPopularity from "./menu-item-popularity";
 import DaysWithMostSales from "./days-with-most-sales";
 
-export interface TrendsProps {
-  mostProductiveEmployeesData: MostProductiveEmployeeItem[];
-  whatSellsTogetherData: PairsAndAppearance[];
-  popularMenuItemData: PopularMenuItem[];
-  salesForADayData: SalesForADay[];
-}
-
 /**
  * A trends component that encapsulates all trend reports.
  * 
@@ -28,9 +21,7 @@ export interface TrendsProps {
  * // Render a trends component.
  * <Trends />
  */
-const Trends = ({ mostProductiveEmployeesData, whatSellsTogetherData, popularMenuItemData,
-  salesForADayData
-}: TrendsProps) => {
+const Trends = () => {
 
   const trendsTabs = [
     "Sales Report",
@@ -68,21 +59,21 @@ const Trends = ({ mostProductiveEmployeesData, whatSellsTogetherData, popularMen
         </Card>
       </TabsContent>
       <TabsContent value="MostProductiveEmployees" className="w-4/5">
-        <MostProductiveEmployees data={mostProductiveEmployeesData} />
+        <MostProductiveEmployees />
       </TabsContent>
       <TabsContent value="WhatSellsTogether" className="w-4/5">
         <Card className="flex min-h-fit max-h-[85%]">
-          <WhatSellsTogether data={whatSellsTogetherData} />
+          <WhatSellsTogether />
         </Card>
       </TabsContent>
       <TabsContent value="MostPopularItems" className="w-4/5">
         <Card className="flex min-h-fit max-h-[85%]">
-          <MenuItemPopularity data={popularMenuItemData} />
+          <MenuItemPopularity />
         </Card>
       </TabsContent>
       <TabsContent value="DayswithMostSales" className="w-4/5">
         <Card className="flex min-h-fit max-h-[85%]">
-          <DaysWithMostSales data={salesForADayData} />
+          <DaysWithMostSales />
         </Card>
       </TabsContent>
     </Tabs>

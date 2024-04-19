@@ -12,22 +12,13 @@ import WhatSellsTogether from "@/components/manager/trends/what-sells-together";
 import DaysWithMostSales from "@/components/manager/trends/days-with-most-sales";
 import MenuItemPopularity from "@/components/manager/trends/menu-item-popularity";
 
-
-
-export interface ManagerProps {
-  // whatSellsTogetherData: PairsAndAppearance[];
-  // popularMenuItemData: PopularMenuItem[];
-  // salesForADayData: SalesForADay[];
-  mostProductiveEmployeesData: MostProductiveEmployeeItem[];
-}
-
 /**
  * The manager view page. This page is only accessible to users that are managers or admins.
  * 
  * @component
  * @returns {JSX.Element} The manager view page.
  */
-const Manager = ({ mostProductiveEmployeesData }: ManagerProps) => {
+const Manager = () => {
   const { account } = useAuth() as AuthHookType;
 
   const [employee, setEmployee] = useState<Employee>();
@@ -35,21 +26,6 @@ const Manager = ({ mostProductiveEmployeesData }: ManagerProps) => {
   const [whatSellsTogetherData, setWhatSellsTogether] = useState<PairsAndAppearance[]>();
   const [popularMenuItemData, setPopularMenuItem] = useState<PopularMenuItem[]>();
   const [salesForADayData, setSalesForADay] = useState<SalesForADay[]>();
-
-  useEffect(() => {
-    const fetchTrendData = async () => {
-      const whatSellsData = await whatSellsTogether("2023-01-01", "2023-01-01");
-      setWhatSellsTogether(whatSellsData!);
-
-      const popularMenuItemData = await menuItemsPopularity('2023-01-01', '2023-01-01');
-      setPopularMenuItem(popularMenuItemData!);
-
-      const salesDayData = await daysWithMostSales(1, 2022);
-      setSalesForADay(salesDayData!);
-    }
-
-    fetchTrendData();
-  }, [])
 
   useEffect(() => {
     if (account) {
@@ -75,8 +51,7 @@ const Manager = ({ mostProductiveEmployeesData }: ManagerProps) => {
               <Management />
             </TabsContent>
             <TabsContent value="trends" className="h-full">
-              <Trends mostProductiveEmployeesData={mostProductiveEmployeesData}
-                whatSellsTogetherData={whatSellsTogetherData!} popularMenuItemData={popularMenuItemData!} salesForADayData={salesForADayData!} />
+              <Trends />
             </TabsContent>
           </Tabs>
         </>
@@ -90,30 +65,6 @@ const Manager = ({ mostProductiveEmployeesData }: ManagerProps) => {
       )}
     </main>
   );
-}
-
-export const getServerSideProps = async () => {
-  // const salesReportData = await getSalesReportData('2023-01-03', '2023-03-03');
-  // const whatSellsTogetherData = await whatSellsTogether('2023-01-03', '2023-05-01');
-  // const popularMenuItemData = await menuItemsPopularity('2023-01-03', '2023-05-01');
-  // const salesForADayData = await daysWithMostSales(4,2023);
-  const mostProductiveEmployeesData = await getMostProductiveEmployees();
-  return {
-    props: { mostProductiveEmployeesData },
-  };
-}
-
-const getMostProductiveEmployees = async () => {
-  const rows = await executeStatement(
-    db,
-    `SELECT emp_id, emp_name, total_orders
-    FROM Employees WHERE total_orders > 0 
-    ORDER BY total_orders DESC;`,
-    [],
-    []
-  ).then(data => data.rows!);
-
-  return rows.map(row => rowToMostProductiveEmployeeItem(row));
 }
 
 export default Manager;

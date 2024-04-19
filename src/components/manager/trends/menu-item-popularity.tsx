@@ -31,7 +31,7 @@ const FormSchema = z.object({
  * @param {PopularMenuItem[]} data The input data holding the result of database call.
  * @returns {JSX.Element} The Menu Item Popularity table component.
  */
-const MenuItemPopularity = ({ data }: { data: PopularMenuItem[] }) => {
+const MenuItemPopularity = () => {
 
     const [formData, setFormData] = useState<PopularMenuItem[]>([]);
     const [loading, setLoading] = useState(true);
@@ -43,18 +43,14 @@ const MenuItemPopularity = ({ data }: { data: PopularMenuItem[] }) => {
     })
 
     useEffect(() => {
-        setFormData(data);
         setLoading(false);
     }, [loading]);
-    
+
     async function onSubmit(formData: z.infer<typeof FormSchema>) {
         const res = await menuItemsPopularity(formData.start_date, formData.end_date);
         setFormData(res);
     }
 
-    if(!data) {
-        return null;
-    }
 
     return (<>
         <Card className="min-h-fit max-h-[85%] overflow-y-scroll w-full">
@@ -66,41 +62,41 @@ const MenuItemPopularity = ({ data }: { data: PopularMenuItem[] }) => {
                 <Form {...form} >
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                         <FormField
-                        control={form.control}
-                        name="start_date"
-                        render={({ field }) => (
-                            <FormItem>
-                            <FormLabel>Start Date</FormLabel>
-                            <FormControl>
-                                <Input placeholder="e.g. 2022-01-01" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                Enter the start date of the interval you want to see.
-                            </FormDescription>
-                            </FormItem>
-                        )
-                        }
+                            control={form.control}
+                            name="start_date"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Start Date</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="e.g. 2022-01-01" {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Enter the start date of the interval you want to see.
+                                    </FormDescription>
+                                </FormItem>
+                            )
+                            }
                         />
                         <FormField
-                        control={form.control}
-                        name="end_date"
-                        render={({ field }) => (
-                            <FormItem>
-                            <FormLabel>End Date</FormLabel>
-                            <FormControl>
-                                <Input placeholder="e.g. 2023-01-01" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                Enter the end date of the interval you want to see.
-                            </FormDescription>
-                            </FormItem>
-                        )
-                        }
+                            control={form.control}
+                            name="end_date"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>End Date</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="e.g. 2023-01-01" {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Enter the end date of the interval you want to see.
+                                    </FormDescription>
+                                </FormItem>
+                            )
+                            }
                         />
                         <Button type="submit">Submit</Button>
                     </form>
                 </Form>
-                <Table className="overflow-hidden">
+                {formData.length !== 0 && (<Table className="overflow-hidden">
                     <TableHeader>
                         <TableRow>
                             <TableHead>Sales</TableHead>
@@ -126,7 +122,7 @@ const MenuItemPopularity = ({ data }: { data: PopularMenuItem[] }) => {
                     <TableFooter>
 
                     </TableFooter>
-                </Table>
+                </Table>)}
             </CardContent>
         </Card>
     </>);

@@ -31,7 +31,7 @@ const FormSchema = z.object({
  * @param {SalesForADay[]} data The input data holding the result of database call.
  * @returns {JSX.Element} The Menu Item Popularity table component.
  */
-const DaysWithMostSales = ({ data }: { data: SalesForADay[] }) => {
+const DaysWithMostSales = () => {
 
     const [formData, setFormData] = useState<SalesForADay[]>([]);
     const [loading, setLoading] = useState(true);
@@ -43,17 +43,12 @@ const DaysWithMostSales = ({ data }: { data: SalesForADay[] }) => {
     })
 
     useEffect(() => {
-        setFormData(data);
         setLoading(false);
     }, [loading]);
-    
+
     async function onSubmit(formData: z.infer<typeof FormSchema>) {
         const res = await daysWithMostSales(Number(formData.month), Number(formData.year));
         setFormData(res);
-    }
-
-    if(!data) {
-        return null;
     }
 
     return (<>
@@ -69,38 +64,38 @@ const DaysWithMostSales = ({ data }: { data: SalesForADay[] }) => {
                             control={form.control}
                             name="month"
                             render={({ field }) => (
-                            <FormItem>
-                            <FormLabel>Month</FormLabel>
-                            <FormControl>
-                                <Input placeholder="e.g. 4 (april)" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                Enter the month to be analyzed.
-                            </FormDescription>
-                            </FormItem>
-                        )
-                        }
+                                <FormItem>
+                                    <FormLabel>Month</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="e.g. 4 (april)" {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Enter the month to be analyzed.
+                                    </FormDescription>
+                                </FormItem>
+                            )
+                            }
                         />
                         <FormField
                             control={form.control}
                             name="year"
                             render={({ field }) => (
-                            <FormItem>
-                            <FormLabel>Year</FormLabel>
-                            <FormControl>
-                                <Input placeholder="e.g. 2023" {...field} />
-                            </FormControl>
-                            <FormDescription>
-                                Enter the year to be analyzed.
-                            </FormDescription>
-                            </FormItem>
-                        )
-                        }
+                                <FormItem>
+                                    <FormLabel>Year</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="e.g. 2023" {...field} />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Enter the year to be analyzed.
+                                    </FormDescription>
+                                </FormItem>
+                            )
+                            }
                         />
                         <Button type="submit">Submit</Button>
                     </form>
                 </Form>
-                <Table className="overflow-hidden">
+                {formData.length !== 0 && (<Table className="overflow-hidden">
                     <TableHeader>
                         <TableRow>
                             <TableHead>Sales</TableHead>
@@ -116,7 +111,7 @@ const DaysWithMostSales = ({ data }: { data: SalesForADay[] }) => {
                                             {item.sales}
                                         </TableCell>
                                         <TableCell>
-                                            {(item.day).toString().slice(0,10)}
+                                            {(item.day).toString().slice(0, 10)}
                                         </TableCell>
                                     </TableRow>
                                 );
@@ -126,7 +121,7 @@ const DaysWithMostSales = ({ data }: { data: SalesForADay[] }) => {
                     <TableFooter>
 
                     </TableFooter>
-                </Table>
+                </Table>)}
             </CardContent>
         </Card>
     </>);
