@@ -62,7 +62,6 @@ const CustomerWeatherReccs = ({ weather, items }: CustomerWeatherReccsProps) => 
 
 		// Hot (high temps)
 		if (weather.value >= 80) {
-			console.log('HOT')
 			items.filter((value) => {
 				const item = value.originalName;
 				return item.includes('Shake') || item.includes('Drink')
@@ -75,7 +74,6 @@ const CustomerWeatherReccs = ({ weather, items }: CustomerWeatherReccsProps) => 
 
 		// Cold (cold temps)
 		else if (weather.value <= 46) {
-			console.log('COLD')
 			items.filter((value) => {
 				const item = value.originalName;
 				return item.includes('urger') || item.includes('Melt');
@@ -86,7 +84,6 @@ const CustomerWeatherReccs = ({ weather, items }: CustomerWeatherReccsProps) => 
 
 		// Day (is it day?)
 		if (weather.isDay && weather.value < 80) {
-			console.log('REG DAY')
 			items.filter((value) => {
 				const item = value.originalName;
 				return item.includes('Water') || item.includes('Drink') || item.includes('Wrap');
@@ -94,7 +91,6 @@ const CustomerWeatherReccs = ({ weather, items }: CustomerWeatherReccsProps) => 
 				filteredItems.push(item);
 			})
 		} else if (weather.isDay) {
-			console.log('ADDING DAY')
 			items.filter((value) => {
 				const item = value.originalName;
 				return item.includes('Wrap');
@@ -105,7 +101,6 @@ const CustomerWeatherReccs = ({ weather, items }: CustomerWeatherReccsProps) => 
 
 		// Night (is it night?)
 		else if (!weather.isDay && weather.value > 46) {
-			console.log('NIGHT')
 			items.filter((value) => {
 				const item: string = value.originalName;
 				return item.includes('Melt') || item.includes('urger') || item.includes('Meal');
