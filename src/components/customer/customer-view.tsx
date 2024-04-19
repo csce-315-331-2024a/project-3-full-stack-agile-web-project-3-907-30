@@ -47,12 +47,12 @@ import { ScrollArea } from "../ui/scroll-area";
 import { useToast } from "../ui/use-toast";
 
 import shoppingCart from "../../../public/shopping-cart.svg";
-import shoppingCartWhite from "../../../public/shopping-cart-white.svg";
+import editOrderImage from "../../../public/editOrderImage.svg";
 
 
 import { submitOrder } from "@/lib/utils";
 
-
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 export interface OrderItem {
   name: string;
   price: number;
@@ -178,6 +178,9 @@ const CustomerView = () => {
 
   const clearOrder = () => {
     setOrderItems([]);
+
+    // Clear the ingredient quantities for all items
+    setIngredientQuantities({});
   }
 
   const [subTotal, setSubTotal] = useState(0);
@@ -193,6 +196,10 @@ const CustomerView = () => {
   const [totalPoints, setTotalPoints] = useState(0);
   const { toast } = useToast();
 
+  const [openedPopoverItem, setOpenedPopoverItem] = useState<OrderItem | null>(null);
+  const [ingredientQuantities, setIngredientQuantities] = useState<{
+    [key: string]: { [key: string]: number };
+  }>({});// Object to store the quantities of each ingredient for the currently opened popover item
 
 
   useEffect(() => {
@@ -412,15 +419,23 @@ const CustomerView = () => {
     }
   };
 
-  const removeFullItemFromOrder = (item: OrderItem) => {
+  const removeItemFromOrder = (itemIndex: number) => {
     setOrderItems((prevOrderItems) => {
-      const updatedOrderItems = prevOrderItems.filter(
-        (orderItem) => orderItem.name !== item.name
-      );
+      const updatedOrderItems = [...prevOrderItems];
+      updatedOrderItems.splice(itemIndex, 1);
       return updatedOrderItems;
     });
-
+  
     getTotalPointsValueForOrder();
+    setOpenedPopoverItem(null);
+  
+    // Clear the ingredient quantities for the removed item
+    const updatedIngredientQuantities = { ...ingredientQuantities };
+    const removedItem = orderItems[itemIndex];
+    if (removedItem) {
+      delete updatedIngredientQuantities[removedItem.name];
+    }
+    setIngredientQuantities(updatedIngredientQuantities);
   };
 
 
@@ -466,7 +481,7 @@ const CustomerView = () => {
         </SheetHeader>
         <Card className="h-full">
           <CardContent className="flex flex-col gap-2">
-            <div className="text-sm flex justify-between items-center mb-4 border-b pb-4 pt-4">
+            <div className="text-md flex justify-between items-center mb-4 border-b pb-4 pt-4">
               <div className="text-gray-700">
                 <span className="block">Order Number: {orderNumber}</span>
                 <HoverCard>
@@ -516,7 +531,56 @@ const CustomerView = () => {
                     <span className="font-semibold">
                       ${(item.price * item.quantity).toFixed(2)}
                     </span>
-                    <button onClick={() => removeFullItemFromOrder(item)}>❌</button>
+                    <button onClick={() => removeItemFromOrder(index)}>❌</button>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button>
+                          <Image
+                            src={editOrderImage}
+                            alt="Edit Order"
+                            className="w-5 h-5"
+                            onClick={() => setOpenedPopoverItem(item)}
+                          />
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        align="end"
+                        sideOffset={4}
+                        className="max-w-xs"
+                        onChange={(isOpen:any) =>
+                          isOpen ? setOpenedPopoverItem(item) : setOpenedPopoverItem(null)
+                        }
+                      >
+                        <div className="flex flex-col gap-2">
+                          <h3 className="font-semibold">Ingredients:</h3>
+                          {item.name &&
+                            menuItems
+                              .find((menuItem) => menuItem.name === item.name)
+                              ?.ingredients.map((ingredient:any, index:any) => (
+                                <div key={index} className="flex items-center justify-between">
+                                  <span>{ingredient}</span>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    defaultValue={
+                                      (ingredientQuantities[item.name] || {})[ingredient] || 1
+                                    }
+                                    onChange={(e) =>
+                                      setIngredientQuantities({
+                                        ...ingredientQuantities,
+                                        [item.name]: {
+                                          ...(ingredientQuantities[item.name] || {}),
+                                          [ingredient]: parseInt(e.target.value, 10) || 0,
+                                        },
+                                      })
+                                    }
+                                    className="w-16 px-2 py-1 border border-gray-300 rounded"
+                                  />
+                                </div>
+                              ))}
+                        </div>
+                      </PopoverContent>                    
+                      </Popover>
                   </li>
                 ))}
               </ul>
