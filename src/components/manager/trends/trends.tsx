@@ -1,4 +1,3 @@
-import { SalesReportItem, ProductUsageItem, MostProductiveEmployeeItem, PairsAndAppearance, PopularMenuItem, SalesForADay } from "@/lib/types";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import SalesReport from "./sales-report";
 import ProductUsage from "./product-usage";
@@ -6,7 +5,6 @@ import { Card } from "@/components/ui/card";
 import MostProductiveEmployees from "./most-productive-employees";
 import ExcessReport from "./excess-report";
 import RestockReport from "./restock-report";
-import DatePicker from "./date-picker";
 import WhatSellsTogether from "./what-sells-together";
 import MenuItemPopularity from "./menu-item-popularity";
 import DaysWithMostSales from "./days-with-most-sales";

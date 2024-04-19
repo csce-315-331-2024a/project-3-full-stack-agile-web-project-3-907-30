@@ -1,16 +1,10 @@
 import useAuth from "@/hooks/useAuth";
-import { Employee, AuthHookType, SalesReportItem, ProductUsageItem, PairsAndAppearance, PopularMenuItem, SalesForADay, MostProductiveEmployeeItem } from "@/lib/types";
-import { getEmployeeFromDatabase, executeStatement, rowToSalesReportItem, rowToProductUsageItem, whatSellsTogether, menuItemsPopularity, daysWithMostSales, rowToMostProductiveEmployeeItem } from "@/lib/utils";
+import { Employee, AuthHookType } from "@/lib/types";
+import { getEmployeeFromDatabase } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import Management from "@/components/manager/management/management";
-import db from "@/lib/db";
-import { DataTypeOIDs } from "postgresql-client";
 import Trends from "@/components/manager/trends/trends";
-import { Button } from "@/components/ui/button";
-import WhatSellsTogether from "@/components/manager/trends/what-sells-together";
-import DaysWithMostSales from "@/components/manager/trends/days-with-most-sales";
-import MenuItemPopularity from "@/components/manager/trends/menu-item-popularity";
 
 /**
  * The manager view page. This page is only accessible to users that are managers or admins.
@@ -23,9 +17,6 @@ const Manager = () => {
 
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
-  const [whatSellsTogetherData, setWhatSellsTogether] = useState<PairsAndAppearance[]>();
-  const [popularMenuItemData, setPopularMenuItem] = useState<PopularMenuItem[]>();
-  const [salesForADayData, setSalesForADay] = useState<SalesForADay[]>();
 
   useEffect(() => {
     if (account) {
