@@ -1,3 +1,4 @@
+//customer-view.tsx
 import React, { useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import {
@@ -84,6 +85,25 @@ const CustomerView = () => {
   const [currentAllergens, setAllergens] = useState<Allergens>();
   const [open, setOpen] = useState<{ [key: string]: boolean }>({});
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+
+  const [subTotal, setSubTotal] = useState(0);
+  const [tax, setTax] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [orderNumber, setOrderNumber] = useState<string | null>(null);
+  const [customerPoints, setCustomerPoints] = useState<string | null>(null);
+  const [customerName, setCustomerName] = useState<string | null>(null);
+  const [customerId, setCustomerId] = useState<string | null>(null);
+  const [itemQuantity, setItemQuantity] = useState<number>(1);
+
+  const [isSwitchToggled, setIsSwitchToggled] = useState(false);
+  const [totalPoints, setTotalPoints] = useState(0);
+  const { toast } = useToast();
+
+  const [openedPopoverItem, setOpenedPopoverItem] = useState<OrderItem | null>(null);
+  const [ingredientQuantities, setIngredientQuantities] = useState<{
+    [key: string]: { [key: string]: number };
+  }>({});// Object to store the quantities of each ingredient for the currently opened popover item
+
 
   /**
    * Function to handle when an item is clicked
@@ -183,24 +203,7 @@ const CustomerView = () => {
     setIngredientQuantities({});
   }
 
-  const [subTotal, setSubTotal] = useState(0);
-  const [tax, setTax] = useState(0);
-  const [total, setTotal] = useState(0);
-  const [orderNumber, setOrderNumber] = useState<string | null>(null);
-  const [customerPoints, setCustomerPoints] = useState<string | null>(null);
-  const [customerName, setCustomerName] = useState<string | null>(null);
-  const [customerId, setCustomerId] = useState<string | null>(null);
-  const [itemQuantity, setItemQuantity] = useState<number>(1);
-
-  const [isSwitchToggled, setIsSwitchToggled] = useState(false);
-  const [totalPoints, setTotalPoints] = useState(0);
-  const { toast } = useToast();
-
-  const [openedPopoverItem, setOpenedPopoverItem] = useState<OrderItem | null>(null);
-  const [ingredientQuantities, setIngredientQuantities] = useState<{
-    [key: string]: { [key: string]: number };
-  }>({});// Object to store the quantities of each ingredient for the currently opened popover item
-
+  
 
   useEffect(() => {
     const calculateTotals = () => {

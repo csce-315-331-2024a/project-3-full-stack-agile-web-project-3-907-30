@@ -20,6 +20,9 @@ import { clear } from "console";
 import { Sword } from "lucide-react";
 import { custom, set } from "zod";
 
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import Image from 'next/image';
+import editOrderImage from "../../../public/editOrderImage.svg";
 
 import {
   HoverCard,
@@ -67,6 +70,12 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
 
   const [isSwitchToggled, setIsSwitchToggled] = useState(false);
   const [totalPoints, setTotalPoints] = useState(0);
+
+  const [openedPopoverItem, setOpenedPopoverItem] = useState<OrderItem | null>(null);
+  const [ingredientQuantities, setIngredientQuantities] = useState<{
+    [key: string]: { [key: string]: number };
+  }>({});// Object to store the quantities of each ingredient for the currently opened popover item
+  const [itemIngredients, setItemIngredients] = useState<{ [key: string]: string[] }>({});
 
   const { toast } = useToast();
 
@@ -291,6 +300,46 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     }
   };
 
+  const getIngredientsUsingItemID = async (itemID: number) => {
+    const res = await fetch(`/api/menu/ingredients/${itemID}`)
+    const data = await res.json();
+    const ingredientNames = data.map((ingredient: any) => ingredient.name);
+    return ingredientNames;
+  };
+
+  const getIDofItem = async (itemName: string) => {
+    const res = await fetch(`/api/menu/IDofItem?name=${itemName}`);
+    const data = await res.json();
+    return data.id;
+  }
+
+  const fetchIngredients = async (itemName: string) => {
+    try {
+      // Find the menu item with the given name
+      const menuItem = items.find((item) => item.name === itemName);
+      console.log(menuItem);
+
+      // get the item ID
+      const itemID = await getIDofItem(itemName);
+      console.log(itemID);
+  
+      if (menuItem) {
+        // Fetch the ingredients if they haven't been fetched before
+        if (!itemIngredients[itemName]) {
+          const ingredients = await getIngredientsUsingItemID(itemID);
+          setItemIngredients((prevState) => ({
+            ...prevState,
+            [itemName]: ingredients,
+          }));
+        }
+      }
+
+      console.log(itemIngredients);
+    } catch (error) {
+      console.error(`Error fetching ingredients for ${itemName}:`, error);
+    }
+  };
+
   useEffect(() => {
     const fetchOrderNumber = async () => {
       const nextOrderId = await getNextOrderId();
@@ -368,6 +417,54 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
                 <span className="font-semibold">
                   ${(item.price * item.quantity).toFixed(2)}
                 </span>
+                <Popover>
+                <PopoverTrigger asChild>
+                  <button>
+                    <Image
+                      src={editOrderImage}
+                      alt="Edit Order"
+                      className="w-5 h-5"
+                      onClick={() => [
+                        setOpenedPopoverItem(item),
+                        fetchIngredients(item.name)
+                      ]}
+                    />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  align="end"
+                  sideOffset={4}
+                  className="max-w-xs"
+                  onChange={(isOpen) =>
+                    isOpen ? setOpenedPopoverItem(item) : setOpenedPopoverItem(null)
+                  }
+                >
+                  <div className="flex flex-col gap-2">
+                    <h3 className="font-semibold">Ingredients:</h3>
+                    {itemIngredients[item.name]?.map((ingredient, index) => (
+                      <div key={index} className="flex items-center justify-between">
+                        <span>{ingredient}</span>
+                        <input
+                          type="number"
+                          min="0"
+                          defaultValue={(ingredientQuantities[item.name] || {})[ingredient] || 1}
+                          onChange={(e) =>
+                            setIngredientQuantities({
+                              ...ingredientQuantities,
+                              [item.name]: {
+                                ...(ingredientQuantities[item.name] || {}),
+                                [ingredient]: parseInt(e.target.value, 10) || 0,
+                              },
+                            })
+                          }
+                          className="w-16 px-2 py-1 border border-gray-300 rounded"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+
               </li>
             ))}
           </ul>
