@@ -192,9 +192,14 @@ const CustomerView = () => {
                               <Image src={getImageForMenuItem(item.id)} alt={item.name} className="rounded-md" width={200} height={200} />
                               <div className="flex flex-col gap-2 text-lg text-center">
                                 <p className="font-semibold">{item.name}</p>
-                                {/* <p className="text-base">${item.price.toFixed(2)}</p> */}
-                                {!item.onSale && <p className="text-base">${item.currentPrice.toFixed(2)}</p>}
-                                {item.onSale && <p className="text-sm text-red-500 font-bold">ON SALE! ${item.currentPrice.toFixed(2)}</p>}
+                                {item.onSale ? (
+                                  <>
+                                <p className="text-base line-through">${item.price.toFixed(2)}</p>
+                                <p className="text-sm text-red-500 font-bold">ON SALE! ${item.currentPrice.toFixed(2)}</p>
+                                </>
+                                ) : (
+                                  <p className="text-base">${item.currentPrice.toFixed(2)}</p>
+                                )}
                               </div>
                             </Card>
                           </DialogTrigger>

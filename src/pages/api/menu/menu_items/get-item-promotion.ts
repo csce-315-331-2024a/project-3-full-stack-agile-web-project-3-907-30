@@ -44,7 +44,7 @@ export default async function handler(
             currentPrice: row[2]
             }
         });
-        console.log(menuItems);
+        
 
       res.status(200).json(menuItems);
     }
