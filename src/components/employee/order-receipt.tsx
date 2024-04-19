@@ -12,14 +12,9 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import { getEmployeeFromDatabase, submitOrder } from "@/lib/utils";
-import { getNextOrderId } from "@/lib/utils";
 import { useToast } from "../ui/use-toast";
 import useAuth from "@/hooks/useAuth";
 import { AuthHookType } from "@/lib/types";
-import { clear } from "console";
-import { Sword } from "lucide-react";
-import { set } from "zod";
-
 
 import {
   HoverCard,
@@ -27,9 +22,6 @@ import {
   HoverCardTrigger,
 } from "../ui/hover-card";
 
-import { CalendarIcon } from "@radix-ui/react-icons"
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
-import { get } from "http";
 
 export interface OrderItem {
   name: string;
@@ -140,7 +132,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
         chosenItems,
         quantities
       );
-      
+
       let newPoints = 0;
       // if points aren't used, and order is successful, update customer points
       if (!isSwitchToggled && res && res.status === 200) {
@@ -151,7 +143,7 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
           .flat();
 
         // loop through item names and get points for each item and sum them
-        
+
         for (const itemName of itemNames) {
           const response = await fetch(
             `/api/order/get-points-for-item?itemName=${itemName}`
@@ -219,18 +211,18 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     return data.nextOrderId;
   };
 
-/**
-   * Updates the customer's points in the database.
-   * updateCustomerPoints(100, 12345)
-   * @param {number} points - The number of points to be added to the customer's current points.
-   * @param {number} customerId - The ID of the customer whose points will be updated.
-   * @returns {object} The updated customer data.
-   * @description
-   *   - This function uses the fetch API to make a PUT request to the specified endpoint.
-   *   - The customer's ID and the number of points to be added are passed as parameters.
-   *   - The response from the server is converted to JSON and returned.
-   *   - This function is asynchronous and will wait for the response before returning the updated data.
-   */
+  /**
+     * Updates the customer's points in the database.
+     * updateCustomerPoints(100, 12345)
+     * @param {number} points - The number of points to be added to the customer's current points.
+     * @param {number} customerId - The ID of the customer whose points will be updated.
+     * @returns {object} The updated customer data.
+     * @description
+     *   - This function uses the fetch API to make a PUT request to the specified endpoint.
+     *   - The customer's ID and the number of points to be added are passed as parameters.
+     *   - The response from the server is converted to JSON and returned.
+     *   - This function is asynchronous and will wait for the response before returning the updated data.
+     */
   const updateCustomerPoints = async (points: number, customerId: number) => {
     const response = await fetch("/api/customer/update-customer-points", {
       method: "PUT",
@@ -246,18 +238,18 @@ const OrderReceipt: React.FC<OrderReceiptProps> = ({ items, clearOrder }) => {
     return data;
   };
 
-/**
-   * Calculates the total points for a customer's order based on the items and their quantities.
-   * calculateTotalPoints([{name: "apple", quantity: 2}, {name: "banana", quantity: 3}])
-   * @param {Array} items - An array of objects containing the name and quantity of each item.
-   * @returns {Number} The total points for the customer's order.
-   * @description
-   *   - Uses the items array to create a flattened array of item names with duplicates.
-   *   - Loops through the item names and fetches the points for each item from the API.
-   *   - Calculates the total points by summing the points for each item.
-   *   - Checks if the customer has enough points and returns the total points if so.
-   *   - If the customer does not have enough points, returns 0 and displays a toast message.
-   */
+  /**
+     * Calculates the total points for a customer's order based on the items and their quantities.
+     * calculateTotalPoints([{name: "apple", quantity: 2}, {name: "banana", quantity: 3}])
+     * @param {Array} items - An array of objects containing the name and quantity of each item.
+     * @returns {Number} The total points for the customer's order.
+     * @description
+     *   - Uses the items array to create a flattened array of item names with duplicates.
+     *   - Loops through the item names and fetches the points for each item from the API.
+     *   - Calculates the total points by summing the points for each item.
+     *   - Checks if the customer has enough points and returns the total points if so.
+     *   - If the customer does not have enough points, returns 0 and displays a toast message.
+     */
   const getTotalPointsValueForOrder = async () => {
     // create flattened array of item names that has duplicates
     const itemNames = items

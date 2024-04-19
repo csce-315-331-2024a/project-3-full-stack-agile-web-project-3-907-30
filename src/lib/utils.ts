@@ -17,55 +17,6 @@ import {
 import { Pool, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
 
-// export async function getMenuItem(id: number) : Promise<MenuItem> {
-//     const sql = "SELECT item_id, item_name, item_price::numeric, times_ordered FROM menu_items WHERE item_id = ($1)";
-
-//     const res = await executeStatement(db, sql, [DataTypeOIDs.int8], [id]).then(result => {
-//         return rowToMenuItem(result.rows?.at(0));
-//     });
-//     return res;
-// }
-
-// export async function getAllMenuItems() : Promise<MenuItem[]> {
-//     const sql = "SELECT item_id, item_name, item_price::numeric, times_ordered FROM menu_items;";
-//     const res = await executeStatement(db, sql, [], []).then(result => {
-//         const results = result.rows?.map(row => {
-//             return rowToMenuItem(row);
-//         }) as MenuItem[];
-//         return Promise.all(results);
-//     });
-//     return res;
-// }
-
-// export async function getItemIngredients(id: number) : Promise<InventoryItem[]> {
-//     const sql = `SELECT inv_menu.inv_id, inv_name, inv_price::numeric, fill_level, current_level, times_refilled, date_refilled, has_dairy, has_nuts, has_eggs, is_vegan, is_halal
-//     FROM inv_menu
-//     INNER JOIN inventory AT inventory.inv_id = inv_menu.inv_id
-//     WHERE inv_menu.menu_id = $1`;
-//     const types = [
-//         DataTypeOIDs.int4,
-//         DataTypeOIDs.varchar,
-//         DataTypeOIDs.numeric,
-//         DataTypeOIDs.int4,
-//         DataTypeOIDs.int4,
-//         DataTypeOIDs.int4,
-//         DataTypeOIDs.date,
-//         DataTypeOIDs.bool,
-//         DataTypeOIDs.bool,
-//         DataTypeOIDs.bool,
-//         DataTypeOIDs.bool,
-//         DataTypeOIDs.bool
-//     ];
-
-//     const res = await executeStatement(db, sql, types, [id]).then((result) => {
-//         const results = result.rows?.map(row => {
-//             return rowToInventoryItem(row);
-//         }) as InventoryItem[];
-//         return Promise.all(results);
-//     });
-//     return res;
-// }
-
 /**
  * Convert a given array row from a SQL execution result to an InventoryItem object.
  *

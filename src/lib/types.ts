@@ -72,15 +72,6 @@ export interface MenuItem {
   times_ordered: number;
 }
 
-export interface Order {
-  id: number;
-  date: Date;
-  time: Date;
-  total: number;
-  cust_id: number;
-  emp_id: number;
-}
-
 export interface PairsAndAppearance {
   row_id: number,
   item1: string;
