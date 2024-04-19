@@ -753,3 +753,14 @@ export async function deleteInventoryItem(id: number) {
 
   return res;
 }
+
+/**
+ * Get all Menu items from the database.
+ *
+ * @returns {MenuItem[]} .
+ */
+export async function getAllMenuItems() {
+  const res = await fetch("/api/menu/get-all");
+  const data: MenuItem[] = await res.json();
+  return data;
+}

@@ -148,3 +148,10 @@ export interface CustomerOrder {
   emp_name: number,
   used_points: boolean
 }
+
+export interface DetailedMenuItem {
+  id: number;
+  name: string;
+  price: number;
+  
+}
