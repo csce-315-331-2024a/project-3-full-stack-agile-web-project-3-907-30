@@ -29,24 +29,24 @@ export interface ManagerProps {
  * @component
  * @returns {JSX.Element} The manager view page.
  */
-const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesData}: ManagerProps) => {
+const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesData }: ManagerProps) => {
   const { account } = useAuth() as AuthHookType;
 
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
-  const [whatSellsTogetherData,setWhatSellsTogether] = useState<PairsAndAppearance[]>();
+  const [whatSellsTogetherData, setWhatSellsTogether] = useState<PairsAndAppearance[]>();
   const [popularMenuItemData, setPopularMenuItem] = useState<PopularMenuItem[]>();
   const [salesForADayData, setSalesForADay] = useState<SalesForADay[]>();
 
   useEffect(() => {
     const fetchTrendData = async () => {
-      const whatSellsData = await whatSellsTogether("2023-01-01","2023-01-01");
+      const whatSellsData = await whatSellsTogether("2023-01-01", "2023-01-01");
       setWhatSellsTogether(whatSellsData!);
 
       const popularMenuItemData = await menuItemsPopularity('2023-01-01', '2023-01-01');
       setPopularMenuItem(popularMenuItemData!);
 
-      const salesDayData = await daysWithMostSales(1,2022);
+      const salesDayData = await daysWithMostSales(1, 2022);
       setSalesForADay(salesDayData!);
     }
 
@@ -69,7 +69,7 @@ const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesDat
         <>
           <h1 className="text-3xl font-bold">Manager Dashboard</h1>
           <Tabs defaultValue="management" className="w-full h-full">
-            <TabsList className="grid grid-cols-2 w-full h-fit">
+            <TabsList className="grid grid-cols-2 w-full h-fit text-black">
               <TabsTrigger value="management" className="py-2">Management</TabsTrigger>
               <TabsTrigger value="trends" className="py-2">Trends</TabsTrigger>
             </TabsList>
@@ -77,8 +77,8 @@ const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesDat
               <Management />
             </TabsContent>
             <TabsContent value="trends" className="h-full">
-              <Trends salesReportData={salesReportData} productUsageData={productUsageData} mostProductiveEmployeesData={mostProductiveEmployeesData} 
-              whatSellsTogetherData={whatSellsTogetherData!} popularMenuItemData={popularMenuItemData!} salesForADayData={salesForADayData!}/>
+              <Trends salesReportData={salesReportData} productUsageData={productUsageData} mostProductiveEmployeesData={mostProductiveEmployeesData}
+                whatSellsTogetherData={whatSellsTogetherData!} popularMenuItemData={popularMenuItemData!} salesForADayData={salesForADayData!} />
             </TabsContent>
           </Tabs>
         </>

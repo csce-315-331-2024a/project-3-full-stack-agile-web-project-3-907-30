@@ -47,42 +47,42 @@ const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData
 
   return (
     <Tabs defaultValue="SalesReport" className="flex flex-row gap-4 w-full h-full">
-      <TabsList className="grid grid-cols-1 h-fit mt-2 w-1/5">
+      <TabsList className="grid grid-cols-1 h-fit mt-2 w-fit">
         {trendsTabs.map((tab, index) => (
-          <TabsTrigger key={index} value={tab.replaceAll(" ", "")} className="py-4">
+          <TabsTrigger key={index} value={tab.replaceAll(" ", "")} className="py-4 px-8">
             {tab}
           </TabsTrigger>
         ))}
       </TabsList>
-      <TabsContent value="SalesReport" className="w-4/5">
+      <TabsContent value="SalesReport" className="w-full">
         <SalesReport data={salesReportData} />
       </TabsContent>
-      <TabsContent value="ProductUsageReport" className="w-4/5">
+      <TabsContent value="ProductUsageReport" className="w-full">
         <ProductUsage data={productUsageData} />
         {/* <DatePicker /> */}
       </TabsContent>
-      <TabsContent value="ExcessReport" className="w-4/5">
+      <TabsContent value="ExcessReport" className="w-full">
         <ExcessReport />
       </TabsContent>
-      <TabsContent value="RestockReport" className="w-4/5">
+      <TabsContent value="RestockReport" className="w-full">
         <Card className="flex min-h-fit max-h-[85%]">
           <RestockReport />
         </Card>
       </TabsContent>
-      <TabsContent value="MostProductiveEmployees" className="w-4/5">
+      <TabsContent value="MostProductiveEmployees" className="w-full">
         <MostProductiveEmployees data={mostProductiveEmployeesData} />
       </TabsContent>
-      <TabsContent value="WhatSellsTogether" className="w-4/5">
+      <TabsContent value="WhatSellsTogether" className="w-full">
         <Card className="flex min-h-fit max-h-[85%]">
           <WhatSellsTogether data={whatSellsTogetherData} />
         </Card>
       </TabsContent>
-      <TabsContent value="MostPopularItems" className="w-4/5">
+      <TabsContent value="MostPopularItems" className="w-full">
         <Card className="flex min-h-fit max-h-[85%]">
           <MenuItemPopularity data={popularMenuItemData} />
         </Card>
       </TabsContent>
-      <TabsContent value="DayswithMostSales" className="w-4/5">
+      <TabsContent value="DayswithMostSales" className="w-full">
         <Card className="flex min-h-fit max-h-[85%]">
           <DaysWithMostSales data={salesForADayData} />
         </Card>

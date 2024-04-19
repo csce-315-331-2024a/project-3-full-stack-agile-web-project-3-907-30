@@ -11,6 +11,11 @@ body {
   top: 0px !important;
 }
 
+/* hide google translate api loading icon */
+.VIpgJd-ZVi9od-aZ2wEe-OiiCO {
+  display: none !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

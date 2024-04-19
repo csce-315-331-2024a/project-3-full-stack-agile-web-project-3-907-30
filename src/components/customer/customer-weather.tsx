@@ -67,7 +67,7 @@ const getIcon = (data: Weather): string => {
  */
 const CustomerWeather = ({ data }: { data: Weather }) => {
 
-    const theme: string = (data.isDay) ? 'bg-orange-400' : 'bg-indigo-950';
+    const theme: string = (data.isDay) ? 'bg-orange-800' : 'bg-indigo-950';
 
     return (
         <Badge className={`text-md ${theme} notranslate`}>

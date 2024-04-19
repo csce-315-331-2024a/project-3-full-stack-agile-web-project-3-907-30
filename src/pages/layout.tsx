@@ -87,7 +87,7 @@ const Layout = ({ children }: LayoutProps) => {
                     I&apos;m an Employee
                   </Link>
                 </Button>
-                <RewardsButton setCustomer={setCustomer}/>
+                <RewardsButton setCustomer={setCustomer} />
               </div>
             </div>
           </div>
@@ -153,7 +153,7 @@ const Layout = ({ children }: LayoutProps) => {
                       <AvatarFallback>{employee?.empName[0]}</AvatarFallback>
                     </Avatar>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-fit mr-4 mt-1">
+                  <DropdownMenuContent className="w-fit mr-4 mt-1 notranslate">
                     <DropdownMenuLabel className="text-xl">{employee?.empName}</DropdownMenuLabel>
                     <DropdownMenuLabel className="font-light -mt-3">{employee?.empEmail}</DropdownMenuLabel>
                     <Badge className="ml-2 mb-2 text-xs mt-1">{getRole(employee)}</Badge>

@@ -71,10 +71,10 @@ const CustomerView = () => {
   };
 
 
-/**
- * Function to get all the menu items and their prices.
- * @returns - The menu items and their prices.
- */
+  /**
+   * Function to get all the menu items and their prices.
+   * @returns - The menu items and their prices.
+   */
   useEffect(() => {
     fetch('/api/menu/menu_items/get-all-items-and-price')
       .then((res) => res.json())
@@ -101,21 +101,21 @@ const CustomerView = () => {
   }, []);
 
 
-/**
- * Function to get the image for a specific menu item
- * @param itemID - ID of the item.
- * @returns - The image URL for the menu items.
- */
+  /**
+   * Function to get the image for a specific menu item
+   * @param itemID - ID of the item.
+   * @returns - The image URL for the menu items.
+   */
   // Retrieve the image for menu item using the item ID
   const getImageForMenuItem = (itemID: number) => {
     return `/menu-item-pics/${itemID}.jpeg`;
   };
 
 
-/**
- * Function to get allergens for a specific item
- * @param name - Name of the item.
- */
+  /**
+   * Function to get allergens for a specific item
+   * @param name - Name of the item.
+   */
   const getAllergensForItem = async (name: string) => {
     try {
       const res = await fetch(`/api/menu/allergens/${name}`);
@@ -137,7 +137,7 @@ const CustomerView = () => {
   return (
     <div className="w-full h-full flex flex-col justify-start items-start p-4">
       <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-full">
-        <TabsList className="grid grid-cols-1 w-1/5 mt-2 h-fit">
+        <TabsList className="grid grid-cols-1 w-1/5 mt-2 h-fit text-black">
           {categories.map((category, index) => (
             <TabsTrigger
               key={index}
