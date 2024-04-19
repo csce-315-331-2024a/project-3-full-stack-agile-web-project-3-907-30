@@ -36,7 +36,7 @@ const FormSchema = z.object({
  *   - The component calculates and displays the total profits from the data.
  *   - The data is mapped to table rows using the map function.
  */
-const SalesReport = ({ data }: { data: SalesReportItem[] }) => {
+const SalesReport = () => {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -47,12 +47,8 @@ const SalesReport = ({ data }: { data: SalesReportItem[] }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setFormData(data);
         setLoading(false);
     }, [loading]);
-
-    useEffect(() => {
-    }, [onSubmit]);
 
     async function onSubmit(formData: z.infer<typeof FormSchema>) {
         const res = await getSalesReportInRange(formData.start_date, formData.end_date);
@@ -102,7 +98,7 @@ const SalesReport = ({ data }: { data: SalesReportItem[] }) => {
                         <Button type="submit">Submit</Button>
                     </form>
                 </Form>
-                <Table>
+                {formData.length !== 0 && (<Table>
                     <TableHeader>
                         <TableRow>
                             <TableHead>Item Name</TableHead>
@@ -137,7 +133,7 @@ const SalesReport = ({ data }: { data: SalesReportItem[] }) => {
                             </TableCell>
                         </TableRow>
                     </TableFooter>
-                </Table>
+                </Table>)}
             </CardContent>
         </Card>
     );

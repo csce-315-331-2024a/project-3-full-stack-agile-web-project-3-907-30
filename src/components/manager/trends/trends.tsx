@@ -12,8 +12,6 @@ import MenuItemPopularity from "./menu-item-popularity";
 import DaysWithMostSales from "./days-with-most-sales";
 
 export interface TrendsProps {
-  salesReportData: SalesReportItem[];
-  productUsageData: ProductUsageItem[];
   mostProductiveEmployeesData: MostProductiveEmployeeItem[];
   whatSellsTogetherData: PairsAndAppearance[];
   popularMenuItemData: PopularMenuItem[];
@@ -30,7 +28,7 @@ export interface TrendsProps {
  * // Render a trends component.
  * <Trends />
  */
-const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData, whatSellsTogetherData, popularMenuItemData,
+const Trends = ({ mostProductiveEmployeesData, whatSellsTogetherData, popularMenuItemData,
   salesForADayData
 }: TrendsProps) => {
 
@@ -55,10 +53,10 @@ const Trends = ({ salesReportData, productUsageData, mostProductiveEmployeesData
         ))}
       </TabsList>
       <TabsContent value="SalesReport" className="w-4/5">
-        <SalesReport data={salesReportData} />
+        <SalesReport />
       </TabsContent>
       <TabsContent value="ProductUsageReport" className="w-4/5">
-        <ProductUsage data={productUsageData} />
+        <ProductUsage />
         {/* <DatePicker /> */}
       </TabsContent>
       <TabsContent value="ExcessReport" className="w-4/5">

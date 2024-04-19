@@ -15,8 +15,6 @@ import MenuItemPopularity from "@/components/manager/trends/menu-item-popularity
 
 
 export interface ManagerProps {
-  salesReportData: SalesReportItem[];
-  productUsageData: ProductUsageItem[];
   // whatSellsTogetherData: PairsAndAppearance[];
   // popularMenuItemData: PopularMenuItem[];
   // salesForADayData: SalesForADay[];
@@ -29,24 +27,24 @@ export interface ManagerProps {
  * @component
  * @returns {JSX.Element} The manager view page.
  */
-const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesData}: ManagerProps) => {
+const Manager = ({ mostProductiveEmployeesData }: ManagerProps) => {
   const { account } = useAuth() as AuthHookType;
 
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
-  const [whatSellsTogetherData,setWhatSellsTogether] = useState<PairsAndAppearance[]>();
+  const [whatSellsTogetherData, setWhatSellsTogether] = useState<PairsAndAppearance[]>();
   const [popularMenuItemData, setPopularMenuItem] = useState<PopularMenuItem[]>();
   const [salesForADayData, setSalesForADay] = useState<SalesForADay[]>();
 
   useEffect(() => {
     const fetchTrendData = async () => {
-      const whatSellsData = await whatSellsTogether("2023-01-01","2023-01-01");
+      const whatSellsData = await whatSellsTogether("2023-01-01", "2023-01-01");
       setWhatSellsTogether(whatSellsData!);
 
       const popularMenuItemData = await menuItemsPopularity('2023-01-01', '2023-01-01');
       setPopularMenuItem(popularMenuItemData!);
 
-      const salesDayData = await daysWithMostSales(1,2022);
+      const salesDayData = await daysWithMostSales(1, 2022);
       setSalesForADay(salesDayData!);
     }
 
@@ -77,8 +75,8 @@ const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesDat
               <Management />
             </TabsContent>
             <TabsContent value="trends" className="h-full">
-              <Trends salesReportData={salesReportData} productUsageData={productUsageData} mostProductiveEmployeesData={mostProductiveEmployeesData} 
-              whatSellsTogetherData={whatSellsTogetherData!} popularMenuItemData={popularMenuItemData!} salesForADayData={salesForADayData!}/>
+              <Trends mostProductiveEmployeesData={mostProductiveEmployeesData}
+                whatSellsTogetherData={whatSellsTogetherData!} popularMenuItemData={popularMenuItemData!} salesForADayData={salesForADayData!} />
             </TabsContent>
           </Tabs>
         </>
@@ -95,49 +93,14 @@ const Manager = ({ salesReportData, productUsageData, mostProductiveEmployeesDat
 }
 
 export const getServerSideProps = async () => {
-  const salesReportData = await getSalesReportData('2023-01-03', '2023-03-03');
-  const productUsageData = await getProductUsageData('2023-01-03', '2023-03-03');
+  // const salesReportData = await getSalesReportData('2023-01-03', '2023-03-03');
   // const whatSellsTogetherData = await whatSellsTogether('2023-01-03', '2023-05-01');
   // const popularMenuItemData = await menuItemsPopularity('2023-01-03', '2023-05-01');
   // const salesForADayData = await daysWithMostSales(4,2023);
   const mostProductiveEmployeesData = await getMostProductiveEmployees();
   return {
-    props: { salesReportData, productUsageData, mostProductiveEmployeesData },
+    props: { mostProductiveEmployeesData },
   };
-}
-
-const getSalesReportData = async (begin: string, end: string) => {
-  const rows = await executeStatement(
-    db,
-    `SELECT menu_items.item_id, menu_items.item_name, COUNT(*)*menu_items.item_price::numeric as profit
-                    FROM menu_items
-                    INNER JOIN orders_menu ON menu_items.item_id = orders_menu.item_id
-                    INNER JOIN orders ON orders_menu.order_id = orders.order_id
-                    WHERE orders.order_date BETWEEN $1 AND $2
-                    GROUP BY menu_items.item_id;`,
-    [DataTypeOIDs.date, DataTypeOIDs.date],
-    [begin, end]
-  ).then(data => data.rows!);
-
-  return rows.map(row => rowToSalesReportItem(row));
-}
-
-const getProductUsageData = async (begin: string, end: string) => {
-  const rows = await executeStatement(
-    db,
-    `SELECT inventory.inv_id, inventory.inv_name, COALESCE(SUM(inv_menu.amount), 0) as amount FROM inventory
-                    INNER JOIN inv_menu ON inv_menu.inv_id = inventory.inv_id
-                    INNER JOIN menu_items on menu_items.item_id = inv_menu.item_id
-                    INNER JOIN orders_menu ON orders_menu.item_id = menu_items.item_id
-                    INNER JOIN orders ON orders.order_id = orders_menu.order_id
-                    WHERE orders.order_date BETWEEN $1 AND $2
-                    GROUP BY inventory.inv_id;`,
-    [DataTypeOIDs.date, DataTypeOIDs.date],
-    [begin, end]
-  ).then(data => data.rows!);
-
-  return rows.map(row => rowToProductUsageItem(row));
-
 }
 
 const getMostProductiveEmployees = async () => {

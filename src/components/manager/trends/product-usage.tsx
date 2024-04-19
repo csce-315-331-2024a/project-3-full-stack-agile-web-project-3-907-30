@@ -37,7 +37,7 @@ const FormSchema = z.object({
  *   - Uses the key prop to assign a unique key to each TableRow.
  *   - The data prop should be an array of objects with the following shape: {id: number, name: string, amount: number}.
  */
-const ProductUsage = ({ data }: { data: ProductUsageItem[] }) => {
+const ProductUsage = () => {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -48,12 +48,9 @@ const ProductUsage = ({ data }: { data: ProductUsageItem[] }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setFormData(data);
         setLoading(false);
     }, [loading]);
 
-    useEffect(() => {
-    }, [onSubmit]);
 
     async function onSubmit(formData: z.infer<typeof FormSchema>) {
         const res = await getProductUsageReportInRange(formData.start_date, formData.end_date);
@@ -104,7 +101,7 @@ const ProductUsage = ({ data }: { data: ProductUsageItem[] }) => {
                         <Button type="submit">Submit</Button>
                     </form>
                 </Form>
-                <Table className="overflow-hidden">
+                {formData.length !== 0 && (<Table className="overflow-hidden">
                     <TableHeader>
                         <TableRow>
                             <TableHead>Item Name</TableHead>
@@ -130,7 +127,7 @@ const ProductUsage = ({ data }: { data: ProductUsageItem[] }) => {
                     <TableFooter>
 
                     </TableFooter>
-                </Table>
+                </Table>)}
             </CardContent>
         </Card>
     );
