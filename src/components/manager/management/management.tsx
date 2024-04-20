@@ -1,6 +1,6 @@
 import useAuth from "@/hooks/useAuth";
 import { Employee, AuthHookType } from "@/lib/types";
-import { getEmployeeFromDatabase } from "@/lib/utils";
+import { getEmployeeFromDatabase, getNumOrders } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import UserManagement from "./user-management";
@@ -27,6 +27,7 @@ const Management = () => {
 
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
+  const [numOrders, setNumOrders] = useState(0);
 
   const managementTabs = [
     "User Management",
@@ -34,6 +35,12 @@ const Management = () => {
     "Inventory Management",
     "Menu Management",
   ];
+
+  useEffect(() => {
+    getNumOrders().then((data) => {
+      setNumOrders(data);
+    });
+  }, []);
 
   useEffect(() => {
     if (account) {
@@ -63,7 +70,7 @@ const Management = () => {
         </Card>
       </TabsContent>
       <TabsContent value="OrderManagement" className="w-4/5">
-        <OrderManagement />
+        <OrderManagement numOrders={numOrders} />
       </TabsContent>
       <TabsContent value="InventoryManagement" className="w-4/5">
         <InventoryManagement />
