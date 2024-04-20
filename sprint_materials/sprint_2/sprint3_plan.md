@@ -45,9 +45,9 @@ Ex:
 - [ ] Allow modifications in all ordering views - Akshay E3 P1 S0
 - [ ] Recommend items based on weather - Margo E2 P2 S0
 - [ ] Order management - Adam, Akshay
-- [ ] View all orders; view a single order (including status: pending, fulfilled, canceled, etc.) - Adam E2 P1 S0
+- [x] View all orders; view a single order (including status: pending, fulfilled, canceled, etc.) - Adam E2 P1 T3
 - [ ] Modify an order (add/remove items, change status, etc.) - Adam E3 P1 S0
-- [ ] Remove an order from the order history - Akshay E1 P1 S0
+- [x] Remove an order from the order history - Akshay E1 P1 T1
 - [x] Inventory management - Adam
 - [x] Add a new item to the inventory - Adam E2 P1 T1
 - [x] View all inventory items; view a single inventory item - Adam E1 P1 T1
