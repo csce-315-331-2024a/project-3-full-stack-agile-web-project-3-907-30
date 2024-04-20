@@ -51,7 +51,7 @@ const DaysWithMostSales = () => {
   }
 
   return (<>
-    <Card className="min-h-fit max-h-[85%] overflow-y-scroll w-full">
+    <Card className="max-h-[85%] overflow-y-scroll w-full">
       <CardHeader>
         <CardTitle>Days with Most Sales</CardTitle>
         <CardDescription>Ranks the days in a given month and year based on number of sales.</CardDescription>

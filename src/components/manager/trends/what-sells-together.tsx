@@ -51,7 +51,7 @@ const WhatSellsTogether = () => {
   }
 
   return (<>
-    <Card className="min-h-fit max-h-[85%] overflow-y-scroll w-full">
+    <Card className="max-h-[85%] overflow-y-scroll w-full">
       <CardHeader>
         <CardTitle>What Sells Together</CardTitle>
         <CardDescription>See which item pairs sold the most in a given date range.</CardDescription>

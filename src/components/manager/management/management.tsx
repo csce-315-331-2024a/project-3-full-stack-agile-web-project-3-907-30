@@ -62,7 +62,7 @@ const Management = () => {
         ))}
       </TabsList>
       <TabsContent value="UserManagement" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%] gap-8 p-4">
+        <Card className="flex max-h-[85%] gap-8 p-4">
           {employee?.isAdmin && (
             <UserManagement />
           )}
@@ -76,7 +76,7 @@ const Management = () => {
         <InventoryManagement />
       </TabsContent>
       <TabsContent value="MenuManagement" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%] gap-8 p-4 notranslate">
+        <Card className="flex max-h-[85%] gap-8 p-4 notranslate">
           <LeastSellingView />
           <LeastContributingView />
           <ItemSaleGUI />

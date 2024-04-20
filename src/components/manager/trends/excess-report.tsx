@@ -44,7 +44,7 @@ const ExcessReport = () => {
   }
 
   return (
-    <Card className="min-h-fit max-h-[85%] overflow-y-scroll w-full">
+    <Card className="max-h-[85%] overflow-y-scroll w-full">
       <CardHeader>
         <CardTitle>Excess Report</CardTitle>
         <CardDescription>View items that have barely been used.</CardDescription>

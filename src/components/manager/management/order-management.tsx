@@ -46,7 +46,7 @@ const OrderManagement = ({ numOrders }: { numOrders: number }) => {
   }
 
   return (
-    <Card className="min-h-fit max-h-[85%] overflow-y-scroll w-full">
+    <Card className="max-h-[85%] overflow-y-scroll w-full">
       <CardHeader>
         <CardTitle>Order Management</CardTitle>
         <CardDescription>Manage your past orders.</CardDescription>

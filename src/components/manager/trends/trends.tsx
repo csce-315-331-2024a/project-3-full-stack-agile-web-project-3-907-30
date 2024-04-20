@@ -52,7 +52,7 @@ const Trends = () => {
         <ExcessReport />
       </TabsContent>
       <TabsContent value="RestockReport" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%]">
+        <Card className="flex max-h-[85%]">
           <RestockReport />
         </Card>
       </TabsContent>
@@ -60,17 +60,17 @@ const Trends = () => {
         <MostProductiveEmployees />
       </TabsContent>
       <TabsContent value="WhatSellsTogether" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%]">
+        <Card className="flex max-h-[85%]">
           <WhatSellsTogether />
         </Card>
       </TabsContent>
       <TabsContent value="MostPopularItems" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%]">
+        <Card className="flex max-h-[85%]">
           <MenuItemPopularity />
         </Card>
       </TabsContent>
       <TabsContent value="DayswithMostSales" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%]">
+        <Card className="flex max-h-[85%]">
           <DaysWithMostSales />
         </Card>
       </TabsContent>

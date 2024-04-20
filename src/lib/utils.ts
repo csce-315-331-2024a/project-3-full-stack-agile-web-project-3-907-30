@@ -13,7 +13,6 @@ import {
   RevenueReportItem,
   ExcessReportItem,
   RestockReportItem,
-  OrderItem,
 } from "./types";
 import { Pool, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
