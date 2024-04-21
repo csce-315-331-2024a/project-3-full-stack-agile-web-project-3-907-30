@@ -1,16 +1,21 @@
 # SPRINT TWO: 4/18/24 - 4/28/24
 
 ## Sprint Goal:
-The main goal of the third sprint of this project is to deliver a final product that implements all necessary functionality, is accessible to a wide range of users, and adds novel features. 
+
+The main goal of the third sprint of this project is to deliver a final product that implements all necessary functionality, is accessible to a wide range of users, and adds novel features.
 
 ### MVP (Minimum Viable Product)
-A product in which all users have a robust and fully-featured experience. Managers can fully interact with their ordering, menu item, and inventory systems. Customers can place orders from their view, implementing their rewards in this experience as well. The system integrates the functionality of outside API's to enrich the user experience.  
+
+A product in which all users have a robust and fully-featured experience. Managers can fully interact with their ordering, menu item, and inventory systems. Customers can place orders from their view, implementing their rewards in this experience as well. The system integrates the functionality of outside API's to enrich the user experience.
 
 ### Sprint 3 Backlog
+
 **Legend: #. = Corresponding story, En = N hours estimated to complete, Sy = y status (0 not complete, 1 complete), Tn = N hours spent on the task**
 
 Ex:
+
 - [ ] Story
+
   - [ ] task
     - [ ] sub-task
 
@@ -27,10 +32,11 @@ Ex:
   - [ ] Make function that queries all of the items that are on sale E1 P2 S0 - Chris
 
 ### Chores (part of the backlog, but have no story points associated with them)
+
 - [ ] Allow managers to input date ranges for trends - Margo E2 P1 S0
 - [ ] Try to make interactable way to update menu items - Aaron E2 P2 S0
 - [ ] Add front-end for customers to see their past orders - Margo E1 P1 S0
-- [ ] Move all trend functionality to api’s  - Margo E1 P3 S0
+- [ ] Move all trend functionality to api’s - Margo E1 P3 S0
 - [ ] Clean up Allergen UI for customer view with Halal and Vegan - Chris E1 P2 S0
 - [ ] Clean up logic for excess report form - Aaron E1 P2 S0
 - [ ] Add bounds checking to manager trend inputs - Chris E1 P2 S0
@@ -38,7 +44,7 @@ Ex:
 - [ ] Fix duplicate customers being added - Gabe E1 P1 S0
 - [ ] Fix menu item makeup - Gabe E2 P2 S0
 - [x] Remove Google Translate loading circle - Adam E1 P3 T1
-- [ ] Allows employees to remove items from order in receipt  - Akshay E1 P1 S0
+- [ ] Allows employees to remove items from order in receipt - Akshay E1 P1 S0
 - [ ] Allow customers to make orders in the customer view page - Akshay
 - [ ] Customers can create orders - Akshay E2 P1 S0
 - [ ] Customers can remove items from orders - Akshay E1 P1 S0
@@ -59,7 +65,7 @@ Ex:
 - [ ] Modify a menu item (name, price, ingredients, description, status, etc.) - Aaron E2 P1 S0
 - [ ] Remove an item from the menu - Aaron E1 P1 S0
 - [ ] Add/update/remove seasonal menu items, "seasonal" := defined availability window, visible on all applicable views - Chris E3 P2 S0
-- [ ] Mobile friendly for customer view - Adam E3 P1 S0
+- [x] Mobile friendly for customer view - Adam E3 P1 T2
 - [ ] Fix WAVE accessibility issues - Gabe E3 P1 S0
 - [ ] Fix accessibility checker issues - Gabe E3 P1 S0
 - [ ] Add more tests with playwright - Margo E3 P1 S0
