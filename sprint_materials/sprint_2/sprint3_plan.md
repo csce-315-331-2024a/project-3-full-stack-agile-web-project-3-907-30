@@ -27,10 +27,10 @@ Ex:
   - [ ] Make function that queries all of the items that are on sale E1 P2 S0 - Chris
 
 ### Chores (part of the backlog, but have no story points associated with them)
-- [ ]Allow managers to input date ranges for trends - Margo E2 P1 S0
-- [ ]Try to make interactable way to update menu items - Aaron E2 P2 S0
-- [ ]Add front-end for customers to see their past orders - Margo E1 P1 S0
-- [ ]Move all trend functionality to api’s  - Margo E1 P3 S0
+- [ ] Allow managers to input date ranges for trends - Margo E2 P1 S0
+- [ ] Try to make interactable way to update menu items - Aaron E2 P2 S0
+- [ ] Add front-end for customers to see their past orders - Margo E1 P1 S0
+- [ ] Move all trend functionality to api’s  - Margo E1 P3 S0
 - [ ] Clean up Allergen UI for customer view with Halal and Vegan - Chris E1 P2 S0
 - [ ] Clean up logic for excess report form - Aaron E1 P2 S0
 - [ ] Add bounds checking to manager trend inputs - Chris E1 P2 S0
