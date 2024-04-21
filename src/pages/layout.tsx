@@ -11,7 +11,7 @@ import revLogo from "../../public/rev-logo.png";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import Link from "next/link"
 import { Toaster } from "@/components/ui/toaster";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -106,6 +106,7 @@ const Layout = ({ children }: LayoutProps) => {
                   <DropdownMenuTrigger asChild className="cursor-pointer">
                     <Button>
                       <Menu className="w-6 h-6" />
+                      <span className="hidden">Menu</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-fit mr-4 mt-1 notranslate">
@@ -131,7 +132,7 @@ const Layout = ({ children }: LayoutProps) => {
           {children}
           <Toaster />
         </main >
-      ) : router.asPath === '/employee/login' || router.asPath === '/employee/menu' ? (
+      ) : router.asPath === '/employee/login' || router.asPath.startsWith('/employee/menu') ? (
         <>
           {children}
           <Toaster />
@@ -162,11 +163,26 @@ const Layout = ({ children }: LayoutProps) => {
                           </Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                          <Link href="/employee/menu" legacyBehavior passHref>
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()} active={router.asPath === '/employee/menu'}>
-                              Menu View
-                            </NavigationMenuLink>
-                          </Link>
+                          <NavigationMenuTrigger>Menu Views</NavigationMenuTrigger>
+                          <NavigationMenuContent>
+                            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-3 place-items-center">
+                              <Link href="/employee/menu1" legacyBehavior passHref>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()} active={router.asPath === '/employee/menu'}>
+                                  Menu View 1
+                                </NavigationMenuLink>
+                              </Link>
+                              <Link href="/employee/menu2" legacyBehavior passHref>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()} active={router.asPath === '/employee/menu'}>
+                                  Menu View 2
+                                </NavigationMenuLink>
+                              </Link>
+                              <Link href="/employee/menu3" legacyBehavior passHref>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()} active={router.asPath === '/employee/menu'}>
+                                  Menu View 3
+                                </NavigationMenuLink>
+                              </Link>
+                            </ul>
+                          </NavigationMenuContent>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
                           <Link href="/employee/kitchen" legacyBehavior passHref>
