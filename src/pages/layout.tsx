@@ -21,6 +21,7 @@ import { Weather } from "./api/customer/weather";
 import { getCurrentWeather } from "@/components/customer/customer-weather";
 import Head from "next/head";
 import Translate from "@/components/common/translate";
+import { Menu } from "lucide-react";
 
 interface LayoutProps {
   children: ReactNode;
@@ -73,15 +74,21 @@ const Layout = ({ children }: LayoutProps) => {
         <title>Rev&apos;s American Grill</title>
       </Head>
       {router.asPath === '/' ? (
-        <main className="flex flex-col w-full h-dvh" >
+        <main className="flex flex-col w-full md:h-dvh" >
           <div className="border-b">
-            <div className="flex h-16 items-center justify-between px-4">
-              <div className="flex gap-4">
-                <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm" priority />
+            <div className="flex items-center justify-between p-2 lg:p-4 flex-wrap">
+              <div className="flex gap-2">
+                <Image src={revLogo} alt="Rev's American Grill Logo" className="w-16 lg:w-20 rounded-sm" priority />
                 <Translate />
-                <CustomerInfo weather={weather} />
+                <span className="hidden lg:flex">
+                  <CustomerInfo weather={weather} />
+                </span>
+                <span className="block lg:hidden">
+                  <RewardsButton setCustomer={setCustomer} />
+                </span>
               </div>
-              <div className="flex gap-4">
+              <div className="lg:flex gap-4 hidden">
+                <RewardsButton setCustomer={setCustomer} />
                 <Button>
                   <Link target="_blank" href="https://www.yelp.com/writeareview/biz/6dSStUCjMAfixAqz73iy9g?return_url=%2Fbiz%2F6dSStUCjMAfixAqz73iy9g&review_origin=biz-details-war-button">
                     Rate Us! 🌟
@@ -92,7 +99,32 @@ const Layout = ({ children }: LayoutProps) => {
                     I&apos;m an Employee
                   </Link>
                 </Button>
-                <RewardsButton setCustomer={setCustomer} />
+              </div>
+              {/* dropdown for mobile */}
+              <div className="lg:hidden">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild className="cursor-pointer">
+                    <Button>
+                      <Menu className="w-6 h-6" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-fit mr-4 mt-1 notranslate">
+                    <DropdownMenuItem>
+                      <CustomerInfo weather={weather} />
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <Link target="_blank" href="https://www.yelp.com/writeareview/biz/6dSStUCjMAfixAqz73iy9g?return_url=%2Fbiz%2F6dSStUCjMAfixAqz73iy9g&review_origin=biz-details-war-button">
+                        Rate Us! 🌟
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href="/employee/login">
+                        I&apos;m an Employee
+                      </Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
           </div>

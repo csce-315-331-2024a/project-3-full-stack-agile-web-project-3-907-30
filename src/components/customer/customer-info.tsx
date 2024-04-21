@@ -117,9 +117,9 @@ const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' 
 
   return (
     // Render different html based on what customerName is
-    <>
+    <div className="flex flex-col lg:flex-row gap-2">
       <CustomerWeather data={weather}></CustomerWeather>
-      <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row justify-between items-center text-xs lg:text-base">
         {customerName === null && (
           <h1>Welcome! Sign-in to view your points.</h1>
           // <h1>{translatedText.welcome}</h1>
@@ -134,7 +134,7 @@ const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' 
         )}
       </div>
       {children}
-    </>
+    </div>
   );
 }
 

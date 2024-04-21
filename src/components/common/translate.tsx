@@ -76,14 +76,12 @@ const Translate = () => {
     <div>
       <div id="google_translate_element" className="hidden"></div>
       <SelectPicker
-        label="Language"
         data={languageOptions}
-        style={{ width: 200 }}
         placement="bottomEnd"
         cleanable={false}
         value={selected}
         searchable={false}
-        className={'notranslate'}
+        className="notranslate w-fit lg:w-[200px]"
         menuClassName={'notranslate'}
         onSelect={(e, m, evt) => langChange(e, m, evt)}
         placeholder="Select Language" />
