@@ -74,7 +74,6 @@ const Translate = () => {
 
   return (
     <div>
-      <div id="google_translate_element" className="hidden"></div>
       <SelectPicker
         data={languageOptions}
         placement="bottomEnd"
