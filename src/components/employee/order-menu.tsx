@@ -287,6 +287,15 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
     }
   };
 
+  const removeFullItemFromOrder = (itemName: string) => {
+    setOrder((prevOrder) => {
+      const newOrder = { ...prevOrder };
+      delete newOrder[itemName];
+      setOrderItems(Object.values(newOrder));
+      return newOrder;
+    });
+  }
+
   return (
     <Card className="flex flex-col h-full">
       <CardHeader>
@@ -342,10 +351,17 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                             <h3 className="text-center font-semibold">
                               {item}
                             </h3>
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-row items-center gap-2">
+                              <div className="flex flex-col gap-1">
+                              <Button 
+                              className = "h-6"
+                              onClick={() => removeItemFromOrder(item)}>
+                                -
+                              </Button>
                               <AlertDialog open={open[item]}>
                                 <AlertDialogTrigger asChild>
                                   <Button
+                                  className = "h-6"
                                     onClick={async () => {
                                       await getAllergensForItem(item);
                                       setOpen({ ...open, [item]: true });
@@ -414,6 +430,7 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                                   </AlertDialogFooter>
                                 </AlertDialogContent>
                               </AlertDialog>
+                                </div>
                               <Input
                                 type="number"
                                 value={
@@ -430,9 +447,7 @@ const MenuOrder: React.FC<MenuOrderProps> = ({ setOrderItems, clearOrder }) => {
                                 min={0}
                                 className="w-16"
                               />
-                              <Button onClick={() => removeItemFromOrder(item)}>
-                                -
-                              </Button>
+                              <button onClick={() => removeFullItemFromOrder(item)}>❌</button>
                             </div>
                           </Card>
                         ))}
