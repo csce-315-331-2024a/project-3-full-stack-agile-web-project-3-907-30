@@ -71,7 +71,7 @@ Ex:
 - [ ] Add more tests with playwright - Margo E3 P1 S0
 - [ ] Measure code coverage with playwright - Margo E1 P1 S0
 - [x] Remove user in user management - Adam E1 P1 T1
-- [ ] Add pictures to static menu board - Adam E2 P2 S0
+- [x] Add pictures to static menu board - Adam E2 P2 T2
 - [ ] Link to external site - Akshay E1 P3 S0
 - [ ] One more API functionality - Akshay E3 P3 S0
 - [ ] Host documentation - Chris E3 P1 S0
