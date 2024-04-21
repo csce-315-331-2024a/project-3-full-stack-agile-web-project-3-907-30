@@ -5,6 +5,7 @@ import { Employee } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import { useToast } from "../../ui/use-toast";
+import { Button } from "@/components/ui/button";
 
 /**
  * An user management component that allows admins to manage their employees and managers. 
@@ -21,6 +22,7 @@ const UserManagement = () => {
 
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -29,7 +31,7 @@ const UserManagement = () => {
       setEmployees(data);
     });
     setLoading(false);
-  }, [loading]);
+  }, [loading, isDeleting]);
 
   /**
    * Updates the role of a user.
@@ -74,16 +76,47 @@ const UserManagement = () => {
     setIsSubmitting(false);
   };
 
+  /**
+   * Deletes an employee from the database.
+   * 
+   * @param {string} empId The employee ID to delete.
+   */
+  const deleteEmployee = async (empId: string) => {
+    setIsDeleting(true);
+    const res = await fetch('/api/employee/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ empId }),
+    });
+
+    if (res.status === 200) {
+      toast({
+        title: 'Success!',
+        description: 'Employee deleted successfully.',
+      });
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+      });
+    }
+
+    setIsDeleting(false);
+  }
+
   return (
     <Card className="w-1/2 overflow-y-scroll">
       <CardHeader>
         <CardTitle>Manage Users</CardTitle>
         <CardDescription>Manage your users at a glance.</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-6 notranslate">
+      <CardContent className="flex flex-col gap-6 notranslate justify-stretch min-w-fit max-w-full">
         {
           employees.map((employee) => (
-            <div key={employee.empEmail} className="flex justify-between gap-16 items-center">
+            <div key={employee.empEmail} className="flex justify-between gap-12 items-center w-full">
               <div className="flex items-center gap-3">
                 <Avatar>
                   <AvatarImage src={employee.empPicture} alt="profile" />
@@ -94,18 +127,21 @@ const UserManagement = () => {
                   <p className="text-xs font-light">{employee.empEmail}</p>
                 </div>
               </div>
-              <Select disabled={isSubmitting} onValueChange={(value) => updateRole(employee.empEmail, value)} defaultValue={getRole(employee)}>
-                <SelectTrigger className="w-32">
-                  <SelectValue placeholder={getRole(employee)} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {roles.map((role) => (
-                      <SelectItem key={role} value={role} className="cursor-pointer">{role}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <div className="flex justify-end items-center w-full">
+                <Select disabled={isSubmitting} onValueChange={(value) => updateRole(employee.empEmail, value)} defaultValue={getRole(employee)}>
+                  <SelectTrigger className="w-32">
+                    <SelectValue placeholder={getRole(employee)} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {roles.map((role) => (
+                        <SelectItem key={role} value={role} className="cursor-pointer">{role}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <Button className="ml-4" onClick={() => deleteEmployee(employee.empId)}>X</Button>
+              </div>
             </div>
           ))
         }

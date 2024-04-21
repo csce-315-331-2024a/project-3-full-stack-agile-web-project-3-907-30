@@ -13,7 +13,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const getStatement = await db.prepare(
-    "SELECT * FROM Employees WHERE is_verified=TRUE AND is_manager=FALSE AND is_admin=FALSE ORDER BY emp_id ASC"
+    "SELECT * FROM Employees WHERE is_verified=TRUE ORDER BY emp_id ASC;"
   );
 
   const queryResult = await getStatement.execute();

@@ -11,7 +11,7 @@ import revLogo from "../../public/rev-logo.png";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import Link from "next/link"
 import { Toaster } from "@/components/ui/toaster";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -21,6 +21,7 @@ import { Weather } from "./api/customer/weather";
 import { getCurrentWeather } from "@/components/customer/customer-weather";
 import Head from "next/head";
 import Translate from "@/components/common/translate";
+import { Menu } from "lucide-react";
 
 interface LayoutProps {
   children: ReactNode;
@@ -73,28 +74,65 @@ const Layout = ({ children }: LayoutProps) => {
         <title>Rev&apos;s American Grill</title>
       </Head>
       {router.asPath === '/' ? (
-        <main className="flex flex-col w-full h-dvh" >
+        <main className="flex flex-col w-full md:h-dvh" >
           <div className="border-b">
-            <div className="flex h-16 items-center justify-between px-4">
-              <div className="flex gap-4">
-                <Image src={revLogo} alt="Rev's American Grill Logo" className="w-20 rounded-sm" priority />
+            <div className="flex items-center justify-between p-2 lg:p-4 flex-wrap">
+              <div className="flex gap-2">
+                <Image src={revLogo} alt="Rev's American Grill Logo" className="w-16 lg:w-20 rounded-sm" priority />
                 <Translate />
-                <CustomerInfo weather={weather} />
+                <span className="hidden lg:flex">
+                  <CustomerInfo weather={weather} />
+                </span>
+                <span className="block lg:hidden">
+                  <RewardsButton setCustomer={setCustomer} />
+                </span>
               </div>
-              <div className="flex gap-4">
+              <div className="lg:flex gap-4 hidden">
+                <RewardsButton setCustomer={setCustomer} />
+                <Button>
+                  <Link target="_blank" href="https://www.yelp.com/writeareview/biz/6dSStUCjMAfixAqz73iy9g?return_url=%2Fbiz%2F6dSStUCjMAfixAqz73iy9g&review_origin=biz-details-war-button">
+                    Rate Us! 🌟
+                  </Link>
+                </Button>
                 <Button variant="outline" asChild>
                   <Link href="/employee/login">
                     I&apos;m an Employee
                   </Link>
                 </Button>
-                <RewardsButton setCustomer={setCustomer}/>
+              </div>
+              {/* dropdown for mobile */}
+              <div className="lg:hidden">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild className="cursor-pointer">
+                    <Button>
+                      <Menu className="w-6 h-6" />
+                      <span className="hidden">Menu</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-fit mr-4 mt-1 notranslate">
+                    <DropdownMenuItem>
+                      <CustomerInfo weather={weather} />
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <Link target="_blank" href="https://www.yelp.com/writeareview/biz/6dSStUCjMAfixAqz73iy9g?return_url=%2Fbiz%2F6dSStUCjMAfixAqz73iy9g&review_origin=biz-details-war-button">
+                        Rate Us! 🌟
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href="/employee/login">
+                        I&apos;m an Employee
+                      </Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
           </div>
           {children}
           <Toaster />
         </main >
-      ) : router.asPath === '/employee/login' || router.asPath === '/employee/menu' ? (
+      ) : router.asPath === '/employee/login' || router.asPath.startsWith('/employee/menu') ? (
         <>
           {children}
           <Toaster />
@@ -125,9 +163,31 @@ const Layout = ({ children }: LayoutProps) => {
                           </Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                          <Link href="/employee/menu" legacyBehavior passHref>
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()} active={router.asPath === '/employee/menu'}>
-                              Menu View
+                          <NavigationMenuTrigger>Menu Views</NavigationMenuTrigger>
+                          <NavigationMenuContent>
+                            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-3 place-items-center">
+                              <Link href="/employee/menu1" legacyBehavior passHref>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()} active={router.asPath === '/employee/menu'}>
+                                  Menu View 1
+                                </NavigationMenuLink>
+                              </Link>
+                              <Link href="/employee/menu2" legacyBehavior passHref>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()} active={router.asPath === '/employee/menu'}>
+                                  Menu View 2
+                                </NavigationMenuLink>
+                              </Link>
+                              <Link href="/employee/menu3" legacyBehavior passHref>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()} active={router.asPath === '/employee/menu'}>
+                                  Menu View 3
+                                </NavigationMenuLink>
+                              </Link>
+                            </ul>
+                          </NavigationMenuContent>
+                        </NavigationMenuItem>
+                        <NavigationMenuItem>
+                          <Link href="/employee/kitchen" legacyBehavior passHref>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()} active={router.asPath === '/employee/kitchen'}>
+                              Kitchen View
                             </NavigationMenuLink>
                           </Link>
                         </NavigationMenuItem>
@@ -153,7 +213,7 @@ const Layout = ({ children }: LayoutProps) => {
                       <AvatarFallback>{employee?.empName[0]}</AvatarFallback>
                     </Avatar>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-fit mr-4 mt-1">
+                  <DropdownMenuContent className="w-fit mr-4 mt-1 notranslate">
                     <DropdownMenuLabel className="text-xl">{employee?.empName}</DropdownMenuLabel>
                     <DropdownMenuLabel className="font-light -mt-3">{employee?.empEmail}</DropdownMenuLabel>
                     <Badge className="ml-2 mb-2 text-xs mt-1">{getRole(employee)}</Badge>

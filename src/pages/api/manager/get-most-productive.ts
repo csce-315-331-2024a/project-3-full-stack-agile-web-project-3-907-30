@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
-  ExcessReportItem,
   MostProductiveEmployeeItem,
 } from "../../../lib/types";
 import db from "../../../lib/db";

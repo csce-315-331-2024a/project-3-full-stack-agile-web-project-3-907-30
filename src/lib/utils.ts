@@ -17,55 +17,6 @@ import {
 import { Pool, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
 
-// export async function getMenuItem(id: number) : Promise<MenuItem> {
-//     const sql = "SELECT item_id, item_name, item_price::numeric, times_ordered FROM menu_items WHERE item_id = ($1)";
-
-//     const res = await executeStatement(db, sql, [DataTypeOIDs.int8], [id]).then(result => {
-//         return rowToMenuItem(result.rows?.at(0));
-//     });
-//     return res;
-// }
-
-// export async function getAllMenuItems() : Promise<MenuItem[]> {
-//     const sql = "SELECT item_id, item_name, item_price::numeric, times_ordered FROM menu_items;";
-//     const res = await executeStatement(db, sql, [], []).then(result => {
-//         const results = result.rows?.map(row => {
-//             return rowToMenuItem(row);
-//         }) as MenuItem[];
-//         return Promise.all(results);
-//     });
-//     return res;
-// }
-
-// export async function getItemIngredients(id: number) : Promise<InventoryItem[]> {
-//     const sql = `SELECT inv_menu.inv_id, inv_name, inv_price::numeric, fill_level, current_level, times_refilled, date_refilled, has_dairy, has_nuts, has_eggs, is_vegan, is_halal
-//     FROM inv_menu
-//     INNER JOIN inventory AT inventory.inv_id = inv_menu.inv_id
-//     WHERE inv_menu.menu_id = $1`;
-//     const types = [
-//         DataTypeOIDs.int4,
-//         DataTypeOIDs.varchar,
-//         DataTypeOIDs.numeric,
-//         DataTypeOIDs.int4,
-//         DataTypeOIDs.int4,
-//         DataTypeOIDs.int4,
-//         DataTypeOIDs.date,
-//         DataTypeOIDs.bool,
-//         DataTypeOIDs.bool,
-//         DataTypeOIDs.bool,
-//         DataTypeOIDs.bool,
-//         DataTypeOIDs.bool
-//     ];
-
-//     const res = await executeStatement(db, sql, types, [id]).then((result) => {
-//         const results = result.rows?.map(row => {
-//             return rowToInventoryItem(row);
-//         }) as InventoryItem[];
-//         return Promise.all(results);
-//     });
-//     return res;
-// }
-
 /**
  * Convert a given array row from a SQL execution result to an InventoryItem object.
  *
@@ -244,7 +195,7 @@ export async function submitOrder(
   chosenItems: any,
   quantities: any
 ) {
-  if (orderTotal < 0) {
+  if (chosenItems.length === 0) {
     toast({
       variant: "destructive",
       title: "Cart is empty",
@@ -433,20 +384,22 @@ export const itemBelongsToCategory = (
  */
 export async function putCustomerInLocalStorage(customer: Customer) {
   if (customer !== null) {
-    localStorage.setItem('customerId', customer!.cust_id.toString());
-    localStorage.setItem('customerName', customer!.cust_name);
-    localStorage.setItem('customerPhoneNumber', customer!.phone_number);
-    localStorage.setItem('customerNumOrders', customer!.num_orders.toString());
-    localStorage.setItem('customerTotalSpent', customer!.total_spent.toString());
-    localStorage.setItem('customerPoints', customer!.points.toString());
-  }
-  else {
-    localStorage.setItem('customerId', 'no customer ID');
-    localStorage.setItem('customerName', 'no customer');
-    localStorage.setItem('customerPhoneNumber', 'no customer phone number');
-    localStorage.setItem('customerNumOrders', 'no customer orders');
-    localStorage.setItem('customerTotalSpent', 'no customer total spent');
-    localStorage.setItem('customerPoints', 'no customer points');
+    localStorage.setItem("customerId", customer!.cust_id.toString());
+    localStorage.setItem("customerName", customer!.cust_name);
+    localStorage.setItem("customerPhoneNumber", customer!.phone_number);
+    localStorage.setItem("customerNumOrders", customer!.num_orders.toString());
+    localStorage.setItem(
+      "customerTotalSpent",
+      customer!.total_spent.toString()
+    );
+    localStorage.setItem("customerPoints", customer!.points.toString());
+  } else {
+    localStorage.setItem("customerId", "no customer ID");
+    localStorage.setItem("customerName", "no customer");
+    localStorage.setItem("customerPhoneNumber", "no customer phone number");
+    localStorage.setItem("customerNumOrders", "no customer orders");
+    localStorage.setItem("customerTotalSpent", "no customer total spent");
+    localStorage.setItem("customerPoints", "no customer points");
   }
 }
 
@@ -547,6 +500,12 @@ export async function getRestockReport() {
   return data;
 }
 
+/**
+ * Converts a row from the database to a MostProductiveEmployeeItem object.
+ *
+ * @param {any[]} array Row from SQL query
+ * @returns {MostProductiveEmployeeItem} Most productive employee item
+ */
 export const rowToMostProductiveEmployeeItem = (array: any[]) => {
   return {
     id: array[0],
@@ -575,6 +534,13 @@ export async function updateMenuItemPrice(itemName: string, newPrice: number) {
   return res;
 }
 
+/**
+ * Get the most productive employees within a given date range.
+ *
+ * @param {string} startDate The start date of the range
+ * @param {string} endDate The end date of the range
+ * @returns {MostProductiveEmployeeItem[]} The most productive employees within the given date range.
+ */
 export async function getMostProductiveEmployeesInRange(
   startDate: string,
   endDate: string
@@ -628,13 +594,13 @@ export async function getProductUsageReportInRange(
 
 /**
  * Get the sales report within a given date range.
- * 
+ *
  * @param {string} startDate The start date of the range
  * @param {string} endDate The end date of the range
- * @returns {SalesReportItem[]} The sales report within the given date range. 
+ * @returns {SalesReportItem[]} The sales report within the given date range.
  */
 export async function getSalesReportInRange(
-  startDate: string, 
+  startDate: string,
   endDate: string
 ) {
   const res = await fetch("/api/manager/get-sales-report", {
@@ -653,4 +619,156 @@ export async function getSalesReportInRange(
   }
   const data: SalesReportItem[] = await res.json();
   return data;
+}
+
+/**
+ * Get all inventory items from the database.
+ *
+ * @returns {InventoryItem[]} The revenue report within the given date range.
+ */
+export async function getAllInventoryItems() {
+  const res = await fetch("/api/inventory/get-all");
+  const data: InventoryItem[] = await res.json();
+  return data;
+}
+
+/**
+ * Get an inventory item from the database by its ID.
+ *
+ * @param {number} id The ID of the inventory item to get.
+ * @returns {InventoryItem} The inventory item from the database.
+ */
+export async function getInventoryItem(id: number) {
+  const res = await fetch("/api/inventory/get", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id }),
+  });
+
+  const data: InventoryItem = await res.json();
+  return data;
+}
+
+/**
+ * Add an inventory item to the database.
+ *
+ * @param {InventoryItem} item The inventory item to add.
+ * @returns {Response} The response from the database.
+ */
+export async function addInventoryItem(item: InventoryItem) {
+  const res = await fetch("/api/inventory/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(item),
+  });
+
+  return res;
+}
+
+/**
+ * Update an inventory item in the database.
+ *
+ * @param {InventoryItem} item The inventory item to update.
+ * @returns {Response} The response from the database.
+ */
+export async function updateInventoryItem(item: InventoryItem) {
+  const res = await fetch("/api/inventory/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(item),
+  });
+
+  return res;
+}
+
+/**
+ * Delete an inventory item from the database.
+ *
+ * @param {number} id The ID of the inventory item to delete.
+ * @returns {Response} The response from the database.
+ */
+export async function deleteInventoryItem(id: number) {
+  const res = await fetch("/api/inventory/delete", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id }),
+  });
+
+  return res;
+}
+
+/**
+ * Get all orders from the database given an offset.
+ *
+ * @param {number} page The page number to get the orders from.
+ * @returns {number} All orders from the database.
+ */
+export async function getAllOrders(page: number) {
+  const offset = page * 1000 + 1;
+
+  const res = await fetch("/api/order/get-all", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ offset }),
+  });
+  const data = await res.json();
+  return data;
+}
+
+/**
+ * Get the total number of orders from the database.
+ *
+ * @returns {number} The total number of orders from the database.
+ */
+export async function getNumOrders() {
+  const res = await fetch("/api/order/get-num-orders");
+  const data = await res.json();
+  return data;
+}
+
+/**
+ * Delete an order from the database.
+ *
+ * @param {number} orderId The ID of the order to delete.
+ * @returns {Response} The response from the database.
+ */
+export async function deleteOrder(orderId: number) {
+  const res = await fetch("/api/order/delete", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ orderId }),
+  });
+
+  return res;
+}
+
+/**
+ * Update an order item's status in the database.
+ * 
+ * @param {number} orderId The ID of the order to update
+ * @param {number} status The new status of the order
+ * @returns {Response} The response from the database
+ */
+export async function updateOrderItemStatus(orderId: number, status: number) {
+  const res = await fetch("/api/order/update-status", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ orderId, status }),
+  });
+
+  return res;
 }

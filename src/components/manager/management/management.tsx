@@ -1,6 +1,6 @@
 import useAuth from "@/hooks/useAuth";
 import { Employee, AuthHookType } from "@/lib/types";
-import { getEmployeeFromDatabase } from "@/lib/utils";
+import { getEmployeeFromDatabase, getNumOrders } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import UserManagement from "./user-management";
@@ -9,7 +9,8 @@ import LeastSellingView from "./least-selling-view";
 import LeastContributingView from "./least-contributing-view";
 import ItemSaleGUI from "./item-sale-gui";
 import { Card } from "@/components/ui/card";
-import SeasonalGUI from "./seasonal-item-gui";
+import InventoryManagement from "./inventory-management";
+import OrderManagement from "./order-management";
 
 /**
  * A management component that encapsulates managing users, inventory, menu, and orders.
@@ -26,6 +27,7 @@ const Management = () => {
 
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
+  const [numOrders, setNumOrders] = useState(0);
 
   const managementTabs = [
     "User Management",
@@ -33,6 +35,12 @@ const Management = () => {
     "Inventory Management",
     "Menu Management",
   ];
+
+  useEffect(() => {
+    getNumOrders().then((data) => {
+      setNumOrders(data);
+    });
+  }, []);
 
   useEffect(() => {
     if (account) {
@@ -46,29 +54,29 @@ const Management = () => {
 
   return (
     <Tabs defaultValue="UserManagement" className="flex flex-row gap-4 h-full">
-      <TabsList className="grid grid-cols-1 h-fit mt-2 w-1/5">
+      <TabsList className="grid grid-cols-1 h-fit mt-2 w-1/5 text-black">
         {managementTabs.map((tab, index) => (
-          <TabsTrigger key={index} value={tab.replaceAll(" ", "")} className="py-4">
+          <TabsTrigger key={index} value={tab.replaceAll(" ", "")} className="py-4 px-8">
             {tab}
           </TabsTrigger>
         ))}
       </TabsList>
       <TabsContent value="UserManagement" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%] gap-8 p-4">
+        <Card className="flex max-h-[85%] gap-8 p-4">
           {employee?.isAdmin && (
             <UserManagement />
           )}
           <ViewEmployees />
         </Card>
       </TabsContent>
-      <TabsContent value="OrderManagement">
-        Order Management
+      <TabsContent value="OrderManagement" className="w-4/5">
+        <OrderManagement numOrders={numOrders} />
       </TabsContent>
-      <TabsContent value="InventoryManagement">
-        Inventory Management
+      <TabsContent value="InventoryManagement" className="w-4/5">
+        <InventoryManagement />
       </TabsContent>
-      <TabsContent value="MenuManagement">
-        <Card className="flex min-h-fit max-h-[85%] gap-8 p-4 notranslate">
+      <TabsContent value="MenuManagement" className="w-4/5">
+        <Card className="flex max-h-[85%] gap-8 p-4 notranslate">
           <LeastSellingView />
           <LeastContributingView />
           <ItemSaleGUI />
