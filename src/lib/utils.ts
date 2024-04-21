@@ -13,7 +13,6 @@ import {
   RevenueReportItem,
   ExcessReportItem,
   RestockReportItem,
-  OrderItem,
 } from "./types";
 import { Pool, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
@@ -196,7 +195,7 @@ export async function submitOrder(
   chosenItems: any,
   quantities: any
 ) {
-  if (orderTotal < 0) {
+  if (chosenItems.length === 0) {
     toast({
       variant: "destructive",
       title: "Cart is empty",
@@ -707,12 +706,69 @@ export async function deleteInventoryItem(id: number) {
 }
 
 /**
- * Get all orders from the database.
- * 
- * @returns {OrderItem[]} All orders from the database. 
+ * Get all orders from the database given an offset.
+ *
+ * @param {number} page The page number to get the orders from.
+ * @returns {number} All orders from the database.
  */
-export async function getAllOrders() {
-  const res = await fetch("/api/order/get-all");
+export async function getAllOrders(page: number) {
+  const offset = page * 1000 + 1;
+
+  const res = await fetch("/api/order/get-all", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ offset }),
+  });
   const data = await res.json();
   return data;
+}
+
+/**
+ * Get the total number of orders from the database.
+ *
+ * @returns {number} The total number of orders from the database.
+ */
+export async function getNumOrders() {
+  const res = await fetch("/api/order/get-num-orders");
+  const data = await res.json();
+  return data;
+}
+
+/**
+ * Delete an order from the database.
+ *
+ * @param {number} orderId The ID of the order to delete.
+ * @returns {Response} The response from the database.
+ */
+export async function deleteOrder(orderId: number) {
+  const res = await fetch("/api/order/delete", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ orderId }),
+  });
+
+  return res;
+}
+
+/**
+ * Update an order item's status in the database.
+ * 
+ * @param {number} orderId The ID of the order to update
+ * @param {number} status The new status of the order
+ * @returns {Response} The response from the database
+ */
+export async function updateOrderItemStatus(orderId: number, status: number) {
+  const res = await fetch("/api/order/update-status", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ orderId, status }),
+  });
+
+  return res;
 }

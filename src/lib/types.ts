@@ -150,3 +150,9 @@ export interface OrderItem {
   used_points: boolean;
   status: number;
 }
+
+export interface OrderMenuItem {
+  item_id: number;
+  item_name: string;
+  quantity: number;
+}

@@ -55,7 +55,7 @@ const MostProductiveEmployees = () => {
   }
 
   return (
-    <Card className="min-h-fit max-h-[85%] overflow-y-scroll w-full">
+    <Card className="max-h-[85%] overflow-y-scroll w-full">
       <CardHeader>
         <CardTitle>Most Productive Employees</CardTitle>
         <CardDescription>See which employees make the most orders.</CardDescription>

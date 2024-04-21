@@ -14,11 +14,17 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const getStatement = await db.prepare(
-    "SELECT order_id, order_date, order_time::varchar(8), order_total::numeric, cust_id, emp_id, used_points, status FROM orders ORDER BY order_id DESC;"
+    "SELECT order_id, order_date, order_time::varchar(8), order_total::numeric, cust_id, emp_id, used_points, status FROM orders ORDER BY order_id DESC LIMIT 1000 OFFSET $1;",
+    {
+      paramTypes: [DataTypeOIDs.int4],
+    }
   );
 
+  const offset = req.body.offset || 0;
+
   const orderItem = await getStatement.execute({
-    fetchCount: 100,
+    params: [offset],
+    fetchCount: 1000,
   });
 
   await getStatement.close();
