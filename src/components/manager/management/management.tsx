@@ -9,6 +9,7 @@ import LeastSellingView from "./least-selling-view";
 import LeastContributingView from "./least-contributing-view";
 import ItemSaleGUI from "./item-sale-gui";
 import { Card } from "@/components/ui/card";
+import SeasonalGUI from "./seasonal-item-gui";
 
 /**
  * A management component that encapsulates managing users, inventory, menu, and orders.
@@ -71,6 +72,7 @@ const Management = () => {
           <LeastSellingView />
           <LeastContributingView />
           <ItemSaleGUI />
+          {/* <SeasonalGUI /> */}
         </Card>
       </TabsContent>
     </Tabs>
