@@ -138,13 +138,13 @@ function DataTable<TData, TVal>({ columns, data, items }: DataTableProps<TData, 
                       <Button
                         className="bg-red-950 m-1"
                         onClick={async () => {
-                          await markOrder("Complete", `http://localhost:3000/api/kitchen/complete-order`, index);
+                          await markOrder("Complete", "/api/kitchen/complete-order", index);
                         }}
                       >Mark as Complete</Button>
                       <Button
                         className="bg-red-950 m-1"
                         onClick={async () => {
-                          await markOrder("Cancelled", `http://localhost:3000/api/kitchen/cancel-order`, index);
+                          await markOrder("Cancelled", "/api/kitchen/cancel-order", index);
                         }}
                       >Cancel</Button>
                       <AlertDialog open={open[index]}>

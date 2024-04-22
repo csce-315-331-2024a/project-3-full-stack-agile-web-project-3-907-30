@@ -40,12 +40,13 @@ const Kitchen = () => {
   useEffect(() => {
     const getAndSetData = (async () => {
 
-      const orderRes = await fetch(`http://localhost:3000/api/kitchen/get-pending-orders`);
+      const orderRes = await fetch('/api/kitchen/get-pending-orders');
       const pendingOrders = JSON.parse(await orderRes.json()) as PendingOrder[];
       console.log(pendingOrders);
 
-      const itemsRes = await fetch(`http://localhost:3000/api/kitchen/get-order-items`);
-      const itemsPairs = await itemsRes.json() as MenuOrderPair[];
+      const itemsRes = await fetch('/api/kitchen/get-order-items');
+      const itemsPairs = JSON.parse(await itemsRes.json()) as MenuOrderPair[];
+
       console.log(itemsPairs);
 
       setOrders(pendingOrders);
