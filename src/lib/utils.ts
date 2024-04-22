@@ -712,7 +712,7 @@ export async function deleteInventoryItem(id: number) {
  * @returns {number} All orders from the database.
  */
 export async function getAllOrders(page: number) {
-  const offset = page * 1000 + 1;
+  const offset = page * 100 + 1;
 
   const res = await fetch("/api/order/get-all", {
     method: "POST",
@@ -756,7 +756,7 @@ export async function deleteOrder(orderId: number) {
 
 /**
  * Update an order item's status in the database.
- * 
+ *
  * @param {number} orderId The ID of the order to update
  * @param {number} status The new status of the order
  * @returns {Response} The response from the database

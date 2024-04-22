@@ -79,8 +79,8 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
 			<DialogTrigger asChild>
 				<Button variant="outline" data-testid="sign-in">
 					<span className="hidden lg:block">Sign-in for Rewards</span>
-					<span className="block lg:hidden">
-						<CircleUser size={24} />
+					<span className="block lg:hidden text-xs">
+						Rewards
 					</span>
 				</Button>
 			</DialogTrigger>

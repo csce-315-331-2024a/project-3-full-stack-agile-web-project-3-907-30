@@ -15,7 +15,7 @@ const OrderManagement = ({ numOrders }: { numOrders: number }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [open, setOpen] = useState(false);
 
-  const pages = Array.from({ length: Math.floor(numOrders / 1000) + 1 }, (_, i) => (
+  const pages = Array.from({ length: Math.floor(numOrders / 100) + 1 }, (_, i) => (
     { label: `Page ${i + 1}`, value: i }
   ));
 

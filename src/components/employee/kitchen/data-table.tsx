@@ -105,13 +105,13 @@ function DataTable<TData, TVal>({ columns, data, items }: DataTableProps<TData, 
                       <Button
                         className="bg-red-950 m-1"
                         onClick={async () => {
-                          await markOrder("Complete", "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/api/kitchen/complete-order", index);
+                          await markOrder("Complete", "/api/kitchen/complete-order", index);
                         }}
                       >Mark as Complete</Button>
                       <Button
                         className="bg-red-950 m-1"
                         onClick={async () => {
-                          await markOrder("Cancelled", "https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/api/kitchen/cancel-order", index);
+                          await markOrder("Cancelled", "/api/kitchen/cancel-order", index);
                         }}
                       >Cancel</Button>
                       <AlertDialog open={open[index]}>
