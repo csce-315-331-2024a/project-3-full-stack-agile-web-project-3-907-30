@@ -17,10 +17,22 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } fr
 import { Input } from '../../ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card";
 import { Button } from '../../ui/button';
+import { CalendarIcon } from "@radix-ui/react-icons"
+import { format } from "date-fns"
+import { Calendar } from "@/components/ui/calendar"
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover"
 
 const FormSchema = z.object({
-	start_date: z.string(),
-	end_date: z.string()
+	start_date: z.date({
+		required_error: 'A start date is required.'
+	}),
+	end_date: z.date({
+		required_error: 'An end date is required.'
+	})
 })
 
 
@@ -52,7 +64,7 @@ const ProductUsage = () => {
 
 
 	async function onSubmit(formData: z.infer<typeof FormSchema>) {
-		const res = await getProductUsageReportInRange(formData.start_date, formData.end_date);
+		const res = await getProductUsageReportInRange(formData.start_date.toDateString(), formData.end_date.toDateString());
 		setFormData(res);
 	}
 
@@ -71,9 +83,28 @@ const ProductUsage = () => {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Start Date</FormLabel>
-									<FormControl>
-										<Input placeholder="e.g. 2022-01-01" {...field} />
-									</FormControl>
+									<Popover>
+										<PopoverTrigger asChild className="m-4">
+											<FormControl>
+												<Button
+													variant='outline'
+												>
+													<CalendarIcon className='mr-2' />
+													{field.value ? (format(field.value, 'PPP')) : (<span>Pick a date.</span>)}
+												</Button>
+											</FormControl>
+										</PopoverTrigger>
+										<PopoverContent>
+											<Calendar
+												mode='single'
+												selected={field.value}
+												onSelect={field.onChange}
+												initialFocus
+												defaultMonth={new Date(2022, 0)}
+											>
+											</Calendar>
+										</PopoverContent>
+									</Popover>
 									<FormDescription>
 										Enter the start date of the interval you want to see.
 									</FormDescription>
@@ -87,9 +118,28 @@ const ProductUsage = () => {
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>End Date</FormLabel>
-									<FormControl>
-										<Input placeholder="e.g. 2023-01-01" {...field} />
-									</FormControl>
+									<Popover>
+										<PopoverTrigger asChild className="mx-4">
+											<FormControl>
+												<Button
+													variant='outline'
+												>
+													<CalendarIcon className="mr-2" />
+													{field.value ? (format(field.value, 'PPP')) : (<span>Pick a date.</span>)}
+												</Button>
+											</FormControl>
+										</PopoverTrigger>
+										<PopoverContent>
+											<Calendar
+												mode='single'
+												selected={field.value}
+												onSelect={field.onChange}
+												initialFocus
+												defaultMonth={new Date(2023, 0)}
+											>
+											</Calendar>
+										</PopoverContent>
+									</Popover>
 									<FormDescription>
 										Enter the end date of the interval you want to see.
 									</FormDescription>
