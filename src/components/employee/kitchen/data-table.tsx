@@ -26,19 +26,52 @@ function DataTable<TData, TVal>({ columns, data, items }: DataTableProps<TData, 
   });
 
   const getListOfMenuItems = (index: number): ReactNode => {
+
+    // Get list of menu items from API
     const filteredItems = items.filter((item) => {
       const order = data[index] as PendingOrder;
       if (order === undefined) return;
       return order.order_id === item.id;
     })
 
+    // Check if existent in the database
     if (filteredItems.length === 0) {
       return (
         <AlertDialogDescription>
-          This order has no items.
+          This order has no items. Refresh the page, and if it fails, contact the system administrator.
         </AlertDialogDescription>
       )
     }
+
+    // Use map to further reduce into names and count
+    // Use filteredItems.reduce to map over the list of filtered items in order
+    const itemsMap = filteredItems.reduce((accum: Map<string, number>, curr) => {
+      let count = accum.get(curr.name);
+      if (count === undefined) {
+        accum.set(curr.name, 1);
+      } else {
+        accum.set(curr.name, count + 1);
+      }
+      return accum;
+    }, new Map<string, number>())
+
+    // If key is in map, increment count
+    // Else, add to map with count of 1
+
+    console.log(filteredItems.length);
+    console.log(itemsMap.size)
+
+    return (
+      <>
+        {
+          Array.from(itemsMap.entries()).map((value: [string, number]) => {
+            return (
+              <AlertDialogDescription key={value[0]}>{value[0]} - x{value[1]}</AlertDialogDescription>
+            )
+          })
+        }
+      </>
+    )
 
     return (
       <>

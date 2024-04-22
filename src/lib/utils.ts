@@ -81,7 +81,7 @@ export async function executeStatement(
   params: any[]
 ): Promise<QueryResult> {
   const statement = await db.prepare(sql, { paramTypes: paramTypes });
-  const res = await statement.execute({ params: params });
+  const res = await statement.execute({ params: params, fetchCount: 100000 });
   await statement.close();
   return res;
 }
