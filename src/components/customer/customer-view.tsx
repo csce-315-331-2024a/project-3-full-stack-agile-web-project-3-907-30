@@ -48,7 +48,7 @@ import {
 
 import { Switch } from "../ui/switch";
 
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import { useToast } from "../ui/use-toast";
 
 import shoppingCart from "../../../public/shopping-cart.svg";
@@ -491,14 +491,14 @@ const CustomerView = () => {
               <SheetTitle>Your Order</SheetTitle>
               <SheetDescription className='pb-2'>Review your items before checkout.</SheetDescription>
             </SheetHeader>
-            <Card className="h-full">
+            <Card className="h-[90%]">
               <CardContent className="flex flex-col gap-2">
                 <div className="text-md flex justify-between items-center mb-4 border-b pb-4 pt-4">
                   <div className="text-gray-700">
-                    <span className="block">Order Number: {orderNumber}</span>
+                    <span className="block text-sm md:text-base">Order Number: {orderNumber}</span>
                     <HoverCard>
                       <HoverCardTrigger asChild>
-                        <span className="font-semibold cursor-default">Customer Points: {customerPoints}</span>
+                        <span className="font-semibold cursor-default text-sm md:text-base">Customer Points: {customerPoints}</span>
                       </HoverCardTrigger>
                       <HoverCardContent className="w-80">
                         <div className="flex justify-between space-x-4">
@@ -515,7 +515,7 @@ const CustomerView = () => {
                       </HoverCardContent>
                     </HoverCard>
                   </div>
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-col md:flex-row justify-between items-center">
                     <Switch
                       id="points_switch"
                       className="w-11 h-6"
@@ -530,7 +530,7 @@ const CustomerView = () => {
                     </Label>
                   </div>
                 </div>
-                <ScrollArea className="h-[300px]">
+                <ScrollArea className="h-[120px] md:h-[220px] lg:h-[250px]">
                   <ul className="divide-y divide-gray-200 pr-4">
                     {orderItems.map((item, index) => (
                       <li
@@ -611,18 +611,18 @@ const CustomerView = () => {
                     <span className="text-lg font-bold">${total.toFixed(2)}</span>
                   </div>
                 </div>
-                <div className="flex justify-between py-2 gap-2">
+                <div className="flex flex-col md:flex-row justify-between py-2 gap-2">
                   <Button
                     onClick={async () => {
                       customerSubmitOrder();
                     }}
-                    className="bg-green-500 hover:bg-green-700 text-white text-xl font-bold px-6 py-8 rounded w-full"
+                    className="bg-green-500 hover:bg-green-700 text-white text-sm md:text-xl font-bold px-6 py-4 md:py-8 rounded w-full"
                   >
                     Submit
                   </Button>
                   <Button
                     onClick={clearOrder}
-                    className="bg-red-500 hover:bg-red-700 text-white text-xl font-bold px-6 py-8 rounded w-full">
+                    className="bg-red-500 hover:bg-red-700 text-white text-sm md:text-xl font-bold px-6 py-4 md:py-8 rounded w-full">
                     Clear
                   </Button>
                 </div>
@@ -631,16 +631,16 @@ const CustomerView = () => {
           </SheetContent>
         </Sheet>
       </div>
-      <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-full">
-        <ScrollArea className="w-1/5">
-          <TabsList className="grid grid-cols-1 mt-2 h-fit">
+      <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-col md:flex-row gap-4 h-full mt-8 md:mt-0">
+        <ScrollArea className="lg:w-1/5 max-w-full">
+          <TabsList className="grid grid-cols-2 md:grid-cols-1 lg:mt-2 h-fit w-full">
             <TabsTrigger
               value="reccs"
-              className="px-8 py-9 cursor-pointer relative"
+              className="md:px-8 py-4 md:py-9 cursor-pointer relative w-full"
               onMouseEnter={() => setHoveredTab(7)}
               onMouseLeave={() => setHoveredTab(null)}
             >
-              <h2 className="text-2xl">
+              <h2 className="text-sm md:text-2xl text-black">
                 Climate Cravings
               </h2>
               {hoveredTab === 6 && (
@@ -651,11 +651,11 @@ const CustomerView = () => {
               <TabsTrigger
                 key={index}
                 value={category.replace(/\s/g, '')}
-                className={`px-8 py-9 cursor-pointer relative`}
+                className={`md:px-8 py-4 md:py-9 cursor-pointer relative w-full`}
                 onMouseEnter={() => setHoveredTab(index)}
                 onMouseLeave={() => setHoveredTab(null)}
               >
-                <h2 className="text-2xl">
+                <h2 className="text-sm md:text-2xl text-black">
                   {category}
                 </h2>
                 {hoveredTab === index && (
@@ -665,11 +665,11 @@ const CustomerView = () => {
             ))}
             <TabsTrigger
               value="pastOrders"
-              className="px-8 py-9 cursor-pointer relative"
+              className="md:px-8 py-4 md:py-9 cursor-pointer relative w-full"
               onMouseEnter={() => setHoveredTab(6)}
               onMouseLeave={() => setHoveredTab(null)}
             >
-              <h2 className="text-2xl">
+              <h2 className="text-sm md:text-2xl text-black">
                 Past Orders
               </h2>
               {hoveredTab === 6 && (
@@ -677,12 +677,13 @@ const CustomerView = () => {
               )}
             </TabsTrigger>
           </TabsList>
+          <ScrollBar orientation="horizontal" className="w-full" />
         </ScrollArea>
 
         {categories.map((category, index) => (
-          <TabsContent key={index} value={category.replace(/\s/g, '')} className="w-4/5">
+          <TabsContent key={index} value={category.replace(/\s/g, '')} className="w-full md:w-4/5">
             <Card className="overflow-y-scroll h-[90%]">
-              <div className="grid grid-cols-5 gap-4 p-4 items-stretch">
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 items-stretch">
                 {menuItems
                   .filter((item) => itemBelongsToCategory(item.originalName, category))
                   .map((item: any) => {
@@ -701,7 +702,7 @@ const CustomerView = () => {
                               </div>
                             </Card>
                           </DialogTrigger>
-                          <DialogContent className="w-[600px]">
+                          <DialogContent className="w-full">
                             <DialogHeader>{item.name}</DialogHeader>
                             <div className="grid gap-4 py-4"></div>
                             <div className="flex items-center justify-center gap-4">
@@ -715,11 +716,9 @@ const CustomerView = () => {
                               </Label>
                               <div id="name" className="col-span-3">
                                 {/* <ul className="flex flex-row gap-1 mr-3"> */}
-                                <ul className="flex flex-row gap-1 mr-3 justify-center flex-wrap">
-                                  {item.ingredients.map((ingredient: string) => (
-                                    <li key={ingredient} className="text-sm">{ingredient}</li>
-                                  ))}
-                                </ul>
+                                <p className="flex flex-row gap-1 mr-3 justify-center flex-wrap text-sm">
+                                  {item.ingredients.join(", ")}
+                                </p>
                               </div>
                             </div>
                             <div className="flex items-center justify-start gap-4">
@@ -769,7 +768,7 @@ const CustomerView = () => {
           </TabsContent>
         ))
         }
-        <TabsContent value='pastOrders' className='w-4/5'>
+        <TabsContent value='pastOrders' className='w-full md:w-4/5'>
           <Card className="overflow-y-scroll h-[90%]">
             <div className="p-4 items-stretch">
               {
@@ -779,9 +778,9 @@ const CustomerView = () => {
             </div>
           </Card>
         </TabsContent>
-        <TabsContent value='reccs' className='w-4/5'>
+        <TabsContent value='reccs' className='w-full md:w-4/5'>
           <Card className='overflow-y-scroll h-[90%]'>
-            <div className='grid grid-cols-5 gap-4 p-4 items-stretch'>
+            <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 items-stretch'>
               <CustomerWeatherReccs weather={currentWeather!} items={menuItems} />
             </div>
           </Card>
