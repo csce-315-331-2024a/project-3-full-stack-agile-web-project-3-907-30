@@ -76,7 +76,7 @@ const Translate = () => {
     <div>
       <SelectPicker
         data={languageOptions}
-        placement="bottomEnd"
+        placement="bottomStart"
         cleanable={false}
         value={selected}
         searchable={false}

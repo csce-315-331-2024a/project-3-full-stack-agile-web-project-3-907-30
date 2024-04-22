@@ -77,7 +77,7 @@ const Layout = ({ children }: LayoutProps) => {
         <main className="flex flex-col w-full md:h-dvh" >
           <div className="border-b">
             <div className="flex items-center justify-between p-2 lg:p-4 flex-wrap">
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Image src={revLogo} alt="Rev's American Grill Logo" className="w-16 lg:w-20 rounded-sm" priority />
                 <Translate />
                 <span className="hidden lg:flex">
@@ -105,8 +105,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild className="cursor-pointer">
                     <Button name="menu">
-                      <Menu className="w-6 h-6" />
-                      <span className="hidden">Menu</span>
+                      <span className="text-xs">Menu</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-fit mr-4 mt-1 notranslate">
