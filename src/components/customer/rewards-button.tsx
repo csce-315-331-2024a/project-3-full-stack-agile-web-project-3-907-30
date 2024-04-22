@@ -19,6 +19,7 @@ import { useState, Dispatch, SetStateAction } from 'react';
 import { Customer } from '@/lib/types';
 
 import CustomerSignUp from './customer-sign-up';
+import { CircleUser } from 'lucide-react';
 
 interface RewardsButtonProps {
 	setCustomer: Dispatch<SetStateAction<Customer | undefined>>;
@@ -77,7 +78,10 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
 		<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
 			<DialogTrigger asChild>
 				<Button variant="outline" data-testid="sign-in">
-					Sign-in for Rewards
+					<span className="hidden lg:block">Sign-in for Rewards</span>
+					<span className="block lg:hidden">
+						<CircleUser size={24} />
+					</span>
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="min-w-fit">
@@ -86,8 +90,10 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
 					<DialogDescription>
 						Sign-in to view your points.
 					</DialogDescription>
+					<DialogDescription className="block lg:hidden">
+					</DialogDescription>
 				</DialogHeader>
-				<div className="flex pt-4 notranslate">
+				<div className="flex flex-col md:flex-row pt-4 notranslate">
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 							<FormField
