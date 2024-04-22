@@ -1,5 +1,6 @@
 import { columns } from "@/components/employee/kitchen/columns";
 import DataTable from "@/components/employee/kitchen/data-table";
+import { Skeleton } from "@/components/ui/skeleton";
 import { CustomerOrder } from "@/lib/types";
 import { useEffect, useState } from "react";
 
@@ -20,16 +21,17 @@ export interface KitchenProps {
 const Kitchen = () => {
   const [orders, setOrders] = useState<PendingOrder[]>([]);
   const [items, setItems] = useState<MenuOrderPair[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getAndSetData = (async () => {
 
-      const orderRes = await fetch('https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/api/kitchen/get-pending-orders');
+      const orderRes = await fetch(`${process.env.URL || 'http://localhost:3000'}/api/kitchen/get-pending-orders`);
       const pendingOrders = JSON.parse(await orderRes.json()) as PendingOrder[];
       console.log(pendingOrders);
 
-      const itemsRes = await fetch('https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/api/kitchen/get-order-items');
-      const itemsPairs = JSON.parse(await itemsRes.json()) as MenuOrderPair[];
+      const itemsRes = await fetch(`${process.env.URL || 'http://localhost:3000'}/api/kitchen/get-order-items`);
+      const itemsPairs = await itemsRes.json() as MenuOrderPair[];
       console.log(itemsPairs);
 
       setOrders(pendingOrders);
@@ -37,15 +39,18 @@ const Kitchen = () => {
     });
 
     getAndSetData();
+    setLoading(false);
 
-    const interval = setInterval(getAndSetData, 10000);
+    const interval = setInterval(() => {
+      getAndSetData();
+    }, 20000);
     return () => clearInterval(interval);
 
   }, [])
 
   return (
     <>
-      <DataTable columns={columns} data={orders} items={items} />
+      {(loading) ? <Skeleton></Skeleton> : <DataTable columns={columns} data={orders} items={items} />}
     </>
   )
 }
