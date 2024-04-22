@@ -39,7 +39,7 @@ Ex:
 - [ ] Fix menu item makeup - Gabe E2 P2 S0
 - [ ] Remove Google Translate loading circle - Adam E1 P3 S0
 - [ ] Allows employees to remove items from order in receipt  - Akshay E1 P1 S0
-- [ ] Allow customers to make orders in the customer view page - Akshay
+- [ ] Allow customers to make orders in the customer view page - Akshay 
 - [ ] Customers can create orders - Akshay E2 P1 S0
 - [ ] Customers can remove items from orders - Akshay E1 P1 S0
 - [ ] Allow modifications in all ordering views - Akshay E3 P1 S0
