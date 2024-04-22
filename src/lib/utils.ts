@@ -17,55 +17,6 @@ import {
 import { Pool, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
 
-// export async function getMenuItem(id: number) : Promise<MenuItem> {
-//     const sql = "SELECT item_id, item_name, item_price::numeric, times_ordered FROM menu_items WHERE item_id = ($1)";
-
-//     const res = await executeStatement(db, sql, [DataTypeOIDs.int8], [id]).then(result => {
-//         return rowToMenuItem(result.rows?.at(0));
-//     });
-//     return res;
-// }
-
-// export async function getAllMenuItems() : Promise<MenuItem[]> {
-//     const sql = "SELECT item_id, item_name, item_price::numeric, times_ordered FROM menu_items;";
-//     const res = await executeStatement(db, sql, [], []).then(result => {
-//         const results = result.rows?.map(row => {
-//             return rowToMenuItem(row);
-//         }) as MenuItem[];
-//         return Promise.all(results);
-//     });
-//     return res;
-// }
-
-// export async function getItemIngredients(id: number) : Promise<InventoryItem[]> {
-//     const sql = `SELECT inv_menu.inv_id, inv_name, inv_price::numeric, fill_level, current_level, times_refilled, date_refilled, has_dairy, has_nuts, has_eggs, is_vegan, is_halal
-//     FROM inv_menu
-//     INNER JOIN inventory AT inventory.inv_id = inv_menu.inv_id
-//     WHERE inv_menu.menu_id = $1`;
-//     const types = [
-//         DataTypeOIDs.int4,
-//         DataTypeOIDs.varchar,
-//         DataTypeOIDs.numeric,
-//         DataTypeOIDs.int4,
-//         DataTypeOIDs.int4,
-//         DataTypeOIDs.int4,
-//         DataTypeOIDs.date,
-//         DataTypeOIDs.bool,
-//         DataTypeOIDs.bool,
-//         DataTypeOIDs.bool,
-//         DataTypeOIDs.bool,
-//         DataTypeOIDs.bool
-//     ];
-
-//     const res = await executeStatement(db, sql, types, [id]).then((result) => {
-//         const results = result.rows?.map(row => {
-//             return rowToInventoryItem(row);
-//         }) as InventoryItem[];
-//         return Promise.all(results);
-//     });
-//     return res;
-// }
-
 /**
  * Convert a given array row from a SQL execution result to an InventoryItem object.
  *
@@ -244,7 +195,7 @@ export async function submitOrder(
   chosenItems: any,
   quantities: any
 ) {
-  if (orderTotal < 0) {
+  if (chosenItems.length === 0) {
     toast({
       variant: "destructive",
       title: "Cart is empty",
@@ -749,6 +700,74 @@ export async function deleteInventoryItem(id: number) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ id }),
+  });
+
+  return res;
+}
+
+/**
+ * Get all orders from the database given an offset.
+ *
+ * @param {number} page The page number to get the orders from.
+ * @returns {number} All orders from the database.
+ */
+export async function getAllOrders(page: number) {
+  const offset = page * 1000 + 1;
+
+  const res = await fetch("/api/order/get-all", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ offset }),
+  });
+  const data = await res.json();
+  return data;
+}
+
+/**
+ * Get the total number of orders from the database.
+ *
+ * @returns {number} The total number of orders from the database.
+ */
+export async function getNumOrders() {
+  const res = await fetch("/api/order/get-num-orders");
+  const data = await res.json();
+  return data;
+}
+
+/**
+ * Delete an order from the database.
+ *
+ * @param {number} orderId The ID of the order to delete.
+ * @returns {Response} The response from the database.
+ */
+export async function deleteOrder(orderId: number) {
+  const res = await fetch("/api/order/delete", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ orderId }),
+  });
+
+  return res;
+}
+
+/**
+ * Update an order item's status in the database.
+ * 
+ * @param {number} orderId The ID of the order to update
+ * @param {number} status The new status of the order
+ * @returns {Response} The response from the database
+ */
+export async function updateOrderItemStatus(orderId: number, status: number) {
+  const res = await fetch("/api/order/update-status", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ orderId, status }),
   });
 
   return res;

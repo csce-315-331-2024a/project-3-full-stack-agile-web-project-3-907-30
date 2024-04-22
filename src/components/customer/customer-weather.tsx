@@ -10,13 +10,13 @@ import { Weather } from "@/pages/api/customer/weather";
  *   - Returns the JSON response from the API.
  */
 export const getCurrentWeather = async () => {
-    const response = await fetch('api/customer/weather');
-    if (!response.ok) {
-        throw new Error('Error fetching weather');
-    }
+	const response = await fetch('api/customer/weather');
+	if (!response.ok) {
+		throw new Error('Error fetching weather');
+	}
 
-    const data: Weather = await response.json();
-    return data;
+	const data: Weather = await response.json();
+	return data;
 }
 
 /**
@@ -32,31 +32,31 @@ export const getCurrentWeather = async () => {
  *   - Does not handle errors or invalid input.
  */
 const getIcon = (data: Weather): string => {
-    let icon: string;
-    switch (data.description) {
-        case 'Thunderstorm':
-            icon = '⚡️';
-            break;
-        case 'Drizzle':
-            icon = '🌧️';
-            break;
-        case 'Rain':
-            icon = '💧';
-            break;
-        case 'Snow':
-            icon = '❄';
-            break;
-        case 'Atmosphere':
-            icon = '💨'
-            break;
-        case 'Clouds':
-            icon = '☁';
-            break;
-        default:
-            icon = (data.isDay) ? '☼' : '☽';
-            break;
-    }
-    return icon;
+	let icon: string;
+	switch (data.description) {
+		case 'Thunderstorm':
+			icon = '⚡️';
+			break;
+		case 'Drizzle':
+			icon = '🌧️';
+			break;
+		case 'Rain':
+			icon = '💧';
+			break;
+		case 'Snow':
+			icon = '❄';
+			break;
+		case 'Atmosphere':
+			icon = '💨'
+			break;
+		case 'Clouds':
+			icon = '☁';
+			break;
+		default:
+			icon = (data.isDay) ? '☼' : '☽';
+			break;
+	}
+	return icon;
 }
 
 /**
@@ -67,13 +67,13 @@ const getIcon = (data: Weather): string => {
  */
 const CustomerWeather = ({ data }: { data: Weather }) => {
 
-    const theme: string = (data.isDay) ? 'bg-orange-800' : 'bg-indigo-950';
+	const theme: string = (data.isDay) ? 'bg-orange-800' : 'bg-indigo-950';
 
-    return (
-        <Badge className={`text-md ${theme} notranslate`}>
-            {getIcon(data)}&nbsp;{data.value}°
-        </Badge>
-    );
+	return (
+		<Badge className={`text-md ${theme} notranslate w-fit`}>
+			{getIcon(data)}&nbsp;{data.value}°
+		</Badge>
+	);
 }
 
 export default CustomerWeather;

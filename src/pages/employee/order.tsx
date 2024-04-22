@@ -4,7 +4,6 @@ import { Employee, AuthHookType } from '@/lib/types';
 import { getEmployeeFromDatabase } from '@/lib/utils';
 import MenuOrder, { OrderItem } from '@/components/employee/order-menu';
 import OrderReceipt from '@/components/employee/order-receipt';
-import clearOrderAndSetOrderItems from '@/components/employee/order-menu';
 
 /**
  * Component for displaying a menu order and order receipt for an employee

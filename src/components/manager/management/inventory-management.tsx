@@ -24,7 +24,7 @@ const InventoryManagement = () => {
   }, [dataChanged]);
 
   return (
-    <Card className="min-h-fit max-h-[85%] overflow-y-scroll w-full">
+    <Card className="max-h-[85%] overflow-y-scroll w-full">
       <CardHeader>
         <CardTitle>Inventory Management</CardTitle>
         <CardDescription>Manage your inventory.</CardDescription>

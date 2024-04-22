@@ -1,3 +1,4 @@
+//customer-view.tsx
 import React, { useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import {
@@ -7,15 +8,56 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
+  DialogFooter,
 } from "@/components/ui/dialog"
 import { useState } from 'react';
 import Image from 'next/image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { Card } from '../ui/card';
 import { categories, itemBelongsToCategory } from '@/lib/utils';
 import { Allergens } from '@/lib/types';
+import CustomerOrders from './customer-orders';
+import CustomerWeatherReccs from './weather-recc';
+import { Weather } from '@/pages/api/customer/weather';
+import { getCurrentWeather } from './customer-weather';
+
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
+import { Button } from "../ui/button";
+
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
+import { Switch } from "../ui/switch";
+
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import { useToast } from "../ui/use-toast";
+
+import shoppingCart from "../../../public/shopping-cart.svg";
+import editOrderImage from "../../../public/editOrderImage.svg";
 
 
+import { submitOrder } from "@/lib/utils";
+
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 export interface OrderItem {
   name: string;
   price: number;
@@ -32,6 +74,7 @@ export interface OrderItem {
  * @prop {any} selectedItem - An object representing the currently selected menu item.
  * @prop {any} hoveredItem - An object representing the currently hovered menu item.
  * @prop {number | null} hoveredTab - A number representing the currently hovered tab, or null if no tab is hovered.
+ * @prop {Allergens} currentAllergens - An Allergens object depicting the boolean state of the current selected item.
  * @description
  *   - Uses state variables to keep track of selected and hovered menu items and tabs.
  *   - Makes API calls to retrieve menu items and their corresponding ingredients.
@@ -46,6 +89,27 @@ const CustomerView = () => {
   const [hoveredTab, setHoveredTab] = useState<number | null>(null);
   const [currentAllergens, setAllergens] = useState<Allergens>();
   const [open, setOpen] = useState<{ [key: string]: boolean }>({});
+  const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+  const [currentWeather, setWeather] = useState<Weather>();
+
+  const [subTotal, setSubTotal] = useState(0);
+  const [tax, setTax] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [orderNumber, setOrderNumber] = useState<string | null>(null);
+  const [customerPoints, setCustomerPoints] = useState<string | null>(null);
+  const [customerName, setCustomerName] = useState<string | null>(null);
+  const [customerId, setCustomerId] = useState<string | null>(null);
+  const [itemQuantity, setItemQuantity] = useState<number>(1);
+
+  const [isSwitchToggled, setIsSwitchToggled] = useState(false);
+  const [totalPoints, setTotalPoints] = useState(0);
+  const { toast } = useToast();
+
+  const [openedPopoverItem, setOpenedPopoverItem] = useState<OrderItem | null>(null);
+  const [ingredientQuantities, setIngredientQuantities] = useState<{
+    [key: string]: { [key: string]: number };
+  }>({});// Object to store the quantities of each ingredient for the currently opened popover item
+
 
   /**
    * Function to handle when an item is clicked
@@ -98,6 +162,9 @@ const CustomerView = () => {
         }));
         setMenuItems(itemsWithID);
       });
+    getCurrentWeather().then((weather) => {
+      setWeather(weather);
+    })
   }, []);
 
 
@@ -131,34 +198,492 @@ const CustomerView = () => {
     }
   };
 
+  const addItemToOrder = (item: any, quantity: number) => {
+    setOrderItems((prevOrderItems) => [
+      ...prevOrderItems,
+      { name: item.name, price: item.price, quantity },
+    ]);
+  };
 
+  const clearOrder = () => {
+    setOrderItems([]);
+
+    // Clear the ingredient quantities for all items
+    setIngredientQuantities({});
+  }
+
+
+
+  useEffect(() => {
+    const calculateTotals = () => {
+      const calculatedSubTotal = orderItems.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+      const calculatedTax = calculatedSubTotal * 0.07; // Assuming a tax rate of 7%
+      let calculatedTotal =
+        calculatedSubTotal +
+        calculatedTax -
+        (isSwitchToggled ? totalPoints : 0);
+
+      if (isSwitchToggled && totalPoints > calculatedTotal) {
+        calculatedTotal = 0; // Set total to 0 if points cover the entire order
+      } else if (isSwitchToggled && totalPoints < calculatedTotal) {
+        calculatedTotal -= totalPoints; // Subtract points from total
+      }
+
+      setSubTotal(calculatedSubTotal);
+      setTax(calculatedTax);
+      setTotal(calculatedTotal);
+    };
+
+    calculateTotals();
+  }, [orderItems, isSwitchToggled, totalPoints]);
+
+  /**
+   * Submits an order for the current employee with the given email address and displays a toast notification with the order ID.
+   * @example
+   * submitOrder('johndoe@example.com', 100)
+   * @param {string} email - The email address of the current employee.
+   * @param {number} total - The total cost of the order.
+   * @returns {boolean} Returns true if the order was successfully submitted, false otherwise.
+   * @description
+   *   - Retrieves the employee's information from the database using their email address.
+   *   - Gets the next available order ID.
+   *   - Displays a toast notification with the order ID.
+   *   - Submits the order with the given order ID, total cost, employee ID, and toast notification function.
+   */
+  const customerSubmitOrder = async () => {
+    try {
+      const employee = 1;
+      const nextOrderId = await getNextOrderId();
+
+      toast({
+        title: "Order ID",
+        description: nextOrderId,
+      });
+
+      const chosenItems = orderItems.map((item) => item.name);
+      const quantities = orderItems.map((item) => item.quantity);
+      let total = subTotal + tax - (isSwitchToggled ? totalPoints : 0);
+
+      if (isSwitchToggled && totalPoints > total) {
+        total = 0;
+      } else if (isSwitchToggled && totalPoints < total) {
+        total -= totalPoints;
+      }
+
+      const res = await submitOrder(
+        nextOrderId,
+        total,
+        1,
+        employee,
+        toast,
+        chosenItems,
+        quantities
+      );
+
+      let newPoints = 0;
+      // if points aren't used, and order is successful, update customer points
+      if (!isSwitchToggled && res && res.status === 200) {
+        let updatedPoints = customerPoints ? parseInt(customerPoints, 10) - total : 0;
+        // get sum of points for all items in order
+        const itemNames = orderItems
+          .map((item) => Array(item.quantity).fill(item.name))
+          .flat();
+
+        // loop through item names and get points for each item and sum them
+
+        for (const itemName of itemNames) {
+          const response = await fetch(
+            `/api/order/get-points-for-item?itemName=${itemName}`
+          );
+          const data = await response.json();
+          newPoints += parseInt(data.points, 10);
+        }
+
+        updatedPoints += newPoints;
+        // round updatePoints to whole number
+        updatedPoints = Math.round(updatedPoints);
+        if (customerId && updatedPoints >= 0) {
+          await updateCustomerPoints(updatedPoints, parseInt(customerId, 10));
+          localStorage.setItem("customerPoints", updatedPoints.toString());
+        }
+      }
+
+      if (res && res.status === 200) {
+        toast({
+          title: "Success!",
+          description: `Your order has been placed! You recieved ${newPoints} from this order!`,
+        });
+
+        // Update used_points column in orders table
+        fetch("/api/order/update-usedpointsbool", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            order_id: nextOrderId,
+            used_points: isSwitchToggled ? true : false,
+          }),
+        });
+
+        console.log("Order submitted successfully.")
+
+      } else {
+        throw new Error("There was a problem with your request.");
+      }
+
+      // Clear the order after submitting
+      clearOrder();
+
+      // Reset the order number
+      const newOrderId = await getNextOrderId();
+      setOrderNumber(newOrderId);
+    } catch (error) {
+      console.error("Error submitting order:", error);
+      toast({
+        variant: "destructive",
+        title: "Cart is empty!",
+        description: "Please add items to your cart before submitting.",
+      });
+    }
+  };
+
+  /**
+   *  Fetches the next available order ID from the server.
+   * @returns {number} The next available order ID.
+   */
+  const getNextOrderId = async () => {
+    const response = await fetch("/api/order/get-next-order-id");
+    const data = await response.json();
+    return data.nextOrderId;
+  };
+
+  /**
+     * Updates the customer's points in the database.
+     * updateCustomerPoints(100, 12345)
+     * @param {number} points - The number of points to be added to the customer's current points.
+     * @param {number} customerId - The ID of the customer whose points will be updated.
+     * @returns {object} The updated customer data.
+     * @description
+     *   - This function uses the fetch API to make a PUT request to the specified endpoint.
+     *   - The customer's ID and the number of points to be added are passed as parameters.
+     *   - The response from the server is converted to JSON and returned.
+     *   - This function is asynchronous and will wait for the response before returning the updated data.
+     */
+  const updateCustomerPoints = async (points: number, customerId: number) => {
+    const response = await fetch("/api/customer/update-customer-points", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cust_id: customerId,
+        points: points,
+      }),
+    });
+    const data = await response.json();
+    return data;
+  };
+
+  /**
+     * Calculates the total points for a customer's order based on the items and their quantities.
+     * calculateTotalPoints([{name: "apple", quantity: 2}, {name: "banana", quantity: 3}])
+     * @param {Array} items - An array of objects containing the name and quantity of each item.
+     * @returns {Number} The total points for the customer's order.
+     * @description
+     *   - Uses the items array to create a flattened array of item names with duplicates.
+     *   - Loops through the item names and fetches the points for each item from the API.
+     *   - Calculates the total points by summing the points for each item.
+     *   - Checks if the customer has enough points and returns the total points if so.
+     *   - If the customer does not have enough points, returns 0 and displays a toast message.
+     */
+  const getTotalPointsValueForOrder = async () => {
+    // create flattened array of item names that has duplicates
+    const itemNames = orderItems
+      .map((item) => Array(item.quantity).fill(item.name))
+      .flat();
+
+    // loop through item names and get points for each item and sum them
+    let totalPoints = 0;
+    for (const itemName of itemNames) {
+      const response = await fetch(
+        `/api/order/get-points-for-item?itemName=${itemName}`
+      );
+      const data = await response.json();
+      totalPoints += parseInt(data.points, 10);
+    }
+
+    // if customer has enough points, return total points
+    // otherwise return 0
+    const customer_points = localStorage.getItem("customerPoints");
+    if (customer_points && parseInt(customer_points, 10) >= totalPoints) {
+      setTotalPoints(totalPoints);
+    } else {
+      setTotalPoints(0);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! You don't have enough points.",
+        description: "Please choose an alternative payment method.",
+      });
+    }
+  };
+
+  const removeItemFromOrder = (itemIndex: number) => {
+    setOrderItems((prevOrderItems) => {
+      const updatedOrderItems = [...prevOrderItems];
+      updatedOrderItems.splice(itemIndex, 1);
+      return updatedOrderItems;
+    });
+
+    getTotalPointsValueForOrder();
+    setOpenedPopoverItem(null);
+
+    // Clear the ingredient quantities for the removed item
+    const updatedIngredientQuantities = { ...ingredientQuantities };
+    const removedItem = orderItems[itemIndex];
+    if (removedItem) {
+      delete updatedIngredientQuantities[removedItem.name];
+    }
+    setIngredientQuantities(updatedIngredientQuantities);
+  };
+
+
+  useEffect(() => {
+    const fetchOrderNumber = async () => {
+      const nextOrderId = await getNextOrderId();
+      setOrderNumber(nextOrderId);
+    };
+
+    fetchOrderNumber();
+  }, []);
+
+  useEffect(() => {
+    const points = localStorage.getItem("customerPoints");
+    const name = localStorage.getItem("customerName");
+    const id = localStorage.getItem("customerId");
+    if (points) {
+      setCustomerPoints(points);
+      setCustomerName(name);
+      setCustomerId(id);
+    }
+  }, []);
 
 
   return (
-    <div className="w-full h-full flex flex-col justify-start items-start p-4">
-      <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-row gap-2 h-full">
-        <TabsList className="grid grid-cols-1 w-1/5 mt-2 h-fit text-black">
-          {categories.map((category, index) => (
+    <div className="w-full h-full flex flex-col justify-start items-start p-4 relative">
+      <div className="absolute top-0 right-4">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              className='bg-white border border-gray-30 transition duration-500 hover:bg-rev_yellow'>
+              <Image
+                src={shoppingCart}
+                alt="Shopping Cart"
+                className="w-10 h-15 rounded-sm"
+              />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right">
+            <SheetHeader>
+              <SheetTitle>Your Order</SheetTitle>
+              <SheetDescription className='pb-2'>Review your items before checkout.</SheetDescription>
+            </SheetHeader>
+            <Card className="h-[90%]">
+              <CardContent className="flex flex-col gap-2">
+                <div className="text-md flex justify-between items-center mb-4 border-b pb-4 pt-4">
+                  <div className="text-gray-700">
+                    <span className="block text-sm md:text-base">Order Number: {orderNumber}</span>
+                    <HoverCard>
+                      <HoverCardTrigger asChild>
+                        <span className="font-semibold cursor-default text-sm md:text-base">Customer Points: {customerPoints}</span>
+                      </HoverCardTrigger>
+                      <HoverCardContent className="w-80">
+                        <div className="flex justify-between space-x-4">
+                          <div className="space-y-1">
+                            <h4 className="text-sm font-semibold">Customer Details</h4>
+                            <p className="text-sm">
+                              Name: {customerName}
+                            </p>
+                            <p className="text-sm">
+                              ID: {customerId}
+                            </p>
+                          </div>
+                        </div>
+                      </HoverCardContent>
+                    </HoverCard>
+                  </div>
+                  <div className="flex flex-col md:flex-row justify-between items-center">
+                    <Switch
+                      id="points_switch"
+                      className="w-11 h-6"
+                      checked={isSwitchToggled}
+                      onCheckedChange={(isChecked) => {
+                        setIsSwitchToggled(isChecked);
+                        getTotalPointsValueForOrder();
+                      }}
+                    />
+                    <Label className="block px-3 text-sm" htmlFor="points_switch">
+                      Pay With Points
+                    </Label>
+                  </div>
+                </div>
+                <ScrollArea className="h-[120px] md:h-[220px] lg:h-[250px]">
+                  <ul className="divide-y divide-gray-200 pr-4">
+                    {orderItems.map((item, index) => (
+                      <li
+                        key={index}
+                        className="py-4 flex justify-between items-center"
+                      >
+                        <span className="text-gray-600">
+                          {item.name} x {item.quantity}
+                        </span>
+                        <span className="font-semibold">
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </span>
+                        <button onClick={() => removeItemFromOrder(index)}>❌</button>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <button>
+                              <Image
+                                src={editOrderImage}
+                                alt="Edit Order"
+                                className="w-5 h-5"
+                                onClick={() => setOpenedPopoverItem(item)}
+                              />
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent
+                            align="end"
+                            sideOffset={4}
+                            className="max-w-xs"
+                            onChange={(isOpen: any) =>
+                              isOpen ? setOpenedPopoverItem(item) : setOpenedPopoverItem(null)
+                            }
+                          >
+                            <div className="flex flex-col gap-2">
+                              <h3 className="font-semibold">Ingredients:</h3>
+                              {item.name &&
+                                menuItems
+                                  .find((menuItem) => menuItem.name === item.name)
+                                  ?.ingredients.map((ingredient: any, index: any) => (
+                                    <div key={index} className="flex items-center justify-between">
+                                      <span>{ingredient}</span>
+                                      <input
+                                        type="number"
+                                        min="0"
+                                        defaultValue={
+                                          (ingredientQuantities[item.name] || {})[ingredient] || 1
+                                        }
+                                        onChange={(e) =>
+                                          setIngredientQuantities({
+                                            ...ingredientQuantities,
+                                            [item.name]: {
+                                              ...(ingredientQuantities[item.name] || {}),
+                                              [ingredient]: parseInt(e.target.value, 10) || 0,
+                                            },
+                                          })
+                                        }
+                                        className="w-16 px-2 py-1 border border-gray-300 rounded"
+                                      />
+                                    </div>
+                                  ))}
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      </li>
+                    ))}
+                  </ul>
+                </ScrollArea>
+                <div className="mt-4">
+                  <div className="flex justify-between py-2">
+                    <span className="text-gray-600">Subtotal</span>
+                    <span className="font-semibold">${subTotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between py-2">
+                    <span className="text-gray-600">Tax</span>
+                    <span className="font-semibold">${tax.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between py-2">
+                    <span className="text-gray-600">Total</span>
+                    <span className="text-lg font-bold">${total.toFixed(2)}</span>
+                  </div>
+                </div>
+                <div className="flex flex-col md:flex-row justify-between py-2 gap-2">
+                  <Button
+                    onClick={async () => {
+                      customerSubmitOrder();
+                    }}
+                    className="bg-green-500 hover:bg-green-700 text-white text-sm md:text-xl font-bold px-6 py-4 md:py-8 rounded w-full"
+                  >
+                    Submit
+                  </Button>
+                  <Button
+                    onClick={clearOrder}
+                    className="bg-red-500 hover:bg-red-700 text-white text-sm md:text-xl font-bold px-6 py-4 md:py-8 rounded w-full">
+                    Clear
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </SheetContent>
+        </Sheet>
+      </div>
+      <Tabs defaultValue="Burgers&Wraps" className="w-full flex flex-col md:flex-row gap-4 h-full mt-8 md:mt-0">
+        <ScrollArea className="lg:w-1/5 max-w-full">
+          <TabsList className="grid grid-cols-2 md:grid-cols-1 lg:mt-2 h-fit w-full">
             <TabsTrigger
-              key={index}
-              value={category.replace(/\s/g, '')}
-              className={`px-8 py-9 cursor-pointer relative`}
-              onMouseEnter={() => setHoveredTab(index)}
+              value="reccs"
+              className="md:px-8 py-4 md:py-9 cursor-pointer relative w-full"
+              onMouseEnter={() => setHoveredTab(7)}
               onMouseLeave={() => setHoveredTab(null)}
             >
-              <h2 className="text-2xl">
-                {category}
+              <h2 className="text-sm md:text-2xl text-black">
+                Climate Cravings
               </h2>
-              {hoveredTab === index && (
-                <div className="absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500"></div>
+              {hoveredTab === 6 && (
+                <div className='absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500'></div>
               )}
             </TabsTrigger>
-          ))}
-        </TabsList>
+            {categories.map((category, index) => (
+              <TabsTrigger
+                key={index}
+                value={category.replace(/\s/g, '')}
+                className={`md:px-8 py-4 md:py-9 cursor-pointer relative w-full`}
+                onMouseEnter={() => setHoveredTab(index)}
+                onMouseLeave={() => setHoveredTab(null)}
+              >
+                <h2 className="text-sm md:text-2xl text-black">
+                  {category}
+                </h2>
+                {hoveredTab === index && (
+                  <div className="absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500"></div>
+                )}
+              </TabsTrigger>
+            ))}
+            <TabsTrigger
+              value="pastOrders"
+              className="md:px-8 py-4 md:py-9 cursor-pointer relative w-full"
+              onMouseEnter={() => setHoveredTab(6)}
+              onMouseLeave={() => setHoveredTab(null)}
+            >
+              <h2 className="text-sm md:text-2xl text-black">
+                Past Orders
+              </h2>
+              {hoveredTab === 6 && (
+                <div className='absolute inset-0 border-2 border-gray-300 rounded pointer-events-none transition-all duration-500'></div>
+              )}
+            </TabsTrigger>
+          </TabsList>
+          <ScrollBar orientation="horizontal" className="w-full" />
+        </ScrollArea>
+
         {categories.map((category, index) => (
-          <TabsContent key={index} value={category.replace(/\s/g, '')} className="w-4/5">
+          <TabsContent key={index} value={category.replace(/\s/g, '')} className="w-full md:w-4/5">
             <Card className="overflow-y-scroll h-[90%]">
-              <div className="grid grid-cols-5 gap-4 p-4 items-stretch">
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 items-stretch">
                 {menuItems
                   .filter((item) => itemBelongsToCategory(item.originalName, category))
                   .map((item: any) => {
@@ -177,7 +702,7 @@ const CustomerView = () => {
                               </div>
                             </Card>
                           </DialogTrigger>
-                          <DialogContent className="w-[600px]">
+                          <DialogContent className="w-full">
                             <DialogHeader>{item.name}</DialogHeader>
                             <div className="grid gap-4 py-4"></div>
                             <div className="flex items-center justify-center gap-4">
@@ -191,11 +716,9 @@ const CustomerView = () => {
                               </Label>
                               <div id="name" className="col-span-3">
                                 {/* <ul className="flex flex-row gap-1 mr-3"> */}
-                                <ul className="flex flex-row gap-1 mr-3 justify-center flex-wrap">
-                                  {item.ingredients.map((ingredient: string) => (
-                                    <li key={ingredient} className="text-sm">{ingredient}</li>
-                                  ))}
-                                </ul>
+                                <p className="flex flex-row gap-1 mr-3 justify-center flex-wrap text-sm">
+                                  {item.ingredients.join(", ")}
+                                </p>
                               </div>
                             </div>
                             <div className="flex items-center justify-start gap-4">
@@ -210,6 +733,32 @@ const CustomerView = () => {
                                 {currentAllergens?.is_halal && <p className="text-red-500">Halal</p>}
                               </div>
                             </div>
+                            <DialogFooter>
+                              <div className="flex items-center gap-2">
+                                <Label htmlFor="quantity" className="text-right text-lg">
+                                  Quantity:
+                                </Label>
+                                <input
+                                  id="quantity"
+                                  type="number"
+                                  min="1"
+                                  value={itemQuantity}
+                                  onChange={(e) => setItemQuantity(parseInt(e.target.value, 10))}
+                                  className="w-16 px-2 py-1 border border-gray-300 rounded"
+                                />
+                              </div>
+                              <DialogClose asChild>
+                                <Button
+                                  onClick={() => {
+                                    addItemToOrder(item, itemQuantity);
+                                    setItemQuantity(1); // Reset the quantity to 1 after adding to order
+                                  }}
+                                  className="bg-green-500 hover:bg-green-700 text-white text-xl font-bold px-6 py-8 rounded"
+                                >
+                                  Add to Order
+                                </Button>
+                              </DialogClose>
+                            </DialogFooter>
                           </DialogContent>
                         </Dialog>
                       </div>)
@@ -219,6 +768,23 @@ const CustomerView = () => {
           </TabsContent>
         ))
         }
+        <TabsContent value='pastOrders' className='w-full md:w-4/5'>
+          <Card className="overflow-y-scroll h-[90%]">
+            <div className="p-4 items-stretch">
+              {
+                typeof window !== 'undefined' && localStorage.getItem('customerId') !== null && (
+                  <CustomerOrders id={localStorage.getItem('customerId')!}></CustomerOrders>
+                )}
+            </div>
+          </Card>
+        </TabsContent>
+        <TabsContent value='reccs' className='w-full md:w-4/5'>
+          <Card className='overflow-y-scroll h-[90%]'>
+            <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 items-stretch'>
+              <CustomerWeatherReccs weather={currentWeather!} items={menuItems} />
+            </div>
+          </Card>
+        </TabsContent>
       </Tabs>
     </div>
   );

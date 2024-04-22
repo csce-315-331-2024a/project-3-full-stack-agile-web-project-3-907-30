@@ -1,7 +1,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableFooter,
   TableHead,
@@ -9,7 +8,7 @@ import {
   TableRow
 } from "@/components/ui/table";
 import { MostProductiveEmployeeItem } from "@/lib/types";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '../../ui/form';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } from '../../ui/form';
 import { Input } from '../../ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card";
 import { Button } from '../../ui/button';
@@ -36,7 +35,7 @@ const FormSchema = z.object({
  *   - Does not have any lifecycle methods.
  *   - Renders a Table component from the Material-UI library.
  */
-const MostProductiveEmployees = ({ data }: { data: MostProductiveEmployeeItem[] }) => {
+const MostProductiveEmployees = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -47,15 +46,8 @@ const MostProductiveEmployees = ({ data }: { data: MostProductiveEmployeeItem[] 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setFormData(data);
     setLoading(false);
   }, [loading]);
-
-  useEffect(() => {
-    // getExcessReport().then((data) => {
-    // setData(data);
-    // });
-  }, [onSubmit]);
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
     const res = await getMostProductiveEmployeesInRange(formData.start_date, formData.end_date);
@@ -63,7 +55,7 @@ const MostProductiveEmployees = ({ data }: { data: MostProductiveEmployeeItem[] 
   }
 
   return (
-    <Card className="min-h-fit max-h-[85%] overflow-y-scroll w-full">
+    <Card className="max-h-[85%] overflow-y-scroll w-full">
       <CardHeader>
         <CardTitle>Most Productive Employees</CardTitle>
         <CardDescription>See which employees make the most orders.</CardDescription>
@@ -106,7 +98,7 @@ const MostProductiveEmployees = ({ data }: { data: MostProductiveEmployeeItem[] 
             <Button type="submit">Submit</Button>
           </form>
         </Form>
-        <Table className="overflow-hidden">
+        {formData.length !== 0 && (<Table className="overflow-hidden">
           <TableHeader>
             <TableRow>
               <TableHead>Employee Name</TableHead>
@@ -132,7 +124,7 @@ const MostProductiveEmployees = ({ data }: { data: MostProductiveEmployeeItem[] 
           <TableFooter>
 
           </TableFooter>
-        </Table>
+        </Table>)}
       </CardContent>
     </Card>
   );

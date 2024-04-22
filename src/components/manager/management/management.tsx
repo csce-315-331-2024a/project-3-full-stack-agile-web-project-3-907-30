@@ -1,6 +1,6 @@
 import useAuth from "@/hooks/useAuth";
 import { Employee, AuthHookType } from "@/lib/types";
-import { getEmployeeFromDatabase } from "@/lib/utils";
+import { getEmployeeFromDatabase, getNumOrders } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import UserManagement from "./user-management";
@@ -10,6 +10,7 @@ import LeastContributingView from "./least-contributing-view";
 import ItemSaleGUI from "./item-sale-gui";
 import { Card } from "@/components/ui/card";
 import InventoryManagement from "./inventory-management";
+import OrderManagement from "./order-management";
 
 /**
  * A management component that encapsulates managing users, inventory, menu, and orders.
@@ -26,6 +27,7 @@ const Management = () => {
 
   const [employee, setEmployee] = useState<Employee>();
   const [loading, setLoading] = useState(false);
+  const [numOrders, setNumOrders] = useState(0);
 
   const managementTabs = [
     "User Management",
@@ -33,6 +35,12 @@ const Management = () => {
     "Inventory Management",
     "Menu Management",
   ];
+
+  useEffect(() => {
+    getNumOrders().then((data) => {
+      setNumOrders(data);
+    });
+  }, []);
 
   useEffect(() => {
     if (account) {
@@ -54,21 +62,21 @@ const Management = () => {
         ))}
       </TabsList>
       <TabsContent value="UserManagement" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%] gap-8 p-4">
+        <Card className="flex max-h-[85%] gap-8 p-4">
           {employee?.isAdmin && (
             <UserManagement />
           )}
           <ViewEmployees />
         </Card>
       </TabsContent>
-      <TabsContent value="OrderManagement">
-        Order Management
+      <TabsContent value="OrderManagement" className="w-4/5">
+        <OrderManagement numOrders={numOrders} />
       </TabsContent>
       <TabsContent value="InventoryManagement" className="w-4/5">
         <InventoryManagement />
       </TabsContent>
       <TabsContent value="MenuManagement" className="w-4/5">
-        <Card className="flex min-h-fit max-h-[85%] gap-8 p-4 notranslate">
+        <Card className="flex max-h-[85%] gap-8 p-4 notranslate">
           <LeastSellingView />
           <LeastContributingView />
           <ItemSaleGUI />

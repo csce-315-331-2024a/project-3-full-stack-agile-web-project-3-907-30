@@ -32,7 +32,7 @@ export default async function handler(
         const getPurchases = await db.prepare(
             `SELECT order_id, order_date, order_time, order_total::numeric, e.emp_name, used_points FROM orders as o
              JOIN employees AS e ON e.emp_id = o.emp_id
-             WHERE cust_id = 300 ORDER BY order_date DESC;`,{paramTypes: [DataTypeOIDs.numeric]}
+             WHERE cust_id = $1 ORDER BY order_date DESC;`,{paramTypes: [DataTypeOIDs.numeric]}
         );
         const customerOrders = await getPurchases.execute({params: [custId]});
         await getPurchases.close();

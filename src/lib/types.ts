@@ -72,15 +72,6 @@ export interface MenuItem {
   times_ordered: number;
 }
 
-export interface Order {
-  id: number;
-  date: Date;
-  time: Date;
-  total: number;
-  cust_id: number;
-  emp_id: number;
-}
-
 export interface PairsAndAppearance {
   row_id: number,
   item1: string;
@@ -148,6 +139,24 @@ export interface CustomerOrder {
   emp_name: number,
   used_points: boolean
 }
+
+export interface OrderItem {
+  order_id: number;
+  order_date: Date;
+  order_time: string;
+  order_total: number;
+  cust_id: number;
+  emp_id: string;
+  used_points: boolean;
+  status: number;
+}
+
+export interface OrderMenuItem {
+  item_id: number;
+  item_name: string;
+  quantity: number;
+}
+
 
 export interface DetailedMenuItem {
   id: number;
