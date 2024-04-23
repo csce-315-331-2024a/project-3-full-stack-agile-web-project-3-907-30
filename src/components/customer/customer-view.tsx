@@ -655,7 +655,7 @@ const CustomerView = () => {
               onMouseEnter={() => setHoveredTab(7)}
               onMouseLeave={() => setHoveredTab(null)}
             >
-              <h2 className="text-sm md:text-2xl">
+              <h2 className="text-sm md:text-2xl text-black">
                 Climate Cravings
               </h2>
               {hoveredTab === 6 && (
@@ -670,7 +670,7 @@ const CustomerView = () => {
                 onMouseEnter={() => setHoveredTab(index)}
                 onMouseLeave={() => setHoveredTab(null)}
               >
-                <h2 className="text-sm md:text-2xl">
+                <h2 className="text-sm md:text-2xl text-black">
                   {category}
                 </h2>
                 {hoveredTab === index && (
@@ -684,7 +684,7 @@ const CustomerView = () => {
               onMouseEnter={() => setHoveredTab(6)}
               onMouseLeave={() => setHoveredTab(null)}
             >
-              <h2 className="text-sm md:text-2xl">
+              <h2 className="text-sm md:text-2xl text-black">
                 Past Orders
               </h2>
               {hoveredTab === 6 && (

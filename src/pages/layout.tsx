@@ -77,7 +77,7 @@ const Layout = ({ children }: LayoutProps) => {
         <main className="flex flex-col w-full md:h-dvh" >
           <div className="border-b">
             <div className="flex items-center justify-between p-2 lg:p-4 flex-wrap">
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <Image src={revLogo} alt="Rev's American Grill Logo" className="w-16 lg:w-20 rounded-sm" priority />
                 <Translate />
                 <span className="hidden lg:flex">
@@ -89,12 +89,12 @@ const Layout = ({ children }: LayoutProps) => {
               </div>
               <div className="lg:flex gap-4 hidden">
                 <RewardsButton setCustomer={setCustomer} />
-                <Button>
+                <Button name="rateUs">
                   <Link target="_blank" href="https://www.yelp.com/writeareview/biz/6dSStUCjMAfixAqz73iy9g?return_url=%2Fbiz%2F6dSStUCjMAfixAqz73iy9g&review_origin=biz-details-war-button">
                     Rate Us! 🌟
                   </Link>
                 </Button>
-                <Button variant="outline" asChild>
+                <Button variant="outline" asChild name="employeeLogin">
                   <Link href="/employee/login">
                     I&apos;m an Employee
                   </Link>
@@ -104,9 +104,8 @@ const Layout = ({ children }: LayoutProps) => {
               <div className="lg:hidden">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild className="cursor-pointer">
-                    <Button>
-                      <Menu className="w-6 h-6" />
-                      <span className="hidden">Menu</span>
+                    <Button name="menu">
+                      <span className="text-xs">Menu</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-fit mr-4 mt-1 notranslate">
@@ -227,7 +226,7 @@ const Layout = ({ children }: LayoutProps) => {
               ) : (loading ? (
                 <Skeleton className="w-10 h-10 rounded-full" />
               ) : (
-                <Button variant="outline" onClick={async () => await login(router)}>
+                <Button variant="outline" onClick={async () => await login(router)} name="googleLogin">
                   <FcGoogle className="w-6 h-6 mr-2" />
                   Sign-in with Google
                 </Button>
