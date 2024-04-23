@@ -27,6 +27,8 @@ const FormSchema = z.object({
    */
 const ItemSaleGUI = () => {
 
+  
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -38,7 +40,7 @@ const ItemSaleGUI = () => {
   }
 
   return (
-    <Card className="w-1/2 overflow-y-scroll">
+    <Card className="w-1/2 overflow-y-scroll" style={{ height: '700px' }}>
       <CardHeader>
         <CardTitle>Update Item Prices</CardTitle>
         <CardDescription>Put items on sale with a few clicks.</CardDescription>

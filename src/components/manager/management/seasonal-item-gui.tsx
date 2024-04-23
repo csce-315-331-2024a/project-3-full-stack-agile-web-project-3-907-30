@@ -25,9 +25,12 @@ const FormSchema = z.object({
       resolver: zodResolver(FormSchema),
       defaultValues: {},
     });
+
+
+    const [showCard, setShowCard] = useState(false);
   
     return (
-      <Card className="w-1/2 overflow-y-scroll" style={{ height: '500px' }}>
+      <Card className="w-1/2 overflow-y-scroll" style={{ height: '650px' }}>
         <CardHeader>
           <CardTitle>Add A Seasonal Item</CardTitle>
           <CardDescription>Enter the seasonal item you want to add to the menu.</CardDescription>
@@ -94,6 +97,18 @@ const FormSchema = z.object({
                 </FormItem>
               )}
             />
+            <Button type="button" onClick={() => setShowCard(true)}>Add Ingredients</Button>
+            {showCard && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Add Ingredients to New Menu Item</CardTitle>
+                  <CardDescription>Select ingredients</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>Card Content</p>
+                </CardContent>
+              </Card>
+            )}
             <Button type="submit">Submit</Button>
           </Form>
         </CardContent>
