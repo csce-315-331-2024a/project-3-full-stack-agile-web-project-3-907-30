@@ -6,35 +6,91 @@ import { toast } from '../../ui/use-toast';
 import { Input } from '../../ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '../../ui/form';
-import { getCustomerFromDatabase, updateMenuItemPrice } from '@/lib/utils';
-import { useState } from 'react';
-import { Dispatch, SetStateAction } from 'react';
-import DatePicker from '../trends/date-picker';
+import { CalendarIcon } from "@radix-ui/react-icons"
+import { format } from "date-fns"
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { useEffect, useState } from "react";
+import Select from 'react-select';
+import { deleteInventoryItem, getAllInventoryItems } from '@/lib/utils';
+import { InventoryItem } from '@/lib/types';
 
+
+  
+
+  
 const FormSchema = z.object({
-    item_name: z.string(),
-    item_price: z.number(),
-    start_date: z.string(),
-    end_date: z.string(),
-  });
+  item_name: z.string(),
+  item_price: z.number().positive("Price must be a positive number."),
+  times_ordered: z.number().int("Times ordered must be an integer."),
+  points: z.number().int("Points must be an integer."),
+  cur_price: z.number().positive("Current price must be a positive number."),
+  seasonal_item: z.boolean(),
+  deprecated: z.boolean(),
+  start_date: z.date({
+    required_error: 'A start date is required.'
+  }),
+  end_date: z.date({
+    required_error: 'An end date is required.'
+  }),
+  options: z.array(z.object({
+    value: z.number(),
+    label: z.string()
+  })),
+  ingredients: z.array(z.object({
+    inv_id: z.number(),
+    amount: z.number().positive()
+  }))
+});
   
   const SeasonalGUI = () => {
     const form = useForm<z.infer<typeof FormSchema>>({
       resolver: zodResolver(FormSchema),
-      defaultValues: {},
+      defaultValues: {
+        deprecated: false,
+        seasonal_item: true,
+        times_ordered: 0,
+      }
     });
 
 
+    const [data, setData] = useState<InventoryItem[]>([]);
+    const options = data.map((item) => ({ value: item.id, label: item.name }));
+
+
+
+    useEffect(() => {
+      getAllInventoryItems().then((data) => {
+        setData(data);
+      });
+    }, []);
+    
+
+
     const [showCard, setShowCard] = useState(false);
+    const [selected, setSelected] = useState(false);
+    const [isDeprecated, setIsDeprecated] = useState(false);
+    
+    async function onSubmit(formData: z.infer<typeof FormSchema>) {
+      // not the right function, will make function later
+      const res = await getSalesReportInRange(formData.start_date.toDateString(), formData.end_date.toDateString());
+      setFormData(res);
+
+      // cur price = item price here
+    }
   
     return (
-      <Card className="w-1/2 overflow-y-scroll" style={{ height: '650px' }}>
+      <Card className="w-3/5" style={{ height: '650px' }}>
         <CardHeader>
           <CardTitle>Add A Seasonal Item</CardTitle>
           <CardDescription>Enter the seasonal item you want to add to the menu.</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-6">
-          <Form {...form}>
+        <CardContent className="flex flex-col gap-6 overflow-y-scroll" style={{ maxHeight: '550px' }}>
+          <Form {...form} onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="item_name"
@@ -65,22 +121,6 @@ const FormSchema = z.object({
                 </FormItem>
               )}
             />
-            
-            <FormField
-              control={form.control}
-              name="times_ordered"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Times Ordered</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. Item was ordered once" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Enter how many times the item has been ordered
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="points"
@@ -96,108 +136,97 @@ const FormSchema = z.object({
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="cur_price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Current Price</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. 8.99" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Enter the current price of the item
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="seasonal_item"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Enter if Seasonal Item</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. Yes" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Enter yes/no if item is seasonal
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="points"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Enter Points for Item</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. 10" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    Enter how many points you want this item to have
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="deprecated"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Deprecated</FormLabel>
-                  <FormControl>
-                    <Input placeholder="false" {...field} />
-                  </FormControl>
-                  <FormDescription>
-                    False
-                  </FormDescription>
-                </FormItem>
-              )}
-            />
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <FormField
               control={form.control}
               name="start_date"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Start Date</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. 2023-01-01" {...field} />
-                  </FormControl>
+                  <Popover>
+                    <PopoverTrigger asChild className="m-4">
+                      <FormControl>
+                        <Button
+                          variant='outline'
+                        >
+                          <CalendarIcon className='mr-2' />
+                          {field.value ? (format(field.value, 'PPP')) : (<span>Pick a date.</span>)}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <Calendar
+                        mode='single'
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        initialFocus
+                        defaultMonth={new Date(2022, 0)}
+                      >
+                      </Calendar>
+                    </PopoverContent>
+                  </Popover>
                   <FormDescription>
                     Enter the start date of the interval you want to see.
                   </FormDescription>
                 </FormItem>
-              )}
+              )
+              }
             />
-            <FormField
+             <FormField
               control={form.control}
               name="end_date"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>End Date</FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. 2023-01-01" {...field} />
-                  </FormControl>
+                  <Popover>
+                    <PopoverTrigger asChild className="mx-4">
+                      <FormControl>
+                        <Button
+                          variant='outline'
+                        >
+                          <CalendarIcon className="mr-2" />
+                          {field.value ? (format(field.value, 'PPP')) : (<span>Pick a date.</span>)}
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <Calendar
+                        mode='single'
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        initialFocus
+                        defaultMonth={new Date(2023, 0)}
+                      >
+                      </Calendar>
+                    </PopoverContent>
+                  </Popover>
                   <FormDescription>
                     Enter the end date of the interval you want to see.
                   </FormDescription>
                 </FormItem>
               )}
             />
-            <Button type="button" onClick={() => setShowCard(true)}>Add Ingredients</Button>
-            {showCard && (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Add Ingredients to New Menu Item</CardTitle>
-                  <CardDescription>Select ingredients</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>Card Content</p>
-                </CardContent>
-              </Card>
-            )}
+              </div>
+              <FormField
+                control={form.control}
+                name="ingredients"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Add Ingredients</FormLabel>
+                    <FormControl>
+                      <Select
+                        {...field}
+                        isMulti
+                        options={options}
+                        menuPlacement='top'
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Select the ingredients for the new menu item
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
             <Button type="submit">Submit</Button>
           </Form>
         </CardContent>
