@@ -65,6 +65,97 @@ const FormSchema = z.object({
                 </FormItem>
               )}
             />
+            
+            <FormField
+              control={form.control}
+              name="times_ordered"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Times Ordered</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. Item was ordered once" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Enter how many times the item has been ordered
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="points"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Enter Points for Item</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. 10" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Enter how many points you want this item to have
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="cur_price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Current Price</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. 8.99" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Enter the current price of the item
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="seasonal_item"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Enter if Seasonal Item</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. Yes" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Enter yes/no if item is seasonal
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="points"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Enter Points for Item</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. 10" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Enter how many points you want this item to have
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="deprecated"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Deprecated</FormLabel>
+                  <FormControl>
+                    <Input placeholder="false" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    False
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="start_date"
@@ -72,7 +163,7 @@ const FormSchema = z.object({
                 <FormItem>
                   <FormLabel>Start Date</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. 2022-01-01" {...field} />
+                    <Input placeholder="e.g. 2023-01-01" {...field} />
                   </FormControl>
                   <FormDescription>
                     Enter the start date of the interval you want to see.
