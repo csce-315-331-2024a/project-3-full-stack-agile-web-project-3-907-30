@@ -177,6 +177,7 @@ const CustomerView = () => {
 
         setMenuItems(combinedItems);
       });
+<<<<<<< HEAD
       
   }, []);
 
@@ -188,6 +189,19 @@ const CustomerView = () => {
  * @param itemID - ID of the item.
  * @returns - The image URL for the menu items.
  */
+=======
+    getCurrentWeather().then((weather) => {
+      setWeather(weather);
+    })
+  }, []);
+
+
+  /**
+   * Function to get the image for a specific menu item
+   * @param itemID - ID of the item.
+   * @returns - The image URL for the menu items.
+   */
+>>>>>>> b22ef72fadb151d62e1f1c9b342cfa2228278d3a
   // Retrieve the image for menu item using the item ID
   const getImageForMenuItem = (itemID: number) => {
     return `/menu-item-pics/${itemID}.jpeg`;
@@ -763,7 +777,38 @@ const CustomerView = () => {
                             {currentAllergens?.is_vegan && <p className="text-sm font-bold text-green-500 mt-0 mb-0">VEGAN</p>}
                             {currentAllergens?.is_halal && <p className="text-sm font-bold text-blue-500 mt-0 mb-0">HALAL</p>}
                           </div>
+<<<<<<< HEAD
                             </DialogContent>
+=======
+                            
+                            <DialogFooter>
+                              <div className="flex items-center gap-2">
+                                <Label htmlFor="quantity" className="text-right text-lg">
+                                  Quantity:
+                                </Label>
+                                <input
+                                  id="quantity"
+                                  type="number"
+                                  min="1"
+                                  value={itemQuantity}
+                                  onChange={(e) => setItemQuantity(parseInt(e.target.value, 10))}
+                                  className="w-16 px-2 py-1 border border-gray-300 rounded"
+                                />
+                              </div>
+                              <DialogClose asChild>
+                                <Button
+                                  onClick={() => {
+                                    addItemToOrder(item, itemQuantity);
+                                    setItemQuantity(1); // Reset the quantity to 1 after adding to order
+                                  }}
+                                  className="bg-green-500 hover:bg-green-700 text-white text-xl font-bold px-6 py-8 rounded"
+                                >
+                                  Add to Order
+                                </Button>
+                              </DialogClose>
+                            </DialogFooter>
+                          </DialogContent>
+>>>>>>> b22ef72fadb151d62e1f1c9b342cfa2228278d3a
                         </Dialog>
                       </div>)
                   })}
