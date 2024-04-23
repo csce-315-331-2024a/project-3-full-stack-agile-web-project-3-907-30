@@ -18,10 +18,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const newPriceFloat = parseFloat(newPrice);
 
-  try {
-    const updateMenuItemStatement = await db.prepare(
-      "UPDATE menu_items SET item_price = $1 WHERE item_name = $2"
-    );
+    try {
+        const updateMenuItemStatement = await db.prepare(
+            // ** AARON **
+             // "UPDATE menu_items SET item_price = $1 WHERE item_name = $2"
+
+            // Setting current price instead of item_price
+            "UPDATE menu_items SET cur_price = $1 WHERE item_name = $2"
+        );
 
     await updateMenuItemStatement.execute({
       params: [newPriceFloat, itemName],

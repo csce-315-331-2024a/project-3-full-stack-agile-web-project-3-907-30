@@ -160,19 +160,34 @@ const CustomerView = () => {
           ...item,
           id: data[index].id,
         }));
-        setMenuItems(itemsWithID);
+
+        const res2 = await fetch('/api/menu/menu_items/get-item-promotion');
+        const data2 = await res2.json();
+
+        const itemsOnSale = data2.map((item: any) => ({
+          ...item,
+          onSale: item.currentPrice < item.price,
+        }));
+
+        const combinedItems = itemsWithID.map((item, index) => ({
+          ...item,
+          currentPrice: itemsOnSale[index].currentPrice,
+          onSale: itemsOnSale[index].onSale,
+        }));
+
+        setMenuItems(combinedItems);
       });
-    getCurrentWeather().then((weather) => {
-      setWeather(weather);
-    })
+      
   }, []);
 
 
-  /**
-   * Function to get the image for a specific menu item
-   * @param itemID - ID of the item.
-   * @returns - The image URL for the menu items.
-   */
+
+
+/**
+ * Function to get the image for a specific menu item
+ * @param itemID - ID of the item.
+ * @returns - The image URL for the menu items.
+ */
   // Retrieve the image for menu item using the item ID
   const getImageForMenuItem = (itemID: number) => {
     return `/menu-item-pics/${itemID}.jpeg`;
@@ -685,7 +700,8 @@ const CustomerView = () => {
             <Card className="overflow-y-scroll h-[90%]">
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 items-stretch">
                 {menuItems
-                  .filter((item) => itemBelongsToCategory(item.originalName, category))
+                   .filter((item) => itemBelongsToCategory(item.originalName, category))
+                  // .filter((item) => item && item.originalName && itemBelongsToCategory(item.originalName, category))
                   .map((item: any) => {
                     return (
                       <div key={item.name}
@@ -698,7 +714,14 @@ const CustomerView = () => {
                               <Image src={getImageForMenuItem(item.id)} alt={item.name} className="rounded-md" width={200} height={200} />
                               <div className="flex flex-col gap-2 text-lg text-center">
                                 <p className="font-semibold">{item.name}</p>
-                                <p className="text-base">${item.price.toFixed(2)}</p>
+                                {item.onSale ? (
+                                  <>
+                                <p className="text-base line-through">${item.price.toFixed(2)}</p>
+                                <p className="text-sm text-red-500 font-bold">ON SALE! ${item.currentPrice.toFixed(2)}</p>
+                                </>
+                                ) : (
+                                  <p className="text-base">${item.currentPrice.toFixed(2)}</p>
+                                )}
                               </div>
                             </Card>
                           </DialogTrigger>
@@ -710,56 +733,37 @@ const CustomerView = () => {
                                 <Image src={getImageForMenuItem(selectedItem.id)} alt={selectedItem.name} className="rounded-md" width={300} height={300} />
                               }
                             </div>
-                            <div className="flex items-center justify-start gap-4">
+                            <div className="flex items-center justify-start gap-4 mb-1">
                               <Label htmlFor="name" className="text-right mt-0.5">
                                 Ingredients:
                               </Label>
                               <div id="name" className="col-span-3">
                                 {/* <ul className="flex flex-row gap-1 mr-3"> */}
-                                <p className="flex flex-row gap-1 mr-3 justify-center flex-wrap text-sm">
-                                  {item.ingredients.join(", ")}
-                                </p>
+                                <ul className="flex flex-row gap-1 mr-3 justify-center flex-wrap">
+                                  {item.ingredients.map((ingredient: string) => (
+                                    <li key={ingredient} className="text-sm">
+                                    {ingredient.charAt(0).toUpperCase() + ingredient.slice(1)} </li>
+                                  ))}
+                                </ul>
                               </div>
                             </div>
-                            <div className="flex items-center justify-start gap-4">
-                              <Label htmlFor="allergens" className="text-right mt-0.5 text-red-500 font-bold ">
+                            {(currentAllergens?.has_dairy || currentAllergens?.has_nuts || currentAllergens?.has_eggs) && (
+                            <div className="flex items-center justify-start gap-4 mb-0 py-0">
+                              <Label htmlFor="allergens" className="text-right text-red-500 font-bold ">
                                 CONTAINS
                               </Label>
                               <div id="allergens" className="flex flex-row gap-4 justify-center flex-wrap">
-                                {currentAllergens?.has_dairy && <p className="text-red-500">Dairy</p>}
-                                {currentAllergens?.has_nuts && <p className="text-red-500">Nuts</p>}
-                                {currentAllergens?.has_eggs && <p className="text-red-500">Eggs</p>}
-                                {currentAllergens?.is_vegan && <p className="text-red-500">Vegan</p>}
-                                {currentAllergens?.is_halal && <p className="text-red-500">Halal</p>}
+                                {currentAllergens?.has_dairy && <p className="text-red-500 mb-0">Dairy</p>}
+                                {currentAllergens?.has_nuts && <p className="text-red-500 mb-0">Nuts</p>}
+                                {currentAllergens?.has_eggs && <p className="text-red-500 mb-0">Eggs</p>}
                               </div>
                             </div>
-                            <DialogFooter>
-                              <div className="flex items-center gap-2">
-                                <Label htmlFor="quantity" className="text-right text-lg">
-                                  Quantity:
-                                </Label>
-                                <input
-                                  id="quantity"
-                                  type="number"
-                                  min="1"
-                                  value={itemQuantity}
-                                  onChange={(e) => setItemQuantity(parseInt(e.target.value, 10))}
-                                  className="w-16 px-2 py-1 border border-gray-300 rounded"
-                                />
-                              </div>
-                              <DialogClose asChild>
-                                <Button
-                                  onClick={() => {
-                                    addItemToOrder(item, itemQuantity);
-                                    setItemQuantity(1); // Reset the quantity to 1 after adding to order
-                                  }}
-                                  className="bg-green-500 hover:bg-green-700 text-white text-xl font-bold px-6 py-8 rounded"
-                                >
-                                  Add to Order
-                                </Button>
-                              </DialogClose>
-                            </DialogFooter>
-                          </DialogContent>
+                          )}
+                          <div className="flex justify-end gap-3">
+                            {currentAllergens?.is_vegan && <p className="text-sm font-bold text-green-500 mt-0 mb-0">VEGAN</p>}
+                            {currentAllergens?.is_halal && <p className="text-sm font-bold text-blue-500 mt-0 mb-0">HALAL</p>}
+                          </div>
+                            </DialogContent>
                         </Dialog>
                       </div>)
                   })}
