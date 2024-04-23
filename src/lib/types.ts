@@ -159,8 +159,11 @@ export interface OrderMenuItem {
 
 
 export interface DetailedMenuItem {
-  id: number;
-  name: string;
-  price: number;
-  
+  item_id: number;
+  item_name: string;
+  item_price: number;
+  times_ordered: number;
+  points: number;
+  cur_price: number;
+  seasonal_item: boolean;
 }

@@ -1,72 +1,63 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableFooter, TableHeader, TableHead, TableRow } from '@/components/ui/table';
-import { MenuItem } from '@/lib/types';
+import { DetailedMenuItem } from '@/lib/types';
+import MenuManagementForm from './inventory-management-form';
 import { useEffect, useState } from 'react';
+import { deleteMenuItem, getAllMenuItems } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 const MenuManagement = () => {
-  const [data, setData] = useState<InventoryItem[]>([]);
+  const [data, setData] = useState<DetailedMenuItem[]>([]);
   const [dataChanged, setDataChanged] = useState(false);
 
   useEffect(() => {
-    getAllInventoryItems().then((data) => {
+    getAllMenuItems().then((data) => {
       setData(data);
     });
   }, []);
 
   useEffect(() => {
-    getAllInventoryItems().then((data) => {
+    getAllMenuItems().then((data) => {
       setData(data);
       setDataChanged((prev) => !prev);
     });
   }, [dataChanged]);
 
   return (
-    <Card className="min-h-fit max-h-[85%] overflow-y-scroll w-full">
+    <Card className="max-h-[85%] overflow-y-scroll w-full">
       <CardHeader>
-        <CardTitle>Inventory Management</CardTitle>
-        <CardDescription>Manage your inventory.</CardDescription>
+        <CardTitle>Menu Management</CardTitle>
+        <CardDescription>Manage your menu.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
-        <InventoryManagementForm editMode={false} setDataChanged={setDataChanged} />
+        <MenuManagementForm editMode={false} setDataChanged={setDataChanged} />
         <Table className="overflow-hidden">
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Fill Level</TableHead>
-              <TableHead>Current Level</TableHead>
-              <TableHead>Times Refilled</TableHead>
-              <TableHead>Date Refilled</TableHead>
-              <TableHead>Dairy?</TableHead>
-              <TableHead>Nuts?</TableHead>
-              <TableHead>Eggs?</TableHead>
-              <TableHead>Vegan?</TableHead>
-              <TableHead>Halal?</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead>Item Price</TableHead>
+              <TableHead>Times Ordered</TableHead>
+              <TableHead>Points</TableHead>
+              <TableHead>Current Price</TableHead>
+              <TableHead>Seasonal Item</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {
-              data.map((item: InventoryItem) => {
+              data.map((item: DetailedMenuItem) => {
                 return (
-                  <TableRow key={item.id}>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>${item.price.toFixed(2)}</TableCell>
-                    <TableCell>{item.fill_level}</TableCell>
-                    <TableCell>{item.curr_level}</TableCell>
-                    <TableCell>{item.times_refilled}</TableCell>
-                    <TableCell>{new Date(item.date_refilled).toLocaleString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })}</TableCell>
-                    <TableCell>{String(item.has_dairy)}</TableCell>
-                    <TableCell>{String(item.has_nuts)}</TableCell>
-                    <TableCell>{String(item.has_eggs)}</TableCell>
-                    <TableCell>{String(item.is_vegan)}</TableCell>
-                    <TableCell>{String(item.is_halal)}</TableCell>
+                  <TableRow key={item.item_id}>
+                    <TableCell>{item.item_name}</TableCell>
+                    <TableCell>${item.item_price.toFixed(2)}</TableCell>
+                    <TableCell>{item.times_ordered}</TableCell>
+                    <TableCell>{item.points}</TableCell>
+                    <TableCell>{item.cur_price}</TableCell>
+                    <TableCell>{item.seasonal_item}</TableCell>
                     <TableCell className="flex gap-2">
-                      <InventoryManagementForm inventoryItem={item} editMode={true} setDataChanged={setDataChanged} />
+                      <MenuManagementForm MenuItem={item} editMode={true} setDataChanged={setDataChanged} />
                       <Button onClick={() => {
                         setDataChanged((prev) => !prev);
-                        deleteInventoryItem(item.id);
+                        deleteMenuItem(item.id);
                       }}>X</Button>
                     </TableCell>
                   </TableRow>
@@ -83,4 +74,4 @@ const MenuManagement = () => {
   );
 }
 
-export default InventoryManagement;
+export default MenuManagement;
