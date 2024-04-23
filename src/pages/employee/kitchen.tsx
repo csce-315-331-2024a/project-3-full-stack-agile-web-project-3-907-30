@@ -40,12 +40,13 @@ const Kitchen = () => {
   useEffect(() => {
     const getAndSetData = (async () => {
 
-      const orderRes = await fetch('https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/api/kitchen/get-pending-orders');
+      const orderRes = await fetch('/api/kitchen/get-pending-orders');
       const pendingOrders = JSON.parse(await orderRes.json()) as PendingOrder[];
       console.log(pendingOrders);
 
-      const itemsRes = await fetch('https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/api/kitchen/get-order-items');
+      const itemsRes = await fetch('/api/kitchen/get-order-items');
       const itemsPairs = JSON.parse(await itemsRes.json()) as MenuOrderPair[];
+
       console.log(itemsPairs);
 
       setOrders(pendingOrders);
@@ -55,7 +56,9 @@ const Kitchen = () => {
     getAndSetData();
     setLoading(false);
 
-    const interval = setInterval(getAndSetData, 10000);
+    const interval = setInterval(() => {
+      getAndSetData();
+    }, 20000);
     return () => clearInterval(interval);
 
   }, [])
