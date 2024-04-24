@@ -1,4 +1,4 @@
-import {test, expect} from "@playwright/test";
+import { test, expect } from 'playwright-test-coverage';
 
 test('get list of ingredients under required stock level', async ({request}) => {
     const res = await request.get('https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/api/menu/check-stock/24');
