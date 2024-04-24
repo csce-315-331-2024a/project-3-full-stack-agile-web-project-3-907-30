@@ -45,7 +45,7 @@ const Kitchen = () => {
       console.log(pendingOrders);
 
       const itemsRes = await fetch('/api/kitchen/get-order-items');
-      const itemsPairs = JSON.parse(await itemsRes.json()) as MenuOrderPair[];
+      const itemsPairs = await itemsRes.json() as MenuOrderPair[];
 
       console.log(itemsPairs);
 

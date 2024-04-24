@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect, ReactNode } from "react";
 import { getEmployeeFromDatabase, getRole } from "@/lib/utils";
-import { TbLogout2 } from "react-icons/tb";
+import { TbLogout2, TbInfoCircle } from "react-icons/tb";
 import { useRouter } from "next/router";
 import revLogo from "../../public/rev-logo.png";
 import Image from "next/image";
@@ -22,6 +22,7 @@ import { getCurrentWeather } from "@/components/customer/customer-weather";
 import Head from "next/head";
 import Translate from "@/components/common/translate";
 import { Menu } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 interface LayoutProps {
   children: ReactNode;
@@ -205,24 +206,39 @@ const Layout = ({ children }: LayoutProps) => {
                 </NavigationMenu>
               </div>
               {employee ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild className="cursor-pointer">
-                    <Avatar>
-                      <AvatarImage src={employee?.empPicture} alt="profile" />
-                      <AvatarFallback>{employee?.empName[0]}</AvatarFallback>
-                    </Avatar>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-fit mr-4 mt-1 notranslate">
-                    <DropdownMenuLabel className="text-xl">{employee?.empName}</DropdownMenuLabel>
-                    <DropdownMenuLabel className="font-light -mt-3">{employee?.empEmail}</DropdownMenuLabel>
-                    <Badge className="ml-2 mb-2 text-xs mt-1">{getRole(employee)}</Badge>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={async () => await logout()}>
-                      <TbLogout2 className="mr-2 h-4 w-4" />
-                      <span>Logout</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <Dialog>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild className="cursor-pointer">
+                      <Avatar>
+                        <AvatarImage src={employee?.empPicture} alt="profile" />
+                        <AvatarFallback>{employee?.empName[0]}</AvatarFallback>
+                      </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-fit mr-4 mt-1 notranslate">
+                      <DropdownMenuLabel className="text-xl">{employee?.empName}</DropdownMenuLabel>
+                      <DropdownMenuLabel className="font-light -mt-3">{employee?.empEmail}</DropdownMenuLabel>
+                      <Badge className="ml-2 mb-2 text-xs mt-1">{getRole(employee)}</Badge>
+                      <DropdownMenuSeparator />
+                      <DialogTrigger asChild>
+                        <DropdownMenuItem>
+                          <TbInfoCircle className='mr-2 h-4 w-4' />
+                          <span>Info</span>
+                        </DropdownMenuItem>
+                      </DialogTrigger>
+                      <DropdownMenuItem onClick={async () => await logout()}>
+                        <TbLogout2 className="mr-2 h-4 w-4" />
+                        <span>Logout</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>{employee.empName}&apos;s Info</DialogTitle>
+                      <DialogDescription>Your info.</DialogDescription>
+                    </DialogHeader>
+
+                  </DialogContent>
+                </Dialog>
               ) : (loading ? (
                 <Skeleton className="w-10 h-10 rounded-full" />
               ) : (
