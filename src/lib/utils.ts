@@ -321,8 +321,8 @@ export async function newCustomer(custName: string, phoneNumber: string) {
     }),
   });
 
-  const data: string = await res.json();
-  return data;
+  const data = await res.json();
+  return data.error;
 }
 
 /**
