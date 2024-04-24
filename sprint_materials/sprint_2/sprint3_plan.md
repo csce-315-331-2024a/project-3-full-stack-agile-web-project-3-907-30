@@ -1,4 +1,4 @@
-# SPRINT TWO: 4/18/24 - 4/28/24
+# SPRINT THREE: 4/18/24 - 4/28/24
 
 ## Sprint Goal:
 

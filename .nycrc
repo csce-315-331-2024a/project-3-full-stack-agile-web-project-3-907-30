@@ -1,0 +1,6 @@
+{
+  "extends": "nyc-config-tsx",
+  "all": true,
+  "exclude": [".next", "babel.config.js"],
+  "reporter": ["html", "text", "lcov"]
+}

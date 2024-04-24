@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from 'playwright-test-coverage'; 
 
 test('Using manager view without being logged in', async ({ page }) => {
   await page.goto('https://project-3-full-stack-agile-web-project-3-907-30.vercel.app/employee/manager');
