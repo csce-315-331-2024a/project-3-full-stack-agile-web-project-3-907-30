@@ -46,6 +46,7 @@ const Kitchen = () => {
 
       const itemsRes = await fetch('/api/kitchen/get-order-items');
       const itemsPairs = JSON.parse(await itemsRes.json()) as MenuOrderPair[];
+
       console.log(itemsPairs);
 
       setOrders(pendingOrders);
@@ -55,7 +56,9 @@ const Kitchen = () => {
     getAndSetData();
     setLoading(false);
 
-    const interval = setInterval(getAndSetData, 10000);
+    const interval = setInterval(() => {
+      getAndSetData();
+    }, 20000);
     return () => clearInterval(interval);
 
   }, [])
