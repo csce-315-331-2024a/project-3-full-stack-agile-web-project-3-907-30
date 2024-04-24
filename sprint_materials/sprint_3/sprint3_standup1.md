@@ -35,6 +35,6 @@
 - average of 3.4 -> not high confidence
 
 ## Summary
-
+Overall, our decision to start the sprint early has paid off. Two of our teammembers have already finished their tasks, which is a major help considering Gabe has come down with an illness and has not been able to work very much. We started off with a heavy push, and even though the testing task seems daunting, we belive we can finish if we push through. 
 
 ## NO PREVIOUS STAND-UP MEETING
