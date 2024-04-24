@@ -5,6 +5,8 @@ import { getEmployeeFromDatabase } from '@/lib/utils';
 import { FcGoogle } from 'react-icons/fc';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/router';
+import revLogo from "../../../public/rev-logo.png";
+import Image from 'next/image';
 
 /**
  * The employee login page. This page allows employees to login.
@@ -34,7 +36,11 @@ const EmployeeLogin = () => {
   }
 
   return (
-    <main className="flex w-full h-dvh items-center justify-center p-4">
+    <main className="flex flex-col w-full h-dvh items-center justify-center p-4 gap-8">
+      <div className="flex flex-col gap-2 text-center">
+        <Image src={revLogo} alt="Rev's Logo" className="w-48 rounded-md" />
+        <h1 className="font-semibold text-xl">Employee Portal</h1>
+      </div>
       <Button variant="outline" onClick={async () => await login(router)}>
         <FcGoogle className="w-6 h-6 mr-2" />
         Sign-in with Google
