@@ -88,14 +88,24 @@ await addStatement.close();
   );
 
   // Insert each ingredient into the database:
-  for (const ingredient of ingredients) {
+  // for (const ingredient of ingredients) {
+  //   await addIngredientStatement.execute({
+  //     params: [
+  //       latestId + 1,
+  //       ingredient.index,
+  //       ingredient.amount,
+  //     ],
+  //   });
+  // }
+
+  for (let i = 0; i < ingredients.length; i++){
     await addIngredientStatement.execute({
-      params: [
-        latestId + 1,
-        ingredient.inv_id,
-        ingredient.amount,
-      ],
-    });
+          params: [
+            latestId + 1,
+            i,
+            ingredients[i],
+          ],
+        });
   }
 
   await addIngredientStatement.close();

@@ -1,7 +1,7 @@
 import { DetailedMenuItem, InventoryItem } from '@/lib/types';
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { useFieldArray, useForm } from "react-hook-form"
 import { Form, FormDescription, FormField, FormControl, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '../../ui/input'
 import { Button } from '../../ui/button';
@@ -18,19 +18,22 @@ import { addMenuItem, deleteInventoryItem, getAllInventoryItems } from '@/lib/ut
 
 const FormSchema = z.object({
   item_name: z.string(),
-  item_price: z.number().positive("Price must be a positive number."),
-  points: z.number().int("Points must be an integer."),
-  cur_price: z.number().positive("Current price must be a positive number."),
-  //seasonal_item: z.boolean(),
-  //deprecated: z.boolean(),
-//   options: z.array(z.object({
-//     value: z.number(),
-//     label: z.string()
-//   })),
-//   ingredients: z.array(z.object({
-//     inv_id: z.number(),
-//     amount: z.number().positive()
-//   }))
+  item_price: z.string(),
+  points: z.string(),
+  cur_price: z.string(),
+  ingredients: z.array(z.string())
+  // item_price: z.number().positive("Price must be a positive number."),
+  // points: z.number().int("Points must be an integer."),
+  // cur_price: z.number().positive("Current price must be a positive number."),
+  // //deprecated: z.boolean(),
+  // // options: z.array(z.object({
+  // //   value: z.number(),
+  // //   label: z.string()
+  // // })),
+  // // ingredients: z.array(z.object({
+  // //   amount: z.number().positive()
+  // // }))
+  // ingredients: z.array(z.number())
 });
   
 
@@ -38,17 +41,24 @@ const FormSchema = z.object({
 const MenuItemGUI = () => {
 
 async function onSubmit(formData: z.infer<typeof FormSchema>) {
+    console.log("Hello World");
     const newItem: DetailedMenuItem = {
     // Fix later
     item_id: 200,
     item_name: formData.item_name,
-    item_price: formData.item_price,
+    item_price: parseFloat(formData.item_price),
     times_ordered: 0,
-    points: formData.points,
-    cur_price: formData.cur_price,
+    points: parseInt(formData.points),
+    cur_price: parseFloat(formData.cur_price),
     // Fix later if needed
-    seasonal_item: false
+    seasonal_item: false,
+    deprecated: false,
+    ingredients: formData.ingredients.map(Number)
     }
+    console.log(newItem);
+    // console.log(newItem);
+    console.log(newItem.ingredients);
+    console.log(5);
     const res = await addMenuItem(newItem);
 
     if (res.status === 200){
@@ -71,6 +81,9 @@ async function onSubmit(formData: z.infer<typeof FormSchema>) {
 
 const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+      defaultValues: {
+        ingredients: []
+      }
 });
 
 
@@ -160,6 +173,49 @@ return (
             </FormItem>
             )}
         />
+
+        {
+        data.map((item: InventoryItem, index) => {
+          return (
+            <FormField
+              control={form.control}
+              name={`ingredients.${index}`}
+              render={({ field }) => (
+              <FormItem>
+                <FormLabel>Enter the amount of inventory item ${index}</FormLabel>
+                <FormControl>
+                <Input placeholder="e.g. 10" {...field} />
+                </FormControl>
+                <FormDescription>
+                Enter the amount of item ${index}.
+                </FormDescription>
+              </FormItem>)}
+            />
+          )})
+        }
+
+        {/* <FormField
+                control={form.control}
+                name="ingredients"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Add Ingredients</FormLabel>
+                    <FormControl>
+                      <Select
+                        {...field}
+                        isMulti
+                        options={options}
+                        menuPlacement='top'
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Select the ingredients for the new menu item
+                    </FormDescription>
+                  </FormItem>
+                )}
+        /> */}
+
+
         <Button type="submit">Submit</Button>
         </form>
         </Form>

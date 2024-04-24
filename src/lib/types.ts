@@ -157,6 +157,10 @@ export interface OrderMenuItem {
   quantity: number;
 }
 
+export interface InventoryItemAndAmount {
+  inv_id: number;
+  amount: number;
+}
 
 export interface DetailedMenuItem {
   item_id: number;
@@ -166,4 +170,6 @@ export interface DetailedMenuItem {
   points: number;
   cur_price: number;
   seasonal_item: boolean;
+  deprecated: boolean;
+  ingredients: Array<number>;
 }

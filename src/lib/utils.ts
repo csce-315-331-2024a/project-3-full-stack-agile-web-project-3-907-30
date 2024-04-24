@@ -792,7 +792,7 @@ export async function getAllMenuItems() {
  * @returns {Response} The response from the database.
  */
 export async function addMenuItem(item: DetailedMenuItem) {
-  const res = await fetch("/api/menu/menu-items/add-item", {
+  const res = await fetch("/api/menu/menu_items/add-item", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
