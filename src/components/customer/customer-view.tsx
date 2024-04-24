@@ -177,19 +177,6 @@ const CustomerView = () => {
 
         setMenuItems(combinedItems);
       });
-<<<<<<< HEAD
-      
-  }, []);
-
-
-
-
-/**
- * Function to get the image for a specific menu item
- * @param itemID - ID of the item.
- * @returns - The image URL for the menu items.
- */
-=======
     getCurrentWeather().then((weather) => {
       setWeather(weather);
     })
@@ -201,7 +188,6 @@ const CustomerView = () => {
    * @param itemID - ID of the item.
    * @returns - The image URL for the menu items.
    */
->>>>>>> b22ef72fadb151d62e1f1c9b342cfa2228278d3a
   // Retrieve the image for menu item using the item ID
   const getImageForMenuItem = (itemID: number) => {
     return `/menu-item-pics/${itemID}.jpeg`;
@@ -777,9 +763,6 @@ const CustomerView = () => {
                             {currentAllergens?.is_vegan && <p className="text-sm font-bold text-green-500 mt-0 mb-0">VEGAN</p>}
                             {currentAllergens?.is_halal && <p className="text-sm font-bold text-blue-500 mt-0 mb-0">HALAL</p>}
                           </div>
-<<<<<<< HEAD
-                            </DialogContent>
-=======
                             
                             <DialogFooter>
                               <div className="flex items-center gap-2">
@@ -808,7 +791,6 @@ const CustomerView = () => {
                               </DialogClose>
                             </DialogFooter>
                           </DialogContent>
->>>>>>> b22ef72fadb151d62e1f1c9b342cfa2228278d3a
                         </Dialog>
                       </div>)
                   })}
