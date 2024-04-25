@@ -23,7 +23,7 @@ Ex:
   - [ ] Make GUI edit menu item view have an option to put the item on sale E1 P2 S0 - Gabe
   - [ ] Have a function that updates menu item’s prices when they go on sale E1 P2 S0 - Gabe
   - [ ] Make GUI menu item sale view have a date range option using a calendar date selection to determine how long the sale will last E1 P2 S0 - Gabe
-  - [ ] Make menu item return to default price when sale window passes E2 P2 S0 - Gabe
+  - [x] Make menu item return to default price when sale window passes E2 P2 T2 - Gabe
 - [ ] As an employee, I want to be able to see what items I have sold the least to tailor my sales strategy around it. - Margo
   - [ ] Make Employee GUI view that shows employee information E1 P3 S0 - Margo
   - [ ] Make function that queries the information stored for a given, logged-in employee E1 P3 S0 - Margo
