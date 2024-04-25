@@ -33,6 +33,7 @@ const SeasonalGUI = () => {
 
 async function onSubmit(formData: z.infer<typeof FormSchema>) {
     console.log("Hello World");
+    
     const newItem: DetailedMenuItem = {
     // Fix later
     item_id: 200,
@@ -45,9 +46,9 @@ async function onSubmit(formData: z.infer<typeof FormSchema>) {
     // Fix later if needed
     seasonal_item: false,
     deprecated: false,
-    // ingredients: formData.ingredients.map(Number),
-    // ingredients: Object.values(formData.ingredients).map(Number),
     ingredients: formData.ingredients.map(Number),
+    // ingredients: Object.values(formData.ingredients).map(Number),
+    // ingredients: ingredients,
     }
     console.log(newItem);
     // console.log(newItem);
@@ -76,7 +77,7 @@ async function onSubmit(formData: z.infer<typeof FormSchema>) {
     }
 }
 const [data, setData] = useState<InventoryItem[]>([]);
-const options = data.map((item) => ({ value: item.id, label: item.name }));
+// const options = data.map((item) => ({ value: item.id, label: item.name }));
 
 const form = useForm<z.infer<typeof FormSchema>>({
   resolver: zodResolver(FormSchema),
