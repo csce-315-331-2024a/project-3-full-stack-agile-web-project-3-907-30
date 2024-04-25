@@ -5,7 +5,8 @@
     ".next",
     "babel.config.js",
     "tests/*.spec.ts",
-    "src/pages/_document.tsx"
+    "src/pages/_document.tsx",
+    "src/pages/api/**"
   ],
   "reporter": ["html", "text", "lcov"],
   "report-dir": "./coverage",
