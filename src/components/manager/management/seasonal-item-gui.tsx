@@ -31,6 +31,8 @@ const FormSchema = z.object({
 
 const SeasonalGUI = () => {
 
+
+const [menuItems, setMenuItems] = useState<DetailedMenuItem[]>([]);
 async function onSubmit(formData: z.infer<typeof FormSchema>) {
     console.log("Hello World");
     
@@ -65,6 +67,7 @@ async function onSubmit(formData: z.infer<typeof FormSchema>) {
         description: "Menu item added.",
     });
 
+    setMenuItems(prevItems => [...prevItems, newItem]);
     // reset form, let table know data has changed, close the dialog
     form.reset();
     }
@@ -82,13 +85,16 @@ const [data, setData] = useState<InventoryItem[]>([]);
 const form = useForm<z.infer<typeof FormSchema>>({
   resolver: zodResolver(FormSchema),
   defaultValues: {
-    ingredients: [],
+    ingredients: []
   },
 });
 
 useEffect(() => {
   getAllInventoryItems().then((data) => {
   setData(data);
+  form.reset({
+    ingredients: Array(data.length).fill("0"),
+  })
   });
 }, []);
 
@@ -155,12 +161,19 @@ return (
             return (
               <FormField
                 control={form.control}
-                name={`ingredients.${item.name}`}
+                name={`ingredients.${index}`}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{item.name}</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g. 10" {...field} />
+                      <Input placeholder="e.g. 10" 
+                      defaultValue="0" {...field} 
+                      onClick={(e) => {
+                        if (e.target.value === "0") {
+                          e.target.value = "";
+                        }
+                      }}
+                      />
                     </FormControl>
                     <FormDescription>
                       Enter the amount of {item.name}.
