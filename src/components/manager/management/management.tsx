@@ -37,7 +37,7 @@ const Management = () => {
     "Inventory Management",
     "Menu Item GUI",
     "Menu Management",
-    "Seasonal Items",
+    "Add Seasonal Items",
   ];
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const Management = () => {
       <TabsContent value="MenuItemGUI" className="w-4/5">
         <MenuItemGUI />
       </TabsContent>
-      <TabsContent value="SeasonalItems" className="w-4/5">
+      <TabsContent value="AddSeasonalItems" className="w-4/5">
         <SeasonalGUI />
       </TabsContent>
       <TabsContent value="MenuManagement" className="w-4/5">
@@ -90,8 +90,6 @@ const Management = () => {
           <LeastSellingView />
           <LeastContributingView />
           <ItemSaleGUI />
-          
-          {/* <SeasonalGUI /> */}
         </Card>
       </TabsContent>
     </Tabs>

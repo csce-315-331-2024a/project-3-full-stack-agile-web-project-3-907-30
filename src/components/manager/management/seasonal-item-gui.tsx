@@ -7,15 +7,16 @@ import { Input } from '../../ui/input'
 import { Button } from '../../ui/button';
 import { toast } from '../../ui/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card";
+import { useEffect, useState } from "react";
+import { addMenuItem, deleteInventoryItem, getAllInventoryItems } from '@/lib/utils';
+import { Calendar } from "@/components/ui/calendar"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useEffect, useState } from "react";
-import Select from 'react-select';
-import { addMenuItem, deleteInventoryItem, getAllInventoryItems } from '@/lib/utils';
-
+import { CalendarIcon } from "@radix-ui/react-icons"
+import { format } from "date-fns"
 
 
 
@@ -32,7 +33,7 @@ const FormSchema = z.object({
 const SeasonalGUI = () => {
 
 
-const [menuItems, setMenuItems] = useState<DetailedMenuItem[]>([]);
+// const [menuItems, setMenuItems] = useState<DetailedMenuItem[]>([]);
 async function onSubmit(formData: z.infer<typeof FormSchema>) {
     console.log("Hello World");
     
@@ -67,8 +68,7 @@ async function onSubmit(formData: z.infer<typeof FormSchema>) {
         description: "Menu item added.",
     });
 
-    setMenuItems(prevItems => [...prevItems, newItem]);
-    // reset form, let table know data has changed, close the dialog
+
     form.reset();
     }
     else {
@@ -80,7 +80,7 @@ async function onSubmit(formData: z.infer<typeof FormSchema>) {
     }
 }
 const [data, setData] = useState<InventoryItem[]>([]);
-// const options = data.map((item) => ({ value: item.id, label: item.name }));
+
 
 const form = useForm<z.infer<typeof FormSchema>>({
   resolver: zodResolver(FormSchema),
@@ -99,15 +99,11 @@ useEffect(() => {
 }, []);
 
 
-
-
-
-
 return (
     <Card className="w" style={{ height: '650px' }}>
     <CardHeader>
-        <CardTitle>Add A Menu Item</CardTitle>
-        <CardDescription>Enter the item you want to add to the menu.</CardDescription>
+        <CardTitle>Add A Seasonal Item</CardTitle>
+        <CardDescription>Enter the seasonal item you want to add to the menu.</CardDescription>
     </CardHeader>
     <CardContent className="flex flex-col gap-6 overflow-y-scroll" style={{ maxHeight: '550px' }}>
         <Form {...form} >
@@ -122,7 +118,7 @@ return (
                 <Input placeholder="e.g. Peppermint Milkshake" {...field} />
                 </FormControl>
                 <FormDescription>
-                Enter the name of the menu item
+                Enter the name of the menu item.
                 </FormDescription>
             </FormItem>
             )}
@@ -184,6 +180,70 @@ return (
             );
           })
         }
+        <FormField
+          control={form.control}
+          name="start_date"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Start Date</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild className="m-4">
+                  <FormControl>
+                    <Button variant='outline'>
+                      <CalendarIcon className='mr-2' />
+                      {field.value ? (format(field.value, 'PPP')) : (<span>Pick a date.</span>)}
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <Calendar
+                    mode='single'
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    initialFocus
+                    defaultMonth={new Date(2022, 0)}
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormDescription>
+                Enter the start date of the interval you want to see.
+              </FormDescription>
+            </FormItem>
+          )}
+        />
+
+
+        <FormField
+          control={form.control}
+          name="end_date"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>End Date</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild className="mx-4">
+                  <FormControl>
+                    <Button variant='outline'>
+                      <CalendarIcon className="mr-2" />
+                      {field.value ? (format(field.value, 'PPP')) : (<span>Pick a date.</span>)}
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <Calendar
+                    mode='single'
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    initialFocus
+                    defaultMonth={new Date(2023, 0)}
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormDescription>
+                Enter the end date of the interval you want to see.
+              </FormDescription>
+            </FormItem>
+          )}
+        />
         <Button type="submit">Submit</Button>
         </form>
         </Form>
@@ -193,96 +253,3 @@ return (
 };
   
   export default SeasonalGUI;
-
-
-  /* <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <FormField
-              control={form.control}
-              name="start_date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Start Date</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild className="m-4">
-                      <FormControl>
-                        <Button
-                          variant='outline'
-                        >
-                          <CalendarIcon className='mr-2' />
-                          {field.value ? (format(field.value, 'PPP')) : (<span>Pick a date.</span>)}
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <Calendar
-                        mode='single'
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        initialFocus
-                        defaultMonth={new Date(2022, 0)}
-                      >
-                      </Calendar>
-                    </PopoverContent>
-                  </Popover>
-                  <FormDescription>
-                    Enter the start date of the interval you want to see.
-                  </FormDescription>
-                </FormItem>
-              )
-              }
-            />
-             <FormField
-              control={form.control}
-              name="end_date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>End Date</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild className="mx-4">
-                      <FormControl>
-                        <Button
-                          variant='outline'
-                        >
-                          <CalendarIcon className="mr-2" />
-                          {field.value ? (format(field.value, 'PPP')) : (<span>Pick a date.</span>)}
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <Calendar
-                        mode='single'
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        initialFocus
-                        defaultMonth={new Date(2023, 0)}
-                      >
-                      </Calendar>
-                    </PopoverContent>
-                  </Popover>
-                  <FormDescription>
-                    Enter the end date of the interval you want to see.
-                  </FormDescription>
-                </FormItem>
-              )}
-            /> */
-              /* </div> */
-              /* <FormField
-                control={form.control}
-                name="ingredients"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Add Ingredients</FormLabel>
-                    <FormControl>
-                      <Select
-                        {...field}
-                        isMulti
-                        options={options}
-                        menuPlacement='top'
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Select the ingredients for the new menu item
-                    </FormDescription>
-                  </FormItem>
-                )}
-              /> */
