@@ -1,4 +1,4 @@
-### Sprint 23 Stand-up 2 for CSCE 331 Project 3
+### Sprint 3 Stand-up 2 for CSCE 331 Project 3
 ### Prepared by: Gabriel Floreslovo
 ### Meeting Date: 4/23/2024
 
