@@ -25,7 +25,9 @@ const FormSchema = z.object({
   item_name: z.string(),
   item_price: z.string(),
   points: z.string(),
-  ingredients: z.array(z.string())
+  ingredients: z.array(z.string()),
+  start_date: z.date(),
+  end_date: z.date(),
 });
   
 
@@ -48,7 +50,7 @@ async function onSubmit(formData: z.infer<typeof FormSchema>) {
     cur_price: parseFloat(formData.item_price),
     // Fix later if needed
     seasonal_item: false,
-    deprecated: false,
+    deprecated: true,
     ingredients: formData.ingredients.map(Number),
     // ingredients: Object.values(formData.ingredients).map(Number),
     // ingredients: ingredients,
@@ -211,8 +213,6 @@ return (
             </FormItem>
           )}
         />
-
-
         <FormField
           control={form.control}
           name="end_date"
