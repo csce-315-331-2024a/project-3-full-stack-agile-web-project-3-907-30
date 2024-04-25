@@ -8,6 +8,8 @@
 
 # testing
 /coverage
+/.nyc_output
+/.vscode
 
 # next.js
 /.next/

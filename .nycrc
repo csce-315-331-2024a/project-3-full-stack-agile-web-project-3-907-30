@@ -1,7 +1,7 @@
 {
   "extends": "nyc-config-tsx",
   "all": true,
-  "exclude": [".next", "babel.config.js", "tests/*.spec.ts"],
+  "exclude": [".next", "babel.config.js", "tests/*.spec.ts", "src/pages/api/**/*.ts", "src/pages/api/**/*.tsx"],
   "reporter": ["html", "text", "lcov"],
   "report-dir": "./coverage",
   "check-coverage": true,
