@@ -11,7 +11,7 @@ import ItemSaleGUI from "./item-sale-gui";
 import { Card } from "@/components/ui/card";
 import InventoryManagement from "./inventory-management";
 import OrderManagement from "./order-management";
-//import SeasonalGUI from "./seasonal-item-gui";
+import SeasonalGUI from "./seasonal-item-gui";
 import MenuItemGUI from "./menu-item-gui";
 
 /**
@@ -82,15 +82,15 @@ const Management = () => {
       <TabsContent value="MenuItemGUI" className="w-4/5">
         <MenuItemGUI />
       </TabsContent>
-      {/* <TabsContent value="SeasonalItems" className="w-4/5">
+      <TabsContent value="SeasonalItems" className="w-4/5">
         <SeasonalGUI />
-      </TabsContent> */}
+      </TabsContent>
       <TabsContent value="MenuManagement" className="w-4/5">
         <Card className="flex max-h-[85%] gap-8 p-4 notranslate">
           <LeastSellingView />
           <LeastContributingView />
           <ItemSaleGUI />
-          <MenuItemGUI />
+          
           {/* <SeasonalGUI /> */}
         </Card>
       </TabsContent>
