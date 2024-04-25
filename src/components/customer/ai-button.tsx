@@ -76,7 +76,7 @@ const AiButton = ({ setFoodRecommendations }: AiButtonProps) => {
         <DialogHeader>
           <DialogTitle>How are you feeling today?</DialogTitle>
           <DialogDescription>
-            Tell us how you're feeling, and we'll your AI assistant will recommend some food to match your mood!
+            Tell us how you&apos;re feeling, and we&apos;ll your AI assistant will recommend some food to match your mood!
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -89,7 +89,7 @@ const AiButton = ({ setFoodRecommendations }: AiButtonProps) => {
                   <Input type="text" {...field} />
                 </FormControl>
                 <FormDescription className='py-3'>
-                  Please enter how you're feeling (e.g. happy, sad, hungry, etc.).
+                  Please enter how you&apos;re feeling (e.g. happy, sad, hungry, etc.).
                 </FormDescription>
                 <FormMessage />
               </FormItem>
