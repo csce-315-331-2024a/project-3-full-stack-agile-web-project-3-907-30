@@ -86,11 +86,10 @@ const AiButton = ({ setFoodRecommendations }: AiButtonProps) => {
             name="feeling"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='px-2'>How are you feeling?</FormLabel>
                 <FormControl>
                   <Input type="text" {...field} />
                 </FormControl>
-                <FormDescription className='py-2'>
+                <FormDescription className='py-3'>
                   Please enter how you're feeling (e.g. happy, sad, hungry, etc.).
                 </FormDescription>
                 <FormMessage />
