@@ -56,7 +56,8 @@ export default async function handler (
 
 		if(pairs.rows!.length === 0) {
 			res.status(400).json({ error: "There were no pairs found" });
-		} else {
+		} 
+		else {
 			const pairsData: PairsAndAppearance[] = pairs.rows!.map((row) => 
 				({
 					row_id: row[0],
