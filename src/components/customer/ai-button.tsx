@@ -10,9 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from '../ui/use-toast';
 import Groq from 'groq-sdk';
 import { FormProvider } from 'react-hook-form';
+import { newCustomer } from '@/lib/utils';
 
-
-// const groq = new Groq({apiKey: process.env.GROQ_API_KEY});
 const groq = new Groq({apiKey: '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', dangerouslyAllowBrowser:true });
 
 interface AiButtonProps {
@@ -69,8 +68,8 @@ const AiButton = ({ setFoodRecommendations }: AiButtonProps) => {
     <FormProvider {...form}>
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" data-testid="ai-button">
-          AI Recommendations
+        <Button variant="default" data-testid="ai-button" className="bg-rev_maroon text-white">
+          Rev AI 🐶
         </Button>
       </DialogTrigger>
       <DialogContent>
