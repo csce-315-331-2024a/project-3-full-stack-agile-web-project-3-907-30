@@ -23,6 +23,7 @@ import Head from "next/head";
 import Translate from "@/components/common/translate";
 import { Menu } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import AiButton from "@/components/customer/ai-button";
 
 interface LayoutProps {
   children: ReactNode;
@@ -46,11 +47,7 @@ const Layout = ({ children }: LayoutProps) => {
   const [translatedCategories, setTranslatedCategories] = useState<string[]>([]);
   const [menuItems, setMenuItems] = useState<any[]>([]);
   const [originalMenuItems, setOriginalMenuItems] = useState<any[]>([]);
-
-
-
-
-
+  const [foodRecommendations, setFoodRecommendations] = useState<string[]>([]);
 
   useEffect(() => {
     if (account) {
@@ -89,6 +86,7 @@ const Layout = ({ children }: LayoutProps) => {
                 </span>
               </div>
               <div className="lg:flex gap-4 hidden">
+                <AiButton setFoodRecommendations={setFoodRecommendations} />
                 <RewardsButton setCustomer={setCustomer} />
                 <Button name="rateUs">
                   <Link target="_blank" href="https://www.yelp.com/writeareview/biz/6dSStUCjMAfixAqz73iy9g?return_url=%2Fbiz%2F6dSStUCjMAfixAqz73iy9g&review_origin=biz-details-war-button">
