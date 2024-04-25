@@ -63,11 +63,20 @@ const CustomerSignUp = () => {
 
 		const message = await newCustomer(fullName, data.phone);
 
+		
+
 		if (message === "Customer was not inserted") {
 			toast({
 				variant: "destructive",
 				title: "Error!",
 				description: "There was an error making your account, please review information and try again",
+			});
+		}
+		else if(message === "Customer already exists") {
+			toast({
+				variant: "destructive",
+				title: "Error!",
+				description: "This phone number is already associated with an account",
 			});
 		}
 		else {
