@@ -18,7 +18,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const getStatement = await db.prepare("SELECT item_id, item_name, item_price::numeric FROM menu_items ORDER BY item_id ASC");
+    const getStatement = await db.prepare("SELECT item_id, item_name, cur_price::numeric FROM menu_items ORDER BY item_id ASC WHERE deprecated = false");
     const menuItemsResult = await getStatement.execute();
     
     await getStatement.close();
