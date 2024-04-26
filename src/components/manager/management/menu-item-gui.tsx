@@ -21,7 +21,7 @@ const FormSchema = z.object({
   item_price: z.string(),
   points: z.string(),
   cur_price: z.string(),
-  ingredients: z.array(z.string())
+  ingredients: z.array(z.string().optional()),
   // item_price: z.number().positive("Price must be a positive number."),
   // points: z.number().int("Points must be an integer."),
   // cur_price: z.number().positive("Current price must be a positive number."),
@@ -185,7 +185,15 @@ return (
               <FormItem>
                 <FormLabel>Enter the amount of inventory item ${index}</FormLabel>
                 <FormControl>
-                <Input placeholder="e.g. 10" {...field} />
+                <Input placeholder="e.g. 10"
+                defaultValue="0" {...field} 
+                onClick={(e) => {
+                  const target = e.target as HTMLInputElement;
+                  if (target.value === "0") {
+                    target.value = "";
+                  }
+                }}
+                />
                 </FormControl>
                 <FormDescription>
                 Enter the amount of item ${index}.

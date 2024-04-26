@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableFooter, TableHeader, TableHead, TableRow } from '@/components/ui/table';
 import { DetailedMenuItem } from '@/lib/types';
-import MenuManagementForm from './inventory-management-form';
+import MenuManagementForm from './menu-management-form';
 import { useEffect, useState } from 'react';
 import { deleteMenuItem, getAllMenuItems } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -51,8 +51,8 @@ const MenuManagement = () => {
                     <TableCell>${item.item_price.toFixed(2)}</TableCell>
                     <TableCell>{item.times_ordered}</TableCell>
                     <TableCell>{item.points}</TableCell>
-                    <TableCell>{item.cur_price}</TableCell>
-                    <TableCell>{item.seasonal_item}</TableCell>
+                    <TableCell>{item.cur_price.toFixed(2)}</TableCell>
+                    <TableCell>{String(item.seasonal_item)}</TableCell>
                     <TableCell className="flex gap-2">
                       <MenuManagementForm menuItem={item} editMode={true} setDataChanged={setDataChanged} />
                       <Button onClick={() => {

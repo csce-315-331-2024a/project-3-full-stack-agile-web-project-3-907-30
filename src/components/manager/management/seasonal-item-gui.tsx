@@ -32,13 +32,12 @@ const FormSchema = z.object({
   
 
 
-// const SeasonalGUI = () => {
+const SeasonalGUI = () => {
 
 
-// // const [menuItems, setMenuItems] = useState<DetailedMenuItem[]>([]);
-// async function onSubmit(formData: z.infer<typeof FormSchema>) {
-//     console.log("Hello World");
-    
+const [menuItems, setMenuItems] = useState<DetailedMenuItem[]>([]);
+async function onSubmit(formData: z.infer<typeof FormSchema>) {
+
     const newItem: DetailedMenuItem = {
     // Fix later
     item_id: 200,
@@ -64,32 +63,32 @@ const FormSchema = z.object({
     // ...
     const res = await addMenuItem(newItem);
 
-//     if (res.status === 200){
-//     toast({
-//         title: "Success!",
-//         description: "Menu item added.",
-//     });
+    if (res.status === 200){
+    toast({
+        title: "Success!",
+        description: "Menu item added.",
+    });
 
 
-//     form.reset();
-//     }
-//     else {
-//     toast({
-//         variant: "destructive",
-//         title: "Error!",
-//         description: "There was a problem adding the item.",
-//     });
-//     }
-// }
-// const [data, setData] = useState<InventoryItem[]>([]);
+    form.reset();
+    }
+    else {
+    toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "There was a problem adding the item.",
+    });
+    }
+}
+const [data, setData] = useState<InventoryItem[]>([]);
 
 
-// const form = useForm<z.infer<typeof FormSchema>>({
-//   resolver: zodResolver(FormSchema),
-//   defaultValues: {
-//     ingredients: []
-//   },
-// });
+const form = useForm<z.infer<typeof FormSchema>>({
+  resolver: zodResolver(FormSchema),
+  defaultValues: {
+    ingredients: []
+  },
+});
 
 useEffect(() => {
   getAllInventoryItems().then((data) => {
@@ -254,4 +253,4 @@ return (
 );
 };
   
-//   export default SeasonalGUI;
+  export default SeasonalGUI;

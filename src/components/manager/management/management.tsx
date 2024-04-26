@@ -8,6 +8,7 @@ import ViewEmployees from "./view-employees";
 import ItemSaleGUI from "./item-sale-gui";
 import { Card } from "@/components/ui/card";
 import InventoryManagement from "./inventory-management";
+import MenuManagement from "./menu-management";
 import OrderManagement from "./order-management";
 import SeasonalGUI from "./seasonal-item-gui";
 import MenuItemGUI from "./menu-item-gui";
@@ -87,7 +88,8 @@ const Management = () => {
         <Card className="flex max-h-[85%] gap-8 p-4 notranslate">
           {/* <LeastSellingView />
           <LeastContributingView /> */}
-          <ItemSaleGUI />
+          {/* <ItemSaleGUI /> */}
+          <MenuManagement />
         </Card>
       </TabsContent>
     </Tabs>
