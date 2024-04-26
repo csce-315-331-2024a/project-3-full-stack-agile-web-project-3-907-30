@@ -772,3 +772,11 @@ export async function updateOrderItemStatus(orderId: number, status: number) {
 
   return res;
 }
+
+export async function saleAutomation() {
+  const res = await fetch("api/manager/sale-automation", {
+    method: "PUT"
+  })
+
+  return res;
+}
