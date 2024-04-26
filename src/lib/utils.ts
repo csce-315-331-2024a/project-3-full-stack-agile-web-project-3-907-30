@@ -13,6 +13,7 @@ import {
   RevenueReportItem,
   ExcessReportItem,
   RestockReportItem,
+  DetailedMenuItem,
 } from "./types";
 import { Pool, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
@@ -773,6 +774,34 @@ export async function updateOrderItemStatus(orderId: number, status: number) {
   return res;
 }
 
+/**
+ * Get all Menu items from the database.
+ *
+ * @returns {MenuItem[]} .
+ */
+export async function getAllMenuItems() {
+  const res = await fetch("/api/menu/get-all");
+  const data: MenuItem[] = await res.json();
+  return data;
+}
+
+/**
+ * Add a menu item to the database.
+ *
+ * @param {DetailedMenuItem} item The inventory item to add.
+ * @returns {Response} The response from the database.
+ */
+export async function addMenuItem(item: DetailedMenuItem) {
+  const res = await fetch("/api/menu/menu_items/add-item", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(item),
+  });
+
+  return res;
+}
 export async function saleAutomation() {
   const res = await fetch("api/manager/sale-automation", {
     method: "PUT"
