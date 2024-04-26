@@ -35,9 +35,9 @@ const Management = () => {
     "User Management",
     "Order Management",
     "Inventory Management",
-    "Menu Item GUI",
+    // "Menu Item GUI",
     "Menu Management",
-    "Add Seasonal Items",
+    "Add Items",
   ];
 
   useEffect(() => {
@@ -79,10 +79,10 @@ const Management = () => {
       <TabsContent value="InventoryManagement" className="w-4/5">
         <InventoryManagement />
       </TabsContent>
-      <TabsContent value="MenuItemGUI" className="w-4/5">
+      {/* <TabsContent value="MenuItemGUI" className="w-4/5">
         <MenuItemGUI />
-      </TabsContent>
-      <TabsContent value="AddSeasonalItems" className="w-4/5">
+      </TabsContent> */}
+      <TabsContent value="AddItems" className="w-4/5">
         <SeasonalGUI />
       </TabsContent>
       <TabsContent value="MenuManagement" className="w-4/5">

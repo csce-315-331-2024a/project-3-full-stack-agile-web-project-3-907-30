@@ -170,6 +170,9 @@ export interface DetailedMenuItem {
   points: number;
   cur_price: number;
   seasonal_item: boolean;
-  deprecated: boolean;
+  // deprecated: boolean;
   ingredients: Array<number>;
+  sale_end: Date;
+  sale_start: Date;
+  // sale_price: number;
 }
