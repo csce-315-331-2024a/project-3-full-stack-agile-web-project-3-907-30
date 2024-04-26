@@ -32,7 +32,6 @@ Ex:
   - [ ] Make function that queries all of the items that are on sale E1 P2 S0 - Chris
 
 ### Chores (part of the backlog, but have no story points associated with them)
-
 - [ ] Allow managers to input date ranges for trends - Margo E2 P1 S0
 - [ ] Try to make interactable way to update menu items - Aaron E2 P2 S0
 - [ ] Add front-end for customers to see their past orders - Margo E1 P1 S0
@@ -41,7 +40,7 @@ Ex:
 - [ ] Clean up logic for excess report form - Aaron E1 P2 S0
 - [ ] Add bounds checking to manager trend inputs - Chris E1 P2 S0
 - [ ] Clean up menu management card - Aaron E1 P2 S0
-- [ ] Fix duplicate customers being added - Gabe E1 P1 S0
+- [x] Fix duplicate customers being added - Gabe E1 P1 S0
 - [ ] Fix menu item makeup - Gabe E2 P2 S0
 - [x] Remove Google Translate loading circle - Adam E1 P3 T1
 - [ ] Allows employees to remove items from order in receipt - Akshay E1 P1 S0

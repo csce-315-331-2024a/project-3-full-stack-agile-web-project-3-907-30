@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '../../ui/form';
 import { updateMenuItemPrice } from '@/lib/utils';
 
+
+
 const FormSchema = z.object({
   item_name: z.string(),
   item_price: z.string()
@@ -27,6 +29,9 @@ const FormSchema = z.object({
    */
 const ItemSaleGUI = () => {
 
+
+ 
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -38,7 +43,7 @@ const ItemSaleGUI = () => {
   }
 
   return (
-    <Card className="w-1/2 overflow-y-scroll">
+    <Card className="w-1/2 overflow-y-scroll" style={{ height: '700px' }}>
       <CardHeader>
         <CardTitle>Update Item Prices</CardTitle>
         <CardDescription>Put items on sale with a few clicks.</CardDescription>

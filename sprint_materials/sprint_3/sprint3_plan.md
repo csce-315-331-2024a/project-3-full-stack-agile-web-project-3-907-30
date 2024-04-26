@@ -27,19 +27,19 @@ Ex:
   - [ ] Make function that queries all of the items that are on sale E1 P2 S0 - Chris
 
 ### Chores (part of the backlog, but have no story points associated with them)
-- [ ]Allow managers to input date ranges for trends - Margo E2 P1 S0
-- [ ]Try to make interactable way to update menu items - Aaron E2 P2 S0
-- [ ]Add front-end for customers to see their past orders - Margo E1 P1 S0
-- [ ]Move all trend functionality to api’s  - Margo E1 P3 S0
+- [ ] Allow managers to input date ranges for trends - Margo E2 P1 S0
+- [ ] Try to make interactable way to update menu items - Aaron E2 P2 S0
+- [ ] Add front-end for customers to see their past orders - Margo E1 P1 S0
+- [ ] Move all trend functionality to api’s  - Margo E1 P3 S0
 - [ ] Clean up Allergen UI for customer view with Halal and Vegan - Chris E1 P2 S0
 - [ ] Clean up logic for excess report form - Aaron E1 P2 S0
 - [ ] Add bounds checking to manager trend inputs - Chris E1 P2 S0
 - [ ] Clean up menu management card - Aaron E1 P2 S0
-- [ ] Fix duplicate customers being added - Gabe E1 P1 S0
+- [ ] Fix duplicate customers being added - Gabe E1 P1 T1
 - [ ] Fix menu item makeup - Gabe E2 P2 S0
 - [ ] Remove Google Translate loading circle - Adam E1 P3 S0
 - [ ] Allows employees to remove items from order in receipt  - Akshay E1 P1 S0
-- [ ] Allow customers to make orders in the customer view page - Akshay
+- [ ] Allow customers to make orders in the customer view page - Akshay 
 - [ ] Customers can create orders - Akshay E2 P1 S0
 - [ ] Customers can remove items from orders - Akshay E1 P1 S0
 - [ ] Allow modifications in all ordering views - Akshay E3 P1 S0
