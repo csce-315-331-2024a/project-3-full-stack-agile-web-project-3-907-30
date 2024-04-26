@@ -5,8 +5,6 @@ import { useEffect, useState } from "react";
 import { Tabs, TabsTrigger, TabsList, TabsContent } from "@/components/ui/tabs";
 import UserManagement from "./user-management";
 import ViewEmployees from "./view-employees";
-import LeastSellingView from "./least-selling-view";
-import LeastContributingView from "./least-contributing-view";
 import ItemSaleGUI from "./item-sale-gui";
 import { Card } from "@/components/ui/card";
 import InventoryManagement from "./inventory-management";
@@ -87,8 +85,8 @@ const Management = () => {
       </TabsContent>
       <TabsContent value="MenuManagement" className="w-4/5">
         <Card className="flex max-h-[85%] gap-8 p-4 notranslate">
-          <LeastSellingView />
-          <LeastContributingView />
+          {/* <LeastSellingView />
+          <LeastContributingView /> */}
           <ItemSaleGUI />
         </Card>
       </TabsContent>
