@@ -14,7 +14,7 @@ import {
 import { useState } from 'react';
 import Image from 'next/image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { categories, itemBelongsToCategory } from '@/lib/utils';
+import { categories, itemBelongsToCategory, saleAutomation } from '@/lib/utils';
 import { Allergens } from '@/lib/types';
 import CustomerOrders from './customer-orders';
 import CustomerWeatherReccs from './weather-recc';
@@ -140,27 +140,30 @@ const CustomerView = () => {
    * @returns - The menu items and their prices.
    */
   useEffect(() => {
-    fetch('/api/menu/menu_items/get-all-items-and-price')
-      .then((res) => res.json())
-      .then(async (data) => {
-        // Get the ingredients for each item
-        const ingredientPromises = data.map(async (item: any) => {
-          const ingredients = await getIngredientsUsingItemID(item.id);
+    // Update database based on sales/promotion date windows first
+    saleAutomation().then( () => {
+      fetch('/api/menu/menu_items/get-all-items-and-price')
+        .then((res) => res.json())
+        .then(async (data) => {
+          // Get the ingredients for each item
+          const ingredientPromises = data.map(async (item: any) => {
+            const ingredients = await getIngredientsUsingItemID(item.id);
 
-          return {
-            originalName: item.name,
-            name: item.name,
-            price: item.price,
-            ingredients: ingredients,
-          };
+            return {
+              originalName: item.name,
+              name: item.name,
+              price: item.price,
+              ingredients: ingredients,
+            };
+          });
+          // Wait for all the ingredients and translations to be fetched
+          const items = await Promise.all(ingredientPromises);
+          const itemsWithID = items.map((item, index) => ({
+            ...item,
+            id: data[index].id,
+          }));
+          setMenuItems(itemsWithID);
         });
-        // Wait for all the ingredients and translations to be fetched
-        const items = await Promise.all(ingredientPromises);
-        const itemsWithID = items.map((item, index) => ({
-          ...item,
-          id: data[index].id,
-        }));
-        setMenuItems(itemsWithID);
       });
     getCurrentWeather().then((weather) => {
       setWeather(weather);

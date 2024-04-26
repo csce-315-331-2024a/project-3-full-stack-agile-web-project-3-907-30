@@ -778,5 +778,6 @@ export async function saleAutomation() {
     method: "PUT"
   })
 
-  return res;
+  const data = await res.json();
+  return data.message;
 }

@@ -5,6 +5,23 @@ import { DataTypeOIDs } from "postgresql-client";
 import { parseArgs } from "util";
 
 
+/**
+ * Updates the menu items based on their sale and seasonal status.
+ * @example
+ * handler(req, res)
+ * @param {NextApiRequest} req - The request object.
+ * @param {NextApiResponse} res - The response object.
+ * @returns {JSON} Returns a JSON object with a message indicating the number of items reset.
+ * @description
+ * - Checks if the request method is PUT, if not returns an error.
+ * - Gets all temporary items from the database.
+ * - If there are no temporary items, returns a message indicating so.
+ * - If there are temporary items, checks if today's date is past the sale end date.
+ * - If so, resets the item's current price to the original price or marks it as deprecated depending on its seasonal status.
+ * - If today's date is within the sale/seasonal window, updates the item's current price or marks it as not deprecated depending on its seasonal status.
+ * - Returns a message indicating the number of items reset and initialized.
+ * - If an error occurs, returns a 500 error.
+ */
 export default async function handler (
     req:NextApiRequest,
     res:NextApiResponse
@@ -64,7 +81,7 @@ export default async function handler (
                     }
                 }
             }
-            return res.status(200).json({message: "Items reset: "+itemsReset})
+            return res.status(200).json({message: "Items reset: "+itemsReset+ ", Sales initialized: "+itemsPushedToMenu})
         }
     }
     catch(error){
