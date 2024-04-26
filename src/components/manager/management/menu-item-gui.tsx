@@ -96,7 +96,7 @@ useEffect(() => {
     getAllInventoryItems().then((data) => {
     setData(data);
     });
-}, []);
+}, [form]);
 
 
 
@@ -178,6 +178,7 @@ return (
         data.map((item: InventoryItem, index) => {
           return (
             <FormField
+            key={index}
               control={form.control}
               name={`ingredients.${index}`}
               render={({ field }) => (

@@ -98,7 +98,7 @@ useEffect(() => {
     ingredients: Array(data.length).fill("0"),
   })
   });
-}, []);
+}, [form]);
 
 
 return (
@@ -158,6 +158,7 @@ return (
           {data.map((item: InventoryItem, index) => {
             return (
               <FormField
+              key={index}
                 control={form.control}
                 name={`ingredients.${index}`}
                 render={({ field }) => (
@@ -167,8 +168,9 @@ return (
                       <Input placeholder="e.g. 10" 
                       defaultValue="0" {...field} 
                       onClick={(e) => {
-                        if (e.target.value === "0") {
-                          e.target.value = "";
+                        const target = e.target as HTMLInputElement;
+                        if (target.value === "0") {
+                          target.value = "";
                         }
                       }}
                       />
