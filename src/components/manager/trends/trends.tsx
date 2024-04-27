@@ -8,6 +8,8 @@ import RestockReport from "./restock-report";
 import WhatSellsTogether from "./what-sells-together";
 import MenuItemPopularity from "./menu-item-popularity";
 import DaysWithMostSales from "./days-with-most-sales";
+import LeastSellingView from "./least-selling-view";
+import LeastContributingView from "./least-contributing-view";
 
 /**
  * A trends component that encapsulates all trend reports.
@@ -30,6 +32,8 @@ const Trends = () => {
     "Days with Most Sales",
     "Most Popular Items",
     "What Sells Together",
+    "Least Selling View",
+    "Least Contributing View"
   ];
 
   return (
@@ -72,6 +76,16 @@ const Trends = () => {
       <TabsContent value="DayswithMostSales" className="w-4/5">
         <Card className="flex max-h-[85%]">
           <DaysWithMostSales />
+        </Card>
+      </TabsContent>
+      <TabsContent value="LeastSellingView" className="w-4/5">
+        <Card className="flex max-h-[85%]">
+          <LeastSellingView />
+        </Card>
+      </TabsContent>
+      <TabsContent value="LeastContributingView" className="w-4/5">
+        <Card className="flex max-h-[85%]">
+          <LeastContributingView />
         </Card>
       </TabsContent>
     </Tabs>

@@ -35,10 +35,9 @@ const FormSchema = z.object({
 const SeasonalGUI = () => {
 
 
-// const [menuItems, setMenuItems] = useState<DetailedMenuItem[]>([]);
+const [menuItems, setMenuItems] = useState<DetailedMenuItem[]>([]);
 async function onSubmit(formData: z.infer<typeof FormSchema>) {
-    console.log("Hello World");
-    
+
     const newItem: DetailedMenuItem = {
     // Fix later
     item_id: 200,

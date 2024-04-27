@@ -21,14 +21,14 @@ export default async function handler(
 
   const menuID: number = req.body.id;
 
-  const inventoryItem = await deleteStatement.execute({
+  const menuItem = await deleteStatement.execute({
     params: [menuID],
   });
 
   await deleteStatement.close();
 
   // return success message if the inventory item was deleted
-  if (inventoryItem.rowsAffected === 1) {
+  if (menuItem.rowsAffected === 1) {
     res.status(200).json({ status: "success" });
   } else {
     res.status(404).json({ error: "Menu item not found" });
