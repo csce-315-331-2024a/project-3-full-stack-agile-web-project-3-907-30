@@ -815,7 +815,7 @@ export async function deleteMenuItem(id: number) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(id),
+    body: JSON.stringify({ id } ),
   });
 
   return res;

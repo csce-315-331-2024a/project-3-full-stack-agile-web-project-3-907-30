@@ -30,7 +30,6 @@ const MenuManagement = () => {
         <CardDescription>Manage your menu.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
-        <MenuManagementForm editMode={false} setDataChanged={setDataChanged} />
         <Table className="overflow-hidden">
           <TableHeader>
             <TableRow>

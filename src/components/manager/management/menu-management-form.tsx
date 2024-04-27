@@ -36,8 +36,8 @@ const FormSchema = z.object({
     times_ordered: z.string(),
     points: z.string(),
     cur_price: z.string(),
-    seasonal_item: z.string(),
-    deprecated: z.string(),
+    seasonal_item: z.boolean(),
+    deprecated: z.boolean(),
     ingredients: z.array(z.string().optional()),
 })
 
@@ -52,8 +52,8 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
         times_ordered: editMode ? menuItem?.times_ordered.toString(): '',
         points: editMode ? menuItem?.points.toString(): '',
         cur_price: editMode ? menuItem?.cur_price.toString(): '',
-        seasonal_item: editMode ? menuItem?.seasonal_item.toString(): '',
-        deprecated: editMode ? menuItem?.deprecated.toString(): '',
+        seasonal_item: editMode ? menuItem?.seasonal_item : false,
+        deprecated: editMode ? menuItem?.deprecated : false,
     },
   })
 
@@ -76,8 +76,9 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
         times_ordered: parseInt(formData.times_ordered),
         points: parseInt(formData.points),
         cur_price: parseFloat(formData.cur_price),
-        seasonal_item: !!formData.seasonal_item,
-        deprecated: !!formData.deprecated,
+        seasonal_item: formData.seasonal_item,
+        // fix later
+        deprecated: formData.deprecated,
         ingredients: formData.ingredients.map(Number),
       }
 
@@ -101,49 +102,12 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
         });
       }
     }
-    // else {
-    //   // add new item
-    //   const newItem: InventoryItem = {
-    //     id: 0,
-    //     name: formData.name,
-    //     price: parseFloat(formData.price),
-    //     fill_level: parseInt(formData.fill_level),
-    //     curr_level: parseInt(formData.curr_level),
-    //     times_refilled: parseInt(formData.times_refilled),
-    //     date_refilled: new Date(formData.date_refilled),
-    //     has_dairy: formData.has_dairy,
-    //     has_nuts: formData.has_nuts,
-    //     has_eggs: formData.has_eggs,
-    //     is_vegan: formData.is_vegan,
-    //     is_halal: formData.is_halal,
-    //   }
-
-    //   const res = await addMenuItem(newItem);
-
-    //   if (res.status === 200) {
-    //     toast({
-    //       title: "Success!",
-    //       description: "Inventory item added.",
-    //     });
-
-    //     // reset form, let table know data has changed, close the dialog
-    //     form.reset();
-    //     setDataChanged((prev: boolean) => !prev);
-    //     setDialogOpen(false);
-    //   } else {
-    //     toast({
-    //       variant: "destructive",
-    //       title: "Error!",
-    //       description: "There was a problem adding the item.",
-    //     });
-    //   }
-    // }
   }
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <Button>{editMode ? 'Edit' : 'Add an Item'}</Button>
+        <Button>{'Edit'}</Button>
       </DialogTrigger>
       <DialogContent className="max-h-[85%] overflow-y-scroll w-full">
         <DialogHeader>
@@ -215,7 +179,38 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
             </FormItem>
             )}
         />
-
+        <FormField
+                control={form.control}
+                name="seasonal_item"
+                render={({ field }) => (
+                  <FormItem className="flex w-full justify-between items-center space-x-2">
+                    <FormLabel>Seasonal Item?</FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )
+                }
+        />
+        <FormField
+                control={form.control}
+                name="deprecated"
+                render={({ field }) => (
+                  <FormItem className="flex w-full justify-between items-center space-x-2">
+                    <FormLabel> Deprecated?</FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )
+                }
+        />
         {
         data.map((item: InventoryItem, index) => {
           return (
@@ -225,7 +220,7 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
               name={`ingredients.${index}`}
               render={({ field }) => (
               <FormItem>
-                <FormLabel>Enter the amount of inventory item ${index}</FormLabel>
+                <FormLabel>Enter the amount of inventory item {item.name}</FormLabel>
                 <FormControl>
                 <Input placeholder="e.g. 10"
                 defaultValue="0" {...field} 
@@ -239,7 +234,7 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
                 />
                 </FormControl>
                 <FormDescription>
-                Enter the amount of item ${index}.
+                Enter the amount of item {item.name}.
                 </FormDescription>
               </FormItem>)}
             />
