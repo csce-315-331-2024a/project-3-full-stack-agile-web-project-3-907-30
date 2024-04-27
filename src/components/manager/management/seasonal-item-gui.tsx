@@ -20,6 +20,7 @@ import { format } from "date-fns"
 import { Checkbox } from "@/components/ui/checkbox"
 import { formatISO } from "date-fns";
 
+
 const FormSchema = z.object({
   item_name: z.string(),
   item_price: z.string(),
@@ -33,6 +34,26 @@ const SeasonalGUI = () => {
   const [endDate, setEndDate] = useState<Date | null>(null);
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
+
+    if (!startDate || !endDate) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Please select both a start and end date.",
+      });
+      return;
+    }
+
+    if (endDate < startDate) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "End date must be after start date.",
+      });
+      return;
+    }
+
+    
     const newItem: DetailedMenuItem = {
       item_id: 200,
       item_name: formData.item_name,
@@ -42,7 +63,7 @@ const SeasonalGUI = () => {
       cur_price: parseFloat(formData.item_price),
       seasonal_item: formData.seasonal_item,
       ingredients: formData.ingredients.map(Number),
-      deprecated: false,
+      deprecated: formData.seasonal_item ? true : false,
       sale_end: endDate ? formatISO(endDate, { representation: 'date' }) : null,
       sale_start: startDate ? formatISO(startDate, { representation: 'date' }) : null,
     };
@@ -80,6 +101,9 @@ const SeasonalGUI = () => {
       setData(data);
       form.reset({
         ingredients: Array(data.length).fill("0"),
+        item_name: "",
+        item_price: "",
+        points: "",
       })
     });
   }, [form]);
@@ -87,13 +111,27 @@ const SeasonalGUI = () => {
   const isSeasonal = form.watch('seasonal_item');
   useEffect(() => {
     if (!isSeasonal) {
-      // const defaultDate = new Date(2022, 1, 2);
-      // setStartDate(defaultDate);
-      // setEndDate(defaultDate);
       setStartDate(null);
       setEndDate(null);
     }
   }, [isSeasonal]);
+
+
+  useEffect(() => {
+    // use SaleAutomation here
+    const updateItems = async () => {
+      try {
+        const res = fetch('/api/manager/sale-automation', { method: 'PUT' });
+        console.log('sale automation response:', res);
+      }
+      catch (error) {
+        console.error("Failed to update items: ", error);
+      }
+    };
+    console.log('updating items');
+    updateItems();
+  }, []);
+
 
   return (
     <Card className="w" style={{ height: '650px' }}>
@@ -109,7 +147,7 @@ const SeasonalGUI = () => {
               name="seasonal_item"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Is this a seasonal item?</FormLabel>
+                  <FormLabel>Is this a <span style={{ color: 'red' }}>seasonal</span> item?</FormLabel>
                   <FormControl>
                     <Checkbox
                       {...field}
@@ -118,6 +156,7 @@ const SeasonalGUI = () => {
                         field.onChange(value);
                       }}
                       value="seasonal_item"
+                      style={{ marginLeft: '10px' }}
                     />
                   </FormControl>
                   <FormDescription>
@@ -174,7 +213,7 @@ const SeasonalGUI = () => {
                 </FormItem>
               )}
             />
-
+          <div className="ingredients-grid">
             {data.map((item: InventoryItem, index) => {
               return (
                 <FormField
@@ -204,6 +243,15 @@ const SeasonalGUI = () => {
                 />
               );
             })}
+            <style jsx>{`
+              .ingredients-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                grid-gap: 20px;
+                grid-auto-rows: minmax(100px, auto);
+              }
+            `}</style>
+          </div>
           {isSeasonal && (
             <>
             <Popover>
