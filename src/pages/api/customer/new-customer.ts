@@ -32,14 +32,20 @@ export default async function handler (
         const nextIdQ = await db.prepare(`SELECT cust_id FROM customers ORDER BY cust_id DESC LIMIT 1;`);
         const nextIdRes = await nextIdQ.execute();
         await nextIdQ.close();
-        let nextId: number = parseInt(nextIdRes.rows!.at(0));
+        let nextId: number = parseInt(nextIdRes.rows!.at(0), 10);
         nextId = nextId + 1;
-
-        res.status(200).json([nextId, custName, phoneNumber]);
 
         const hash = createHash('sha256');
         hash.update(phoneNumber);
         const hashedPhone = hash.digest('hex');
+
+        const customerCheck = await db.prepare(`SELECT * FROM customers WHERE phone_number = $1`, { paramTypes: [DataTypeOIDs.text] });
+        const customerCheckRes = await customerCheck.execute({params: [hashedPhone]});
+        await customerCheck.close();
+        if(customerCheckRes.rows?.length !== 0) {
+            return res.status(401).json({ error: 'Customer already exists' });
+        }
+
 
         const getPairs = await db.prepare(
             `INSERT INTO customers

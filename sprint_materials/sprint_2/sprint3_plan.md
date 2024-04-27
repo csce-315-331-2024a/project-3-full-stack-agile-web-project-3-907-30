@@ -21,9 +21,9 @@ Ex:
 
 - [ ] As a manager, I want to make any item on sale to increase orders. - Gabe
   - [ ] Make GUI edit menu item view have an option to put the item on sale E1 P2 S0 - Gabe
-  - [ ] Have a function that updates menu item’s prices when they go on sale E1 P2 S0 - Gabe
+  - [x] Have a function that updates menu item’s prices when they go on sale E1 P2 T2 - Gabe
   - [ ] Make GUI menu item sale view have a date range option using a calendar date selection to determine how long the sale will last E1 P2 S0 - Gabe
-  - [ ] Make menu item return to default price when sale window passes E2 P2 S0 - Gabe
+  - [x] Make menu item return to default price when sale window passes E2 P2 T2 - Gabe
 - [ ] As an employee, I want to be able to see what items I have sold the least to tailor my sales strategy around it. - Margo
   - [ ] Make Employee GUI view that shows employee information E1 P3 S0 - Margo
   - [ ] Make function that queries the information stored for a given, logged-in employee E1 P3 S0 - Margo
@@ -32,7 +32,6 @@ Ex:
   - [ ] Make function that queries all of the items that are on sale E1 P2 S0 - Chris
 
 ### Chores (part of the backlog, but have no story points associated with them)
-
 - [ ] Allow managers to input date ranges for trends - Margo E2 P1 S0
 - [ ] Try to make interactable way to update menu items - Aaron E2 P2 S0
 - [ ] Add front-end for customers to see their past orders - Margo E1 P1 S0
@@ -41,7 +40,7 @@ Ex:
 - [ ] Clean up logic for excess report form - Aaron E1 P2 S0
 - [ ] Add bounds checking to manager trend inputs - Chris E1 P2 S0
 - [ ] Clean up menu management card - Aaron E1 P2 S0
-- [ ] Fix duplicate customers being added - Gabe E1 P1 S0
+- [x] Fix duplicate customers being added - Gabe E1 P1 S0
 - [ ] Fix menu item makeup - Gabe E2 P2 S0
 - [x] Remove Google Translate loading circle - Adam E1 P3 T1
 - [ ] Allows employees to remove items from order in receipt - Akshay E1 P1 S0
@@ -75,4 +74,4 @@ Ex:
 - [ ] Link to external site - Akshay E1 P3 S0
 - [ ] One more API functionality - Akshay E3 P3 S0
 - [ ] Host documentation - Chris E3 P1 S0
-- [ ] Add deprecated column when removing menu items to prevent side effects - Gabe E2 P2 S0
+- [x] Add deprecated column when removing menu items to prevent side effects - Gabe E2 P2 T1

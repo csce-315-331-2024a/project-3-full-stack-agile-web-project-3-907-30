@@ -25,7 +25,9 @@ const FormSchema = z.object({
   item_name: z.string(),
   item_price: z.string(),
   points: z.string(),
-  ingredients: z.array(z.string())
+  ingredients: z.array(z.string()),
+  start_date: z.date(),
+  end_date: z.date(),
 });
   
 
@@ -33,10 +35,9 @@ const FormSchema = z.object({
 const SeasonalGUI = () => {
 
 
-// const [menuItems, setMenuItems] = useState<DetailedMenuItem[]>([]);
+const [menuItems, setMenuItems] = useState<DetailedMenuItem[]>([]);
 async function onSubmit(formData: z.infer<typeof FormSchema>) {
-    console.log("Hello World");
-    
+
     const newItem: DetailedMenuItem = {
     // Fix later
     item_id: 200,
@@ -48,7 +49,7 @@ async function onSubmit(formData: z.infer<typeof FormSchema>) {
     cur_price: parseFloat(formData.item_price),
     // Fix later if needed
     seasonal_item: false,
-    deprecated: false,
+    deprecated: true,
     ingredients: formData.ingredients.map(Number),
     // ingredients: Object.values(formData.ingredients).map(Number),
     // ingredients: ingredients,
@@ -96,7 +97,7 @@ useEffect(() => {
     ingredients: Array(data.length).fill("0"),
   })
   });
-}, []);
+}, [form]);
 
 
 return (
@@ -156,6 +157,7 @@ return (
           {data.map((item: InventoryItem, index) => {
             return (
               <FormField
+              key={index}
                 control={form.control}
                 name={`ingredients.${index}`}
                 render={({ field }) => (
@@ -165,8 +167,9 @@ return (
                       <Input placeholder="e.g. 10" 
                       defaultValue="0" {...field} 
                       onClick={(e) => {
-                        if (e.target.value === "0") {
-                          e.target.value = "";
+                        const target = e.target as HTMLInputElement;
+                        if (target.value === "0") {
+                          target.value = "";
                         }
                       }}
                       />
@@ -211,8 +214,6 @@ return (
             </FormItem>
           )}
         />
-
-
         <FormField
           control={form.control}
           name="end_date"

@@ -72,7 +72,6 @@ interface customerInfoProps {
   children?: React.ReactNode;
 }
 
-
 /**
  * Displays a welcome message and customer points if signed in, or a message if no customer found.
  * @component
