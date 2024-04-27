@@ -41,3 +41,10 @@ test('Check customer rewards sign-in', async ({ page }) => {
   await page.getByRole('button', { name: 'Sign-in for Rewards' }).click();
   await expect(page.getByRole('heading')).toContainText('View your points');
 });
+
+test('Test Rev AI button and popup', async ({ page }) => {
+  await page.goto(`${process.env.TEST_URL}/`);
+  await page.getByTestId('ai-button').click();
+  await expect(page.getByRole('heading')).toContainText('How are you feeling today?');
+  await expect(page.locator('[id="\\:r2f\\:-form-item-description"]')).toContainText('Please enter how you\'re feeling (e.g. happy, sad, hungry, etc.).');
+});
