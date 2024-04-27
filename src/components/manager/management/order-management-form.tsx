@@ -63,7 +63,7 @@ const InventoryManagementForm = ({ orderItem, setDataChanged }: OrderManagementF
       <DialogTrigger asChild>
         <Button>Edit</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="notranslate">
         <DialogHeader>
           <DialogTitle>{`Editing Order #${orderItem.order_id}`}</DialogTitle>
           <DialogDescription>
