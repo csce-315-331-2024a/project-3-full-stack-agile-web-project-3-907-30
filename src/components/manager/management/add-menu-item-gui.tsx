@@ -29,13 +29,13 @@ const FormSchema = z.object({
   seasonal_item: z.boolean(),
 });
 
-const SeasonalGUI = () => {
+const AddItemGUI = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
 
-    if (!startDate || !endDate) {
+    if (formData.seasonal_item && (!startDate || !endDate)) {
       toast({
         variant: "destructive",
         title: "Error!",
@@ -44,7 +44,7 @@ const SeasonalGUI = () => {
       return;
     }
 
-    if (endDate < startDate) {
+    if (formData.seasonal_item && endDate && startDate && endDate < startDate) {
       toast({
         variant: "destructive",
         title: "Error!",
@@ -64,8 +64,11 @@ const SeasonalGUI = () => {
       seasonal_item: formData.seasonal_item,
       ingredients: formData.ingredients.map(Number),
       deprecated: formData.seasonal_item ? true : false,
-      sale_end: endDate ? formatISO(endDate, { representation: 'date' }) : null,
-      sale_start: startDate ? formatISO(startDate, { representation: 'date' }) : null,
+      // sale_end: endDate ? formatISO(endDate, { representation: 'date' }) : null,
+      // sale_start: startDate ? formatISO(startDate, { representation: 'date' }) : null,
+      sale_end: endDate ? new Date(formatISO(endDate, { representation: 'date' })) : null,
+      sale_start: startDate ? new Date(formatISO(startDate, { representation: 'date' })) : null,
+
     };
 
     const res = await addMenuItem(newItem);
@@ -266,7 +269,7 @@ const SeasonalGUI = () => {
               <PopoverContent>
                 <Calendar
                   mode='single'
-                  selected={startDate}
+                  selected={startDate ?? undefined}
                   onSelect={(date) => {
                     if (date) {
                       setStartDate(date);
@@ -290,7 +293,7 @@ const SeasonalGUI = () => {
               <PopoverContent>
                 <Calendar
                   mode='single'
-                  selected={endDate}
+                  selected={endDate ?? undefined}
                   onSelect={(date) => {
                     if (date) {
                       setEndDate(date);
@@ -310,4 +313,4 @@ const SeasonalGUI = () => {
     </Card>
   );
 };
-export default SeasonalGUI;
+export default AddItemGUI;

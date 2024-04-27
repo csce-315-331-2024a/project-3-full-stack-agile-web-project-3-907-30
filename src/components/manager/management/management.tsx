@@ -11,8 +11,8 @@ import ItemSaleGUI from "./item-sale-gui";
 import { Card } from "@/components/ui/card";
 import InventoryManagement from "./inventory-management";
 import OrderManagement from "./order-management";
-import SeasonalGUI from "./seasonal-item-gui";
-import MenuItemGUI from "./menu-item-gui";
+import AddItemGUI from "./add-menu-item-gui";
+// import MenuItemGUI from "./menu-item-gui";
 
 /**
  * A management component that encapsulates managing users, inventory, menu, and orders.
@@ -83,7 +83,7 @@ const Management = () => {
         <MenuItemGUI />
       </TabsContent> */}
       <TabsContent value="AddItems" className="w-4/5">
-        <SeasonalGUI />
+        <AddItemGUI />
       </TabsContent>
       <TabsContent value="MenuManagement" className="w-4/5">
         <Card className="flex max-h-[85%] gap-8 p-4 notranslate">
