@@ -109,15 +109,15 @@ await addStatement.close();
 
   for (let i = 0; i < ingredients.length; i++){
     if (ingredients[i] > 0){
-    await addIngredientStatement.execute({
-          params: [
-            latestId + 1,
-            i,
-            ingredients[i],
-          ],
-        });
+      await addIngredientStatement.execute({
+        params: [
+          latestId + 1,
+          i,
+          ingredients[i],
+        ],
+      });
+    }
   }
-}
 
   await addIngredientStatement.close();
 
