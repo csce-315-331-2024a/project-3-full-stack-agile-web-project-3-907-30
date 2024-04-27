@@ -73,5 +73,5 @@ Ex:
 - [x] Add pictures to static menu board - Adam E2 P2 T2
 - [ ] Link to external site - Akshay E1 P3 S0
 - [ ] One more API functionality - Akshay E3 P3 S0
-- [ ] Host documentation - Chris E3 P1 S0
+- [x] Host documentation - Chris E3 P1 T2
 - [x] Add deprecated column when removing menu items to prevent side effects - Gabe E2 P2 T1
