@@ -11,9 +11,9 @@
 - Gabriel Floreslovo
 
 ## Agenda
-- [ ] What we have finished, what we have left, and how we will do it
-- [ ] Conduct "fist of five" vote on the confidence in acheiving the sprint goal
-- [ ] Share any roadblocks that are interrupting progress 
+- [x] What we have finished, what we have left, and how we will do it
+- [x] Conduct "fist of five" vote on the confidence in acheiving the sprint goal
+- [x] Share any roadblocks that are interrupting progress 
 
 ## What we have completed
 - Made GUI for employee info button - Margo

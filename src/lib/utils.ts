@@ -802,3 +802,11 @@ export async function addMenuItem(item: DetailedMenuItem) {
 
   return res;
 }
+export async function saleAutomation() {
+  const res = await fetch("api/manager/sale-automation", {
+    method: "PUT"
+  })
+
+  const data = await res.json();
+  return data.message;
+}
