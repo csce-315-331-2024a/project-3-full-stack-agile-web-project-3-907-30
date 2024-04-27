@@ -25,11 +25,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { toast } from '../../ui/use-toast';
+
 
 const FormSchema = z.object({
   start_date: z.date({
     required_error: 'A start date is required.'
   })
+  
 })
 
 const ExcessReport = () => {
@@ -42,12 +45,25 @@ const ExcessReport = () => {
 
   var [data, setData] = useState<ExcessReportItem[]>([]);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     setLoading(false);
   }, [loading]);
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
+
+
+    if (!formData.start_date) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "A start date is required.",
+      });
+      return;
+    }
+
+
     const res = getExcessReport(formData.start_date.toDateString());
     data = await res;
     setData(data);

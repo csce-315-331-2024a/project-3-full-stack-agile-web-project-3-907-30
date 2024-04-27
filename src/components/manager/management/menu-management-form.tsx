@@ -79,6 +79,8 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
         seasonal_item: formData.seasonal_item,
         deprecated: formData.deprecated,
         ingredients: formData.ingredients.map(Number),
+        sale_end: null,
+        sale_start: null,
       }
 
       const res = await updateMenuItem(updatedItem);
