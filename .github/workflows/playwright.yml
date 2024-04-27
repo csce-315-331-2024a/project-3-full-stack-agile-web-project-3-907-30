@@ -8,6 +8,8 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      TEST_URL: https://project-3-full-stack-agile-web-project-3-907-30.vercel.app
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
