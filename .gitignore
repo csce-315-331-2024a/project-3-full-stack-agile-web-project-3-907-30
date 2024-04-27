@@ -57,3 +57,6 @@ google-translate.json
 
 # nyc output
 .nyc_output/
+
+# docs
+docs/

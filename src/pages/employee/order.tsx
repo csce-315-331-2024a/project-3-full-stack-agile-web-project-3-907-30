@@ -12,7 +12,7 @@ import OrderReceipt from '@/components/employee/order-receipt';
  * @prop {Employee} employee - The employee object containing employee information
  * @prop {boolean} loading - A boolean indicating if the component is currently loading
  * @prop {OrderItem[]} orderItems - An array of order items for the current order
- * @prop {() => void} clearOrder - A function to clear the current order
+ * @prop {any} clearOrder - A function to clear the current order
  * @description
  *   - Uses the useAuth hook to get the current employee's account information
  *   - Uses the useEffect hook to fetch the employee's information from the database

@@ -9,7 +9,8 @@
     "start": "nyc next dev",
     "test:only": "playwright test",
     "pretest": "rm -rf .next/ coverage/ .nyc_output/",
-    "test": "start-server-and-test 3000 test:only"
+    "test": "start-server-and-test 3000 test:only",
+    "docs": "jsdoc -c jsdoc.conf.json"
   },
   "dependencies": {
     "@google-cloud/translate": "^8.2.0",
@@ -30,6 +31,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toast": "^1.1.5",
     "@tanstack/react-table": "^8.16.0",
+    "better-docs": "^2.7.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^1.0.0",
@@ -42,6 +44,7 @@
     "input-otp": "^1.2.3",
     "iron-session": "^6.2.0",
     "js-sha256": "^0.11.0",
+    "jsdoc": "^4.0.2",
     "lucide-react": "^0.363.0",
     "net": "^1.0.2",
     "next": "14.1.4",
