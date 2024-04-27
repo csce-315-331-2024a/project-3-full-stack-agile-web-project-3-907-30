@@ -720,7 +720,7 @@ const CustomerView = () => {
                                 {item.onSale ? (
                                   <>
                                 <p className="text-base line-through">${item.price.toFixed(2)}</p>
-                                <p className="text-sm text-red-500 font-bold">ON SALE! ${item.currentPrice.toFixed(2)}</p>
+                                <p className="text-sm font-bold" style={{ color: '#b30000' }}>ON SALE! ${item.currentPrice.toFixed(2)}</p>
                                 </>
                                 ) : (
                                   <p className="text-base">${item.currentPrice.toFixed(2)}</p>
@@ -752,19 +752,19 @@ const CustomerView = () => {
                             </div>
                             {(currentAllergens?.has_dairy || currentAllergens?.has_nuts || currentAllergens?.has_eggs) && (
                             <div className="flex items-center justify-start gap-4 mb-0 py-0">
-                              <Label htmlFor="allergens" className="text-right text-red-500 font-bold ">
+                              <Label htmlFor="allergens" className="text-right font-bold" style={{ color: '#b30000' }}>
                                 CONTAINS
                               </Label>
                               <div id="allergens" className="flex flex-row gap-4 justify-center flex-wrap">
-                                {currentAllergens?.has_dairy && <p className="text-red-500 mb-0">Dairy</p>}
-                                {currentAllergens?.has_nuts && <p className="text-red-500 mb-0">Nuts</p>}
-                                {currentAllergens?.has_eggs && <p className="text-red-500 mb-0">Eggs</p>}
+                                {currentAllergens?.has_dairy && <p style={{ color: '#b30000' }} className="mb-0">Dairy</p>}
+                                {currentAllergens?.has_nuts && <p style={{ color: '#b30000' }} className="mb-0">Nuts</p>}
+                                {currentAllergens?.has_eggs && <p style={{ color: '#b30000' }} className="mb-0">Eggs</p>}
                               </div>
                             </div>
                           )}
                           <div className="flex justify-end gap-3">
-                            {currentAllergens?.is_vegan && <p className="text-sm font-bold text-green-500 mt-0 mb-0">VEGAN</p>}
-                            {currentAllergens?.is_halal && <p className="text-sm font-bold text-blue-500 mt-0 mb-0">HALAL</p>}
+                            {currentAllergens?.is_vegan && <p className="text-sm font-bold mt-0 mb-0" style={{ color: '#006400' }}>VEGAN</p>}
+                            {currentAllergens?.is_halal && <p className="text-sm font-bold mt-0 mb-0" style={{ color: '#000080' }}>HALAL</p>}
                           </div>
                             
                             <DialogFooter>

@@ -150,7 +150,7 @@ const AddItemGUI = () => {
               name="seasonal_item"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Is this a <span style={{ color: 'red' }}>seasonal</span> item?</FormLabel>
+                  <FormLabel>Is this a <span style={{ color: '#b30000' }}>seasonal</span> item?</FormLabel>
                   <FormControl>
                     <Checkbox
                       {...field}
@@ -276,7 +276,7 @@ const AddItemGUI = () => {
                     }
                   }}
                   initialFocus
-                  defaultMonth={new Date(2023, 0)}
+                  defaultMonth={new Date(2024, 0)}
                 />
               </PopoverContent>
             </Popover>
@@ -300,7 +300,7 @@ const AddItemGUI = () => {
                     }
                   }}
                   initialFocus
-                  defaultMonth={new Date(2023, 2)}
+                  defaultMonth={new Date(2024, 2)}
                 />
               </PopoverContent>
             </Popover>
