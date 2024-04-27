@@ -90,9 +90,6 @@ const ExcessReport = () => {
                       </Calendar>
                     </PopoverContent>
                   </Popover>
-                  {/* <FormControl>
-                    <Input placeholder="e.g. 2022-01-01" {...field} />
-                  </FormControl> */}
                   <FormDescription>
                     Enter the start date of the interval you want to see.
                   </FormDescription>

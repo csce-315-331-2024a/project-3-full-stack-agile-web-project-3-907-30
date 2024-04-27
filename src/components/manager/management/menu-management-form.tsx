@@ -77,7 +77,6 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
         points: parseInt(formData.points),
         cur_price: parseFloat(formData.cur_price),
         seasonal_item: formData.seasonal_item,
-        // fix later
         deprecated: formData.deprecated,
         ingredients: formData.ingredients.map(Number),
       }
