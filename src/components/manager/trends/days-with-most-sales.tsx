@@ -48,7 +48,7 @@ const DaysWithMostSales = () => {
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
     // Date error checking
-		  if (formData.month.length === 0 || formData.year.length === 0) {
+    if (formData.month.length === 0 || formData.year.length === 0) {
       toast({
         variant: "destructive",
         title: "Error!",
@@ -68,7 +68,7 @@ const DaysWithMostSales = () => {
     }
 
     // if year is less than 4 digits, error
-    if (formData.year.length !== 4 || [2022, 2023, 2024].includes(Number(formData.year)) === false) {
+    if (formData.year.length !== 4) {
       toast({
         variant: "destructive",
         title: "Error!",

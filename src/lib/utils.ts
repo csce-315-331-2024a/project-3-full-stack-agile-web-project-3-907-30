@@ -299,8 +299,13 @@ export async function daysWithMostSales(month: number, year: number) {
       },
     }
   );
-  const data: SalesForADay[] = await res.json();
-  return data;
+
+  if (res.status === 200) {
+    const data: SalesForADay[] = await res.json();
+    return data;
+  } else {
+    return [];
+  }
 }
 
 /**
