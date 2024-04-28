@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import db from "../../../lib/db";
 import { PopularMenuItem } from "@/lib/types";
 import { DataTypeOIDs } from "postgresql-client";
+import { start } from "repl";
 
 /**
  * Retrieves the top 10 most popular menu items between the specified start and end dates.
@@ -47,7 +48,7 @@ export default async function handler (
     await getPopularItems.close();
 
     if(popularItems.rows!.length === 0){
-      res.status(505).json({ error: "There were no pairs found" });
+      res.status(405).json({ error: "There were no pairs found" });
     }
     else {
       const popularItemsData: PopularMenuItem[] = popularItems.rows!.map( (row) =>

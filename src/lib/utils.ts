@@ -253,6 +253,11 @@ export async function whatSellsTogether(startDate: string, endDate: string) {
       },
     }
   );
+
+  if (res.status === 405) {
+    return [];
+  }
+
   const data: PairsAndAppearance[] = await res.json();
   return data;
 }
@@ -276,6 +281,11 @@ export async function menuItemsPopularity(startDate: string, endDate: string) {
       },
     }
   );
+
+  if (res.status === 405) {
+    return [];
+  }
+
   const data: PopularMenuItem[] = await res.json();
   return data;
 }
@@ -299,8 +309,13 @@ export async function daysWithMostSales(month: number, year: number) {
       },
     }
   );
-  const data: SalesForADay[] = await res.json();
-  return data;
+
+  if (res.status === 200) {
+    const data: SalesForADay[] = await res.json();
+    return data;
+  } else {
+    return [];
+  }
 }
 
 /**
@@ -780,7 +795,12 @@ export async function updateOrderItemStatus(orderId: number, status: number) {
  * @returns {DetailedMenuItem[]} .
  */
 export async function getAllMenuItems() {
-  const res = await fetch("/api/menu/menu_items/get-all");
+  const res = await fetch("/api/menu/menu_items/get-all", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   const data: DetailedMenuItem[] = await res.json();
   return data;
 }
@@ -804,8 +824,8 @@ export async function addMenuItem(item: DetailedMenuItem) {
 }
 export async function saleAutomation() {
   const res = await fetch("api/manager/sale-automation", {
-    method: "PUT"
-  })
+    method: "PUT",
+  });
 
   const data = await res.json();
   return data.message;
@@ -823,7 +843,7 @@ export async function deleteMenuItem(id: number) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ id } ),
+    body: JSON.stringify({ id }),
   });
 
   return res;

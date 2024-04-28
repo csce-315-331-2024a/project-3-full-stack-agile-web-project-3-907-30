@@ -34,10 +34,12 @@ export default async function handler(
       cur_price: row[5],
       seasonal_item: row[6],
       deprecated: row[7],
-      ingredients: [0]
+      ingredients: [0],
+      // sale_start: null,
+      // sale_end: null,
+      sale_start: row[8] ? new Date(row[8]) : null,
+      sale_end: row[9] ? new Date(row[9]) : null,
     }));
-
-    res.status(200).json(menuItems);
 
       res.status(200).json(menuItems);
     }

@@ -26,6 +26,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { toast } from "@/components/ui/use-toast";
 
 const FormSchema = z.object({
   start_date: z.date({
@@ -59,7 +60,50 @@ const MenuItemPopularity = () => {
   }, [loading]);
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
-    const res = await menuItemsPopularity(formData.start_date.toDateString(), formData.end_date.toDateString());
+
+     //  if the date inputted is after april 2024, toast "Cannot predict the future!"
+     if (formData.end_date.getFullYear() > 2024 || 
+     (formData.end_date.getFullYear() === 2024 && formData.end_date.getMonth() > 3)) {
+       toast({
+         variant: "destructive",
+         title: "Error!",
+         description: "Cannot Predict the future!",
+       });
+       return;
+     }
+
+     // if the start date is before january 2022, "Rev's wasnt opened! Please select a date after January 1st, 2022!"
+     if (formData.start_date.getFullYear() < 2022 ||
+      (formData.start_date.getFullYear() === 2022 && formData.start_date.getMonth() < 0)) {
+        toast({
+          variant: "destructive",
+          title: "Error!",
+          description: "Please select a date after January 1st, 2022!",
+        });
+        return;
+      }
+
+    // Date error checking
+		 if (formData.end_date < formData.start_date) {
+			toast({
+			  variant: "destructive",
+			  title: "Error!",
+			  description: "End date must be after start date.",
+			});
+			return;
+		  }
+	  
+		  if (!formData.start_date || !formData.end_date) {
+			toast({
+			  variant: "destructive",
+			  title: "Error!",
+			  description: "Please select both a start and end date.",
+			});
+			return;
+		  }
+
+    const res = await menuItemsPopularity(formData.start_date.toISOString().slice(0,10), 
+    formData.end_date.toISOString().slice(0,10));
     setFormData(res);
   }
 

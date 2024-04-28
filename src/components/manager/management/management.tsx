@@ -78,17 +78,11 @@ const Management = () => {
       <TabsContent value="InventoryManagement" className="w-4/5">
         <InventoryManagement />
       </TabsContent>
-      {/* <TabsContent value="MenuItemGUI" className="w-4/5">
-        <MenuItemGUI />
-      </TabsContent> */}
       <TabsContent value="AddItems" className="w-4/5">
         <AddItemGUI />
       </TabsContent>
       <TabsContent value="MenuManagement" className="w-4/5">
         <Card className="flex max-h-[85%] gap-8 p-4 notranslate">
-          {/* <LeastSellingView />
-          <LeastContributingView /> */}
-          {/* <ItemSaleGUI /> */}
           <MenuManagement />
         </Card>
       </TabsContent>

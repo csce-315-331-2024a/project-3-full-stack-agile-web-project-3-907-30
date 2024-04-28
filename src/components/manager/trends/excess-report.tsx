@@ -32,7 +32,7 @@ const FormSchema = z.object({
   start_date: z.date({
     required_error: 'A start date is required.'
   })
-  
+
 })
 
 const ExcessReport = () => {
@@ -45,7 +45,7 @@ const ExcessReport = () => {
 
   var [data, setData] = useState<ExcessReportItem[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
 
   useEffect(() => {
     setLoading(false);
@@ -53,12 +53,34 @@ const ExcessReport = () => {
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
 
-
-    if (!formData.start_date) {
+    // CHECK WITH DB
+    if (formData.start_date.getFullYear() < 2021) {
       toast({
         variant: "destructive",
         title: "Error!",
-        description: "A start date is required.",
+        description: "Rev's wasn't opened before 2021!",
+      });
+      return;
+    }
+
+  //  if the date inputted is after april 2024, toast "Cannot predict the future!"
+    if (formData.start_date.getFullYear() > 2024 || 
+    (formData.start_date.getFullYear() === 2024 && formData.start_date.getMonth() > 3)) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Cannot Predict the future!",
+      });
+      return;
+    }
+
+    // if the start date is before january 2022, "Rev's wasnt opened! Please select a date after January 1st, 2022!"
+    if (formData.start_date.getFullYear() < 2022 ||
+    (formData.start_date.getFullYear() === 2022 && formData.start_date.getMonth() < 0)) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Please select a date after January 1st, 2022!",
       });
       return;
     }
@@ -135,7 +157,7 @@ const ExcessReport = () => {
                     {item.initial_amount}
                   </TableCell>
                   <TableCell>
-                    {item.percent_used}
+                    {item.percent_used.toFixed(2)}%
                   </TableCell>
                 </TableRow>
               )

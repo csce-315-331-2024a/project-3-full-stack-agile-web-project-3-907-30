@@ -16,9 +16,28 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { CalendarIcon } from "@radix-ui/react-icons"
-import { format } from "date-fns"
+import { add, addDays, format } from "date-fns"
 import { Checkbox } from "@/components/ui/checkbox"
 import { formatISO } from "date-fns";
+
+
+
+/**
+ * 
+ * @param {void}
+ * @returns {JSX.Element} The AddItemGUI component.
+ * @example
+ *  <AddItemGUI />
+ * @description
+ * This component allows the manager to add items to the menu.
+ * The form includes fields for item name, price, points, ingredients, and seasonal item.
+ * The manager can select ingredients from a list of inventory items.
+ * The manager can set a start and end date for seasonal items.
+ * The form is validated using zod.
+ * The form data is submitted to the database using the addMenuItem function.
+ * The component uses the useToast hook to display success and error messages.
+ * 
+ */
 
 
 const FormSchema = z.object({
@@ -66,8 +85,8 @@ const AddItemGUI = () => {
       deprecated: formData.seasonal_item ? true : false,
       // sale_end: endDate ? formatISO(endDate, { representation: 'date' }) : null,
       // sale_start: startDate ? formatISO(startDate, { representation: 'date' }) : null,
-      sale_end: endDate ? new Date(formatISO(endDate, { representation: 'date' })) : null,
-      sale_start: startDate ? new Date(formatISO(startDate, { representation: 'date' })) : null,
+      sale_end: endDate ? new Date(formatISO(addDays(endDate, 1), { representation: 'date' })) : null,
+      sale_start: startDate ? new Date(formatISO(addDays(startDate, 1), { representation: 'date' })) : null,
 
     };
 
@@ -150,7 +169,7 @@ const AddItemGUI = () => {
               name="seasonal_item"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Is this a <span style={{ color: 'red' }}>seasonal</span> item?</FormLabel>
+                  <FormLabel>Is this a <span style={{ color: '#b30000' }}>seasonal</span> item?</FormLabel>
                   <FormControl>
                     <Checkbox
                       {...field}
@@ -192,7 +211,7 @@ const AddItemGUI = () => {
                 <FormItem>
                   <FormLabel>Set Price</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter the new price here" {...field} />
+                    <Input placeholder="e.g. 3.99" {...field} />
                   </FormControl>
                   <FormDescription>
                     Enter the price you want to set for the new item.
@@ -276,7 +295,7 @@ const AddItemGUI = () => {
                     }
                   }}
                   initialFocus
-                  defaultMonth={new Date(2023, 0)}
+                  defaultMonth={new Date(2024, 0)}
                 />
               </PopoverContent>
             </Popover>
@@ -300,7 +319,7 @@ const AddItemGUI = () => {
                     }
                   }}
                   initialFocus
-                  defaultMonth={new Date(2023, 2)}
+                  defaultMonth={new Date(2024, 2)}
                 />
               </PopoverContent>
             </Popover>

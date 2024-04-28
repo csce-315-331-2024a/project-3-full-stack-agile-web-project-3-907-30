@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useState } from "react";
 import { daysWithMostSales } from "@/lib/utils";
+import { toast } from "@/components/ui/use-toast";
 
 const FormSchema = z.object({
   month: z.string(),
@@ -46,6 +47,56 @@ const DaysWithMostSales = () => {
   }, [loading]);
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
+    // Date error checking
+    if (formData.month.length === 0 || formData.year.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Please fill out the fields!"
+      })
+      return;
+    }
+
+    // if month greater than 12, error
+    if (Number(formData.month) > 12 || Number(formData.month) < 1) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Please enter a valid month."
+      })
+      return;
+    }
+
+    // if year is less than 4 digits, error
+    if (formData.year.length !== 4) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Please enter a valid year."
+      });
+      return;
+    }
+
+    // if year is greater than april 2024, cannot predict future!
+    if (formData.year > "2024" || (formData.year === "2024" && formData.month > "4")) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Cannot predict the future!"
+      });
+      return;
+    }
+
+    // if year is less than janaury 1st 2022, please select a date after january 1st, 2022
+    if (formData.year < "2022" || (formData.year === "2022" && formData.month < "1")) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Please select a date after January 1st, 2022!"
+      });
+      return;
+    }
+
     const res = await daysWithMostSales(Number(formData.month), Number(formData.year));
     setFormData(res);
   }
