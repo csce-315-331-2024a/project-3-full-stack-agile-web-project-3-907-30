@@ -167,15 +167,19 @@ const CustomerView = () => {
         const data2 = await res2.json();
 
         const itemsOnSale = data2.map((item: any) => ({
+          
           ...item,
           onSale: item.currentPrice < item.price,
         }));
+        
 
         const combinedItems = itemsWithID.map((item, index) => ({
           ...item,
+          price: itemsOnSale[index].price,
           currentPrice: itemsOnSale[index].currentPrice,
           onSale: itemsOnSale[index].onSale,
         }));
+      console.log(combinedItems)
 
         setMenuItems(combinedItems);
         });
@@ -706,6 +710,7 @@ const CustomerView = () => {
                    .filter((item) => itemBelongsToCategory(item.originalName, category))
                   // .filter((item) => item && item.originalName && itemBelongsToCategory(item.originalName, category))
                   .map((item: any) => {
+                    // console.log(`Item ID: ${item.id}, Item price: ${item.price}, Item current price: ${item.currentPrice}`);
                     return (
                       <div key={item.name}
                         className={`flex flex-col items-center gap-4 h-full transition-all duration-300 ease-in-out ${hoveredItem === item.name ? 'transform scale-105 shadow-lg rounded-lg' : ''}`}
