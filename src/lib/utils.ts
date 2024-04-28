@@ -253,6 +253,11 @@ export async function whatSellsTogether(startDate: string, endDate: string) {
       },
     }
   );
+
+  if (res.status === 405) {
+    return [];
+  }
+
   const data: PairsAndAppearance[] = await res.json();
   return data;
 }
@@ -276,6 +281,11 @@ export async function menuItemsPopularity(startDate: string, endDate: string) {
       },
     }
   );
+
+  if (res.status === 405) {
+    return [];
+  }
+
   const data: PopularMenuItem[] = await res.json();
   return data;
 }
