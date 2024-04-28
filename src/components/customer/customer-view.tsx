@@ -173,6 +173,7 @@ const CustomerView = () => {
 
         const combinedItems = itemsWithID.map((item, index) => ({
           ...item,
+          price: itemsOnSale[index].price,
           currentPrice: itemsOnSale[index].currentPrice,
           onSale: itemsOnSale[index].onSale,
         }));

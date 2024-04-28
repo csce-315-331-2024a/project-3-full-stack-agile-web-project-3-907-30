@@ -6,7 +6,9 @@
     "babel.config.js",
     "tests/*.spec.ts",
     "src/pages/_document.tsx",
-    "src/pages/api/**"
+    "src/pages/api/**",
+    "src/components/employee/**",
+    "src/components/dbService/**"
   ],
   "reporter": ["html", "text", "lcov"],
   "report-dir": "./coverage",
