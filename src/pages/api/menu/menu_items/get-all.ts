@@ -41,8 +41,6 @@ export default async function handler(
       sale_end: row[9] ? new Date(row[9]) : null,
     }));
 
-    res.status(200).json(menuItems);
-
       res.status(200).json(menuItems);
     }
   } catch (error) {

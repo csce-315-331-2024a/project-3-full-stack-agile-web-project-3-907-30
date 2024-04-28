@@ -58,7 +58,7 @@ const DaysWithMostSales = () => {
     }
 
     // if month greater than 12, error
-    if (Number(formData.month) > 12) {
+    if (Number(formData.month) > 12 || Number(formData.month) < 1) {
       toast({
         variant: "destructive",
         title: "Error!",
@@ -68,7 +68,7 @@ const DaysWithMostSales = () => {
     }
 
     // if year is less than 4 digits, error
-    if (formData.year.length !== 4) {
+    if (formData.year.length !== 4 || [2022, 2023, 2024].includes(Number(formData.year)) === false) {
       toast({
         variant: "destructive",
         title: "Error!",

@@ -13,7 +13,7 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import {  updateOrderItemStatus } from "@/lib/utils";
+import { updateOrderItemStatus } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
@@ -51,8 +51,8 @@ const InventoryManagementForm = ({ orderItem, setDataChanged }: OrderManagementF
     }
     fetchIngredients();
   }, []);
-  
-  
+
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -125,12 +125,12 @@ const InventoryManagementForm = ({ orderItem, setDataChanged }: OrderManagementF
                   align="start"
                   side="bottom"
                   sideOffset={4}
-                  className="max-w-xs max-h-60 overflow-y-auto"
+                  className="max-w-xs max-h-60 h-50 overflow-y-scroll"
                 >
                   {loading ? (
                     <div>Loading...</div>
                   ) : (
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 overflow-y-scroll h-60">
                       <h3 className="font-semibold">Ingredients:</h3>
                       {ingredients.map((ingredient, index) => (
                         <div key={index} className="flex items-center justify-between">
