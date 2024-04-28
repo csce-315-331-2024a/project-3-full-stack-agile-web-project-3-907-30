@@ -52,16 +52,27 @@ const ExcessReport = () => {
   }, [loading]);
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
-
-
-    if (!formData.start_date) {
+    
+    // CHECK WITH DB
+    if (formData.start_date.getFullYear() < 2021) {
       toast({
         variant: "destructive",
         title: "Error!",
-        description: "A start date is required.",
+        description: "Rev's wasn't opened before 2021!",
       });
       return;
     }
+
+    // if the date inputted is after april 2024, toast "Cannot predict the future!"
+    // if (formData.start_date.getFullYear() > 2024 || 
+    // (formData.start_date.getFullYear() === 2024 && formData.start_date.getMonth() > 3)) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Error!",
+    //     description: "Cannot predict the future!",
+    //   });
+    //   return;
+    // }
 
 
     const res = getExcessReport(formData.start_date.toDateString());

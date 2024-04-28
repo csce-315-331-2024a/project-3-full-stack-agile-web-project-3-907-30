@@ -25,6 +25,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover"
+import { toast } from "@/components/ui/use-toast";
 
 const FormSchema = z.object({
 	start_date: z.date({
@@ -64,6 +65,36 @@ const ProductUsage = () => {
 
 
 	async function onSubmit(formData: z.infer<typeof FormSchema>) {
+
+		 // Date error checking
+		 if (formData.end_date < formData.start_date) {
+			toast({
+			  variant: "destructive",
+			  title: "Error!",
+			  description: "End date must be after start date.",
+			});
+			return;
+		  }
+	  
+		  if (!formData.start_date || !formData.end_date) {
+			toast({
+			  variant: "destructive",
+			  title: "Error!",
+			  description: "Please select both a start and end date.",
+			});
+			return;
+		  }
+	  
+		//   if (formData.start_date.getFullYear() > 2024 || 
+		//   (formData.start_date.getFullYear() === 2024 && formData.start_date.getMonth() > 3)) {
+		// 	toast({
+		// 	  variant: "destructive",
+		// 	  title: "Error!",
+		// 	  description: "Cannot predict the future!",
+		// 	});
+		// 	return;
+		//   }
+
 		const res = await getProductUsageReportInRange(formData.start_date.toDateString(), formData.end_date.toDateString());
 		setFormData(res);
 	}
