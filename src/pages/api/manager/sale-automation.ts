@@ -44,11 +44,12 @@ export default async function handler (
             let itemsReset: number = 0;
             let itemsPushedToMenu: number = 0;
             for(const row of tempItems.rows!) {
+                // If the sale end is today or before
                 if(row[1] <= todaysDate) {
                     //Not a seasonal menu item
                     if(row[2] === false) { 
                         const resetItem = await db.prepare(`UPDATE menu_items SET cur_price = item_price, 
-                        sale_end = NULL WHERE item_id = $1`,
+                        sale_end = NULL, sale_start = NULL, sale_price = NULL WHERE item_id = $1`,
                             {paramTypes: [DataTypeOIDs.numeric]});
                         await resetItem.execute({params: [row[0]]});
                         await resetItem.close();
