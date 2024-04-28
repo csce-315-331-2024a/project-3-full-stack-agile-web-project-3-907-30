@@ -65,10 +65,10 @@ const LeastContributingView = () => {
                     ${item.price.toFixed(2)}
                   </TableCell>
                   <TableCell>
-                    {item.revenue.toFixed(2)}
+                    ${item.revenue.toFixed(2)}
                   </TableCell>
                   <TableCell>
-                    %{item.percentage.toFixed(2)}
+                    {item.percentage.toFixed(2)}%
                   </TableCell>
                 </TableRow>
               )
