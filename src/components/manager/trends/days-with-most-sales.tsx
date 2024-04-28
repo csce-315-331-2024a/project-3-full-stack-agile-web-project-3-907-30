@@ -48,7 +48,7 @@ const DaysWithMostSales = () => {
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
     // Date error checking
-		  if (formData.month.length === 0 || formData.year.length === 0) {
+    if (formData.month.length === 0 || formData.year.length === 0) {
       toast({
         variant: "destructive",
         title: "Error!",
@@ -58,7 +58,7 @@ const DaysWithMostSales = () => {
     }
 
     // if month greater than 12, error
-    if (Number(formData.month) > 12) {
+    if (Number(formData.month) > 12 || Number(formData.month) < 1) {
       toast({
         variant: "destructive",
         title: "Error!",

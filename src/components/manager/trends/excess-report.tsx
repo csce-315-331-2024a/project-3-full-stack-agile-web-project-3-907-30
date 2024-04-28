@@ -32,7 +32,7 @@ const FormSchema = z.object({
   start_date: z.date({
     required_error: 'A start date is required.'
   })
-  
+
 })
 
 const ExcessReport = () => {
@@ -45,14 +45,14 @@ const ExcessReport = () => {
 
   var [data, setData] = useState<ExcessReportItem[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
 
   useEffect(() => {
     setLoading(false);
   }, [loading]);
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
-    
+
     // CHECK WITH DB
     if (formData.start_date.getFullYear() < 2021) {
       toast({
@@ -157,7 +157,7 @@ const ExcessReport = () => {
                     {item.initial_amount}
                   </TableCell>
                   <TableCell>
-                    {item.percent_used}
+                    {item.percent_used.toFixed(2)}%
                   </TableCell>
                 </TableRow>
               )

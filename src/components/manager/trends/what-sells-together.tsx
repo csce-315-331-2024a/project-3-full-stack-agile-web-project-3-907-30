@@ -101,7 +101,8 @@ const WhatSellsTogether = () => {
 			return;
 		  }
       
-    const res = await whatSellsTogether(formData.start_date.toDateString(), formData.end_date.toDateString());
+    const res = await whatSellsTogether(formData.start_date.toISOString().slice(0,10), 
+    formData.end_date.toISOString().slice(0,10));
     setFormData(res);
   }
 
