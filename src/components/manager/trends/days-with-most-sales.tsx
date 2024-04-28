@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useState } from "react";
 import { daysWithMostSales } from "@/lib/utils";
+import { toast } from "@/components/ui/use-toast";
 
 const FormSchema = z.object({
   month: z.string(),
@@ -46,6 +47,36 @@ const DaysWithMostSales = () => {
   }, [loading]);
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
+    // Date error checking
+		  if (formData.month.length === 0 || formData.year.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Please fill out the fields!"
+      })
+      return;
+    }
+
+    // if month greater than 12, error
+    if (Number(formData.month) > 12) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Please enter a valid month."
+      })
+      return;
+    }
+
+    // if year is less than 4 digits, error
+    if (formData.year.length !== 4) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Please enter a valid year."
+      });
+      return;
+    }
+
     const res = await daysWithMostSales(Number(formData.month), Number(formData.year));
     setFormData(res);
   }

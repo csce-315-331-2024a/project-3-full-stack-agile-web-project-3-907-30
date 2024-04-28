@@ -39,7 +39,7 @@ const LeastSellingView = () => {
 
   return (
 
-    <Card className="w-1/2 overflow-y-scroll">
+    <Card className="overflow-y-scroll w-full">
       <CardHeader>
         <CardTitle>Least Selling Items</CardTitle>
         <CardDescription>View the 10 least selling items on the menu.</CardDescription>

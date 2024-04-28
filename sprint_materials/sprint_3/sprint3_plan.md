@@ -28,13 +28,13 @@ Ex:
 
 ### Chores (part of the backlog, but have no story points associated with them)
 - [ ] Allow managers to input date ranges for trends - Margo E2 P1 S0
-- [ ] Try to make interactable way to update menu items - Aaron E2 P2 S0
+- [X] Try to make interactable way to update menu items - Aaron E2 P2 S1 T4
 - [ ] Add front-end for customers to see their past orders - Margo E1 P1 S0
 - [ ] Move all trend functionality to api’s  - Margo E1 P3 S0
 - [ ] Clean up Allergen UI for customer view with Halal and Vegan - Chris E1 P2 S0
-- [ ] Clean up logic for excess report form - Aaron E1 P2 S0
+- [X] Clean up logic for excess report form - Aaron E1 P2 S1
 - [ ] Add bounds checking to manager trend inputs - Chris E1 P2 S0
-- [ ] Clean up menu management card - Aaron E1 P2 S0
+- [X] Clean up menu management card - Aaron E1 P2 S1 T1
 - [ ] Fix duplicate customers being added - Gabe E1 P1 T1
 - [ ] Fix menu item makeup - Gabe E2 P2 S0
 - [ ] Remove Google Translate loading circle - Adam E1 P3 S0
@@ -53,11 +53,11 @@ Ex:
 - [ ] View all inventory items; view a single inventory item - Adam E1 P1 S0
 - [ ] Modify an item in the inventory (name, quantity, supplier, etc.) - Adam E1 P1 S0
 - [ ] Remove an item from the inventory - Adam E1 P1 S0
-- [ ] Menu management - Aaron E3 P1 S0
-- [ ] Add a menu item - Aaron E1 P1 S0
-- [ ] View current menu items - Aaron E1 P1 S0
-- [ ] Modify a menu item (name, price, ingredients, description, status, etc.) - Aaron E2 P1 S0
-- [ ] Remove an item from the menu - Aaron E1 P1 S0
+- [X] Menu management - Aaron E3 P1 S1 T4
+- [X] Add a menu item - Aaron E1 P1 S1 T5
+- [X] View current menu items - Aaron E1 P1 S1 T1
+- [X] Modify a menu item (name, price, ingredients, description, status, etc.) - Aaron E2 P1 S1 T4
+- [X] Remove an item from the menu - Aaron E1 P1 S1 T1
 - [ ] Add/update/remove seasonal menu items, "seasonal" := defined availability window, visible on all applicable views - Chris E3 P2 S0
 - [ ] Mobile friendly for customer view - Adam E3 P1 S0
 - [ ] Fix WAVE accessibility issues - Gabe E3 P1 S0

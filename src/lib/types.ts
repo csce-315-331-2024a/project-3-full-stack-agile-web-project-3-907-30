@@ -172,4 +172,7 @@ export interface DetailedMenuItem {
   seasonal_item: boolean;
   deprecated: boolean;
   ingredients: Array<number>;
+  sale_end: Date | null;
+  sale_start: Date | null;
+  // sale_price: number;
 }

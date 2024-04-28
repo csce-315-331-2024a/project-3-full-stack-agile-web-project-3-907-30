@@ -14,9 +14,11 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import {  updateOrderItemStatus } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export interface OrderManagementFormProps {
   orderItem: OrderItem;
@@ -29,7 +31,28 @@ const FormSchema = z.object({
 
 const InventoryManagementForm = ({ orderItem, setDataChanged }: OrderManagementFormProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [ingredients, setIngredients] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [ingredientQuantities, setIngredientQuantities] = useState<Record<string, number>>({});
 
+  useEffect(() => {
+    async function fetchIngredients() {
+      setLoading(true);
+      try {
+        const res = await fetch("/api/inventory/get-all");
+        const data = await res.json();
+        const ingredients_names = data.map((item: any) => item.name);
+        setIngredients(ingredients_names);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchIngredients();
+  }, []);
+  
+  
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -63,7 +86,7 @@ const InventoryManagementForm = ({ orderItem, setDataChanged }: OrderManagementF
       <DialogTrigger asChild>
         <Button>Edit</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="notranslate">
         <DialogHeader>
           <DialogTitle>{`Editing Order #${orderItem.order_id}`}</DialogTitle>
           <DialogDescription>
@@ -72,7 +95,7 @@ const InventoryManagementForm = ({ orderItem, setDataChanged }: OrderManagementF
         </DialogHeader>
         <Form {...form} >
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-rows-2 gap-4">
               <FormField
                 control={form.control}
                 name="status"
@@ -92,9 +115,44 @@ const InventoryManagementForm = ({ orderItem, setDataChanged }: OrderManagementF
                       </SelectContent>
                     </Select>
                   </FormItem>
-                )
-                }
+                )}
               />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button>Customize Ingredients</Button>
+                </PopoverTrigger>
+                <PopoverContent
+                  align="start"
+                  side="bottom"
+                  sideOffset={4}
+                  className="max-w-xs max-h-60 overflow-y-auto"
+                >
+                  {loading ? (
+                    <div>Loading...</div>
+                  ) : (
+                    <div className="flex flex-col gap-2">
+                      <h3 className="font-semibold">Ingredients:</h3>
+                      {ingredients.map((ingredient, index) => (
+                        <div key={index} className="flex items-center justify-between">
+                          <span>{ingredient}</span>
+                          <input
+                            type="number"
+                            min="0"
+                            value={ingredientQuantities[ingredient] || 0}
+                            onChange={(e) =>
+                              setIngredientQuantities({
+                                ...ingredientQuantities,
+                                [ingredient]: parseInt(e.target.value, 10) || 0,
+                              })
+                            }
+                            className="w-16 px-2 py-1 border border-gray-300 rounded"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </PopoverContent>
+              </Popover>
             </div>
             <Button type="submit">Submit</Button>
           </form>

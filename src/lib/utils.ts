@@ -777,11 +777,11 @@ export async function updateOrderItemStatus(orderId: number, status: number) {
 /**
  * Get all Menu items from the database.
  *
- * @returns {MenuItem[]} .
+ * @returns {DetailedMenuItem[]} .
  */
 export async function getAllMenuItems() {
-  const res = await fetch("/api/menu/get-all");
-  const data: MenuItem[] = await res.json();
+  const res = await fetch("/api/menu/menu_items/get-all");
+  const data: DetailedMenuItem[] = await res.json();
   return data;
 }
 
@@ -809,4 +809,40 @@ export async function saleAutomation() {
 
   const data = await res.json();
   return data.message;
+}
+
+/**
+ * Delete a menu item from the database.
+ *
+ * @param {DetailedMenuItem} item The menu item to delete.
+ * @returns {Response} The response from the database.
+ */
+export async function deleteMenuItem(id: number) {
+  const res = await fetch("/api/menu/menu_items/delete", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id } ),
+  });
+
+  return res;
+}
+
+/**
+ * Update a menu item in the database.
+ *
+ * @param {DetailedMenuItem} item The menu item to update.
+ * @returns {Response} The response from the database.
+ */
+export async function updateMenuItem(item: DetailedMenuItem) {
+  const res = await fetch("/api/menu/menu_items/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(item),
+  });
+
+  return res;
 }

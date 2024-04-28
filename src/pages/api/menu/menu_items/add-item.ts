@@ -28,7 +28,7 @@ const latestIdStatement = await db.prepare(
 const latestIdRow = await latestIdStatement.execute();
 
 const addStatement = await db.prepare(
-  "INSERT into menu_items (item_id, item_name, item_price, times_ordered, points, cur_price, seasonal_item, deprecated) VALUES ($1, $2, $3, $4, $5, $6, $7, $8);",
+  "INSERT into menu_items (item_id, item_name, item_price, times_ordered, points, cur_price, seasonal_item, deprecated, sale_end, sale_start) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);",
   {
     paramTypes: [
       DataTypeOIDs.int4,
@@ -39,6 +39,9 @@ const addStatement = await db.prepare(
       DataTypeOIDs.numeric,
       DataTypeOIDs.bool,
       DataTypeOIDs.bool,
+      DataTypeOIDs.date,
+      DataTypeOIDs.date,
+      // DataTypeOIDs.numeric,
     ],
   }
 );
@@ -53,6 +56,9 @@ var {
   seasonal_item,
   deprecated,
   ingredients,
+  sale_end,
+  sale_start,
+  // sale_price,
 } = req.body;
 
 const latestId = latestIdRow.rows![0][0];
@@ -67,6 +73,9 @@ const menuItem = await addStatement.execute({
     cur_price,
     seasonal_item,
     deprecated,
+    sale_end,
+    sale_start,
+    // sale_price,
   ],
 }
 );
@@ -100,15 +109,15 @@ await addStatement.close();
 
   for (let i = 0; i < ingredients.length; i++){
     if (ingredients[i] > 0){
-    await addIngredientStatement.execute({
-          params: [
-            latestId + 1,
-            i,
-            ingredients[i],
-          ],
-        });
+      await addIngredientStatement.execute({
+        params: [
+          latestId + 1,
+          i,
+          ingredients[i],
+        ],
+      });
+    }
   }
-}
 
   await addIngredientStatement.close();
 

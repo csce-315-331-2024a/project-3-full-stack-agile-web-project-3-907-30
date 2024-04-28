@@ -8,6 +8,8 @@
 
 # testing
 /coverage
+/.nyc_output
+/.vscode
 
 # next.js
 /.next/
@@ -54,3 +56,9 @@ next-env.d.ts
 
 # google translate
 google-translate.json
+
+# nyc output
+.nyc_output/
+
+# docs
+docs/
