@@ -1,5 +1,5 @@
 import useAuth from "@/hooks/useAuth";
-import { Employee, AuthHookType, Customer } from "@/lib/types";
+import { Employee, AuthHookType, Customer, MenuItem } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
@@ -21,8 +21,8 @@ import { Weather } from "./api/customer/weather";
 import { getCurrentWeather } from "@/components/customer/customer-weather";
 import Head from "next/head";
 import Translate from "@/components/common/translate";
-import { Menu } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AiButton from "@/components/customer/ai-button";
 
 interface LayoutProps {
@@ -47,6 +47,12 @@ const Layout = ({ children }: LayoutProps) => {
   const [translatedCategories, setTranslatedCategories] = useState<string[]>([]);
   const [menuItems, setMenuItems] = useState<any[]>([]);
   const [originalMenuItems, setOriginalMenuItems] = useState<any[]>([]);
+  const [employeeItems, setEmployeeItems] = useState<MenuItem[]>([]);
+
+  const getEmployeeItems = async (employee: Employee) => {
+    const items = await fetch(`/api/employee/least-selling/?id=${employee.empId}`).then(async (res) => await res.json());
+    setEmployeeItems(items as MenuItem[]);
+  }
   const [foodRecommendations, setFoodRecommendations] = useState<string[]>([]);
 
   useEffect(() => {
@@ -54,6 +60,7 @@ const Layout = ({ children }: LayoutProps) => {
       setLoading(true);
       getEmployeeFromDatabase(account.email).then((data) => {
         setEmployee(data);
+        getEmployeeItems(data);
         setLoading(false);
       });
     }
@@ -218,7 +225,7 @@ const Layout = ({ children }: LayoutProps) => {
                       <Badge className="ml-2 mb-2 text-xs mt-1">{getRole(employee)}</Badge>
                       <DropdownMenuSeparator />
                       <DialogTrigger asChild>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => console.log(employeeItems)}>
                           <TbInfoCircle className='mr-2 h-4 w-4' />
                           <span>Info</span>
                         </DropdownMenuItem>
@@ -229,12 +236,34 @@ const Layout = ({ children }: LayoutProps) => {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                  <DialogContent>
+                  <DialogContent className="max-h-[45%] overflow-y-auto">
                     <DialogHeader>
                       <DialogTitle>{employee.empName}&apos;s Info</DialogTitle>
                       <DialogDescription>Your info.</DialogDescription>
                     </DialogHeader>
-
+                    <Table>
+                      <TableCaption>Your own personal sales report.</TableCaption>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Item Name</TableHead>
+                          <TableHead>Times Ordered</TableHead>
+                          <TableHead>Profits</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {employeeItems.length === 0 ? (
+                          <span>Data couldn&apos;t be loaded.</span>
+                        ) : (
+                          employeeItems.map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell><span>{item.name}</span></TableCell>
+                              <TableCell><span>{item.times_ordered}</span></TableCell>
+                              <TableCell><span>${(item.times_ordered * item.price).toFixed(2)}</span></TableCell>
+                            </TableRow>
+                          ))
+                        )}
+                      </TableBody>
+                    </Table>
                   </DialogContent>
                 </Dialog>
               ) : (loading ? (
