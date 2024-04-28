@@ -708,6 +708,7 @@ const CustomerView = () => {
                   .filter((item) => itemBelongsToCategory(item.originalName, category))
                   // .filter((item) => item && item.originalName && itemBelongsToCategory(item.originalName, category))
                   .map((item: any) => {
+                    // console.log(`Item ID: ${item.id}, Item price: ${item.price}, Item current price: ${item.currentPrice}`);
                     return (
                       <div key={item.name}
                         className={`flex flex-col items-center gap-4 h-full transition-all duration-300 ease-in-out ${hoveredItem === item.name ? 'transform scale-105 shadow-lg rounded-lg' : ''}`}
