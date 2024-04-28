@@ -24,6 +24,21 @@ import { addMenuItem, getAllInventoryItems, updateMenuItem } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 
+/**
+ * 
+ * @param {menuItem?} The menu item which is currently being edited
+ * @param {editMode} True if an item is being edited, false otherwise
+ * @param {setDataChanged} A state variable which allows the menu data to be updated
+ * @returns {JSX.Element} The MenuManagementForm component.
+ * @example
+ *  <MenuManagementForm menuItem={item} editMode={true} setDataChanged={setDataChanged} />
+ * @description
+ * This component is a form that allows the manager to view and update a menu item.
+ * The manager can update the name, price, times_ordered, points, current price, seasonal item status, deprecated status, and ingredients
+ * Uses Form component from Shad CN UI and zod resolver to validate form data.
+ */
+
+
 export interface MenuManagementFormProps {
   menuItem?: DetailedMenuItem;
   editMode: boolean;
