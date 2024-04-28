@@ -21,7 +21,7 @@ export default async function handler(
   }
 
   const getStatement = await db.prepare(
-    "SELECT item_price::text FROM menu_items WHERE item_name = $1",
+    "SELECT cur_price::text FROM menu_items WHERE item_name = $1",
     { paramTypes: [DataTypeOIDs.varchar] } // item_name is a varchar type
   );
 

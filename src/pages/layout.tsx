@@ -23,6 +23,7 @@ import Head from "next/head";
 import Translate from "@/components/common/translate";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import AiButton from "@/components/customer/ai-button";
 
 interface LayoutProps {
   children: ReactNode;
@@ -52,8 +53,7 @@ const Layout = ({ children }: LayoutProps) => {
     const items = await fetch(`/api/employee/least-selling/?id=${employee.empId}`).then(async (res) => await res.json());
     setEmployeeItems(items as MenuItem[]);
   }
-
-
+  const [foodRecommendations, setFoodRecommendations] = useState<string[]>([]);
 
   useEffect(() => {
     if (account) {
@@ -93,6 +93,7 @@ const Layout = ({ children }: LayoutProps) => {
                 </span>
               </div>
               <div className="lg:flex gap-4 hidden">
+                <AiButton setFoodRecommendations={setFoodRecommendations} />
                 <RewardsButton setCustomer={setCustomer} />
                 <Button name="rateUs">
                   <Link target="_blank" href="https://www.yelp.com/writeareview/biz/6dSStUCjMAfixAqz73iy9g?return_url=%2Fbiz%2F6dSStUCjMAfixAqz73iy9g&review_origin=biz-details-war-button">

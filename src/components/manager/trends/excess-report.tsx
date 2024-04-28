@@ -25,11 +25,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { toast } from '../../ui/use-toast';
+
 
 const FormSchema = z.object({
   start_date: z.date({
     required_error: 'A start date is required.'
   })
+  
 })
 
 const ExcessReport = () => {
@@ -42,12 +45,36 @@ const ExcessReport = () => {
 
   var [data, setData] = useState<ExcessReportItem[]>([]);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     setLoading(false);
   }, [loading]);
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
+    
+    // CHECK WITH DB
+    if (formData.start_date.getFullYear() < 2021) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Rev's wasn't opened before 2021!",
+      });
+      return;
+    }
+
+    // if the date inputted is after april 2024, toast "Cannot predict the future!"
+    // if (formData.start_date.getFullYear() > 2024 || 
+    // (formData.start_date.getFullYear() === 2024 && formData.start_date.getMonth() > 3)) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Error!",
+    //     description: "Cannot predict the future!",
+    //   });
+    //   return;
+    // }
+
+
     const res = getExcessReport(formData.start_date.toDateString());
     data = await res;
     setData(data);
@@ -90,9 +117,6 @@ const ExcessReport = () => {
                       </Calendar>
                     </PopoverContent>
                   </Popover>
-                  {/* <FormControl>
-                    <Input placeholder="e.g. 2022-01-01" {...field} />
-                  </FormControl> */}
                   <FormDescription>
                     Enter the start date of the interval you want to see.
                   </FormDescription>

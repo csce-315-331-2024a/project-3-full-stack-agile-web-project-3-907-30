@@ -156,3 +156,23 @@ export interface OrderMenuItem {
   item_name: string;
   quantity: number;
 }
+
+export interface InventoryItemAndAmount {
+  inv_id: number;
+  amount: number;
+}
+
+export interface DetailedMenuItem {
+  item_id: number;
+  item_name: string;
+  item_price: number;
+  times_ordered: number;
+  points: number;
+  cur_price: number;
+  seasonal_item: boolean;
+  deprecated: boolean;
+  ingredients: Array<number>;
+  sale_end: Date | null;
+  sale_start: Date | null;
+  // sale_price: number;
+}

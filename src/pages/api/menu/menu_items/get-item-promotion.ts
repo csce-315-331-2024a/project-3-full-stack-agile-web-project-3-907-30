@@ -1,6 +1,6 @@
 /**
  * API endpoint to get all menu items and their prices
- * @module /api/menu/menu_items/get-all-items-and-price
+ * @module /api/menu/menu_items/get-item-promotion
  */
 
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -18,18 +18,16 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const getStatement = await db.prepare("SELECT item_id, item_name, cur_price::numeric FROM menu_items WHERE deprecated = false ORDER BY item_id ASC;");
+    const getStatement = await db.prepare(
+        "SELECT item_id, item_price::numeric, cur_price::numeric FROM menu_items ORDER BY item_id ASC"
+    );
     const menuItemsResult = await getStatement.execute();
     
     await getStatement.close();
 
     const rows = menuItemsResult.rows!;
 
-    // If there are any null values in the rows, return an error
-    if (rows.some(row => row.includes(null) || row.length === 0)) {
-      res.status(500).json({ error: "Internal server error" });
-    }
-
+   
 
     // If there are no menu items, return an error
     if (rows.length === 0) {
@@ -42,10 +40,11 @@ export default async function handler(
         const menuItems = rows.map((row) => {
             return {
             id: row[0],
-            name: row[1],
-            price: row[2]
+            price: row[1],
+            currentPrice: row[2]
             }
         });
+        
 
       res.status(200).json(menuItems);
     }

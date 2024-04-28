@@ -14,7 +14,7 @@ import {
 import { useState } from 'react';
 import Image from 'next/image';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-import { categories, itemBelongsToCategory } from '@/lib/utils';
+import { categories, itemBelongsToCategory, saleAutomation } from '@/lib/utils';
 import { Allergens } from '@/lib/types';
 import CustomerOrders from './customer-orders';
 import CustomerWeatherReccs from './weather-recc';
@@ -140,27 +140,45 @@ const CustomerView = () => {
    * @returns - The menu items and their prices.
    */
   useEffect(() => {
-    fetch('/api/menu/menu_items/get-all-items-and-price')
-      .then((res) => res.json())
-      .then(async (data) => {
-        // Get the ingredients for each item
-        const ingredientPromises = data.map(async (item: any) => {
-          const ingredients = await getIngredientsUsingItemID(item.id);
+    // Update database based on sales/promotion date windows first
+    saleAutomation().then( () => {
+      fetch('/api/menu/menu_items/get-all-items-and-price')
+        .then((res) => res.json())
+        .then(async (data) => {
+          // Get the ingredients for each item
+          const ingredientPromises = data.map(async (item: any) => {
+            const ingredients = await getIngredientsUsingItemID(item.id);
 
-          return {
-            originalName: item.name,
-            name: item.name,
-            price: item.price,
-            ingredients: ingredients,
-          };
-        });
-        // Wait for all the ingredients and translations to be fetched
-        const items = await Promise.all(ingredientPromises);
-        const itemsWithID = items.map((item, index) => ({
+            return {
+              originalName: item.name,
+              name: item.name,
+              price: item.price,
+              ingredients: ingredients,
+            };
+          });
+          // Wait for all the ingredients and translations to be fetched
+          const items = await Promise.all(ingredientPromises);
+          const itemsWithID = items.map((item, index) => ({
+            ...item,
+            id: data[index].id,
+          }));
+  
+        const res2 = await fetch('/api/menu/menu_items/get-item-promotion');
+        const data2 = await res2.json();
+
+        const itemsOnSale = data2.map((item: any) => ({
           ...item,
-          id: data[index].id,
+          onSale: item.currentPrice < item.price,
         }));
-        setMenuItems(itemsWithID);
+
+        const combinedItems = itemsWithID.map((item, index) => ({
+          ...item,
+          currentPrice: itemsOnSale[index].currentPrice,
+          onSale: itemsOnSale[index].onSale,
+        }));
+
+        setMenuItems(combinedItems);
+        });
       });
     getCurrentWeather().then((weather) => {
       setWeather(weather);
@@ -685,7 +703,8 @@ const CustomerView = () => {
             <Card className="overflow-y-scroll h-[90%]">
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 items-stretch">
                 {menuItems
-                  .filter((item) => itemBelongsToCategory(item.originalName, category))
+                   .filter((item) => itemBelongsToCategory(item.originalName, category))
+                  // .filter((item) => item && item.originalName && itemBelongsToCategory(item.originalName, category))
                   .map((item: any) => {
                     return (
                       <div key={item.name}
@@ -698,7 +717,14 @@ const CustomerView = () => {
                               <Image src={getImageForMenuItem(item.id)} alt={item.name} className="rounded-md" width={200} height={200} />
                               <div className="flex flex-col gap-2 text-lg text-center">
                                 <p className="font-semibold">{item.name}</p>
-                                <p className="text-base">${item.price.toFixed(2)}</p>
+                                {item.onSale ? (
+                                  <>
+                                <p className="text-base line-through">${item.price.toFixed(2)}</p>
+                                <p className="text-sm font-bold" style={{ color: '#b30000' }}>ON SALE! ${item.currentPrice.toFixed(2)}</p>
+                                </>
+                                ) : (
+                                  <p className="text-base">${item.currentPrice.toFixed(2)}</p>
+                                )}
                               </div>
                             </Card>
                           </DialogTrigger>
@@ -710,29 +736,37 @@ const CustomerView = () => {
                                 <Image src={getImageForMenuItem(selectedItem.id)} alt={selectedItem.name} className="rounded-md" width={300} height={300} />
                               }
                             </div>
-                            <div className="flex items-center justify-start gap-4">
+                            <div className="flex items-center justify-start gap-4 mb-1">
                               <Label htmlFor="name" className="text-right mt-0.5">
                                 Ingredients:
                               </Label>
                               <div id="name" className="col-span-3">
                                 {/* <ul className="flex flex-row gap-1 mr-3"> */}
-                                <p className="flex flex-row gap-1 mr-3 justify-center flex-wrap text-sm">
-                                  {item.ingredients.join(", ")}
-                                </p>
+                                <ul className="flex flex-row gap-1 mr-3 justify-center flex-wrap">
+                                  {item.ingredients.map((ingredient: string) => (
+                                    <li key={ingredient} className="text-sm">
+                                    {ingredient.charAt(0).toUpperCase() + ingredient.slice(1)} </li>
+                                  ))}
+                                </ul>
                               </div>
                             </div>
-                            <div className="flex items-center justify-start gap-4">
-                              <Label htmlFor="allergens" className="text-right mt-0.5 text-red-500 font-bold ">
+                            {(currentAllergens?.has_dairy || currentAllergens?.has_nuts || currentAllergens?.has_eggs) && (
+                            <div className="flex items-center justify-start gap-4 mb-0 py-0">
+                              <Label htmlFor="allergens" className="text-right font-bold" style={{ color: '#b30000' }}>
                                 CONTAINS
                               </Label>
                               <div id="allergens" className="flex flex-row gap-4 justify-center flex-wrap">
-                                {currentAllergens?.has_dairy && <p className="text-red-500">Dairy</p>}
-                                {currentAllergens?.has_nuts && <p className="text-red-500">Nuts</p>}
-                                {currentAllergens?.has_eggs && <p className="text-red-500">Eggs</p>}
-                                {currentAllergens?.is_vegan && <p className="text-red-500">Vegan</p>}
-                                {currentAllergens?.is_halal && <p className="text-red-500">Halal</p>}
+                                {currentAllergens?.has_dairy && <p style={{ color: '#b30000' }} className="mb-0">Dairy</p>}
+                                {currentAllergens?.has_nuts && <p style={{ color: '#b30000' }} className="mb-0">Nuts</p>}
+                                {currentAllergens?.has_eggs && <p style={{ color: '#b30000' }} className="mb-0">Eggs</p>}
                               </div>
                             </div>
+                          )}
+                          <div className="flex justify-end gap-3">
+                            {currentAllergens?.is_vegan && <p className="text-sm font-bold mt-0 mb-0" style={{ color: '#006400' }}>VEGAN</p>}
+                            {currentAllergens?.is_halal && <p className="text-sm font-bold mt-0 mb-0" style={{ color: '#000080' }}>HALAL</p>}
+                          </div>
+                            
                             <DialogFooter>
                               <div className="flex items-center gap-2">
                                 <Label htmlFor="quantity" className="text-right text-lg">

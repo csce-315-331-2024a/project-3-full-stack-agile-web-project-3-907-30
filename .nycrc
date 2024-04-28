@@ -1,7 +1,13 @@
 {
-  "extends": "nyc-config-tsx",
+  "extends": "@istanbuljs/nyc-config-typescript",
   "all": true,
-  "exclude": [".next", "babel.config.js", "tests/*.spec.ts", "src/pages/api/**/*.ts", "src/pages/api/**/*.tsx"],
+  "exclude": [
+    ".next",
+    "babel.config.js",
+    "tests/*.spec.ts",
+    "src/pages/_document.tsx",
+    "src/pages/api/**"
+  ],
   "reporter": ["html", "text", "lcov"],
   "report-dir": "./coverage",
   "check-coverage": true,

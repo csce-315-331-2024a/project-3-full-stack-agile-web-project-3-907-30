@@ -13,6 +13,7 @@ import {
   RevenueReportItem,
   ExcessReportItem,
   RestockReportItem,
+  DetailedMenuItem,
 } from "./types";
 import { Pool, QueryResult } from "postgresql-client";
 import { InventoryItem, MenuItem } from "@/lib/types";
@@ -321,8 +322,8 @@ export async function newCustomer(custName: string, phoneNumber: string) {
     }),
   });
 
-  const data: string = await res.json();
-  return data;
+  const data = await res.json();
+  return data.error;
 }
 
 /**
@@ -768,6 +769,79 @@ export async function updateOrderItemStatus(orderId: number, status: number) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ orderId, status }),
+  });
+
+  return res;
+}
+
+/**
+ * Get all Menu items from the database.
+ *
+ * @returns {DetailedMenuItem[]} .
+ */
+export async function getAllMenuItems() {
+  const res = await fetch("/api/menu/menu_items/get-all");
+  const data: DetailedMenuItem[] = await res.json();
+  return data;
+}
+
+/**
+ * Add a menu item to the database.
+ *
+ * @param {DetailedMenuItem} item The inventory item to add.
+ * @returns {Response} The response from the database.
+ */
+export async function addMenuItem(item: DetailedMenuItem) {
+  const res = await fetch("/api/menu/menu_items/add-item", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(item),
+  });
+
+  return res;
+}
+export async function saleAutomation() {
+  const res = await fetch("api/manager/sale-automation", {
+    method: "PUT"
+  })
+
+  const data = await res.json();
+  return data.message;
+}
+
+/**
+ * Delete a menu item from the database.
+ *
+ * @param {DetailedMenuItem} item The menu item to delete.
+ * @returns {Response} The response from the database.
+ */
+export async function deleteMenuItem(id: number) {
+  const res = await fetch("/api/menu/menu_items/delete", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id } ),
+  });
+
+  return res;
+}
+
+/**
+ * Update a menu item in the database.
+ *
+ * @param {DetailedMenuItem} item The menu item to update.
+ * @returns {Response} The response from the database.
+ */
+export async function updateMenuItem(item: DetailedMenuItem) {
+  const res = await fetch("/api/menu/menu_items/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(item),
   });
 
   return res;

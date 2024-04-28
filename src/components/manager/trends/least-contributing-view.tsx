@@ -39,7 +39,7 @@ const LeastContributingView = () => {
   }, [loading]);
 
   return (
-    <Card className="w-1/2 overflow-y-scroll">
+    <Card className="overflow-y-scroll w-full">
       <CardHeader>
         <CardTitle>Least Selling Items</CardTitle>
         <CardDescription>View the 10 least selling items on the menu.</CardDescription>
@@ -62,13 +62,13 @@ const LeastContributingView = () => {
                     {item.name}
                   </TableCell>
                   <TableCell>
-                    {item.price}
+                    ${item.price.toFixed(2)}
                   </TableCell>
                   <TableCell>
-                    {item.revenue}
+                    {item.revenue.toFixed(2)}
                   </TableCell>
                   <TableCell>
-                    {item.percentage}
+                    %{item.percentage.toFixed(2)}
                   </TableCell>
                 </TableRow>
               )
