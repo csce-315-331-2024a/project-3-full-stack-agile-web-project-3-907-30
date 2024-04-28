@@ -16,9 +16,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { CalendarIcon } from "@radix-ui/react-icons"
-import { format } from "date-fns"
+import { add, addDays, format } from "date-fns"
 import { Checkbox } from "@/components/ui/checkbox"
 import { formatISO } from "date-fns";
+
 
 
 const FormSchema = z.object({
@@ -66,8 +67,8 @@ const AddItemGUI = () => {
       deprecated: formData.seasonal_item ? true : false,
       // sale_end: endDate ? formatISO(endDate, { representation: 'date' }) : null,
       // sale_start: startDate ? formatISO(startDate, { representation: 'date' }) : null,
-      sale_end: endDate ? new Date(formatISO(endDate, { representation: 'date' })) : null,
-      sale_start: startDate ? new Date(formatISO(startDate, { representation: 'date' })) : null,
+      sale_end: endDate ? new Date(formatISO(addDays(endDate, 1), { representation: 'date' })) : null,
+      sale_start: startDate ? new Date(formatISO(addDays(startDate, 1), { representation: 'date' })) : null,
 
     };
 
@@ -192,7 +193,7 @@ const AddItemGUI = () => {
                 <FormItem>
                   <FormLabel>Set Price</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter the new price here" {...field} />
+                    <Input placeholder="e.g. 3.99" {...field} />
                   </FormControl>
                   <FormDescription>
                     Enter the price you want to set for the new item.

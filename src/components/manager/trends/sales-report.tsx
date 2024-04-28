@@ -86,6 +86,16 @@ const SalesReport = () => {
       return;
     }
 
+    if (formData.start_date.getFullYear() > 2024 || 
+    (formData.start_date.getFullYear() === 2024 && formData.start_date.getMonth() > 3)) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Cannot predict the future!",
+      });
+      return;
+    }
+
 
     const res = await getSalesReportInRange(formData.start_date.toDateString(), formData.end_date.toDateString());
     setFormData(res);
