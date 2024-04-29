@@ -38,16 +38,16 @@ Ex:
 - [ ] Fix duplicate customers being added - Gabe E1 P1 T1
 - [ ] Fix menu item makeup - Gabe E2 P2 S0
 - [ ] Remove Google Translate loading circle - Adam E1 P3 S0
-- [ ] Allows employees to remove items from order in receipt  - Akshay E1 P1 S0
-- [ ] Allow customers to make orders in the customer view page - Akshay 
-- [ ] Customers can create orders - Akshay E2 P1 S0
-- [ ] Customers can remove items from orders - Akshay E1 P1 S0
-- [ ] Allow modifications in all ordering views - Akshay E3 P1 S0
+- [X] Allows employees to remove items from order in receipt  - Akshay E1 P1 S0 T1
+- [X] Allow customers to make orders in the customer view page - Akshay T3
+- [X] Customers can create orders - Akshay E2 P1 S0 T1
+- [X] Customers can remove items from orders - Akshay E1 P1 S0 T1
+- [X] Allow modifications in all ordering views - Akshay E3 P1 S0 T2
 - [X] Recommend items based on weather - Margo E2 P2 S1
 - [ ] Order management - Adam, Akshay
 - [ ] View all orders; view a single order (including status: pending, fulfilled, canceled, etc.) - Adam E2 P1 S0
 - [ ] Modify an order (add/remove items, change status, etc.) - Adam E3 P1 S0
-- [ ] Remove an order from the order history - Akshay E1 P1 S0
+- [X] Remove an order from the order history - Akshay E1 P1 S0 T1
 - [ ] Inventory management - Adam
 - [ ] Add a new item to the inventory - Adam E2 P1 S0
 - [ ] View all inventory items; view a single inventory item - Adam E1 P1 S0
@@ -66,7 +66,7 @@ Ex:
 - [X] Measure code coverage with playwright - Margo E1 P1 S3
 - [ ] Remove user in user management - Adam E1 P1 S0
 - [ ] Add pictures to static menu board - Adam E2 P2 S0
-- [ ] Link to external site - Akshay E1 P3 S0
-- [ ] One more API functionality - Akshay E3 P3 S0
+- [X] Link to external site - Akshay E1 P3 S0 T1
+- [X] One more API functionality - Akshay E3 P3 S0 T2
 - [ ] Host documentation - Chris E3 P1 S0
 - [ ] Add deprecated column when removing menu items to prevent side effects - Gabe E2 P2 S0
