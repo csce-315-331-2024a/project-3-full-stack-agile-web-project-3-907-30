@@ -101,6 +101,7 @@ const WhatSellsTogether = () => {
 			return;
 		  }
       
+    // This api takes in ISO strings as parameters
     const res = await whatSellsTogether(formData.start_date.toISOString().slice(0,10), 
     formData.end_date.toISOString().slice(0,10));
     setFormData(res);
