@@ -141,7 +141,7 @@ const CustomerView = () => {
    */
   useEffect(() => {
     // Update database based on sales/promotion date windows first
-    saleAutomation().then( () => {
+    saleAutomation().then(() => {
       fetch('/api/menu/menu_items/get-all-items-and-price')
         .then((res) => res.json())
         .then(async (data) => {
@@ -162,24 +162,25 @@ const CustomerView = () => {
             ...item,
             id: data[index].id,
           }));
-  
-        const res2 = await fetch('/api/menu/menu_items/get-item-promotion');
-        const data2 = await res2.json();
 
-        const itemsOnSale = data2.map((item: any) => ({
-          ...item,
-          onSale: item.currentPrice < item.price,
-        }));
+          const res2 = await fetch('/api/menu/menu_items/get-item-promotion');
+          const data2 = await res2.json();
 
-        const combinedItems = itemsWithID.map((item, index) => ({
-          ...item,
-          currentPrice: itemsOnSale[index].currentPrice,
-          onSale: itemsOnSale[index].onSale,
-        }));
+          const itemsOnSale = data2.map((item: any) => ({
+            ...item,
+            onSale: item.currentPrice < item.price,
+          }));
 
-        setMenuItems(combinedItems);
+          const combinedItems = itemsWithID.map((item, index) => ({
+            ...item,
+            price: itemsOnSale[index].price,
+            currentPrice: itemsOnSale[index].currentPrice,
+            onSale: itemsOnSale[index].onSale,
+          }));
+
+          setMenuItems(combinedItems);
         });
-      });
+    });
     getCurrentWeather().then((weather) => {
       setWeather(weather);
     })
@@ -700,12 +701,14 @@ const CustomerView = () => {
 
         {categories.map((category, index) => (
           <TabsContent key={index} value={category.replace(/\s/g, '')} className="w-full md:w-4/5">
+            <h1 className="mb-2">Images generated with DALL-E. Prompts available on request.</h1>
             <Card className="overflow-y-scroll h-[90%]">
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 items-stretch">
                 {menuItems
-                   .filter((item) => itemBelongsToCategory(item.originalName, category))
+                  .filter((item) => itemBelongsToCategory(item.originalName, category))
                   // .filter((item) => item && item.originalName && itemBelongsToCategory(item.originalName, category))
                   .map((item: any) => {
+                    // console.log(`Item ID: ${item.id}, Item price: ${item.price}, Item current price: ${item.currentPrice}`);
                     return (
                       <div key={item.name}
                         className={`flex flex-col items-center gap-4 h-full transition-all duration-300 ease-in-out ${hoveredItem === item.name ? 'transform scale-105 shadow-lg rounded-lg' : ''}`}
@@ -719,9 +722,9 @@ const CustomerView = () => {
                                 <p className="font-semibold">{item.name}</p>
                                 {item.onSale ? (
                                   <>
-                                <p className="text-base line-through">${item.price.toFixed(2)}</p>
-                                <p className="text-sm font-bold" style={{ color: '#b30000' }}>ON SALE! ${item.currentPrice.toFixed(2)}</p>
-                                </>
+                                    <p className="text-base line-through">${item.price.toFixed(2)}</p>
+                                    <p className="text-sm font-bold" style={{ color: '#b30000' }}>ON SALE! ${item.currentPrice.toFixed(2)}</p>
+                                  </>
                                 ) : (
                                   <p className="text-base">${item.currentPrice.toFixed(2)}</p>
                                 )}
@@ -745,28 +748,28 @@ const CustomerView = () => {
                                 <ul className="flex flex-row gap-1 mr-3 justify-center flex-wrap">
                                   {item.ingredients.map((ingredient: string) => (
                                     <li key={ingredient} className="text-sm">
-                                    {ingredient.charAt(0).toUpperCase() + ingredient.slice(1)} </li>
+                                      {ingredient.charAt(0).toUpperCase() + ingredient.slice(1)} </li>
                                   ))}
                                 </ul>
                               </div>
                             </div>
                             {(currentAllergens?.has_dairy || currentAllergens?.has_nuts || currentAllergens?.has_eggs) && (
-                            <div className="flex items-center justify-start gap-4 mb-0 py-0">
-                              <Label htmlFor="allergens" className="text-right font-bold" style={{ color: '#b30000' }}>
-                                CONTAINS
-                              </Label>
-                              <div id="allergens" className="flex flex-row gap-4 justify-center flex-wrap">
-                                {currentAllergens?.has_dairy && <p style={{ color: '#b30000' }} className="mb-0">Dairy</p>}
-                                {currentAllergens?.has_nuts && <p style={{ color: '#b30000' }} className="mb-0">Nuts</p>}
-                                {currentAllergens?.has_eggs && <p style={{ color: '#b30000' }} className="mb-0">Eggs</p>}
+                              <div className="flex items-center justify-start gap-4 mb-0 py-0">
+                                <Label htmlFor="allergens" className="text-right font-bold" style={{ color: '#b30000' }}>
+                                  CONTAINS
+                                </Label>
+                                <div id="allergens" className="flex flex-row gap-4 justify-center flex-wrap">
+                                  {currentAllergens?.has_dairy && <p style={{ color: '#b30000' }} className="mb-0">Dairy</p>}
+                                  {currentAllergens?.has_nuts && <p style={{ color: '#b30000' }} className="mb-0">Nuts</p>}
+                                  {currentAllergens?.has_eggs && <p style={{ color: '#b30000' }} className="mb-0">Eggs</p>}
+                                </div>
                               </div>
+                            )}
+                            <div className="flex justify-end gap-3">
+                              {currentAllergens?.is_vegan && <p className="text-sm font-bold mt-0 mb-0" style={{ color: '#006400' }}>VEGAN</p>}
+                              {currentAllergens?.is_halal && <p className="text-sm font-bold mt-0 mb-0" style={{ color: '#000080' }}>HALAL</p>}
                             </div>
-                          )}
-                          <div className="flex justify-end gap-3">
-                            {currentAllergens?.is_vegan && <p className="text-sm font-bold mt-0 mb-0" style={{ color: '#006400' }}>VEGAN</p>}
-                            {currentAllergens?.is_halal && <p className="text-sm font-bold mt-0 mb-0" style={{ color: '#000080' }}>HALAL</p>}
-                          </div>
-                            
+
                             <DialogFooter>
                               <div className="flex items-center gap-2">
                                 <Label htmlFor="quantity" className="text-right text-lg">
@@ -813,6 +816,7 @@ const CustomerView = () => {
           </Card>
         </TabsContent>
         <TabsContent value='reccs' className='w-full md:w-4/5'>
+          <h1 className="mb-2">Images generated with DALL-E. Prompts available on request.</h1>
           <Card className='overflow-y-scroll h-[90%]'>
             <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 items-stretch'>
               <CustomerWeatherReccs weather={currentWeather!} items={menuItems} />

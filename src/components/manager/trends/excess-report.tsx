@@ -35,6 +35,14 @@ const FormSchema = z.object({
 
 })
 
+/**
+ * Shows the Excess Report trend in table format.
+ * 
+ * @component
+ * @param {ExcessReportItem[]} data The input data holding the result of database call.
+ * @returns {JSX.Element} The Excess Report Item table component.
+ */
+
 const ExcessReport = () => {
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -63,16 +71,27 @@ const ExcessReport = () => {
       return;
     }
 
-    // if the date inputted is after april 2024, toast "Cannot predict the future!"
-    // if (formData.start_date.getFullYear() > 2024 || 
-    // (formData.start_date.getFullYear() === 2024 && formData.start_date.getMonth() > 3)) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Error!",
-    //     description: "Cannot predict the future!",
-    //   });
-    //   return;
-    // }
+  //  if the date inputted is after april 2024, toast "Cannot predict the future!"
+    if (formData.start_date.getFullYear() > 2024 || 
+    (formData.start_date.getFullYear() === 2024 && formData.start_date.getMonth() > 3)) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Cannot Predict the future!",
+      });
+      return;
+    }
+
+    // if the start date is before january 2022, "Rev's wasnt opened! Please select a date after January 1st, 2022!"
+    if (formData.start_date.getFullYear() < 2022 ||
+    (formData.start_date.getFullYear() === 2022 && formData.start_date.getMonth() < 0)) {
+      toast({
+        variant: "destructive",
+        title: "Error!",
+        description: "Please select a date after January 1st, 2022!",
+      });
+      return;
+    }
 
 
     const res = getExcessReport(formData.start_date.toDateString());

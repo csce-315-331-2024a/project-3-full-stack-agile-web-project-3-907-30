@@ -22,6 +22,24 @@ import { formatISO } from "date-fns";
 
 
 
+/**
+ * 
+ * @param {void}
+ * @returns {JSX.Element} The AddItemGUI component.
+ * @example
+ *  <AddItemGUI />
+ * @description
+ * This component allows the manager to add items to the menu.
+ * The form includes fields for item name, price, points, ingredients, and seasonal item.
+ * The manager can select ingredients from a list of inventory items.
+ * The manager can set a start and end date for seasonal items.
+ * The form is validated using zod.
+ * The form data is submitted to the database using the addMenuItem function.
+ * The component uses the useToast hook to display success and error messages.
+ * 
+ */
+
+
 const FormSchema = z.object({
   item_name: z.string(),
   item_price: z.string(),
