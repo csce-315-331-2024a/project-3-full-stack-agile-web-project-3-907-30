@@ -220,7 +220,7 @@ const CustomerView = () => {
   const addItemToOrder = (item: any, quantity: number) => {
     setOrderItems((prevOrderItems) => [
       ...prevOrderItems,
-      { name: item.name, price: item.price, quantity },
+      { name: item.name, price: item.currentPrice, quantity },
     ]);
   };
 
@@ -706,9 +706,7 @@ const CustomerView = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 items-stretch">
                 {menuItems
                   .filter((item) => itemBelongsToCategory(item.originalName, category))
-                  // .filter((item) => item && item.originalName && itemBelongsToCategory(item.originalName, category))
                   .map((item: any) => {
-                    // console.log(`Item ID: ${item.id}, Item price: ${item.price}, Item current price: ${item.currentPrice}`);
                     return (
                       <div key={item.name}
                         className={`flex flex-col items-center gap-4 h-full transition-all duration-300 ease-in-out ${hoveredItem === item.name ? 'transform scale-105 shadow-lg rounded-lg' : ''}`}
