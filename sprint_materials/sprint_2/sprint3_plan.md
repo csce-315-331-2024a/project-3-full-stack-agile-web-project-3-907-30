@@ -38,7 +38,7 @@ Ex:
 - [ ] Move all trend functionality to api’s - Margo E1 P3 S0
 - [x] Clean up Allergen UI for customer view with Halal and Vegan - Chris E1 P2 T1
 - [ ] Clean up logic for excess report form - Aaron E1 P2 S0
-- [ ] Add bounds checking to manager trend inputs - Chris E1 P2 S0
+- [X] Add bounds checking to manager trend inputs - Chris E1 P2 T1
 - [ ] Clean up menu management card - Aaron E1 P2 S0
 - [x] Fix duplicate customers being added - Gabe E1 P1 S0
 - [ ] Fix menu item makeup - Gabe E2 P2 S0
@@ -63,7 +63,7 @@ Ex:
 - [ ] View current menu items - Aaron E1 P1 S0
 - [ ] Modify a menu item (name, price, ingredients, description, status, etc.) - Aaron E2 P1 S0
 - [ ] Remove an item from the menu - Aaron E1 P1 S0
-- [ ] Add/update/remove seasonal menu items, "seasonal" := defined availability window, visible on all applicable views - Chris E3 P2 S0
+- [X] Add/update/remove seasonal menu items, "seasonal" := defined availability window, visible on all applicable views - Chris E3 P2 T3
 - [x] Mobile friendly for customer view - Adam E3 P1 T2
 - [ ] Fix WAVE accessibility issues - Gabe E3 P1 S0
 - [ ] Fix accessibility checker issues - Gabe E3 P1 S0
