@@ -33,11 +33,16 @@ test('Translate to Dutch', async ({ page }) => {
 
 test('Check welcome message', async ({ page }) => {
   await page.goto(`${process.env.TEST_URL}/`);
-  await expect(page.locator('h1')).toContainText('Welcome! Sign-in to view your points.');
+  await expect(page.getByRole('main')).toContainText('Welcome! Sign-in to view your points.');
 });
 
 test('Check customer rewards sign-in', async ({ page }) => {
   await page.goto(`${process.env.TEST_URL}/`);
   await page.getByRole('button', { name: 'Sign-in for Rewards' }).click();
   await expect(page.getByRole('heading')).toContainText('View your points');
+});
+
+test('Check AI image message', async ({ page }) => {
+  await page.goto(`${process.env.TEST_URL}/`);
+  await expect(page.getByLabel('Burgers & Wraps').getByRole('heading')).toContainText('Images generated with DALL-E. Prompts available on request.');
 });
