@@ -6,6 +6,18 @@ import { useEffect, useState } from 'react';
 import { deleteMenuItem, getAllMenuItems } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
+/**
+ * 
+ * @param {MenuManagementForm form} The form which allows managers to send data to be updated to the database 
+ * @returns {JSX.Element} The MenuManagement component.
+ * @example
+ *  <MenuManagement />
+ * @description
+ * This component allows the manager to view and update menu items.
+ * The manager can update the name, price, times_ordered, points, current price, seasonal item status, deprecated status, and ingredients
+ * Uses the Data Table from Shad CN UI as well as the menu-management-form component to provide this functionality.
+ */
+
 const MenuManagement = () => {
   const [data, setData] = useState<DetailedMenuItem[]>([]);
   const [dataChanged, setDataChanged] = useState(false);

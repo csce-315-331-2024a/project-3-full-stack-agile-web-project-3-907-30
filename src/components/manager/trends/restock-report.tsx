@@ -11,7 +11,13 @@ import {
 import { getRestockReport } from "@/lib/utils";
 import { RestockReportItem } from "@/lib/types";
 
-
+/**
+ * Shows the Restock Report trend in table format.
+ * 
+ * @component
+ * @param {RestockReportItem[]} data The input data holding the result of database call.
+ * @returns {JSX.Element} The Restock Report Item table component.
+ */
 
 const RestockReport = () => {
   const [data, setData] = useState<RestockReportItem[]>([]);

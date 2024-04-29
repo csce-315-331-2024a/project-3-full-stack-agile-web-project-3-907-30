@@ -35,6 +35,14 @@ const FormSchema = z.object({
 
 })
 
+/**
+ * Shows the Excess Report trend in table format.
+ * 
+ * @component
+ * @param {ExcessReportItem[]} data The input data holding the result of database call.
+ * @returns {JSX.Element} The Excess Report Item table component.
+ */
+
 const ExcessReport = () => {
 
   const form = useForm<z.infer<typeof FormSchema>>({
