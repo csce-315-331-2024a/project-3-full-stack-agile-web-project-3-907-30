@@ -102,6 +102,7 @@ const MenuItemPopularity = () => {
 			return;
 		  }
 
+    // This api requires ISO strings as parameters
     const res = await menuItemsPopularity(formData.start_date.toISOString().slice(0,10), 
     formData.end_date.toISOString().slice(0,10));
     setFormData(res);
