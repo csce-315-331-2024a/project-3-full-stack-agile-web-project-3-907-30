@@ -19,18 +19,18 @@ Ex:
   - [ ] Have a function that updates menu item’s prices when they go on sale E1 P2 S0 - Gabe
   - [ ] Make GUI menu item sale view have a date range option using a calendar date selection to determine how long the sale will last E1 P2 S0 - Gabe
   - [ ] Make menu item return to default price when sale window passes E2 P2 S0 - Gabe
-- [ ] As an employee, I want to be able to see what items I have sold the least to tailor my sales strategy around it. - Margo
-  - [ ] Make Employee GUI view that shows employee information E1 P3 S0 - Margo
-  - [ ] Make function that queries the information stored for a given, logged-in employee E1 P3 S0 - Margo
+- [X] As an employee, I want to be able to see what items I have sold the least to tailor my sales strategy around it. - Margo
+  - [X] Make Employee GUI view that shows employee information E1 P3 S1 - Margo
+  - [X] Make function that queries the information stored for a given, logged-in employee E1 P3 S1 - Margo
 - [ ] As a customer, I want to see items that are on promotion so that I could make an informed purchasing decision. - Chris
   - [ ] Make the Customer POS view highlight the items that are on sale in some way E1 P2 S0 - Chris
   - [ ] Make function that queries all of the items that are on sale E1 P2 S0 - Chris
 
 ### Chores (part of the backlog, but have no story points associated with them)
-- [ ] Allow managers to input date ranges for trends - Margo E2 P1 S0
+- [X] Allow managers to input date ranges for trends - Margo E2 P1 S2
 - [X] Try to make interactable way to update menu items - Aaron E2 P2 S1 T4
-- [ ] Add front-end for customers to see their past orders - Margo E1 P1 S0
-- [ ] Move all trend functionality to api’s  - Margo E1 P3 S0
+- [X] Add front-end for customers to see their past orders - Margo E1 P1 S1
+- [X] Move all trend functionality to api’s  - Margo E1 P3 S1
 - [ ] Clean up Allergen UI for customer view with Halal and Vegan - Chris E1 P2 S0
 - [X] Clean up logic for excess report form - Aaron E1 P2 S1
 - [ ] Add bounds checking to manager trend inputs - Chris E1 P2 S0
@@ -43,7 +43,7 @@ Ex:
 - [ ] Customers can create orders - Akshay E2 P1 S0
 - [ ] Customers can remove items from orders - Akshay E1 P1 S0
 - [ ] Allow modifications in all ordering views - Akshay E3 P1 S0
-- [ ] Recommend items based on weather - Margo E2 P2 S0
+- [X] Recommend items based on weather - Margo E2 P2 S1
 - [ ] Order management - Adam, Akshay
 - [ ] View all orders; view a single order (including status: pending, fulfilled, canceled, etc.) - Adam E2 P1 S0
 - [ ] Modify an order (add/remove items, change status, etc.) - Adam E3 P1 S0
@@ -62,8 +62,8 @@ Ex:
 - [ ] Mobile friendly for customer view - Adam E3 P1 S0
 - [ ] Fix WAVE accessibility issues - Gabe E3 P1 S0
 - [ ] Fix accessibility checker issues - Gabe E3 P1 S0
-- [ ] Add more tests with playwright - Margo E3 P1 S0
-- [ ] Measure code coverage with playwright - Margo E1 P1 S0
+- [X] Add more tests with playwright - Margo E3 P1 S2
+- [X] Measure code coverage with playwright - Margo E1 P1 S3
 - [ ] Remove user in user management - Adam E1 P1 S0
 - [ ] Add pictures to static menu board - Adam E2 P2 S0
 - [ ] Link to external site - Akshay E1 P3 S0
