@@ -15,7 +15,6 @@ A product in which all users have a robust and fully-featured experience. Manage
 Ex:
 
 - [ ] Story
-
   - [ ] task
     - [ ] sub-task
 
@@ -40,14 +39,14 @@ Ex:
 - [X] Clean up logic for excess report form - Aaron E1 P2 S1
 - [X] Add bounds checking to manager trend inputs - Chris E1 P2 T1
 - [X] Clean up menu management card - Aaron E1 P2 S1 T1
-- [x] Fix duplicate customers being added - Gabe E1 P1 S0
+- [x] Fix duplicate customers being added - Gabe E1 P1 T1
 - [ ] Fix menu item makeup - Gabe E2 P2 T0
 - [x] Remove Google Translate loading circle - Adam E1 P3 T1
-- [X] Allows employees to remove items from order in receipt  - Akshay E1 P1 S0 T1
+- [X] Allows employees to remove items from order in receipt  - Akshay E1 P1 T1
 - [X] Allow customers to make orders in the customer view page - Akshay T3
-- [X] Customers can create orders - Akshay E2 P1 S0 T1
-- [X] Customers can remove items from orders - Akshay E1 P1 S0 T1
-- [X] Allow modifications in all ordering views - Akshay E3 P1 S0 T2
+- [X] Customers can create orders - Akshay E2 P1 T1
+- [X] Customers can remove items from orders - Akshay E1 P1 T1
+- [X] Allow modifications in all ordering views - Akshay E3 P1 T2
 - [X] Recommend items based on weather - Margo E2 P2 S1
 - [x] View all orders; view a single order (including status: pending, fulfilled, canceled, etc.) - Adam E2 P1 T3
 - [x] Modify an order (add/remove items, change status, etc.) - Adam E3 P1 T3
@@ -57,11 +56,11 @@ Ex:
 - [x] View all inventory items; view a single inventory item - Adam E1 P1 T1
 - [x] Modify an item in the inventory (name, quantity, supplier, etc.) - Adam E1 P1 T2
 - [x] Remove an item from the inventory - Adam E1 P1 T1
-- [X] Menu management - Aaron E3 P1 S1 T4
-- [X] Add a menu item - Aaron E1 P1 S1 T5
-- [X] View current menu items - Aaron E1 P1 S1 T1
-- [X] Modify a menu item (name, price, ingredients, description, status, etc.) - Aaron E2 P1 S1 T4
-- [X] Remove an item from the menu - Aaron E1 P1 S1 T1
+- [X] Menu management - Aaron E3 P1 T4
+- [X] Add a menu item - Aaron E1 P1 T5
+- [X] View current menu items - Aaron E1 P1 T1
+- [X] Modify a menu item (name, price, ingredients, description, status, etc.) - Aaron E2 P1 T4
+- [X] Remove an item from the menu - Aaron E1 P1 T1
 - [X] Add/update/remove seasonal menu items, "seasonal" := defined availability window, visible on all applicable views - Chris E3 P2 T3
 - [x] Mobile friendly for customer view - Adam E3 P1 T2
 - [x] Fix WAVE accessibility issues - Gabe E3 P1 T2
@@ -70,7 +69,7 @@ Ex:
 - [X] Measure code coverage with playwright - Margo E1 P1 S3
 - [x] Remove user in user management - Adam E1 P1 T1
 - [x] Add pictures to static menu board - Adam E2 P2 T2
-- [X] Link to external site - Akshay E1 P3 S0 T1
-- [X] One more API functionality - Akshay E3 P3 S0 T2
+- [X] Link to external site - Akshay E1 P3 T1
+- [X] One more API functionality - Akshay E3 P3 T2
 - [x] Host documentation - Chris E3 P1 T2
 - [x] Add deprecated column when removing menu items to prevent side effects - Gabe E2 P2 T1
