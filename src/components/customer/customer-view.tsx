@@ -744,11 +744,12 @@ const CustomerView = () => {
                                 Ingredients:
                               </Label>
                               <div id="name" className="col-span-3">
-                                {/* <ul className="flex flex-row gap-1 mr-3"> */}
                                 <ul className="flex flex-row gap-1 mr-3 justify-center flex-wrap">
-                                  {item.ingredients.map((ingredient: string) => (
+                                  {item.ingredients.map((ingredient: string, index: number, array: string[]) => (
                                     <li key={ingredient} className="text-sm">
-                                      {ingredient.charAt(0).toUpperCase() + ingredient.slice(1)} </li>
+                                      {ingredient.charAt(0).toUpperCase() + ingredient.slice(1)}
+                                      {index !== array.length - 1 && ','} 
+                                    </li>
                                   ))}
                                 </ul>
                               </div>
