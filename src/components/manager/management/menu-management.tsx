@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 
 /**
  * 
- * @param {MenuManagementForm form} The form which allows managers to send data to be updated to the database 
+ * @param {MenuManagementForm} form The form which allows managers to send data to be updated to the database 
  * @returns {JSX.Element} The MenuManagement component.
  * @example
  *  <MenuManagement />
