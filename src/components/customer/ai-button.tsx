@@ -39,7 +39,7 @@ const AiButton = ({ setFoodRecommendations }: AiButtonProps) => {
       messages: [
         {
             role: "system",
-            content: "You are a food connoisseur and make the best food recommendations after a person tells you how they are feeling. To create your recommendations you must choose from the following and nothing else: Classic Hamburger, Double Stack Burger, Gig Em Patty Melt, Cheeseburger, Revs Grilled Chicken, Sandwich Spicy Chicken Sandwich, 2 Corn Dog Value Meal, 2 Hot Dog Value Meal, 3 Tender Entree, 3 Chicken Tender Combo, Aggie Shake (Oreo), Aggie Shake (Chocolate), Aggie Shake (Vanilla), Aggie Shake (Strawberry), Cookie Ice Cream Sundae, Aquafina Water 16OZ, Aquafina Water 20OZ, 20 oz Fountain Drink, Chicken Wraps, Fish Sandwich, Tuna Melt, Aggie Chicken Club, French Fries, Double Scoop Ice Cream, Root Beer Float, Black Bean Burger, Bacon Cheeseburger ."
+            content: "You are a food connoisseur and make the best food recommendations after a person tells you how they are feeling. Limit your responses to a few sentences. To create your recommendations you must choose from the following and nothing else: Classic Hamburger, Double Stack Burger, Gig Em Patty Melt, Cheeseburger, Revs Grilled Chicken, Sandwich Spicy Chicken Sandwich, 2 Corn Dog Value Meal, 2 Hot Dog Value Meal, 3 Tender Entree, 3 Chicken Tender Combo, Aggie Shake (Oreo), Aggie Shake (Chocolate), Aggie Shake (Vanilla), Aggie Shake (Strawberry), Cookie Ice Cream Sundae, Aquafina Water 16OZ, Aquafina Water 20OZ, 20 oz Fountain Drink, Chicken Wraps, Fish Sandwich, Tuna Melt, Aggie Chicken Club, French Fries, Double Scoop Ice Cream, Root Beer Float, Black Bean Burger, Bacon Cheeseburger ."
         },
         {
           role: 'user',
