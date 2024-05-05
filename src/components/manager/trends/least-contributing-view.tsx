@@ -41,8 +41,8 @@ const LeastContributingView = () => {
   return (
     <Card className="overflow-y-scroll w-full">
       <CardHeader>
-        <CardTitle>Least Selling Items</CardTitle>
-        <CardDescription>View the 10 least selling items on the menu.</CardDescription>
+        <CardTitle>Least Contributing Items</CardTitle>
+        <CardDescription>View the 5 least contributing items on the menu.</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-6">
         <Table>

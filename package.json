@@ -8,7 +8,7 @@
     "lint": "next lint",
     "start": "nyc next dev",
     "test:only": "playwright test",
-    "pretest": "rd /s /q \".next\" \"coverage\" \".nyc_output\"",
+    "pretest": "rm -rf .next/ coverage/ .nyc_output/",
     "test": "start-server-and-test 3000 test:only",
     "docs": "jsdoc -c jsdoc.conf.json"
   },
