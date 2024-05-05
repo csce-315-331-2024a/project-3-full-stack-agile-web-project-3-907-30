@@ -46,7 +46,7 @@ const AiButton = ({ setFoodRecommendations }: AiButtonProps) => {
           content: `I'm feeling ${data.feeling}. What food would you recommend?`,
         },
       ],
-      model: 'mixtral-8x7b-32768',
+      model: 'llama3-70b-8192',
     };
 
     const response = await groq.chat.completions.create(request);
