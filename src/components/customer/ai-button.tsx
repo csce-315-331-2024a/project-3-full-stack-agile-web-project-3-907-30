@@ -76,7 +76,7 @@ const AiButton = ({ setFoodRecommendations }: AiButtonProps) => {
         <DialogHeader>
           <DialogTitle>How are you feeling today?</DialogTitle>
           <DialogDescription>
-            Tell us how you&apos;re feeling, and we&apos;ll your AI assistant will recommend some food to match your mood!
+            Tell us how you&apos;re feeling, and your AI assistant will recommend some food to match your mood!
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
