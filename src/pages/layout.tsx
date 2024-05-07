@@ -114,7 +114,7 @@ const Layout = ({ children }: LayoutProps) => {
               <div className="lg:flex gap-4 hidden">
                 <AiButton setFoodRecommendations={setFoodRecommendations} />
                 {signOutRender && 
-                (<Button variant="destructive" onClick={clearCustomerFromLocalStorage}>Sign Out</Button>)}
+                (<Button variant="destructive" name="signOut" onClick={clearCustomerFromLocalStorage}>Sign Out</Button>)}
                 {!signOutRender&& (<RewardsButton setCustomer={setCustomer} />)}
                 <Button name="rateUs">
                   <Link target="_blank" href="https://www.yelp.com/writeareview/biz/6dSStUCjMAfixAqz73iy9g?return_url=%2Fbiz%2F6dSStUCjMAfixAqz73iy9g&review_origin=biz-details-war-button">
