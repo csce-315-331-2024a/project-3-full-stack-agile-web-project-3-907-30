@@ -14,8 +14,15 @@ PopoverContent,
 PopoverTrigger,
 } from "@/components/ui/popover"
 import { Input } from '@/components/ui/input';
-import { DialogHeader } from "@/components/ui/dialog";
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@radix-ui/react-dialog";
+import {
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+} from '@/components/ui/dialog';
 import { putItemOnSale } from "@/lib/utils";
 import { toast } from "@/components/ui/use-toast";
 import React from "react";
@@ -46,6 +53,8 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
       })
 
     async function onSubmit(formData: z.infer<typeof FormSchema>) {
+
+        console.log(formData.sale_price, formData.sale_start, formData.sale_end);
 
         const todaysDate = new Date();
 
@@ -153,7 +162,7 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
                                         selected={field.value}
                                         onSelect={field.onChange}
                                         initialFocus
-                                        defaultMonth={new Date(2022, 0)}
+                                        defaultMonth={new Date()}
                                     >
                                     </Calendar>
                                     </PopoverContent>
@@ -188,7 +197,7 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
                                         selected={field.value}
                                         onSelect={field.onChange}
                                         initialFocus
-                                        defaultMonth={new Date(2022, 0)}
+                                        defaultMonth={new Date()}
                                     >
                                     </Calendar>
                                     </PopoverContent>
