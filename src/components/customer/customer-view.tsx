@@ -292,10 +292,12 @@ const CustomerView = () => {
         total -= totalPoints;
       }
 
+      const customer_id = localStorage.getItem("customerId") ?? "-1";
+
       const res = await submitOrder(
         nextOrderId,
         total,
-        1,
+        parseInt(customer_id),
         employee,
         toast,
         chosenItems,
@@ -330,7 +332,7 @@ const CustomerView = () => {
         }
       }
 
-      if (res && res.status === 200) {
+      if (res && res.status === 200 && localStorage.getItem("customerId") !== null){
         toast({
           title: "Success!",
           description: `Your order has been placed! You recieved ${newPoints} from this order!`,
@@ -348,10 +350,17 @@ const CustomerView = () => {
           }),
         });
 
-        console.log("Order submitted successfully.")
-
+      } else if (res && res.status === 200){
+        toast({
+          title: "Success!",
+          description: `Your order has been placed! Login to recieve points!`,
+        });
       } else {
-        throw new Error("There was a problem with your request.");
+        toast({
+          variant: "destructive",
+          title: "Error!",
+          description: "There was an error placing your order.",
+        });
       }
 
       // Clear the order after submitting
@@ -742,11 +751,12 @@ const CustomerView = () => {
                                 Ingredients:
                               </Label>
                               <div id="name" className="col-span-3">
-                                {/* <ul className="flex flex-row gap-1 mr-3"> */}
                                 <ul className="flex flex-row gap-1 mr-3 justify-center flex-wrap">
-                                  {item.ingredients.map((ingredient: string) => (
+                                  {item.ingredients.map((ingredient: string, index: number, array: string[]) => (
                                     <li key={ingredient} className="text-sm">
-                                      {ingredient.charAt(0).toUpperCase() + ingredient.slice(1)} </li>
+                                      {ingredient.charAt(0).toUpperCase() + ingredient.slice(1)}
+                                      {index !== array.length - 1 && ','} 
+                                    </li>
                                   ))}
                                 </ul>
                               </div>

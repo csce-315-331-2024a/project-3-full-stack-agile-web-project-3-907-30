@@ -42,33 +42,32 @@ import { toast } from "@/components/ui/use-toast";
 export interface MenuManagementFormProps {
   menuItem?: DetailedMenuItem;
   editMode: boolean;
-  setDataChanged: any;
 }
 
 const FormSchema = z.object({
-    item_name: z.string(),
-    item_price: z.string(),
-    times_ordered: z.string(),
-    points: z.string(),
-    cur_price: z.string(),
-    seasonal_item: z.boolean(),
-    deprecated: z.boolean(),
-    ingredients: z.array(z.string().optional()),
+  item_name: z.string(),
+  item_price: z.string(),
+  times_ordered: z.string(),
+  points: z.string(),
+  cur_price: z.string(),
+  seasonal_item: z.boolean(),
+  deprecated: z.boolean(),
+  ingredients: z.array(z.string().optional()),
 })
 
-const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManagementFormProps) => {
+const MenuManagementForm = ({ menuItem, editMode }: MenuManagementFormProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-        item_name: editMode ? menuItem?.item_name : '',
-        item_price: editMode ? menuItem?.item_price.toString() : '',
-        times_ordered: editMode ? menuItem?.times_ordered.toString(): '',
-        points: editMode ? menuItem?.points.toString(): '',
-        cur_price: editMode ? menuItem?.cur_price.toString(): '',
-        seasonal_item: editMode ? menuItem?.seasonal_item : false,
-        deprecated: editMode ? menuItem?.deprecated : false,
+      item_name: editMode ? menuItem?.item_name : '',
+      item_price: editMode ? menuItem?.item_price.toString() : '',
+      times_ordered: editMode ? menuItem?.times_ordered.toString() : '',
+      points: editMode ? menuItem?.points.toString() : '',
+      cur_price: editMode ? menuItem?.cur_price.toString() : '',
+      seasonal_item: editMode ? menuItem?.seasonal_item : false,
+      deprecated: editMode ? menuItem?.deprecated : false,
     },
   })
 
@@ -76,11 +75,11 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
 
   useEffect(() => {
     getAllInventoryItems().then((data) => {
-    setData(data);
+      setData(data);
     });
-}, [form]);
+  }, [form]);
 
-  
+
 
   async function onSubmit(formData: z.infer<typeof FormSchema>) {
     if (editMode) {
@@ -107,7 +106,6 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
         });
 
         // let table know data has changed, close the dialog
-        setDataChanged((prev: boolean) => !prev);
         setDialogOpen(false);
       }
       else {
@@ -210,8 +208,8 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
                   </FormItem>
                 )
                 }
-        />
-        <FormField
+              />
+              <FormField
                 control={form.control}
                 name="deprecated"
                 render={({ field }) => (
@@ -226,40 +224,41 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
                   </FormItem>
                 )
                 }
-        />
-        {
-        data.map((item: InventoryItem, index) => {
-          return (
-            <FormField
-            key={index}
-              control={form.control}
-              name={`ingredients.${index}`}
-              render={({ field }) => (
-              <FormItem>
-                <FormLabel>Enter the amount of inventory item {item.name}</FormLabel>
-                <FormControl>
-                <Input placeholder="e.g. 10"
-                defaultValue="0" {...field} 
-                onClick={(e) => {
-                  const target = e.target as HTMLInputElement;
-                  if (target.value === "0") {
-                    target.value = "";
-                  }
-                }}
-                
-                />
-                </FormControl>
-                <FormDescription>
-                Enter the amount of item {item.name}.
-                </FormDescription>
-              </FormItem>)}
-            />
-          )})
-        }
+              />
+              {
+                data.map((item: InventoryItem, index) => {
+                  return (
+                    <FormField
+                      key={index}
+                      control={form.control}
+                      name={`ingredients.${index}`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Enter the amount of inventory item {item.name}</FormLabel>
+                          <FormControl>
+                            <Input placeholder="e.g. 10"
+                              defaultValue="0" {...field}
+                              onClick={(e) => {
+                                const target = e.target as HTMLInputElement;
+                                if (target.value === "0") {
+                                  target.value = "";
+                                }
+                              }}
 
-        <Button type="submit">Submit</Button>
-        </div>
-        </form>
+                            />
+                          </FormControl>
+                          <FormDescription>
+                            Enter the amount of item {item.name}.
+                          </FormDescription>
+                        </FormItem>)}
+                    />
+                  )
+                })
+              }
+
+              <Button type="submit">Submit</Button>
+            </div>
+          </form>
         </Form>
       </DialogContent>
     </Dialog>
