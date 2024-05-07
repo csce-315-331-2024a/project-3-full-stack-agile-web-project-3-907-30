@@ -2,6 +2,20 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import db from "../../../lib/db";
 import { DataTypeOIDs } from "postgresql-client";
 
+/**
+ * Updates the sale price, start date, and end date of a menu item to null and sets the current price to the original item price.
+ * @example
+ * handler(req, res)
+ * @param {NextApiRequest} req - The request object.
+ * @param {NextApiResponse} res - The response object.
+ * @returns {NextApiResponse} A response object with a message indicating the item was successfully reset.
+ * @description
+ *   - Checks if the request method is POST and returns an error if it is not.
+ *   - Retrieves the item name from the request body.
+ *   - Updates the menu item in the database with the original price and null values for sale price, start date, and end date.
+ *   - Returns a success message if the item was successfully reset.
+ *   - Logs and returns an error if there is an issue resetting the item.
+ */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     
     if (req.method !== "POST") {

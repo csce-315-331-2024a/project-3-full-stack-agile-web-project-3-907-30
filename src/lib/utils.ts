@@ -583,6 +583,18 @@ export async function putItemOnSale(itemName:string, salePrice: string, saleStar
 }
 
 //Loading..
+/**
+ * Resets the sale status of a menu item.
+ * @example
+ * resetMenuItemSale("Hamburger")
+ * @param {string} itemName - The name of the menu item to reset the sale status for.
+ * @returns {Promise} A promise that resolves to the response from the API call.
+ * @description
+ *   - Uses the itemName parameter to specify which menu item to reset.
+ *   - Makes a POST request to the "/api/manager/reset-item" endpoint.
+ *   - The request body contains the itemName in JSON format.
+ *   - The response from the API call is returned.
+ */
 export async function resetMenuItemSale(itemName: string | undefined) {
   const res = await fetch("/api/manager/reset-item", {
     method: "POST",
