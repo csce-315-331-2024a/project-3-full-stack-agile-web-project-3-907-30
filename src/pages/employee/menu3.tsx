@@ -64,42 +64,45 @@ const MenuThree = () => {
   return (
     <div className="w-full h-full flex flex-col justify-start items-center p-4">
       {employee?.isVerified ? (
-        <div className="w-full grid grid-cols-2 gap-6">
-          {["Tenders", "Meals", "Sides", "Desserts"].map((category, index) => (
-            <Card key={index} className="bg-[#500000] border-[#3C0000]">
-              <CardHeader className="mb-4">
-                <CardTitle className="text-white text-4xl">{category}</CardTitle>
-                <CardDescription className="text-white">Images generated with DALL-E. Prompts available if requested.</CardDescription>
-              </CardHeader>
-              <CardContent className="grid grid-cols-3 gap-6">
-                {loading ? (
-                  Array.from({ length: 3 }).map((_, index) => (
-                    <div key={index} className="flex flex-col items-center gap-2">
-                      <Skeleton className="w-[150px] h-[150px]" />
-                      <Skeleton className="w-4/5 h-8 mt-2" />
-                      <Skeleton className="w-1/2 h-5" />
-                    </div>
-                  ))
-                ) : (
-                  menuItems.filter(item => itemBelongsToCategory(item.name, category)).map((item, index) => (
-                    <div key={index} className="flex flex-col text-white items-center gap-2">
-                      <Image src={getImageForMenuItem(item.id)} width={150} height={150} alt={item.name} className="rounded-lg" />
-                      <p className="font-bold text-xl mt-2 text-center">{item.name}</p>
-                      <p className="text-lg">${item.price.toFixed(2)}</p>
-                    </div>
-                  ))
-                )
-                }
-              </CardContent>
-            </Card>
-          ))}
-        </div>) : (loading ? (
-          <h1 className="text-xl">Loading...</h1>
-        ) : (
-          <h1 className="text-xl">
-            You are unauthorized to view this page.
-          </h1>
-        ))}
+        <div className="flex flex-col w-full h-full gap-2">
+          <div className="w-full grid grid-cols-2 gap-4">
+            {["Tenders", "Meals", "Sides", "Desserts"].map((category, index) => (
+              <Card key={index} className="bg-[#500000] border-[#3C0000]">
+                <CardHeader className="mb-2">
+                  <CardTitle className="text-white text-4xl">{category}</CardTitle>
+                </CardHeader>
+                <CardContent className="grid grid-cols-3 gap-4">
+                  {loading ? (
+                    Array.from({ length: 3 }).map((_, index) => (
+                      <div key={index} className="flex flex-col items-center gap-2">
+                        <Skeleton className="w-[150px] h-[150px]" />
+                        <Skeleton className="w-4/5 h-6 mt-2" />
+                        <Skeleton className="w-1/2 h-5" />
+                      </div>
+                    ))
+                  ) : (
+                    menuItems.filter(item => itemBelongsToCategory(item.name, category)).map((item, index) => (
+                      <div key={index} className="flex flex-col text-white items-center gap-2">
+                        <Image src={getImageForMenuItem(item.id)} width={150} height={150} alt={item.name} className="rounded-lg" />
+                        <p className="font-bold text-xl mt-2 text-center">{item.name}</p>
+                        <p className="text-lg">${item.price.toFixed(2)}</p>
+                      </div>
+                    ))
+                  )
+                  }
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <div className="text-black text-sm w-full">Images generated with DALL-E. Prompts available if requested.</div>
+        </div>
+      ) : (loading ? (
+        <h1 className="text-xl">Loading...</h1>
+      ) : (
+        <h1 className="text-xl">
+          You are unauthorized to view this page.
+        </h1>
+      ))}
     </div >
   );
 
