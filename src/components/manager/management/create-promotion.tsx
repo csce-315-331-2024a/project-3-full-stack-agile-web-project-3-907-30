@@ -34,6 +34,7 @@ const FormSchema = z.object({
     sale_price: z.number()
 });
 
+
 const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -105,14 +106,13 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
             <DialogTrigger asChild>
                 <Button>{'Put On Sale'}</Button>
             </DialogTrigger>
-            <DialogContent className="max-h-[85%] overflow-y-scroll w-full">
+            <DialogContent className="max-h-[85%] overflow-y-scroll">
                 <DialogHeader>
                     <DialogTitle>{`Put the ${menuItem?.item_name} on sale.`}</DialogTitle>
                     <DialogDescription>
                         Set an item's sale price and the window of time it will be on sale.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="flex pt-4 notranslate">
                     <Form {...form} >
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                             <FormField
@@ -203,7 +203,6 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
                             <Button type="submit">Submit</Button>
                         </form>
                     </Form>
-                </div>
             </DialogContent>
         </Dialog>
     )
