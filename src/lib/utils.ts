@@ -885,6 +885,12 @@ export async function updateMenuItem(item: DetailedMenuItem) {
   return res;
 }
 
+/**
+ * Clear currently signed-in cutomer's data from local storage
+ * 
+ * @param none
+ * @returns {void} No return value
+ */
 export async function clearCustomerFromLocalStorage() {
   localStorage.setItem("customerId", "no customer ID");
   localStorage.setItem("customerName", "no customer");

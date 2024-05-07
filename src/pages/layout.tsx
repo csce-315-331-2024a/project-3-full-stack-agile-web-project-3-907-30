@@ -83,6 +83,7 @@ const Layout = ({ children }: LayoutProps) => {
       getCurrentWeather().then((data) => {
         setWeather(data);
       })  
+      // Set up check for sign out button rendering
       const intervalId = setInterval(signOutRender, 100);
       return () => clearInterval(intervalId);
     }
@@ -114,7 +115,7 @@ const Layout = ({ children }: LayoutProps) => {
                 <AiButton setFoodRecommendations={setFoodRecommendations} />
                 {signOutRender && 
                 (<Button variant="destructive" onClick={clearCustomerFromLocalStorage}>Sign Out</Button>)}
-                <RewardsButton setCustomer={setCustomer} />
+                {!signOutRender&& (<RewardsButton setCustomer={setCustomer} />)}
                 <Button name="rateUs">
                   <Link target="_blank" href="https://www.yelp.com/writeareview/biz/6dSStUCjMAfixAqz73iy9g?return_url=%2Fbiz%2F6dSStUCjMAfixAqz73iy9g&review_origin=biz-details-war-button">
                     Rate Us! 🌟
