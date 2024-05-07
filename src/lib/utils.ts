@@ -550,6 +550,23 @@ export async function updateMenuItemPrice(itemName: string, newPrice: number) {
   return res;
 }
 
+export async function putItemOnSale(itemName:string, salePrice: number, saleStart: string, saleEnd: string) {
+  const res = await fetch("api/manager/put-item-on-sale",{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      itemName,
+      salePrice,
+      saleStart,
+      saleEnd
+    })
+  });
+
+  return res;
+}
+
 /**
  * Get the most productive employees within a given date range.
  *
@@ -822,6 +839,7 @@ export async function addMenuItem(item: DetailedMenuItem) {
 
   return res;
 }
+
 export async function saleAutomation() {
   const res = await fetch("api/manager/sale-automation", {
     method: "PUT",

@@ -145,7 +145,7 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
                 <Input {...field} />
                 </FormControl>
                 <FormDescription>
-                Enter the name of the menu item
+                Manage the name of the menu item.
                 </FormDescription>
             </FormItem>
             )}
@@ -160,7 +160,7 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
                 <Input type="number" {...field} />
                 </FormControl>
                 <FormDescription>
-                Enter the price you want to set for the seasonal item.
+                Manage the default price of the item.
                 </FormDescription>
             </FormItem>
             )}
@@ -170,12 +170,12 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
             name="points"
             render={({ field }) => (
             <FormItem>
-                <FormLabel>Enter Points for Item</FormLabel>
+                <FormLabel>Set Points</FormLabel>
                 <FormControl>
                 <Input type="number" {...field} />
                 </FormControl>
                 <FormDescription>
-                Enter how many points you want this item to have
+                Manage the point value of the item. 
                 </FormDescription>
             </FormItem>
             )}
@@ -185,12 +185,12 @@ const MenuManagementForm = ({ menuItem, editMode, setDataChanged }: MenuManageme
             name="cur_price"
             render={({ field }) => (
             <FormItem>
-                <FormLabel>Enter the current price for the item</FormLabel>
+                <FormLabel>Set Current Price</FormLabel>
                 <FormControl>
                 <Input type="number" {...field} />
                 </FormControl>
                 <FormDescription>
-                Enter the price of the new item.
+                Update current price of the item.
                 </FormDescription>
             </FormItem>
             )}
