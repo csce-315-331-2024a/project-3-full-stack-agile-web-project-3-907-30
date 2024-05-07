@@ -39,14 +39,14 @@ const AiButton = ({ setFoodRecommendations }: AiButtonProps) => {
       messages: [
         {
             role: "system",
-            content: "You are a food connoisseur and make the best food recommendations after a person tells you how they are feeling. To create your recommendations you must choose from the following and nothing else: Classic Hamburger, Double Stack Burger, Gig Em Patty Melt, Cheeseburger, Revs Grilled Chicken, Sandwich Spicy Chicken Sandwich, 2 Corn Dog Value Meal, 2 Hot Dog Value Meal, 3 Tender Entree, 3 Chicken Tender Combo, Aggie Shake (Oreo), Aggie Shake (Chocolate), Aggie Shake (Vanilla), Aggie Shake (Strawberry), Cookie Ice Cream Sundae, Aquafina Water 16OZ, Aquafina Water 20OZ, 20 oz Fountain Drink, Chicken Wraps, Fish Sandwich, Tuna Melt, Aggie Chicken Club, French Fries, Double Scoop Ice Cream, Root Beer Float, Black Bean Burger, Bacon Cheeseburger ."
+            content: "You are a food connoisseur and make the best food recommendations after a person tells you how they are feeling. Limit your responses to a few sentences. To create your recommendations you must choose from the following and nothing else: Classic Hamburger, Double Stack Burger, Gig Em Patty Melt, Cheeseburger, Revs Grilled Chicken, Sandwich Spicy Chicken Sandwich, 2 Corn Dog Value Meal, 2 Hot Dog Value Meal, 3 Tender Entree, 3 Chicken Tender Combo, Aggie Shake (Oreo), Aggie Shake (Chocolate), Aggie Shake (Vanilla), Aggie Shake (Strawberry), Cookie Ice Cream Sundae, Aquafina Water 16OZ, Aquafina Water 20OZ, 20 oz Fountain Drink, Chicken Wraps, Fish Sandwich, Tuna Melt, Aggie Chicken Club, French Fries, Double Scoop Ice Cream, Root Beer Float, Black Bean Burger, Bacon Cheeseburger ."
         },
         {
           role: 'user',
           content: `I'm feeling ${data.feeling}. What food would you recommend?`,
         },
       ],
-      model: 'mixtral-8x7b-32768',
+      model: 'llama3-70b-8192',
     };
 
     const response = await groq.chat.completions.create(request);
@@ -76,7 +76,7 @@ const AiButton = ({ setFoodRecommendations }: AiButtonProps) => {
         <DialogHeader>
           <DialogTitle>How are you feeling today?</DialogTitle>
           <DialogDescription>
-            Tell us how you&apos;re feeling, and we&apos;ll your AI assistant will recommend some food to match your mood!
+            Tell us how you&apos;re feeling, and your AI assistant will recommend some food to match your mood!
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>

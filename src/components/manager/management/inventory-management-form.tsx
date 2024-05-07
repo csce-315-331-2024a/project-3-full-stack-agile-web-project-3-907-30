@@ -27,7 +27,6 @@ import { toast } from "@/components/ui/use-toast";
 export interface InventoryManagementFormProps {
   inventoryItem?: InventoryItem;
   editMode: boolean;
-  setDataChanged: any;
 }
 
 const FormSchema = z.object({
@@ -44,7 +43,7 @@ const FormSchema = z.object({
   is_halal: z.boolean(),
 })
 
-const InventoryManagementForm = ({ inventoryItem, editMode, setDataChanged }: InventoryManagementFormProps) => {
+const InventoryManagementForm = ({ inventoryItem, editMode }: InventoryManagementFormProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -90,7 +89,6 @@ const InventoryManagementForm = ({ inventoryItem, editMode, setDataChanged }: In
         });
 
         // let table know data has changed, close the dialog
-        setDataChanged((prev: boolean) => !prev);
         setDialogOpen(false);
       } else {
         toast({
@@ -126,7 +124,6 @@ const InventoryManagementForm = ({ inventoryItem, editMode, setDataChanged }: In
 
         // reset form, let table know data has changed, close the dialog
         form.reset();
-        setDataChanged((prev: boolean) => !prev);
         setDialogOpen(false);
       } else {
         toast({
