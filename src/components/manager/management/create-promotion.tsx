@@ -18,6 +18,7 @@ import { DialogHeader } from "@/components/ui/dialog";
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@radix-ui/react-dialog";
 import { putItemOnSale } from "@/lib/utils";
 import { toast } from "@/components/ui/use-toast";
+import React from "react";
 
 export interface CreatePromotionProps {
     menuItem?: DetailedMenuItem

@@ -18,6 +18,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import MenuManagementForm from './menu-management-form';
+import CreatePromotion from "./create-promotion";
 import { DetailedMenuItem } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { deleteMenuItem } from "@/lib/utils";
@@ -101,6 +102,7 @@ export function MenuTable<TData extends DetailedMenuItem | undefined, TValue>({
                                 ))}
                                 <TableCell className="flex gap-2">
                                     <MenuManagementForm menuItem={data[index]} editMode={true} />
+                                    <CreatePromotion menuItem={data[index]}/>
                                     <Button onClick={() => {
                                         deleteMenuItem(data[index]!.item_id);
                                         data = data.filter((value) => value !== data[index]);
