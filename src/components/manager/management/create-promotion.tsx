@@ -119,7 +119,7 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
                 <DialogHeader>
                     <DialogTitle>{`Put the ${menuItem?.item_name} on sale.`}</DialogTitle>
                     <DialogDescription>
-                        Set an item's sale price and the window of time it will be on sale.
+                        Set an item&apos;s sale price and the window of time it will be on sale.
                     </DialogDescription>
                 </DialogHeader>
                     <Form {...form} >
@@ -134,7 +134,7 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
                                     <Input {...field} />
                                     </FormControl>
                                     <FormDescription>
-                                    Set this item's sale price.
+                                    Set this item&apos;s sale price.
                                     </FormDescription>
                                 </FormItem>
                                 )}
