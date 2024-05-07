@@ -39,7 +39,6 @@ import { formatISO } from "date-fns";
  * 
  */
 
-
 const FormSchema = z.object({
   item_name: z.string(),
   item_price: z.string(),
@@ -144,7 +143,7 @@ const AddItemGUI = () => {
     const updateItems = async () => {
       try {
         const res = fetch('/api/manager/sale-automation', { method: 'PUT' });
-        console.log('sale automation response:', res);
+        console.log('Sale automation response:', res);
       }
       catch (error) {
         console.error("Failed to update items: ", error);

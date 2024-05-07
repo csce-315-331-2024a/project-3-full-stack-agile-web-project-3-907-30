@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from '../ui/use-toast';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from '../ui/form';
 import { getCustomerFromDatabase, putCustomerInLocalStorage } from '@/lib/utils';
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState, Dispatch, SetStateAction, useEffect } from 'react';
 import { Customer } from '@/lib/types';
 
 import CustomerSignUp from './customer-sign-up';
@@ -38,7 +38,7 @@ const FormSchema = z.object({
  * @param {RewardsButtonProps} setCustomer useState function that updates to the customer that logs in.
  * @returns {JSX.Element} The rewards sign-in button.
  */
-const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
+const RewardsButton = ({ setCustomer}: RewardsButtonProps) => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 
 	const form = useForm<z.infer<typeof FormSchema>>({
@@ -54,7 +54,7 @@ const RewardsButton = ({ setCustomer }: RewardsButtonProps) => {
 
 		await putCustomerInLocalStorage(customer!);
 
-		let customerName: string = localStorage.getItem('customerName')!;
+		const customerName: string = localStorage.getItem('customerName')!;
 		if (customer) {
 			toast({
 				title: "Success!",

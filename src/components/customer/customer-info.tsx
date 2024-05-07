@@ -124,7 +124,7 @@ const CustomerInfo = ({ weather = { value: 0, isDay: true, description: 'Clear' 
           // <h1>{translatedText.welcome}</h1>
         )}
         {customerName === 'no customer' && (
-          <h1>No customer found.</h1>
+          <h1>Welcome! Sign-in to view your points.</h1>
           // <h1>{translatedText.noCustomer}</h1>
         )}
         {customerName !== null && customerName !== 'no customer' && (
