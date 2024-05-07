@@ -67,16 +67,16 @@ const MenuOne = () => {
     <div className="w-full h-full flex flex-col justify-start items-center p-4">
       {employee?.isVerified ? (
         <Card className="bg-[#500000] border-[#3C0000] w-full">
-          <CardHeader className="mb-8">
+          <CardHeader className="mb-2">
             <CardTitle className="text-white text-6xl mb-2">Burgers & Wraps</CardTitle>
             <CardDescription className="text-white">Images generated with DALL-E. Prompts available if requested.</CardDescription>
           </CardHeader>
-          <CardContent className="grid grid-cols-6 gap-10">
+          <CardContent className="grid grid-cols-6 gap-6">
             {loading ? (
               Array.from({ length: 12 }).map((_, index) => (
                 <div key={index} className="flex flex-col items-center gap-2">
                   <Skeleton className="w-[200px] h-[200px]" />
-                  <Skeleton className="w-4/5 h-8 mt-2" />
+                  <Skeleton className="w-4/5 h-6 mt-2" />
                   <Skeleton className="w-1/2 h-5" />
                 </div>
               ))
@@ -84,7 +84,7 @@ const MenuOne = () => {
               menuItems.filter(item => itemBelongsToCategory(item.name, "Burgers & Wraps")).map((item, index) => (
                 <div key={index} className="flex flex-col text-white items-center gap-2">
                   <Image src={getImageForMenuItem(item.id)} width={200} height={200} alt={item.name} className="rounded-lg" />
-                  <p className="font-bold text-2xl mt-2 text-center">{item.name}</p>
+                  <p className="font-bold text-xl mt-2 text-center">{item.name}</p>
                   <p className="text-lg">${item.price.toFixed(2)}</p>
                 </div>
               ))

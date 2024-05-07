@@ -220,7 +220,7 @@ const CustomerView = () => {
   const addItemToOrder = (item: any, quantity: number) => {
     setOrderItems((prevOrderItems) => [
       ...prevOrderItems,
-      { name: item.name, price: item.price, quantity },
+      { name: item.name, price: item.currentPrice, quantity },
     ]);
   };
 
@@ -292,10 +292,12 @@ const CustomerView = () => {
         total -= totalPoints;
       }
 
+      const customer_id = localStorage.getItem("customerId") ?? "-1";
+
       const res = await submitOrder(
         nextOrderId,
         total,
-        1,
+        parseInt(customer_id),
         employee,
         toast,
         chosenItems,
@@ -330,7 +332,7 @@ const CustomerView = () => {
         }
       }
 
-      if (res && res.status === 200) {
+      if (res && res.status === 200 && localStorage.getItem("customerId") !== null){
         toast({
           title: "Success!",
           description: `Your order has been placed! You recieved ${newPoints} from this order!`,
@@ -348,10 +350,17 @@ const CustomerView = () => {
           }),
         });
 
-        console.log("Order submitted successfully.")
-
+      } else if (res && res.status === 200){
+        toast({
+          title: "Success!",
+          description: `Your order has been placed! Login to recieve points!`,
+        });
       } else {
-        throw new Error("There was a problem with your request.");
+        toast({
+          variant: "destructive",
+          title: "Error!",
+          description: "There was an error placing your order.",
+        });
       }
 
       // Clear the order after submitting
@@ -706,9 +715,7 @@ const CustomerView = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 items-stretch">
                 {menuItems
                   .filter((item) => itemBelongsToCategory(item.originalName, category))
-                  // .filter((item) => item && item.originalName && itemBelongsToCategory(item.originalName, category))
                   .map((item: any) => {
-                    // console.log(`Item ID: ${item.id}, Item price: ${item.price}, Item current price: ${item.currentPrice}`);
                     return (
                       <div key={item.name}
                         className={`flex flex-col items-center gap-4 h-full transition-all duration-300 ease-in-out ${hoveredItem === item.name ? 'transform scale-105 shadow-lg rounded-lg' : ''}`}

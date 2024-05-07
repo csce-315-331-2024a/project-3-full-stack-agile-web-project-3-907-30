@@ -8,7 +8,8 @@
     "src/pages/_document.tsx",
     "src/pages/api/**",
     "src/components/employee/**",
-    "src/components/dbService/**"
+    "src/components/manager/**",
+    "src/dbService/**"
   ],
   "reporter": ["html", "text", "lcov"],
   "report-dir": "./coverage",
