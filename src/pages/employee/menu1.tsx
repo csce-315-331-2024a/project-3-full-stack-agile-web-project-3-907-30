@@ -67,7 +67,7 @@ const MenuOne = () => {
     <div className="w-full h-full flex flex-col justify-start items-center p-4">
       {employee?.isVerified ? (
         <Card className="bg-[#500000] border-[#3C0000] w-full">
-          <CardHeader className="mb-6">
+          <CardHeader className="mb-10">
             <CardTitle className="text-white text-6xl mb-2">Burgers & Wraps</CardTitle>
             <CardDescription className="text-white">Images generated with DALL-E. Prompts available if requested.</CardDescription>
           </CardHeader>
@@ -82,10 +82,10 @@ const MenuOne = () => {
               ))
             ) : (
               menuItems.filter(item => itemBelongsToCategory(item.name, "Burgers & Wraps")).map((item, index) => (
-                <div key={index} className="flex flex-col text-white items-center gap-2">
+                <div key={index} className="flex flex-col text-white items-center gap-4">
                   <Image src={getImageForMenuItem(item.id)} width={200} height={200} alt={item.name} className="rounded-lg" />
                   <p className="font-bold text-2xl mt-2 text-center">{item.name}</p>
-                  <p className="text-lg">${item.price.toFixed(2)}</p>
+                  <p className="text-xl">${item.price.toFixed(2)}</p>
                 </div>
               ))
             )
