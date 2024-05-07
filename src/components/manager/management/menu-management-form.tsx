@@ -123,7 +123,7 @@ const MenuManagementForm = ({ menuItem, editMode }: MenuManagementFormProps) => 
       <DialogTrigger asChild>
         <Button>{'Edit'}</Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[85%] overflow-y-scroll w-full">
+      <DialogContent className="max-h-[85%] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>{editMode ? `Editing ${menuItem?.item_name}` : 'Add an Item'}</DialogTitle>
           <DialogDescription>
@@ -131,69 +131,69 @@ const MenuManagementForm = ({ menuItem, editMode }: MenuManagementFormProps) => 
           </DialogDescription>
         </DialogHeader>
         <Form {...form} >
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="item_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Item Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Enter the name of the menu item
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="item_price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Set Price</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Enter the price you want to set for the seasonal item.
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="points"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Enter Points for Item</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Enter how many points you want this item to have
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="cur_price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Enter the current price for the item</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Enter the price of the new item.
-                    </FormDescription>
-                  </FormItem>
-                )}
-              />
-              <FormField
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="grid grid-cols-2 gap-4">
+        <FormField
+            control={form.control}
+            name="item_name"
+            render={({ field }) => (
+            <FormItem>
+                <FormLabel>Item Name</FormLabel>
+                <FormControl>
+                <Input {...field} />
+                </FormControl>
+                <FormDescription>
+                Manage the name of the menu item.
+                </FormDescription>
+            </FormItem>
+            )}
+        />
+        <FormField
+            control={form.control}
+            name="item_price"
+            render={({ field }) => (
+            <FormItem>
+                <FormLabel>Set Price</FormLabel>
+                <FormControl>
+                <Input type="number" {...field} />
+                </FormControl>
+                <FormDescription>
+                Manage the default price of the item.
+                </FormDescription>
+            </FormItem>
+            )}
+        />
+        <FormField
+            control={form.control}
+            name="points"
+            render={({ field }) => (
+            <FormItem>
+                <FormLabel>Set Points</FormLabel>
+                <FormControl>
+                <Input type="number" {...field} />
+                </FormControl>
+                <FormDescription>
+                Manage the point value of the item. 
+                </FormDescription>
+            </FormItem>
+            )}
+        />
+        <FormField
+            control={form.control}
+            name="cur_price"
+            render={({ field }) => (
+            <FormItem>
+                <FormLabel>Set Current Price</FormLabel>
+                <FormControl>
+                <Input type="number" {...field} />
+                </FormControl>
+                <FormDescription>
+                Update current price of the item.
+                </FormDescription>
+            </FormItem>
+            )}
+        />
+        <FormField
                 control={form.control}
                 name="seasonal_item"
                 render={({ field }) => (

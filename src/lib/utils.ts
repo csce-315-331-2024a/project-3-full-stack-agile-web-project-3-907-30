@@ -550,6 +550,23 @@ export async function updateMenuItemPrice(itemName: string, newPrice: number) {
   return res;
 }
 
+export async function putItemOnSale(itemName:string, salePrice: number, saleStart: string, saleEnd: string) {
+  const res = await fetch("/api/manager/put-item-on-sale",{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      itemName,
+      salePrice,
+      saleStart,
+      saleEnd
+    })
+  });
+
+  return res;
+}
+
 /**
  * Get the most productive employees within a given date range.
  *
@@ -822,6 +839,7 @@ export async function addMenuItem(item: DetailedMenuItem) {
 
   return res;
 }
+
 export async function saleAutomation() {
   const res = await fetch("api/manager/sale-automation", {
     method: "PUT",
@@ -865,4 +883,19 @@ export async function updateMenuItem(item: DetailedMenuItem) {
   });
 
   return res;
+}
+
+/**
+ * Clear currently signed-in cutomer's data from local storage
+ * 
+ * @param none
+ * @returns {void} No return value
+ */
+export async function clearCustomerFromLocalStorage() {
+  localStorage.setItem("customerId", "no customer ID");
+  localStorage.setItem("customerName", "no customer");
+  localStorage.setItem("customerPhoneNumber", "no customer phone number");
+  localStorage.setItem("customerNumOrders", "no customer orders");
+  localStorage.setItem("customerTotalSpent", "no customer total spent");
+  localStorage.setItem("customerPoints", "no customer points");
 }
