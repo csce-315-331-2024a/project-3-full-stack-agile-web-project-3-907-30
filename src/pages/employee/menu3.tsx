@@ -68,10 +68,10 @@ const MenuThree = () => {
           <div className="w-full grid grid-cols-2 gap-4">
             {["Tenders", "Meals", "Sides", "Desserts"].map((category, index) => (
               <Card key={index} className="bg-[#500000] border-[#3C0000]">
-                <CardHeader className="mb-4">
-                  <CardTitle className="text-white text-4xl">{category}</CardTitle>
+                <CardHeader className="mb-6">
+                  <CardTitle className="text-white text-5xl">{category}</CardTitle>
                 </CardHeader>
-                <CardContent className="grid grid-cols-3 gap-8">
+                <CardContent className="grid grid-cols-3 gap-12">
                   {loading ? (
                     Array.from({ length: 3 }).map((_, index) => (
                       <div key={index} className="flex flex-col items-center gap-2">
@@ -84,8 +84,8 @@ const MenuThree = () => {
                     menuItems.filter(item => itemBelongsToCategory(item.name, category)).map((item, index) => (
                       <div key={index} className="flex flex-col text-white items-center gap-2">
                         <Image src={getImageForMenuItem(item.id)} width={150} height={150} alt={item.name} className="rounded-lg" />
-                        <p className="font-bold text-2xl mt-2 text-center">{item.name}</p>
-                        <p className="text-lg">${item.price.toFixed(2)}</p>
+                        <p className="font-bold text-3xl mt-2 text-center">{item.name}</p>
+                        <p className="text-xl">${item.price.toFixed(2)}</p>
                       </div>
                     ))
                   )
