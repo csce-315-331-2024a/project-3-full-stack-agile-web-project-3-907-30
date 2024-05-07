@@ -240,7 +240,7 @@ const CustomerWeatherReccs = ({ weather, items }: CustomerWeatherReccsProps) => 
           </div>
         ))
       ) : (
-        <p>No recommendations available for the current weather conditions.</p>
+        <p> No recommendations available right now. Check out the rest of the menu! </p>
       )}
     </>
   );
