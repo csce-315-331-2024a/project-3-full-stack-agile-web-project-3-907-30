@@ -728,11 +728,16 @@ const CustomerView = () => {
                                 ) : (
                                   <p className="text-base">${item.currentPrice.toFixed(2)}</p>
                                 )}
+                                
                               </div>
                             </Card>
                           </DialogTrigger>
                           <DialogContent className="w-full">
-                            <DialogHeader>{item.name}</DialogHeader>
+                            {/* <DialogHeader>{item.name}</DialogHeader> */}
+                            <DialogHeader>
+                              {item.name} - ${item.onSale ? item.currentPrice.toFixed(2) : item.price.toFixed(2)}
+                              {item.onSale && <span style={{ color: '#b30000', fontWeight: 'bold' }}> Item is on sale!</span>}
+                            </DialogHeader>
                             <div className="grid gap-4 py-4"></div>
                             <div className="flex items-center justify-center gap-4">
                               {selectedItem &&
