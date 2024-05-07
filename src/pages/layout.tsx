@@ -66,7 +66,7 @@ const Layout = ({ children }: LayoutProps) => {
 
   useEffect(() => {
     const signOutRender = () => {
-      if(localStorage.getItem('customerName') !== 'no customer'){
+      if(localStorage.getItem('customerName') !== 'no customer' && localStorage.getItem('customerName') !== null){
         setSignOutRender(true);
       }
       else setSignOutRender(false);
