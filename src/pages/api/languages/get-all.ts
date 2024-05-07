@@ -24,7 +24,10 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
+    res.setHeader("Content-Type", "application/json");
+    // get languages in json format
     const [fetchedLanguages] = await translate.getLanguages();
+
 
     const supportedLanguages: { value: string; label: string }[] =
       fetchedLanguages.map((language) => {

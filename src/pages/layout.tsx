@@ -50,7 +50,15 @@ const Layout = ({ children }: LayoutProps) => {
   const [employeeItems, setEmployeeItems] = useState<MenuItem[]>([]);
 
   const getEmployeeItems = async (employee: Employee) => {
-    const items = await fetch(`/api/employee/least-selling/?id=${employee.empId}`).then(async (res) => await res.json());
+    const items = await fetch(`/api/employee/least-selling/?id=${employee.empId}`).then(
+      (response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return [];
+      }
+    )
+
     setEmployeeItems(items as MenuItem[]);
   }
   const [foodRecommendations, setFoodRecommendations] = useState<string[]>([]);
@@ -70,8 +78,6 @@ const Layout = ({ children }: LayoutProps) => {
       })
     }
   }, [account, router.asPath]);
-
-
 
   return (
     <>
@@ -225,7 +231,7 @@ const Layout = ({ children }: LayoutProps) => {
                       <Badge className="ml-2 mb-2 text-xs mt-1">{getRole(employee)}</Badge>
                       <DropdownMenuSeparator />
                       <DialogTrigger asChild>
-                        <DropdownMenuItem onClick={() => console.log(employeeItems)}>
+                        <DropdownMenuItem>
                           <TbInfoCircle className='mr-2 h-4 w-4' />
                           <span>Info</span>
                         </DropdownMenuItem>
@@ -251,8 +257,8 @@ const Layout = ({ children }: LayoutProps) => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {employeeItems.length === 0 ? (
-                          <span>Data couldn&apos;t be loaded.</span>
+                        {!employeeItems || employeeItems.length === 0 ? (
+                          <p className="text-center py-2">Data couldn&apos;t be loaded.</p>
                         ) : (
                           employeeItems.map((item) => (
                             <TableRow key={item.id}>

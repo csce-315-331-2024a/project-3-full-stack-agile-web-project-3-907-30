@@ -84,7 +84,7 @@ const MenuThree = () => {
                   menuItems.filter(item => itemBelongsToCategory(item.name, category)).map((item, index) => (
                     <div key={index} className="flex flex-col text-white items-center gap-2">
                       <Image src={getImageForMenuItem(item.id)} width={150} height={150} alt={item.name} className="rounded-lg" />
-                      <p className="font-bold text-2xl mt-2 text-center">{item.name}</p>
+                      <p className="font-bold text-xl mt-2 text-center">{item.name}</p>
                       <p className="text-lg">${item.price.toFixed(2)}</p>
                     </div>
                   ))
