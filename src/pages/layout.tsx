@@ -107,9 +107,6 @@ const Layout = ({ children }: LayoutProps) => {
                 <span className="block lg:hidden">
                   <RewardsButton setCustomer={setCustomer} />
                 </span>
-                <span className="block lg:hidden">
-                  <Button onClick={clearCustomerFromLocalStorage}></Button>
-                </span>
               </div>
               <div className="lg:flex gap-4 hidden">
                 <AiButton setFoodRecommendations={setFoodRecommendations} />
