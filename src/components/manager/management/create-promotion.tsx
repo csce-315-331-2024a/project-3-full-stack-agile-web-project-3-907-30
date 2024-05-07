@@ -5,6 +5,7 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useState } from "react";
+import * as React from "react"
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
 import { Calendar } from "@/components/ui/calendar"
@@ -13,7 +14,7 @@ Popover,
 PopoverContent,
 PopoverTrigger,
 } from "@/components/ui/popover"
-import { Input } from '@/components/ui/input';
+import { Input } from '../../ui/input';
 import {
     Dialog,
     DialogTrigger,
@@ -23,9 +24,8 @@ import {
     DialogDescription,
     DialogFooter,
 } from '@/components/ui/dialog';
-import { putItemOnSale } from "@/lib/utils";
+import { putItemOnSale, resetMenuItemSale } from "@/lib/utils";
 import { toast } from "@/components/ui/use-toast";
-import React from "react";
 
 export interface CreatePromotionProps {
     menuItem?: DetailedMenuItem
@@ -38,7 +38,7 @@ const FormSchema = z.object({
     sale_end: z.date({
         required_error: 'An end date is required.'
     }),
-    sale_price: z.number()
+    sale_price: z.string()
 });
 
 
@@ -48,7 +48,7 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
-            sale_price: menuItem?.cur_price
+            sale_price: menuItem?.cur_price.toString()
         }
       })
 
@@ -58,11 +58,13 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
 
         const todaysDate = new Date();
 
-        if(formData.sale_start < todaysDate) {
+        console.log(todaysDate);
+
+        if(formData.sale_start.getDay() < todaysDate.getDay()) {
             toast({
                 variant: "destructive",
                 title: "Error!",
-                description: "Sale must end in the future!",
+                description: "Sale must start in the present!"
               })
             return;
         }
@@ -71,7 +73,7 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
             toast({
                 variant: "destructive",
                 title: "Error!",
-                description: "Sale must start in the present!",
+                description: "Sale must end in the future!"
               })
               return;
         }
@@ -80,7 +82,7 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
 			toast({
 			  variant: "destructive",
 			  title: "Error!",
-			  description: "End date must be after start date.",
+			  description: "End date must be after start date."
 			});
 			return;
         }
@@ -91,7 +93,7 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
         if (res.status === 200) {
             toast({
               title: "Success!",
-              description: "Menu item sale status updated.",
+              description: "Menu item sale status updated."
             });
     
             // Close the dialog
@@ -102,7 +104,7 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
             toast({
                 variant: "destructive",
                 title: "Error!",
-                description: "There was a problem putting the item on sale.",
+                description: "There was a problem putting the item on sale."
               });
 
             return;
@@ -171,8 +173,7 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
                                     Enter the start date of the interval you want to see.
                                 </FormDescription>
                                 </FormItem>
-                            )
-                            }
+                                )}
                             />
                             <FormField
                             control={form.control}
@@ -206,12 +207,12 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
                                     Enter the start date of sale interval.
                                 </FormDescription>
                                 </FormItem>
-                            )
-                            }
+                                )}
                             />
                             <Button type="submit">Submit</Button>
                         </form>
                     </Form>
+                <Button variant="destructive" onClick={() => resetMenuItemSale(menuItem?.item_name)}> Reset Item </Button>
             </DialogContent>
         </Dialog>
     )

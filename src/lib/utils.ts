@@ -550,7 +550,22 @@ export async function updateMenuItemPrice(itemName: string, newPrice: number) {
   return res;
 }
 
-export async function putItemOnSale(itemName:string, salePrice: number, saleStart: string, saleEnd: string) {
+/**
+ * Sends a request to the server to put an item on sale.
+ * @example
+ * putItemOnSale("Shirt", "20.00", "2021-01-01", "2021-01-31")
+ * @param {string} itemName - The name of the item to be put on sale.
+ * @param {string} salePrice - The sale price of the item.
+ * @param {string} saleStart - The start date of the sale in YYYY-MM-DD format.
+ * @param {string} saleEnd - The end date of the sale in YYYY-MM-DD format.
+ * @returns {Promise} A promise that resolves with the response from the server.
+ * @description
+ *   - Sends a POST request to the "/api/manager/put-item-on-sale" endpoint.
+ *   - The request body contains the item name, sale price, sale start date, and sale end date.
+ *   - The response from the server is returned.
+ *   - The dates must be in the format YYYY-MM-DD.
+ */
+export async function putItemOnSale(itemName:string, salePrice: string, saleStart: string, saleEnd: string) {
   const res = await fetch("/api/manager/put-item-on-sale",{
     method: "POST",
     headers: {
@@ -561,6 +576,21 @@ export async function putItemOnSale(itemName:string, salePrice: number, saleStar
       salePrice,
       saleStart,
       saleEnd
+    })
+  });
+
+  return res;
+}
+
+//Loading..
+export async function resetMenuItemSale(itemName: string | undefined) {
+  const res = await fetch("/api/manager/reset-item", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      itemName
     })
   });
 

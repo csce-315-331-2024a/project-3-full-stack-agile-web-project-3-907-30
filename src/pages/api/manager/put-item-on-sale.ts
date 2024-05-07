@@ -23,13 +23,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   
     const { itemName, salePrice, saleStart, saleEnd } = req.body;
+
+    const salePriceNum = parseFloat(salePrice);
+
       try {
           const updateMenuItemStatement = await db.prepare(`UPDATE menu_items SET sale_price = $1, sale_start = $2,
             sale_end = $3 WHERE item_name = $4;`, {paramTypes: [DataTypeOIDs.numeric, DataTypeOIDs.date, DataTypeOIDs.date,
                 DataTypeOIDs.text ]});
   
       await updateMenuItemStatement.execute({
-        params: [ salePrice, saleStart, saleEnd, itemName ]
+        params: [ salePriceNum, saleStart, saleEnd, itemName ]
       });
   
       await updateMenuItemStatement.close();
