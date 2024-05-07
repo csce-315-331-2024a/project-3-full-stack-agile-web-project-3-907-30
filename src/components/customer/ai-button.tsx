@@ -56,7 +56,7 @@ const AiButton = ({ setFoodRecommendations }: AiButtonProps) => {
 
     toast({
       title: "Food Recommendations",
-      description: `Based on your input, we recommend: ${recommendations}`,
+      description: `${recommendations}`,
     });
 
     form.reset();
