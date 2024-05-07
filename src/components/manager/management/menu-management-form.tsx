@@ -123,7 +123,7 @@ const MenuManagementForm = ({ menuItem, editMode }: MenuManagementFormProps) => 
       <DialogTrigger asChild>
         <Button>{'Edit'}</Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[85%] overflow-y-scroll w-full">
+      <DialogContent className="max-h-[85%] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>{editMode ? `Editing ${menuItem?.item_name}` : 'Add an Item'}</DialogTitle>
           <DialogDescription>

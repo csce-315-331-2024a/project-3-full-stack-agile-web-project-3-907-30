@@ -551,7 +551,7 @@ export async function updateMenuItemPrice(itemName: string, newPrice: number) {
 }
 
 export async function putItemOnSale(itemName:string, salePrice: number, saleStart: string, saleEnd: string) {
-  const res = await fetch("api/manager/put-item-on-sale",{
+  const res = await fetch("/api/manager/put-item-on-sale",{
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -883,4 +883,13 @@ export async function updateMenuItem(item: DetailedMenuItem) {
   });
 
   return res;
+}
+
+export async function clearCustomerFromLocalStorage() {
+  localStorage.setItem("customerId", "no customer ID");
+  localStorage.setItem("customerName", "no customer");
+  localStorage.setItem("customerPhoneNumber", "no customer phone number");
+  localStorage.setItem("customerNumOrders", "no customer orders");
+  localStorage.setItem("customerTotalSpent", "no customer total spent");
+  localStorage.setItem("customerPoints", "no customer points");
 }

@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect, ReactNode } from "react";
-import { getEmployeeFromDatabase, getRole } from "@/lib/utils";
+import { clearCustomerFromLocalStorage, getEmployeeFromDatabase, getRole } from "@/lib/utils";
 import { TbLogout2, TbInfoCircle } from "react-icons/tb";
 import { useRouter } from "next/router";
 import revLogo from "../../public/rev-logo.png";
@@ -48,6 +48,7 @@ const Layout = ({ children }: LayoutProps) => {
   const [menuItems, setMenuItems] = useState<any[]>([]);
   const [originalMenuItems, setOriginalMenuItems] = useState<any[]>([]);
   const [employeeItems, setEmployeeItems] = useState<MenuItem[]>([]);
+  const [signOutRender, setSignOutRender] = useState(false);
 
   const getEmployeeItems = async (employee: Employee) => {
     const items = await fetch(`/api/employee/least-selling/?id=${employee.empId}`).then(
@@ -64,6 +65,12 @@ const Layout = ({ children }: LayoutProps) => {
   const [foodRecommendations, setFoodRecommendations] = useState<string[]>([]);
 
   useEffect(() => {
+    const signOutRender = () => {
+      if(localStorage.getItem('customerName') !== 'no customer'){
+        setSignOutRender(true);
+      }
+      else setSignOutRender(false);
+    }
     if (account) {
       setLoading(true);
       getEmployeeFromDatabase(account.email).then((data) => {
@@ -75,7 +82,9 @@ const Layout = ({ children }: LayoutProps) => {
     if (router.asPath === '/') {
       getCurrentWeather().then((data) => {
         setWeather(data);
-      })
+      })  
+      const intervalId = setInterval(signOutRender, 100);
+      return () => clearInterval(intervalId);
     }
   }, [account, router.asPath]);
 
@@ -97,9 +106,14 @@ const Layout = ({ children }: LayoutProps) => {
                 <span className="block lg:hidden">
                   <RewardsButton setCustomer={setCustomer} />
                 </span>
+                <span className="block lg:hidden">
+                  <Button onClick={clearCustomerFromLocalStorage}></Button>
+                </span>
               </div>
               <div className="lg:flex gap-4 hidden">
                 <AiButton setFoodRecommendations={setFoodRecommendations} />
+                {signOutRender && 
+                (<Button variant="destructive" onClick={clearCustomerFromLocalStorage}>Sign Out</Button>)}
                 <RewardsButton setCustomer={setCustomer} />
                 <Button name="rateUs">
                   <Link target="_blank" href="https://www.yelp.com/writeareview/biz/6dSStUCjMAfixAqz73iy9g?return_url=%2Fbiz%2F6dSStUCjMAfixAqz73iy9g&review_origin=biz-details-war-button">

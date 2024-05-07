@@ -14,8 +14,15 @@ PopoverContent,
 PopoverTrigger,
 } from "@/components/ui/popover"
 import { Input } from '@/components/ui/input';
-import { DialogHeader } from "@/components/ui/dialog";
-import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@radix-ui/react-dialog";
+import {
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+} from '@/components/ui/dialog';
 import { putItemOnSale } from "@/lib/utils";
 import { toast } from "@/components/ui/use-toast";
 import React from "react";
@@ -34,6 +41,7 @@ const FormSchema = z.object({
     sale_price: z.number()
 });
 
+
 const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -45,6 +53,8 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
       })
 
     async function onSubmit(formData: z.infer<typeof FormSchema>) {
+
+        console.log(formData.sale_price, formData.sale_start, formData.sale_end);
 
         const todaysDate = new Date();
 
@@ -105,14 +115,13 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
             <DialogTrigger asChild>
                 <Button>{'Put On Sale'}</Button>
             </DialogTrigger>
-            <DialogContent className="max-h-[85%] overflow-y-scroll w-full">
+            <DialogContent className="max-h-[85%] overflow-y-scroll">
                 <DialogHeader>
                     <DialogTitle>{`Put the ${menuItem?.item_name} on sale.`}</DialogTitle>
                     <DialogDescription>
                         Set an item's sale price and the window of time it will be on sale.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="flex pt-4 notranslate">
                     <Form {...form} >
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                             <FormField
@@ -153,7 +162,7 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
                                         selected={field.value}
                                         onSelect={field.onChange}
                                         initialFocus
-                                        defaultMonth={new Date(2022, 0)}
+                                        defaultMonth={new Date()}
                                     >
                                     </Calendar>
                                     </PopoverContent>
@@ -188,7 +197,7 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
                                         selected={field.value}
                                         onSelect={field.onChange}
                                         initialFocus
-                                        defaultMonth={new Date(2022, 0)}
+                                        defaultMonth={new Date()}
                                     >
                                     </Calendar>
                                     </PopoverContent>
@@ -203,7 +212,6 @@ const CreatePromotion = ({ menuItem }: CreatePromotionProps) => {
                             <Button type="submit">Submit</Button>
                         </form>
                     </Form>
-                </div>
             </DialogContent>
         </Dialog>
     )
