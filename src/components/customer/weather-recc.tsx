@@ -208,33 +208,6 @@ const CustomerWeatherReccs = ({ weather, items }: CustomerWeatherReccsProps) => 
                               {currentAllergens?.is_vegan && <p className="text-sm font-bold mt-0 mb-0" style={{ color: '#006400' }}>VEGAN</p>}
                               {currentAllergens?.is_halal && <p className="text-sm font-bold mt-0 mb-0" style={{ color: '#000080' }}>HALAL</p>}
                             </div>
-
-                            <DialogFooter>
-                              <div className="flex items-center gap-2">
-                                <Label htmlFor="quantity" className="text-right text-lg">
-                                  Quantity:
-                                </Label>
-                                <input
-                                  id="quantity"
-                                  type="number"
-                                  min="1"
-                                  value={itemQuantity}
-                                  onChange={(e) => setItemQuantity(parseInt(e.target.value, 10))}
-                                  className="w-16 px-2 py-1 border border-gray-300 rounded"
-                                />
-                              </div>
-                              <DialogClose asChild>
-                                <Button
-                                  onClick={() => {
-                                    addItemToOrder(item, itemQuantity);
-                                    setItemQuantity(1); // Reset the quantity to 1 after adding to order
-                                  }}
-                                  className="bg-green-500 hover:bg-green-700 text-white text-xl font-bold px-6 py-8 rounded"
-                                >
-                                  Add to Order
-                                </Button>
-                              </DialogClose>
-                            </DialogFooter>
                           </DialogContent>
                         </Dialog>
           </div>
