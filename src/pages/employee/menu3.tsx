@@ -68,10 +68,10 @@ const MenuThree = () => {
           <div className="w-full grid grid-cols-2 gap-4">
             {["Tenders", "Meals", "Sides", "Desserts"].map((category, index) => (
               <Card key={index} className="bg-[#500000] border-[#3C0000]">
-                <CardHeader className="mb-2">
+                <CardHeader className="mb-4">
                   <CardTitle className="text-white text-4xl">{category}</CardTitle>
                 </CardHeader>
-                <CardContent className="grid grid-cols-3 gap-4">
+                <CardContent className="grid grid-cols-3 gap-8">
                   {loading ? (
                     Array.from({ length: 3 }).map((_, index) => (
                       <div key={index} className="flex flex-col items-center gap-2">
@@ -84,7 +84,7 @@ const MenuThree = () => {
                     menuItems.filter(item => itemBelongsToCategory(item.name, category)).map((item, index) => (
                       <div key={index} className="flex flex-col text-white items-center gap-2">
                         <Image src={getImageForMenuItem(item.id)} width={150} height={150} alt={item.name} className="rounded-lg" />
-                        <p className="font-bold text-xl mt-2 text-center">{item.name}</p>
+                        <p className="font-bold text-2xl mt-2 text-center">{item.name}</p>
                         <p className="text-lg">${item.price.toFixed(2)}</p>
                       </div>
                     ))
@@ -94,7 +94,7 @@ const MenuThree = () => {
               </Card>
             ))}
           </div>
-          <div className="text-black text-sm w-full">Images generated with DALL-E. Prompts available if requested.</div>
+          <div className="text-black text-lg w-full">Images generated with DALL-E. Prompts available if requested.</div>
         </div>
       ) : (loading ? (
         <h1 className="text-xl">Loading...</h1>

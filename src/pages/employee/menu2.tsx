@@ -66,11 +66,11 @@ const MenuTwo = () => {
     <div className="w-full h-full flex flex-col justify-start items-center p-4">
       {employee?.isVerified ?
         <Card className="bg-[#500000] border-[#3C0000] w-full">
-          <CardHeader className="mb-2">
+          <CardHeader className="mb-6">
             <CardTitle className="text-white text-6xl mb-2">Drinks</CardTitle>
             <CardDescription className="text-white">Images generated with DALL-E. Prompts available if requested.</CardDescription>
           </CardHeader>
-          <CardContent className="grid grid-cols-4 gap-6">
+          <CardContent className="grid grid-cols-4 gap-10">
             {loading ? (
               Array.from({ length: 7 }).map((_, index) => (
                 <div key={index} className="flex flex-col items-center gap-2">
@@ -83,7 +83,7 @@ const MenuTwo = () => {
               menuItems.filter(item => itemBelongsToCategory(item.name, "Drinks")).map((item, index) => (
                 <div key={index} className="flex flex-col text-white items-center gap-2">
                   <Image src={getImageForMenuItem(item.id)} width={220} height={220} alt={item.name} className="rounded-lg" />
-                  <p className="font-bold text-xl mt-2 text-center">{item.name}</p>
+                  <p className="font-bold text-2xl mt-2 text-center">{item.name}</p>
                   <p className="text-lg">${item.price.toFixed(2)}</p>
                 </div>
               )))}
